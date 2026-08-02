@@ -13,6 +13,7 @@ export const IconWrap = styled.span<{ $size: Size }>`
   width: ${({ $size }: { $size: Size }) => iconBoxSize[$size]}px;
   height: ${({ $size }: { $size: Size }) => iconBoxSize[$size]}px;
   flex-shrink: 0;
+  margin-top: 2px;
 
   svg { display: block; width: 100%; height: 100%; }
 `;
