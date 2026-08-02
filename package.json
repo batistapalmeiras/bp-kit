@@ -14,7 +14,8 @@
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts --target es2018",
-    "dev": "tsup src/index.ts --format esm,cjs --dts --target es2018 --watch"
+    "dev": "tsup src/index.ts --format esm,cjs --dts --target es2018 --watch",
+    "prepare": "npm run build"
   },
   "peerDependencies": {
     "react": "^19.2.7",
