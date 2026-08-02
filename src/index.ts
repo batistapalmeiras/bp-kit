@@ -42,9 +42,6 @@ export * from './contexts';
 // Types
 export * from './types';
 
-// Lib
-export * from './lib';
-
 // Styles
 // Local
 import './styles/styled.d';

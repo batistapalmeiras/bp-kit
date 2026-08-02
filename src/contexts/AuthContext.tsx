@@ -1,5 +1,7 @@
 // React
 import { createContext, ReactNode } from 'react';
+// Libs
+import type { SupabaseClient } from '@supabase/supabase-js';
 // Components
 import { useAuth } from '../hooks/useAuth';
 import { User } from '../types';
@@ -16,8 +18,8 @@ export interface AuthContextValue {
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const authValue = useAuth();
+export function AuthProvider({ client, children }: { client: SupabaseClient; children: ReactNode }) {
+  const authValue = useAuth(client);
   return (
     <AuthContext.Provider value={authValue}>
       {children}

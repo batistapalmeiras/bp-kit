@@ -1,13 +1,14 @@
 // React
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+// Libs
+import type { SupabaseClient } from '@supabase/supabase-js';
 // Components
 import { AuthContext, AuthContextValue } from '../contexts/AuthContext';
-import { supabase } from '../lib/supabase';
 import { User } from '../types';
 
-export async function fetchProfile(userId: string): Promise<User | null> {
+export async function fetchProfile(client: SupabaseClient, userId: string): Promise<User | null> {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await client
       .from('profiles')
       .select('id, name, role')
       .eq('id', userId);
@@ -30,7 +31,7 @@ interface SessionUser {
   email: string;
 }
 
-export function useAuth(): AuthContextValue {
+export function useAuth(client: SupabaseClient): AuthContextValue {
   const [user, setUser] = useState<User | null>(null);
   const [userEmail, setUserEmail] = useState('');
   const [loading, setLoading] = useState(true);
@@ -43,7 +44,7 @@ export function useAuth(): AuthContextValue {
     // supabase-js: qualquer `await` em outra chamada da lib aqui dentro (ex.
     // fetchProfile → getSession) causa deadlock. Só registra a sessão em estado;
     // o perfil é buscado no efeito abaixo, fora do lock.
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: listener } = client.auth.onAuthStateChange((_event, session) => {
       setSessionUser((prev) => {
         const next = session?.user
           ? { id: session.user.id, email: session.user.email ?? '' }
@@ -54,7 +55,7 @@ export function useAuth(): AuthContextValue {
     });
 
     const refreshInterval = setInterval(async () => {
-      const { error: refreshError } = await supabase.auth.refreshSession();
+      const { error: refreshError } = await client.auth.refreshSession();
       if (refreshError) {
         setError('Sua sessão expirou. Entre novamente.');
         setUser(null);
@@ -64,7 +65,7 @@ export function useAuth(): AuthContextValue {
 
     const handleVisibilityChange = async () => {
       if (!document.hidden) {
-        const { error: refreshError } = await supabase.auth.refreshSession();
+        const { error: refreshError } = await client.auth.refreshSession();
         if (refreshError) {
           setError('Sua sessão expirou. Entre novamente.');
           setUser(null);
@@ -80,7 +81,7 @@ export function useAuth(): AuthContextValue {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       listener?.subscription.unsubscribe();
     };
-  }, []);
+  }, [client]);
 
   useEffect(() => {
     if (sessionUser === undefined) return;
@@ -93,7 +94,7 @@ export function useAuth(): AuthContextValue {
     }
 
     let cancelled = false;
-    fetchProfile(sessionUser.id).then((profile) => {
+    fetchProfile(client, sessionUser.id).then((profile) => {
       if (cancelled) return;
       if (profile) {
         setUser(profile);
@@ -110,43 +111,43 @@ export function useAuth(): AuthContextValue {
     return () => {
       cancelled = true;
     };
-  }, [sessionUser]);
+  }, [client, sessionUser]);
 
   const login = useCallback(async (email: string, password: string): Promise<string | null> => {
     setError(null);
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    const { error: signInError } = await client.auth.signInWithPassword({ email, password });
     if (signInError) {
       const errorMsg = 'E-mail ou senha incorretos.';
       setError(errorMsg);
       return errorMsg;
     }
     return null;
-  }, []);
+  }, [client]);
 
   const logout = useCallback(async () => {
-    await supabase.auth.signOut();
+    await client.auth.signOut();
     setUser(null);
     setUserEmail('');
-  }, []);
+  }, [client]);
 
   const updateProfile = useCallback(async (name: string, email: string): Promise<string | null> => {
-    const { data: { user: authUser } } = await supabase.auth.getUser();
+    const { data: { user: authUser } } = await client.auth.getUser();
     if (!authUser) return 'Usuário não autenticado.';
 
-    const { error: profileError } = await supabase
+    const { error: profileError } = await client
       .from('profiles')
       .update({ name: name.trim() })
       .eq('id', authUser.id);
     if (profileError) return 'Erro ao atualizar nome.';
 
     if (email !== userEmail) {
-      const { error: emailError } = await supabase.auth.updateUser({ email });
+      const { error: emailError } = await client.auth.updateUser({ email });
       if (emailError) return 'Erro ao atualizar e-mail.';
     }
 
     setUser((u) => u ? { ...u, name: name.trim() } : u);
     return null;
-  }, [userEmail]);
+  }, [client, userEmail]);
 
   return useMemo(
     () => ({ user, userEmail, loading, error, login, logout, updateProfile }),
