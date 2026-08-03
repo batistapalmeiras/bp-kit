@@ -186,6 +186,26 @@ interface StatusBadgeProps {
 }
 declare function StatusBadge({ tone, children }: StatusBadgeProps): react.JSX.Element;
 
+type StatTone = 'warning' | 'danger';
+declare const StatsGrid: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, "$columns"> & {
+    $columns?: number | undefined;
+}, never> & Partial<Pick<styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, "$columns"> & {
+    $columns?: number | undefined;
+}, never>>> & string;
+declare const StatCard: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, "$tone"> & {
+    $tone?: StatTone | undefined;
+}, never> & Partial<Pick<styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, "$tone"> & {
+    $tone?: StatTone | undefined;
+}, never>>> & string;
+declare const StatLabel: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>, never> & Partial<Pick<react.DetailedHTMLProps<react.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>, never>>> & string;
+declare const StatValue: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>, "$tone" | "$muted"> & {
+    $tone?: StatTone | undefined;
+    $muted?: boolean | undefined;
+}, never> & Partial<Pick<styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>, "$tone" | "$muted"> & {
+    $tone?: StatTone | undefined;
+    $muted?: boolean | undefined;
+}, never>>> & string;
+
 interface SummaryItem {
     name: string;
     qty: number;
@@ -502,4 +522,4 @@ declare function formatCPF(value: string): string;
 declare function formatCNPJ(value: string): string;
 declare function formatCpfCnpj(value: string): string;
 
-export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, Empty, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RawSelect, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, Empty, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RawSelect, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };

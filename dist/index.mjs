@@ -993,9 +993,49 @@ function StatusBadge({ tone, children }) {
   return /* @__PURE__ */ jsx16(StyledBadge, { $tone: tone, children });
 }
 
-// src/components/SummaryCard/styles/SummaryCard.ts
+// src/components/StatsGrid/styles/StatsGrid.ts
 import styled20 from "styled-components";
-var Card2 = styled20.div`
+var StatsGrid = styled20.div`
+  display: grid;
+  grid-template-columns: repeat(${({ $columns }) => $columns != null ? $columns : 4}, 1fr);
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.xl};
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+`;
+var StatCard = styled20.div`
+  background: ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningSurface : $tone === "danger" ? "#fff0f3" : theme2.colors.canvas};
+  border: 1px solid ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningBorder : $tone === "danger" ? "#ffd1da" : theme2.colors.hairline};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
+  padding: ${({ theme: theme2 }) => theme2.spacing.base};
+  box-shadow: ${({ theme: theme2 }) => theme2.shadows.sm};
+`;
+var StatLabel = styled20.p`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.xs};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+var StatValue = styled20.p`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
+  font-weight: 700;
+  line-height: 1.1;
+  color: ${({ theme: theme2, $tone, $muted }) => $tone === "warning" ? theme2.colors.warning : $tone === "danger" ? "#c0002a" : $muted ? theme2.colors.muted : theme2.colors.ink};
+`;
+
+// src/components/SummaryCard/styles/SummaryCard.ts
+import styled21 from "styled-components";
+var Card2 = styled21.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -1021,7 +1061,7 @@ var Card2 = styled20.div`
     animation: ${fadeUp} 0.2s ease;
   }
 `;
-var Label3 = styled20.p`
+var Label3 = styled21.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -1030,14 +1070,14 @@ var Label3 = styled20.p`
   letter-spacing: 0.5px;
   margin: 0;
 `;
-var Row2 = styled20.div`
+var Row2 = styled21.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
   width: 100%;
 `;
-var Info2 = styled20.div`
+var Info2 = styled21.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1045,16 +1085,16 @@ var Info2 = styled20.div`
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
   width: 100%;
 `;
-var Items = styled20.span`
+var Items = styled21.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
   flex: 1;
 `;
-var EmptyMessage = styled20(Items)`
+var EmptyMessage = styled21(Items)`
   text-align: center;
 `;
-var Total = styled20.span`
+var Total = styled21.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -1064,20 +1104,20 @@ var Total = styled20.span`
   min-width: fit-content;
   margin-left: ${({ theme: theme2 }) => theme2.spacing.sm};
 `;
-var ItemDetail = styled20.div`
+var ItemDetail = styled21.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
   padding: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
 `;
-var ItemDetailName = styled20.span`
+var ItemDetailName = styled21.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   flex: 1;
 `;
-var ItemDetailPrice = styled20.span`
+var ItemDetailPrice = styled21.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
@@ -1085,12 +1125,12 @@ var ItemDetailPrice = styled20.span`
   flex-shrink: 0;
   text-align: right;
 `;
-var Divider = styled20.hr`
+var Divider = styled21.hr`
   border: none;
   border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
 `;
-var ButtonRow = styled20.div`
+var ButtonRow = styled21.div`
   display: flex;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
 
@@ -1159,14 +1199,14 @@ function SummaryCard({
 }
 
 // src/components/Tabs/styles/Tabs.ts
-import styled21 from "styled-components";
-var TabBar = styled21.div.attrs({ role: "tablist" })`
+import styled22 from "styled-components";
+var TabBar = styled22.div.attrs({ role: "tablist" })`
   display: flex;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Tab = styled21.button.attrs(({ $active }) => ({
+var Tab = styled22.button.attrs(({ $active }) => ({
   type: "button",
   role: "tab",
   "aria-selected": $active
@@ -1189,7 +1229,7 @@ var Tab = styled21.button.attrs(({ $active }) => ({
 
   &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
 `;
-var TabBadge = styled21.span`
+var TabBadge = styled22.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1208,12 +1248,12 @@ var TabBadge = styled21.span`
 import { createPortal as createPortal2 } from "react-dom";
 
 // src/components/Toast/styles/Toast.ts
-import styled22, { keyframes as keyframes3 } from "styled-components";
+import styled23, { keyframes as keyframes3 } from "styled-components";
 var fadeOut = keyframes3`
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(8px); }
 `;
-var ToastEl = styled22.div`
+var ToastEl = styled23.div`
   position: fixed;
   bottom: 80px;
   left: 0;
@@ -1425,8 +1465,8 @@ function useLogin(resolveRoute) {
 }
 
 // src/pages/LoginPage/styles/Login.ts
-import styled23 from "styled-components";
-var Page = styled23.div`
+import styled24 from "styled-components";
+var Page = styled24.div`
   min-height: 100vh;
   display: flex;
 
@@ -1434,7 +1474,7 @@ var Page = styled23.div`
     flex-direction: column;
   }
 `;
-var Brand2 = styled23.div`
+var Brand2 = styled24.div`
   flex: 0 0 420px;
   background: ${({ theme: theme2 }) => theme2.colors.primary};
   display: flex;
@@ -1465,7 +1505,7 @@ var Brand2 = styled23.div`
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
   }
 `;
-var BrandMark = styled23.div`
+var BrandMark = styled24.div`
   width: 80px;
   height: 80px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
@@ -1491,13 +1531,13 @@ var BrandMark = styled23.div`
     img { width: 38px; height: 38px; }
   }
 `;
-var BrandText = styled23.div`
+var BrandText = styled24.div`
   text-align: center;
   color: #fff;
   position: relative;
   z-index: 1;
 `;
-var BrandName2 = styled23.h1`
+var BrandName2 = styled24.h1`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.625rem;
   font-weight: 700;
@@ -1509,13 +1549,13 @@ var BrandName2 = styled23.h1`
     font-size: 1.25rem;
   }
 `;
-var BrandSub = styled23.p`
+var BrandSub = styled24.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   opacity: 0.75;
   line-height: 1.4;
 `;
-var BrandQuote = styled23.blockquote`
+var BrandQuote = styled24.blockquote`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: rgba(255, 255, 255, 0.6);
@@ -1530,7 +1570,7 @@ var BrandQuote = styled23.blockquote`
     display: none;
   }
 `;
-var FormPanel = styled23.div`
+var FormPanel = styled24.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -1544,15 +1584,15 @@ var FormPanel = styled23.div`
     padding: ${({ theme: theme2 }) => theme2.spacing.xl} ${({ theme: theme2 }) => theme2.spacing.base};
   }
 `;
-var FormBox = styled23.div`
+var FormBox = styled24.div`
   width: 100%;
   max-width: 400px;
   animation: ${fadeUp} 0.35s ease;
 `;
-var FormHeader = styled23.div`
+var FormHeader = styled24.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var FormTitle = styled23.h2`
+var FormTitle = styled24.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.375rem;
   font-weight: 700;
@@ -1560,17 +1600,17 @@ var FormTitle = styled23.h2`
   letter-spacing: -0.3px;
   margin-bottom: 6px;
 `;
-var FormSubtitle = styled23.p`
+var FormSubtitle = styled24.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Form = styled23.form`
+var Form = styled24.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var ErrorMsg = styled23.p`
+var ErrorMsg = styled24.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
   background: #fef2f2;
@@ -1655,15 +1695,15 @@ import { useForm as useForm2 } from "react-hook-form";
 import { useNavigate as useNavigate3 } from "react-router-dom";
 
 // src/pages/ProfilePage/styles/ProfilePage.ts
-import styled24 from "styled-components";
-var Wrap2 = styled24.div`
+import styled25 from "styled-components";
+var Wrap2 = styled25.div`
   max-width: 560px;
 `;
-var Identity = styled24.div`
+var Identity = styled25.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Name = styled24.h2`
+var Name = styled25.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -1671,18 +1711,18 @@ var Name = styled24.h2`
   line-height: 1.1;
   margin-bottom: 4px;
 `;
-var RoleLabel = styled24.p`
+var RoleLabel = styled25.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Section = styled24.div`
+var Section = styled25.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SectionTitle = styled24.p`
+var SectionTitle = styled25.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -1690,7 +1730,7 @@ var SectionTitle = styled24.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var Actions = styled24.div`
+var Actions = styled25.div`
   display: flex;
   justify-content: flex-end;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -2034,6 +2074,10 @@ export {
   SegmentedControl,
   Select,
   Skeleton,
+  StatCard,
+  StatLabel,
+  StatValue,
+  StatsGrid,
   StatusBadge,
   SummaryCard,
   Tab,

@@ -57,6 +57,10 @@ __export(src_exports, {
   SegmentedControl: () => SegmentedControl,
   Select: () => Select,
   Skeleton: () => Skeleton,
+  StatCard: () => StatCard,
+  StatLabel: () => StatLabel,
+  StatValue: () => StatValue,
+  StatsGrid: () => StatsGrid,
   StatusBadge: () => StatusBadge,
   SummaryCard: () => SummaryCard,
   Tab: () => Tab,
@@ -1082,9 +1086,49 @@ function StatusBadge({ tone, children }) {
   return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(StyledBadge, { $tone: tone, children });
 }
 
-// src/components/SummaryCard/styles/SummaryCard.ts
+// src/components/StatsGrid/styles/StatsGrid.ts
 var import_styled_components22 = __toESM(require("styled-components"));
-var Card2 = import_styled_components22.default.div`
+var StatsGrid = import_styled_components22.default.div`
+  display: grid;
+  grid-template-columns: repeat(${({ $columns }) => $columns != null ? $columns : 4}, 1fr);
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.xl};
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+`;
+var StatCard = import_styled_components22.default.div`
+  background: ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningSurface : $tone === "danger" ? "#fff0f3" : theme2.colors.canvas};
+  border: 1px solid ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningBorder : $tone === "danger" ? "#ffd1da" : theme2.colors.hairline};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
+  padding: ${({ theme: theme2 }) => theme2.spacing.base};
+  box-shadow: ${({ theme: theme2 }) => theme2.shadows.sm};
+`;
+var StatLabel = import_styled_components22.default.p`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.xs};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+var StatValue = import_styled_components22.default.p`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
+  font-weight: 700;
+  line-height: 1.1;
+  color: ${({ theme: theme2, $tone, $muted }) => $tone === "warning" ? theme2.colors.warning : $tone === "danger" ? "#c0002a" : $muted ? theme2.colors.muted : theme2.colors.ink};
+`;
+
+// src/components/SummaryCard/styles/SummaryCard.ts
+var import_styled_components23 = __toESM(require("styled-components"));
+var Card2 = import_styled_components23.default.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -1110,7 +1154,7 @@ var Card2 = import_styled_components22.default.div`
     animation: ${fadeUp} 0.2s ease;
   }
 `;
-var Label3 = import_styled_components22.default.p`
+var Label3 = import_styled_components23.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -1119,14 +1163,14 @@ var Label3 = import_styled_components22.default.p`
   letter-spacing: 0.5px;
   margin: 0;
 `;
-var Row2 = import_styled_components22.default.div`
+var Row2 = import_styled_components23.default.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
   width: 100%;
 `;
-var Info2 = import_styled_components22.default.div`
+var Info2 = import_styled_components23.default.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1134,16 +1178,16 @@ var Info2 = import_styled_components22.default.div`
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
   width: 100%;
 `;
-var Items = import_styled_components22.default.span`
+var Items = import_styled_components23.default.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
   flex: 1;
 `;
-var EmptyMessage = (0, import_styled_components22.default)(Items)`
+var EmptyMessage = (0, import_styled_components23.default)(Items)`
   text-align: center;
 `;
-var Total = import_styled_components22.default.span`
+var Total = import_styled_components23.default.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -1153,20 +1197,20 @@ var Total = import_styled_components22.default.span`
   min-width: fit-content;
   margin-left: ${({ theme: theme2 }) => theme2.spacing.sm};
 `;
-var ItemDetail = import_styled_components22.default.div`
+var ItemDetail = import_styled_components23.default.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
   padding: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
 `;
-var ItemDetailName = import_styled_components22.default.span`
+var ItemDetailName = import_styled_components23.default.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   flex: 1;
 `;
-var ItemDetailPrice = import_styled_components22.default.span`
+var ItemDetailPrice = import_styled_components23.default.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
@@ -1174,12 +1218,12 @@ var ItemDetailPrice = import_styled_components22.default.span`
   flex-shrink: 0;
   text-align: right;
 `;
-var Divider = import_styled_components22.default.hr`
+var Divider = import_styled_components23.default.hr`
   border: none;
   border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
 `;
-var ButtonRow = import_styled_components22.default.div`
+var ButtonRow = import_styled_components23.default.div`
   display: flex;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
 
@@ -1248,14 +1292,14 @@ function SummaryCard({
 }
 
 // src/components/Tabs/styles/Tabs.ts
-var import_styled_components23 = __toESM(require("styled-components"));
-var TabBar = import_styled_components23.default.div.attrs({ role: "tablist" })`
+var import_styled_components24 = __toESM(require("styled-components"));
+var TabBar = import_styled_components24.default.div.attrs({ role: "tablist" })`
   display: flex;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Tab = import_styled_components23.default.button.attrs(({ $active }) => ({
+var Tab = import_styled_components24.default.button.attrs(({ $active }) => ({
   type: "button",
   role: "tab",
   "aria-selected": $active
@@ -1278,7 +1322,7 @@ var Tab = import_styled_components23.default.button.attrs(({ $active }) => ({
 
   &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
 `;
-var TabBadge = import_styled_components23.default.span`
+var TabBadge = import_styled_components24.default.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1297,12 +1341,12 @@ var TabBadge = import_styled_components23.default.span`
 var import_react_dom2 = require("react-dom");
 
 // src/components/Toast/styles/Toast.ts
-var import_styled_components24 = __toESM(require("styled-components"));
-var fadeOut = import_styled_components24.keyframes`
+var import_styled_components25 = __toESM(require("styled-components"));
+var fadeOut = import_styled_components25.keyframes`
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(8px); }
 `;
-var ToastEl = import_styled_components24.default.div`
+var ToastEl = import_styled_components25.default.div`
   position: fixed;
   bottom: 80px;
   left: 0;
@@ -1514,8 +1558,8 @@ function useLogin(resolveRoute) {
 }
 
 // src/pages/LoginPage/styles/Login.ts
-var import_styled_components25 = __toESM(require("styled-components"));
-var Page = import_styled_components25.default.div`
+var import_styled_components26 = __toESM(require("styled-components"));
+var Page = import_styled_components26.default.div`
   min-height: 100vh;
   display: flex;
 
@@ -1523,7 +1567,7 @@ var Page = import_styled_components25.default.div`
     flex-direction: column;
   }
 `;
-var Brand2 = import_styled_components25.default.div`
+var Brand2 = import_styled_components26.default.div`
   flex: 0 0 420px;
   background: ${({ theme: theme2 }) => theme2.colors.primary};
   display: flex;
@@ -1554,7 +1598,7 @@ var Brand2 = import_styled_components25.default.div`
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
   }
 `;
-var BrandMark = import_styled_components25.default.div`
+var BrandMark = import_styled_components26.default.div`
   width: 80px;
   height: 80px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
@@ -1580,13 +1624,13 @@ var BrandMark = import_styled_components25.default.div`
     img { width: 38px; height: 38px; }
   }
 `;
-var BrandText = import_styled_components25.default.div`
+var BrandText = import_styled_components26.default.div`
   text-align: center;
   color: #fff;
   position: relative;
   z-index: 1;
 `;
-var BrandName2 = import_styled_components25.default.h1`
+var BrandName2 = import_styled_components26.default.h1`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.625rem;
   font-weight: 700;
@@ -1598,13 +1642,13 @@ var BrandName2 = import_styled_components25.default.h1`
     font-size: 1.25rem;
   }
 `;
-var BrandSub = import_styled_components25.default.p`
+var BrandSub = import_styled_components26.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   opacity: 0.75;
   line-height: 1.4;
 `;
-var BrandQuote = import_styled_components25.default.blockquote`
+var BrandQuote = import_styled_components26.default.blockquote`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: rgba(255, 255, 255, 0.6);
@@ -1619,7 +1663,7 @@ var BrandQuote = import_styled_components25.default.blockquote`
     display: none;
   }
 `;
-var FormPanel = import_styled_components25.default.div`
+var FormPanel = import_styled_components26.default.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -1633,15 +1677,15 @@ var FormPanel = import_styled_components25.default.div`
     padding: ${({ theme: theme2 }) => theme2.spacing.xl} ${({ theme: theme2 }) => theme2.spacing.base};
   }
 `;
-var FormBox = import_styled_components25.default.div`
+var FormBox = import_styled_components26.default.div`
   width: 100%;
   max-width: 400px;
   animation: ${fadeUp} 0.35s ease;
 `;
-var FormHeader = import_styled_components25.default.div`
+var FormHeader = import_styled_components26.default.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var FormTitle = import_styled_components25.default.h2`
+var FormTitle = import_styled_components26.default.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.375rem;
   font-weight: 700;
@@ -1649,17 +1693,17 @@ var FormTitle = import_styled_components25.default.h2`
   letter-spacing: -0.3px;
   margin-bottom: 6px;
 `;
-var FormSubtitle = import_styled_components25.default.p`
+var FormSubtitle = import_styled_components26.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Form = import_styled_components25.default.form`
+var Form = import_styled_components26.default.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var ErrorMsg = import_styled_components25.default.p`
+var ErrorMsg = import_styled_components26.default.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
   background: #fef2f2;
@@ -1744,15 +1788,15 @@ var import_react_hook_form4 = require("react-hook-form");
 var import_react_router_dom4 = require("react-router-dom");
 
 // src/pages/ProfilePage/styles/ProfilePage.ts
-var import_styled_components26 = __toESM(require("styled-components"));
-var Wrap2 = import_styled_components26.default.div`
+var import_styled_components27 = __toESM(require("styled-components"));
+var Wrap2 = import_styled_components27.default.div`
   max-width: 560px;
 `;
-var Identity = import_styled_components26.default.div`
+var Identity = import_styled_components27.default.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Name = import_styled_components26.default.h2`
+var Name = import_styled_components27.default.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -1760,18 +1804,18 @@ var Name = import_styled_components26.default.h2`
   line-height: 1.1;
   margin-bottom: 4px;
 `;
-var RoleLabel = import_styled_components26.default.p`
+var RoleLabel = import_styled_components27.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Section = import_styled_components26.default.div`
+var Section = import_styled_components27.default.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SectionTitle = import_styled_components26.default.p`
+var SectionTitle = import_styled_components27.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -1779,7 +1823,7 @@ var SectionTitle = import_styled_components26.default.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var Actions = import_styled_components26.default.div`
+var Actions = import_styled_components27.default.div`
   display: flex;
   justify-content: flex-end;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -1861,11 +1905,11 @@ function useModal() {
 }
 
 // src/styles/styled.d.ts
-var import_styled_components27 = require("styled-components");
+var import_styled_components28 = require("styled-components");
 
 // src/styles/GlobalStyles.ts
-var import_styled_components28 = require("styled-components");
-var GlobalStyles = import_styled_components28.createGlobalStyle`
+var import_styled_components29 = require("styled-components");
+var GlobalStyles = import_styled_components29.createGlobalStyle`
   *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -2124,6 +2168,10 @@ var theme = {
   SegmentedControl,
   Select,
   Skeleton,
+  StatCard,
+  StatLabel,
+  StatValue,
+  StatsGrid,
   StatusBadge,
   SummaryCard,
   Tab,
