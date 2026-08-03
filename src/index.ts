@@ -11,6 +11,8 @@ export type { IconButtonProps } from './components/IconButton/types';
 export { InfoBox } from './components/InfoBox';
 export { LoginPage } from './components/LoginPage';
 export type { LoginPageBrand, LoginPageProps } from './components/LoginPage';
+export { ProfilePage } from './components/ProfilePage';
+export type { ProfilePageProps } from './components/ProfilePage';
 export { BaseInput, ControlledBase, InputField } from './components/Inputs/BaseInput';
 export type { BaseInputProps } from './components/Inputs/BaseInput/types';
 export { RawSelect, Select } from './components/Inputs/Select';

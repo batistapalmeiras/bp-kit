@@ -51,6 +51,7 @@ __export(src_exports, {
   ModalTitle: () => ModalTitle,
   PageHeader: () => PageHeader,
   Pagination: () => Pagination,
+  ProfilePage: () => ProfilePage,
   RawSelect: () => RawSelect,
   SegmentedControl: () => SegmentedControl,
   Select: () => Select,
@@ -1050,12 +1051,235 @@ function LoginPage({ brand, resolveRoute }) {
   ] });
 }
 
-// src/components/Inputs/Select/index.tsx
+// src/components/ProfilePage/index.tsx
+var import_zod4 = require("@hookform/resolvers/zod");
 var import_react_hook_form3 = require("react-hook-form");
+var import_react_router_dom4 = require("react-router-dom");
+
+// src/components/PageHeader/index.tsx
+var import_react_router_dom3 = require("react-router-dom");
+var import_lucide_react3 = require("lucide-react");
+
+// src/components/PageHeader/styles/PageHeader.ts
+var import_styled_components15 = __toESM(require("styled-components"));
+var Wrapper3 = import_styled_components15.default.div`
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
+`;
+var Back = import_styled_components15.default.button`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  border: none;
+  background: none;
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.sm};
+
+  &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
+`;
+var Row = import_styled_components15.default.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.base};
+`;
+var Titles = import_styled_components15.default.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+var Title = import_styled_components15.default.h2`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
+  font-weight: 700;
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  line-height: 1.2;
+`;
+var Subtitle = import_styled_components15.default.p`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+`;
+
+// src/components/PageHeader/index.tsx
+var import_jsx_runtime12 = require("react/jsx-runtime");
+function PageHeader({ title, subtitle, back, action }) {
+  const navigate = (0, import_react_router_dom3.useNavigate)();
+  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Wrapper3, { children: [
+    back && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Back, { onClick: () => navigate(-1), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_lucide_react3.ArrowLeft, { size: 15 }),
+      "Voltar"
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Row, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Titles, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Title, { children: title }),
+        subtitle && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Subtitle, { children: subtitle })
+      ] }),
+      action && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { children: action })
+    ] })
+  ] });
+}
+
+// src/components/Toast/index.tsx
+var import_react_dom2 = require("react-dom");
+
+// src/components/Toast/styles/Toast.ts
+var import_styled_components16 = __toESM(require("styled-components"));
+var fadeOut = import_styled_components16.keyframes`
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(8px); }
+`;
+var ToastEl = import_styled_components16.default.div`
+  position: fixed;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: fit-content;
+  background: ${({ theme: theme2 }) => theme2.colors.ink};
+  color: ${({ theme: theme2 }) => theme2.colors.onDark};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: 14px;
+  font-weight: 600;
+  padding: ${({ theme: theme2 }) => `${theme2.spacing.sm} ${theme2.spacing.lg}`};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
+  pointer-events: none;
+  z-index: 9999;
+  white-space: nowrap;
+  text-align: center;
+  animation: ${({ $leaving }) => $leaving ? fadeOut : fadeUp} 0.25s ease forwards;
+`;
+
+// src/components/Toast/hooks/useToast.tsx
+var import_react7 = require("react");
+var import_jsx_runtime13 = require("react/jsx-runtime");
+function useToast(duration = 2500) {
+  const [state, setState] = (0, import_react7.useState)(null);
+  const timerRef = (0, import_react7.useRef)(null);
+  const show = (0, import_react7.useCallback)(
+    (message) => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      setState({ message, leaving: false });
+      timerRef.current = setTimeout(() => {
+        setState((s) => s ? { ...s, leaving: true } : null);
+        timerRef.current = setTimeout(() => setState(null), 300);
+      }, duration);
+    },
+    [duration]
+  );
+  const toast = state ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Toast, { message: state.message, leaving: state.leaving }) : null;
+  return { show, toast };
+}
+
+// src/components/Toast/index.tsx
+var import_jsx_runtime14 = require("react/jsx-runtime");
+function Toast({ message, leaving }) {
+  return (0, import_react_dom2.createPortal)(/* @__PURE__ */ (0, import_jsx_runtime14.jsx)(ToastEl, { $leaving: leaving, children: message }), document.body);
+}
+
+// src/components/ProfilePage/styles/ProfilePage.ts
+var import_styled_components17 = __toESM(require("styled-components"));
+var Wrap = import_styled_components17.default.div`
+  max-width: 560px;
+`;
+var Identity = import_styled_components17.default.div`
+  padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
+  border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
+`;
+var Name = import_styled_components17.default.h2`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
+  font-weight: 700;
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  line-height: 1.1;
+  margin-bottom: 4px;
+`;
+var RoleLabel = import_styled_components17.default.p`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+`;
+var Section = import_styled_components17.default.div`
+  padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+`;
+var SectionTitle = import_styled_components17.default.p`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
+  font-weight: 600;
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+var Actions = import_styled_components17.default.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
+  padding-top: ${({ theme: theme2 }) => theme2.spacing.lg};
+  border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
+
+  @media (max-width: 480px) {
+    button { flex: 1; }
+  }
+`;
+
+// src/components/ProfilePage/validators/schema.ts
+var import_zod3 = require("zod");
+var profileSchema = import_zod3.z.object({
+  name: import_zod3.z.string().min(3, "Informe pelo menos nome e sobrenome"),
+  email: import_zod3.z.string().email("E-mail inv\xE1lido")
+});
+
+// src/components/ProfilePage/index.tsx
+var import_jsx_runtime15 = require("react/jsx-runtime");
+function ProfilePage({ roleLabel }) {
+  var _a, _b;
+  const { user, userEmail, updateProfile } = useAuthCtx();
+  const navigate = (0, import_react_router_dom4.useNavigate)();
+  const { show: showToast, toast } = useToast();
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting }
+  } = (0, import_react_hook_form3.useForm)({
+    resolver: (0, import_zod4.zodResolver)(profileSchema),
+    defaultValues: { name: (_a = user == null ? void 0 : user.name) != null ? _a : "", email: userEmail }
+  });
+  const onSubmit = async (data) => {
+    const err = await updateProfile(data.name, data.email);
+    showToast(err != null ? err : "Perfil atualizado com sucesso.");
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Wrap, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(PageHeader, { title: "Meu perfil", back: true }),
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Identity, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
+      roleLabel && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(RoleLabel, { children: roleLabel })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Section, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(TextInput, { label: "Nome completo", control, name: "name", placeholder: "Nome e sobrenome" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(TextInput, { label: "E-mail de acesso", control, name: "email", type: "email", placeholder: "seu@email.com" })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Actions, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: "Cancelar" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es" })
+    ] }),
+    toast
+  ] });
+}
+
+// src/components/Inputs/Select/index.tsx
+var import_react_hook_form4 = require("react-hook-form");
 
 // src/components/Inputs/Select/styles/Select.ts
-var import_styled_components15 = __toESM(require("styled-components"));
-var SelectField = import_styled_components15.default.select`
+var import_styled_components18 = __toESM(require("styled-components"));
+var SelectField = import_styled_components18.default.select`
   height: 56px;
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
@@ -1080,9 +1304,9 @@ var SelectField = import_styled_components15.default.select`
 `;
 
 // src/components/Inputs/Select/index.tsx
-var import_jsx_runtime12 = require("react/jsx-runtime");
+var import_jsx_runtime16 = require("react/jsx-runtime");
 function RawSelect({ label, wrapperStyle, error, children, ...rest }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(SelectField, { ...rest, children }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SelectField, { ...rest, children }) });
 }
 function Select({
   label,
@@ -1092,16 +1316,16 @@ function Select({
   children
 }) {
   var _a, _b;
-  const { field, fieldState } = (0, import_react_hook_form3.useController)({ control, name });
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(SelectField, { value: (_b = field.value) != null ? _b : "", onChange: (e) => field.onChange(e.target.value), onBlur: field.onBlur, ref: field.ref, children }) });
+  const { field, fieldState } = (0, import_react_hook_form4.useController)({ control, name });
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SelectField, { value: (_b = field.value) != null ? _b : "", onChange: (e) => field.onChange(e.target.value), onBlur: field.onBlur, ref: field.ref, children }) });
 }
 
 // src/components/Modal/index.tsx
-var import_react7 = require("react");
+var import_react8 = require("react");
 
 // src/components/Modal/styles/Modal.ts
-var import_styled_components16 = __toESM(require("styled-components"));
-var Overlay2 = import_styled_components16.default.div`
+var import_styled_components19 = __toESM(require("styled-components"));
+var Overlay2 = import_styled_components19.default.div`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
@@ -1111,7 +1335,7 @@ var Overlay2 = import_styled_components16.default.div`
   z-index: 1000;
   animation: ${fadeIn} 0.2s ease;
 `;
-var Box2 = import_styled_components16.default.div`
+var Box2 = import_styled_components19.default.div`
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.lg};
   padding: 28px 32px;
@@ -1129,13 +1353,13 @@ var Box2 = import_styled_components16.default.div`
     overflow-y: auto;
   }
 `;
-var ModalTitle = import_styled_components16.default.h3`
+var ModalTitle = import_styled_components19.default.h3`
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   margin-bottom: 24px;
 `;
-var ModalActions = import_styled_components16.default.div`
+var ModalActions = import_styled_components19.default.div`
   display: flex;
   justify-content: flex-end;
   gap: 8px;
@@ -1143,10 +1367,10 @@ var ModalActions = import_styled_components16.default.div`
 `;
 
 // src/components/Modal/index.tsx
-var import_jsx_runtime13 = require("react/jsx-runtime");
+var import_jsx_runtime17 = require("react/jsx-runtime");
 function Modal({ children, close }) {
-  const boxRef = (0, import_react7.useRef)(null);
-  (0, import_react7.useEffect)(() => {
+  const boxRef = (0, import_react8.useRef)(null);
+  (0, import_react8.useEffect)(() => {
     var _a;
     (_a = boxRef.current) == null ? void 0 : _a.focus();
     const onKeyDown = (e) => {
@@ -1155,19 +1379,19 @@ function Modal({ children, close }) {
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [close]);
-  return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Overlay2, { onClick: close, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Box2, { ref: boxRef, role: "dialog", "aria-modal": "true", tabIndex: -1, onClick: (e) => e.stopPropagation(), children }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Overlay2, { onClick: close, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Box2, { ref: boxRef, role: "dialog", "aria-modal": "true", tabIndex: -1, onClick: (e) => e.stopPropagation(), children }) });
 }
 
 // src/components/Pagination/styles/Pagination.ts
-var import_styled_components17 = __toESM(require("styled-components"));
-var Wrapper3 = import_styled_components17.default.div`
+var import_styled_components20 = __toESM(require("styled-components"));
+var Wrapper4 = import_styled_components20.default.div`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
   margin-top: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var PageButton = import_styled_components17.default.button`
+var PageButton = import_styled_components20.default.button`
   width: 36px;
   height: 36px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
@@ -1188,12 +1412,12 @@ var PageButton = import_styled_components17.default.button`
 `;
 
 // src/components/Pagination/index.tsx
-var import_jsx_runtime14 = require("react/jsx-runtime");
+var import_jsx_runtime18 = require("react/jsx-runtime");
 function Pagination({ currentPage, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Wrapper3, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(PageButton, { type: "button", "aria-label": "P\xE1gina anterior", onClick: () => onPageChange(currentPage - 1), disabled: currentPage === 1, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { "aria-hidden": "true", children: "\u2039" }) }),
-    Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Wrapper4, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PageButton, { type: "button", "aria-label": "P\xE1gina anterior", onClick: () => onPageChange(currentPage - 1), disabled: currentPage === 1, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { "aria-hidden": "true", children: "\u2039" }) }),
+    Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
       PageButton,
       {
         type: "button",
@@ -1205,85 +1429,18 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
       },
       page
     )),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(PageButton, { type: "button", "aria-label": "Pr\xF3xima p\xE1gina", onClick: () => onPageChange(currentPage + 1), disabled: currentPage === totalPages, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { "aria-hidden": "true", children: "\u203A" }) })
-  ] });
-}
-
-// src/components/PageHeader/index.tsx
-var import_react_router_dom3 = require("react-router-dom");
-var import_lucide_react3 = require("lucide-react");
-
-// src/components/PageHeader/styles/PageHeader.ts
-var import_styled_components18 = __toESM(require("styled-components"));
-var Wrapper4 = import_styled_components18.default.div`
-  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
-`;
-var Back = import_styled_components18.default.button`
-  display: inline-flex;
-  align-items: center;
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-  border: none;
-  background: none;
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  cursor: pointer;
-  padding: 0;
-  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.sm};
-
-  &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
-`;
-var Row = import_styled_components18.default.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme: theme2 }) => theme2.spacing.base};
-`;
-var Titles = import_styled_components18.default.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-var Title = import_styled_components18.default.h2`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
-  font-weight: 700;
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  line-height: 1.2;
-`;
-var Subtitle = import_styled_components18.default.p`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-`;
-
-// src/components/PageHeader/index.tsx
-var import_jsx_runtime15 = require("react/jsx-runtime");
-function PageHeader({ title, subtitle, back, action }) {
-  const navigate = (0, import_react_router_dom3.useNavigate)();
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Wrapper4, { children: [
-    back && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Back, { onClick: () => navigate(-1), children: [
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_lucide_react3.ArrowLeft, { size: 15 }),
-      "Voltar"
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Row, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Titles, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Title, { children: title }),
-        subtitle && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Subtitle, { children: subtitle })
-      ] }),
-      action && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { children: action })
-    ] })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PageButton, { type: "button", "aria-label": "Pr\xF3xima p\xE1gina", onClick: () => onPageChange(currentPage + 1), disabled: currentPage === totalPages, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { "aria-hidden": "true", children: "\u203A" }) })
   ] });
 }
 
 // src/components/Inputs/SegmentedControl/styles/SegmentedControl.ts
-var import_styled_components19 = __toESM(require("styled-components"));
-var Wrap = import_styled_components19.default.div`
+var import_styled_components21 = __toESM(require("styled-components"));
+var Wrap2 = import_styled_components21.default.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Label2 = import_styled_components19.default.p`
+var Label2 = import_styled_components21.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -1291,7 +1448,7 @@ var Label2 = import_styled_components19.default.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var Toggle = import_styled_components19.default.div`
+var Toggle = import_styled_components21.default.div`
   display: grid;
   grid-auto-columns: 1fr;
   grid-auto-flow: column;
@@ -1299,7 +1456,7 @@ var Toggle = import_styled_components19.default.div`
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
   overflow: hidden;
 `;
-var Btn = import_styled_components19.default.button`
+var Btn = import_styled_components21.default.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1320,7 +1477,7 @@ var Btn = import_styled_components19.default.button`
 `;
 
 // src/components/Inputs/SegmentedControl/index.tsx
-var import_jsx_runtime16 = require("react/jsx-runtime");
+var import_jsx_runtime19 = require("react/jsx-runtime");
 function SegmentedControl({
   value,
   onChange,
@@ -1328,9 +1485,9 @@ function SegmentedControl({
   label,
   tone = "ink"
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Wrap, { children: [
-    label && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Label2, { children: label }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Toggle, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Wrap2, { children: [
+    label && /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Label2, { children: label }),
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Toggle, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
       Btn,
       {
         type: "button",
@@ -1347,12 +1504,12 @@ function SegmentedControl({
 }
 
 // src/components/Skeleton/styles/Skeleton.ts
-var import_styled_components20 = __toESM(require("styled-components"));
-var pulse = import_styled_components20.keyframes`
+var import_styled_components22 = __toESM(require("styled-components"));
+var pulse = import_styled_components22.keyframes`
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.4; }
 `;
-var Skeleton = import_styled_components20.default.div`
+var Skeleton = import_styled_components22.default.div`
   height: ${({ $h }) => $h != null ? $h : "16px"};
   width: ${({ $w }) => $w != null ? $w : "100%"};
   border-radius: 6px;
@@ -1361,9 +1518,9 @@ var Skeleton = import_styled_components20.default.div`
 `;
 
 // src/components/StatusBadge/index.tsx
-var import_styled_components21 = __toESM(require("styled-components"));
-var import_jsx_runtime17 = require("react/jsx-runtime");
-var StyledBadge = import_styled_components21.default.span`
+var import_styled_components23 = __toESM(require("styled-components"));
+var import_jsx_runtime20 = require("react/jsx-runtime");
+var StyledBadge = import_styled_components23.default.span`
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -1376,12 +1533,12 @@ var StyledBadge = import_styled_components21.default.span`
   ${({ $tone, theme: theme2 }) => $tone === "success" ? `background: ${theme2.colors.successSurface}; color: ${theme2.colors.success}; border: 1px solid ${theme2.colors.successBorder};` : `background: ${theme2.colors.warningSurface}; color: ${theme2.colors.warning}; border: 1px solid ${theme2.colors.warningBorder};`}
 `;
 function StatusBadge({ tone, children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(StyledBadge, { $tone: tone, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(StyledBadge, { $tone: tone, children });
 }
 
 // src/components/SummaryCard/styles/SummaryCard.ts
-var import_styled_components22 = __toESM(require("styled-components"));
-var Card2 = import_styled_components22.default.div`
+var import_styled_components24 = __toESM(require("styled-components"));
+var Card2 = import_styled_components24.default.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -1407,7 +1564,7 @@ var Card2 = import_styled_components22.default.div`
     animation: ${fadeUp} 0.2s ease;
   }
 `;
-var Label3 = import_styled_components22.default.p`
+var Label3 = import_styled_components24.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -1416,14 +1573,14 @@ var Label3 = import_styled_components22.default.p`
   letter-spacing: 0.5px;
   margin: 0;
 `;
-var Row2 = import_styled_components22.default.div`
+var Row2 = import_styled_components24.default.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
   width: 100%;
 `;
-var Info2 = import_styled_components22.default.div`
+var Info2 = import_styled_components24.default.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1431,16 +1588,16 @@ var Info2 = import_styled_components22.default.div`
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
   width: 100%;
 `;
-var Items = import_styled_components22.default.span`
+var Items = import_styled_components24.default.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
   flex: 1;
 `;
-var EmptyMessage = (0, import_styled_components22.default)(Items)`
+var EmptyMessage = (0, import_styled_components24.default)(Items)`
   text-align: center;
 `;
-var Total = import_styled_components22.default.span`
+var Total = import_styled_components24.default.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -1450,20 +1607,20 @@ var Total = import_styled_components22.default.span`
   min-width: fit-content;
   margin-left: ${({ theme: theme2 }) => theme2.spacing.sm};
 `;
-var ItemDetail = import_styled_components22.default.div`
+var ItemDetail = import_styled_components24.default.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
   padding: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
 `;
-var ItemDetailName = import_styled_components22.default.span`
+var ItemDetailName = import_styled_components24.default.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   flex: 1;
 `;
-var ItemDetailPrice = import_styled_components22.default.span`
+var ItemDetailPrice = import_styled_components24.default.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
@@ -1471,12 +1628,12 @@ var ItemDetailPrice = import_styled_components22.default.span`
   flex-shrink: 0;
   text-align: right;
 `;
-var Divider = import_styled_components22.default.hr`
+var Divider = import_styled_components24.default.hr`
   border: none;
   border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
 `;
-var ButtonRow = import_styled_components22.default.div`
+var ButtonRow = import_styled_components24.default.div`
   display: flex;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
 
@@ -1486,7 +1643,7 @@ var ButtonRow = import_styled_components22.default.div`
 `;
 
 // src/components/SummaryCard/index.tsx
-var import_jsx_runtime18 = require("react/jsx-runtime");
+var import_jsx_runtime21 = require("react/jsx-runtime");
 function SummaryCard({
   label = "Resumo",
   items,
@@ -1502,24 +1659,24 @@ function SummaryCard({
   const hasSubtotals = items.some((item) => item.subtotal !== void 0);
   const itemsText = items.map((item) => `${item.qty}\xD7 ${item.name}`).join(", ");
   const isEmpty = items.length === 0;
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Card2, { $bottomOffset: bottomOffset, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Label3, { style: { marginBottom: 0 }, children: label }),
-    isEmpty ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(ItemDetail, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(ItemDetailName, { children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(Card2, { $bottomOffset: bottomOffset, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Label3, { style: { marginBottom: 0 }, children: label }),
+    isEmpty ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(ItemDetail, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(ItemDetailName, { children: [
         item.qty,
         "\xD7 ",
         item.name
       ] }),
-      item.subtotal !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ItemDetailPrice, { children: formatCurrency(item.subtotal) })
-    ] }, item.name)) }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Row2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Items, { children: itemsText }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Total, { children: formatCurrency(total) })
+      item.subtotal !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(ItemDetailPrice, { children: formatCurrency(item.subtotal) })
+    ] }, item.name)) }) : /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(Row2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Items, { children: itemsText }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Total, { children: formatCurrency(total) })
     ] }),
-    !isEmpty && hasSubtotals && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Divider, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Row2, { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Info2, { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Total, { children: formatCurrency(total) }) }) })
+    !isEmpty && hasSubtotals && /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(import_jsx_runtime21.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Divider, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Row2, { children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Info2, { children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Total, { children: formatCurrency(total) }) }) })
     ] }),
-    buttons && buttons.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ButtonRow, { children: buttons.map((btn, idx) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+    buttons && buttons.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(ButtonRow, { children: buttons.map((btn, idx) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
       Button,
       {
         variant: btn.variant || "primary",
@@ -1530,7 +1687,7 @@ function SummaryCard({
         children: btn.loading ? `${btn.text}...` : btn.text
       },
       idx
-    )) }) : onConfirm ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+    )) }) : onConfirm ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
       Button,
       {
         variant: "primary",
@@ -1545,14 +1702,14 @@ function SummaryCard({
 }
 
 // src/components/Tabs/styles/Tabs.ts
-var import_styled_components23 = __toESM(require("styled-components"));
-var TabBar = import_styled_components23.default.div.attrs({ role: "tablist" })`
+var import_styled_components25 = __toESM(require("styled-components"));
+var TabBar = import_styled_components25.default.div.attrs({ role: "tablist" })`
   display: flex;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Tab = import_styled_components23.default.button.attrs(({ $active }) => ({
+var Tab = import_styled_components25.default.button.attrs(({ $active }) => ({
   type: "button",
   role: "tab",
   "aria-selected": $active
@@ -1575,7 +1732,7 @@ var Tab = import_styled_components23.default.button.attrs(({ $active }) => ({
 
   &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
 `;
-var TabBadge = import_styled_components23.default.span`
+var TabBadge = import_styled_components25.default.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1589,64 +1746,6 @@ var TabBadge = import_styled_components23.default.span`
   font-weight: 600;
   line-height: 1;
 `;
-
-// src/components/Toast/index.tsx
-var import_react_dom2 = require("react-dom");
-
-// src/components/Toast/styles/Toast.ts
-var import_styled_components24 = __toESM(require("styled-components"));
-var fadeOut = import_styled_components24.keyframes`
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(8px); }
-`;
-var ToastEl = import_styled_components24.default.div`
-  position: fixed;
-  bottom: 80px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  width: fit-content;
-  background: ${({ theme: theme2 }) => theme2.colors.ink};
-  color: ${({ theme: theme2 }) => theme2.colors.onDark};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: 14px;
-  font-weight: 600;
-  padding: ${({ theme: theme2 }) => `${theme2.spacing.sm} ${theme2.spacing.lg}`};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
-  pointer-events: none;
-  z-index: 9999;
-  white-space: nowrap;
-  text-align: center;
-  animation: ${({ $leaving }) => $leaving ? fadeOut : fadeUp} 0.25s ease forwards;
-`;
-
-// src/components/Toast/hooks/useToast.tsx
-var import_react8 = require("react");
-var import_jsx_runtime19 = require("react/jsx-runtime");
-function useToast(duration = 2500) {
-  const [state, setState] = (0, import_react8.useState)(null);
-  const timerRef = (0, import_react8.useRef)(null);
-  const show = (0, import_react8.useCallback)(
-    (message) => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-      setState({ message, leaving: false });
-      timerRef.current = setTimeout(() => {
-        setState((s) => s ? { ...s, leaving: true } : null);
-        timerRef.current = setTimeout(() => setState(null), 300);
-      }, duration);
-    },
-    [duration]
-  );
-  const toast = state ? /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Toast, { message: state.message, leaving: state.leaving }) : null;
-  return { show, toast };
-}
-
-// src/components/Toast/index.tsx
-var import_jsx_runtime20 = require("react/jsx-runtime");
-function Toast({ message, leaving }) {
-  return (0, import_react_dom2.createPortal)(/* @__PURE__ */ (0, import_jsx_runtime20.jsx)(ToastEl, { $leaving: leaving, children: message }), document.body);
-}
 
 // src/hooks/useMediaQuery.ts
 var import_react9 = require("react");
@@ -1673,11 +1772,11 @@ function useModal() {
 }
 
 // src/styles/styled.d.ts
-var import_styled_components25 = require("styled-components");
+var import_styled_components26 = require("styled-components");
 
 // src/styles/GlobalStyles.ts
-var import_styled_components26 = require("styled-components");
-var GlobalStyles = import_styled_components26.createGlobalStyle`
+var import_styled_components27 = require("styled-components");
+var GlobalStyles = import_styled_components27.createGlobalStyle`
   *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -1930,6 +2029,7 @@ var theme = {
   ModalTitle,
   PageHeader,
   Pagination,
+  ProfilePage,
   RawSelect,
   SegmentedControl,
   Select,

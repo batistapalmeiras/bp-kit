@@ -87,6 +87,12 @@ interface LoginPageProps {
 }
 declare function LoginPage({ brand, resolveRoute }: LoginPageProps): react.JSX.Element;
 
+interface ProfilePageProps {
+    /** Display label for the user's role (e.g. "Administrador"). Each app defines its own role vocabulary. */
+    roleLabel?: string;
+}
+declare function ProfilePage({ roleLabel }: ProfilePageProps): react.JSX.Element;
+
 interface BaseInputProps {
     label: string;
     wrapperStyle?: React.CSSProperties;
@@ -491,4 +497,4 @@ declare function formatCPF(value: string): string;
 declare function formatCNPJ(value: string): string;
 declare function formatCpfCnpj(value: string): string;
 
-export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, Empty, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, PageHeader, Pagination, RawSelect, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, Empty, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RawSelect, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
