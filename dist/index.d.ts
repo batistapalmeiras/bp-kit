@@ -1,5 +1,5 @@
 import * as react from 'react';
-import react__default, { ButtonHTMLAttributes, ReactNode, SelectHTMLAttributes, InputHTMLAttributes, HTMLAttributes, ElementType } from 'react';
+import react__default, { ButtonHTMLAttributes, ReactNode, InputHTMLAttributes, SelectHTMLAttributes, HTMLAttributes, ElementType } from 'react';
 import * as styled_components_dist_types from 'styled-components/dist/types';
 import * as styled_components from 'styled-components';
 import { FieldValues, FieldPath, Control, ControllerRenderProps } from 'react-hook-form';
@@ -91,6 +91,12 @@ declare const InputField: styled_components_dist_types.IStyledComponentBase<"web
 
 declare function BaseInput({ label, wrapperStyle, error, children }: BaseInputProps): react.JSX.Element;
 declare function ControlledBase<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, children, }: ControlledBaseProps<T, N>): react.JSX.Element;
+
+interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+    label?: ReactNode;
+}
+
+declare const Checkbox: react.ForwardRefExoticComponent<CheckboxProps & react.RefAttributes<HTMLInputElement>>;
 
 interface SelectProps<T extends FieldValues, N extends FieldPath<T>> {
     label: string;
@@ -496,4 +502,4 @@ declare function formatCPF(value: string): string;
 declare function formatCNPJ(value: string): string;
 declare function formatCpfCnpj(value: string): string;
 
-export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, Empty, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RawSelect, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, Empty, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RawSelect, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };

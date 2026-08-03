@@ -11,6 +11,8 @@ export type { IconButtonProps } from './components/IconButton/types';
 export { InfoBox } from './components/InfoBox';
 export { BaseInput, ControlledBase, InputField } from './components/Inputs/BaseInput';
 export type { BaseInputProps } from './components/Inputs/BaseInput/types';
+export { Checkbox } from './components/Inputs/Checkbox';
+export type { CheckboxProps } from './components/Inputs/Checkbox/types';
 export { RawSelect, Select } from './components/Inputs/Select';
 export { TextInput } from './components/Inputs/TextInput';
 export type { CurrencyFieldProps, TextFieldProps } from './components/Inputs/TextInput/types';
