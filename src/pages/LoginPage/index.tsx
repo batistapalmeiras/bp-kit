@@ -2,8 +2,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 // Components
-import { Button } from '../Button';
-import { TextInput } from '../Inputs/TextInput';
+import { Button } from '../../components/Button';
+import { TextInput } from '../../components/Inputs/TextInput';
 // Local
 import { useLogin } from './hooks';
 import {
@@ -34,7 +34,6 @@ export interface LoginPageBrand {
 
 export interface LoginPageProps {
   brand: LoginPageBrand;
-  /** Maps the logged-in user's `role` (raw string from `profiles.role`) to the route they land on. */
   resolveRoute: (role: string) => string;
 }
 

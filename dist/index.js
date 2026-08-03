@@ -471,60 +471,6 @@ function InfoBox({ variant = "info", children, style }) {
   ] });
 }
 
-// src/components/LoginPage/index.tsx
-var import_zod2 = require("@hookform/resolvers/zod");
-var import_react_hook_form2 = require("react-hook-form");
-
-// src/components/Inputs/TextInput/index.tsx
-var import_react3 = require("react");
-var import_lucide_react2 = require("lucide-react");
-
-// src/utils/mask.ts
-function formatCurrency(value) {
-  const num = typeof value === "string" ? parseFloat(value) : value;
-  if (isNaN(num)) return "0,00";
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(num);
-}
-function parseCurrency(value) {
-  const onlyNumbers = value.replace(/\D/g, "");
-  if (!onlyNumbers) return 0;
-  return parseInt(onlyNumbers, 10) / 100;
-}
-function maskCurrencyInput(value) {
-  const onlyNumbers = value.replace(/\D/g, "");
-  if (!onlyNumbers) return "";
-  const num = parseInt(onlyNumbers, 10) / 100;
-  return formatCurrency(num).replace("R$ ", "");
-}
-function maskPhone(value) {
-  const onlyNumbers = value.replace(/\D/g, "");
-  if (onlyNumbers.length === 0) return "";
-  if (onlyNumbers.length <= 2) return `(${onlyNumbers}`;
-  if (onlyNumbers.length <= 7) return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2)}`;
-  if (onlyNumbers.length <= 10) return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2, 7)}-${onlyNumbers.slice(7)}`;
-  return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2, 7)}-${onlyNumbers.slice(7, 11)}`;
-}
-function parsePhone(value) {
-  return value.replace(/\D/g, "");
-}
-function formatCPF(value) {
-  const digits = value.replace(/\D/g, "").slice(0, 11);
-  return digits.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-}
-function formatCNPJ(value) {
-  const digits = value.replace(/\D/g, "").slice(0, 14);
-  return digits.replace(/(\d{2})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1/$2").replace(/(\d{4})(\d{1,2})$/, "$1-$2");
-}
-function formatCpfCnpj(value) {
-  const digits = value.replace(/\D/g, "");
-  return digits.length > 11 ? formatCNPJ(value) : formatCPF(value);
-}
-
 // src/components/Inputs/BaseInput/index.tsx
 var import_react_hook_form = require("react-hook-form");
 
@@ -608,14 +554,110 @@ function ControlledBase({
   );
 }
 
-// src/components/Inputs/TextInput/styles/TextInput.ts
+// src/components/Inputs/Select/index.tsx
+var import_react_hook_form2 = require("react-hook-form");
+
+// src/components/Inputs/Select/styles/Select.ts
 var import_styled_components13 = __toESM(require("styled-components"));
-var InputWrapper = import_styled_components13.default.div`
+var SelectField = import_styled_components13.default.select`
+  height: 56px;
+  padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  outline: none;
+  width: 100%;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23222222' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right ${({ theme: theme2 }) => theme2.spacing.md} center;
+  padding-right: ${({ theme: theme2 }) => theme2.spacing.xl};
+
+  &:focus {
+    border-width: 2px;
+    border-color: ${({ theme: theme2 }) => theme2.colors.ink};
+  }
+`;
+
+// src/components/Inputs/Select/index.tsx
+var import_jsx_runtime9 = require("react/jsx-runtime");
+function RawSelect({ label, wrapperStyle, error, children, ...rest }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(SelectField, { ...rest, children }) });
+}
+function Select({
+  label,
+  control,
+  name,
+  wrapperStyle,
+  children
+}) {
+  var _a, _b;
+  const { field, fieldState } = (0, import_react_hook_form2.useController)({ control, name });
+  return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(SelectField, { value: (_b = field.value) != null ? _b : "", onChange: (e) => field.onChange(e.target.value), onBlur: field.onBlur, ref: field.ref, children }) });
+}
+
+// src/components/Inputs/TextInput/index.tsx
+var import_react3 = require("react");
+var import_lucide_react2 = require("lucide-react");
+
+// src/utils/mask.ts
+function formatCurrency(value) {
+  const num = typeof value === "string" ? parseFloat(value) : value;
+  if (isNaN(num)) return "0,00";
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(num);
+}
+function parseCurrency(value) {
+  const onlyNumbers = value.replace(/\D/g, "");
+  if (!onlyNumbers) return 0;
+  return parseInt(onlyNumbers, 10) / 100;
+}
+function maskCurrencyInput(value) {
+  const onlyNumbers = value.replace(/\D/g, "");
+  if (!onlyNumbers) return "";
+  const num = parseInt(onlyNumbers, 10) / 100;
+  return formatCurrency(num).replace("R$ ", "");
+}
+function maskPhone(value) {
+  const onlyNumbers = value.replace(/\D/g, "");
+  if (onlyNumbers.length === 0) return "";
+  if (onlyNumbers.length <= 2) return `(${onlyNumbers}`;
+  if (onlyNumbers.length <= 7) return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2)}`;
+  if (onlyNumbers.length <= 10) return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2, 7)}-${onlyNumbers.slice(7)}`;
+  return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2, 7)}-${onlyNumbers.slice(7, 11)}`;
+}
+function parsePhone(value) {
+  return value.replace(/\D/g, "");
+}
+function formatCPF(value) {
+  const digits = value.replace(/\D/g, "").slice(0, 11);
+  return digits.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+}
+function formatCNPJ(value) {
+  const digits = value.replace(/\D/g, "").slice(0, 14);
+  return digits.replace(/(\d{2})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1/$2").replace(/(\d{4})(\d{1,2})$/, "$1-$2");
+}
+function formatCpfCnpj(value) {
+  const digits = value.replace(/\D/g, "");
+  return digits.length > 11 ? formatCNPJ(value) : formatCPF(value);
+}
+
+// src/components/Inputs/TextInput/styles/TextInput.ts
+var import_styled_components14 = __toESM(require("styled-components"));
+var InputWrapper = import_styled_components14.default.div`
   position: relative;
   display: flex;
   align-items: center;
 `;
-var EyeButton = import_styled_components13.default.button`
+var EyeButton = import_styled_components14.default.button`
   position: absolute;
   right: 14px;
   background: none;
@@ -632,15 +674,15 @@ var EyeButton = import_styled_components13.default.button`
 `;
 
 // src/components/Inputs/TextInput/index.tsx
-var import_jsx_runtime9 = require("react/jsx-runtime");
+var import_jsx_runtime10 = require("react/jsx-runtime");
 function TextInput(props) {
   const { label, control, name, wrapperStyle, placeholder, currency, mask, ...rest } = props;
   const isPassword = rest.type === "password";
   const [showPassword, setShowPassword] = (0, import_react3.useState)(false);
-  return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(ControlledBase, { label, control, name, wrapperStyle, children: (field) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(ControlledBase, { label, control, name, wrapperStyle, children: (field) => {
     var _a;
-    return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(InputWrapper, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(InputWrapper, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
         InputField,
         {
           ...rest,
@@ -663,25 +705,581 @@ function TextInput(props) {
           ref: field.ref
         }
       ),
-      isPassword && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(EyeButton, { type: "button", tabIndex: -1, onClick: () => setShowPassword((v) => !v), children: showPassword ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_lucide_react2.EyeOff, { size: 20 }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_lucide_react2.Eye, { size: 20 }) })
+      isPassword && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(EyeButton, { type: "button", tabIndex: -1, onClick: () => setShowPassword((v) => !v), children: showPassword ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_lucide_react2.EyeOff, { size: 20 }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_lucide_react2.Eye, { size: 20 }) })
     ] });
   } });
 }
 
-// src/components/LoginPage/hooks/useLogin.ts
-var import_react6 = require("react");
+// src/components/Modal/index.tsx
+var import_react4 = require("react");
+
+// src/components/Modal/styles/Modal.ts
+var import_styled_components15 = __toESM(require("styled-components"));
+var Overlay2 = import_styled_components15.default.div`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: ${fadeIn} 0.2s ease;
+`;
+var Box2 = import_styled_components15.default.div`
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.lg};
+  padding: 28px 32px;
+  width: 100%;
+  max-width: 60%;
+  box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
+  animation: ${fadeUp} 0.25s ease;
+
+  @media (max-width: 480px) {
+    max-width: 100%;
+    margin-top: 35%;
+    width: 100%;
+    height: 100%;
+    padding: 24px 20px;
+    overflow-y: auto;
+  }
+`;
+var ModalTitle = import_styled_components15.default.h3`
+  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
+  font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  margin-bottom: 24px;
+`;
+var ModalActions = import_styled_components15.default.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 28px;
+`;
+
+// src/components/Modal/index.tsx
+var import_jsx_runtime11 = require("react/jsx-runtime");
+function Modal({ children, close }) {
+  const boxRef = (0, import_react4.useRef)(null);
+  (0, import_react4.useEffect)(() => {
+    var _a;
+    (_a = boxRef.current) == null ? void 0 : _a.focus();
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") close();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [close]);
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Overlay2, { onClick: close, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Box2, { ref: boxRef, role: "dialog", "aria-modal": "true", tabIndex: -1, onClick: (e) => e.stopPropagation(), children }) });
+}
+
+// src/components/Pagination/styles/Pagination.ts
+var import_styled_components16 = __toESM(require("styled-components"));
+var Wrapper3 = import_styled_components16.default.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  margin-top: ${({ theme: theme2 }) => theme2.spacing.lg};
+`;
+var PageButton = import_styled_components16.default.button`
+  width: 36px;
+  height: 36px;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  border: 1px solid ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.hairline};
+  background: ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.canvas};
+  color: ${({ theme: theme2, $active }) => $active ? theme2.colors.onDark : theme2.colors.ink};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  font-weight: ${({ $active }) => $active ? 600 : 400};
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+
+  &:hover:not(:disabled) {
+    background: ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.surfaceSoft};
+  }
+
+  &:disabled { opacity: 0.35; cursor: not-allowed; }
+`;
+
+// src/components/Pagination/index.tsx
+var import_jsx_runtime12 = require("react/jsx-runtime");
+function Pagination({ currentPage, totalPages, onPageChange }) {
+  if (totalPages <= 1) return null;
+  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Wrapper3, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(PageButton, { type: "button", "aria-label": "P\xE1gina anterior", onClick: () => onPageChange(currentPage - 1), disabled: currentPage === 1, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { "aria-hidden": "true", children: "\u2039" }) }),
+    Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+      PageButton,
+      {
+        type: "button",
+        $active: page === currentPage,
+        "aria-current": page === currentPage ? "page" : void 0,
+        "aria-label": `P\xE1gina ${page}`,
+        onClick: () => onPageChange(page),
+        children: page
+      },
+      page
+    )),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(PageButton, { type: "button", "aria-label": "Pr\xF3xima p\xE1gina", onClick: () => onPageChange(currentPage + 1), disabled: currentPage === totalPages, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { "aria-hidden": "true", children: "\u203A" }) })
+  ] });
+}
+
+// src/components/PageHeader/index.tsx
 var import_react_router_dom2 = require("react-router-dom");
+var import_lucide_react3 = require("lucide-react");
+
+// src/components/PageHeader/styles/PageHeader.ts
+var import_styled_components17 = __toESM(require("styled-components"));
+var Wrapper4 = import_styled_components17.default.div`
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
+`;
+var Back = import_styled_components17.default.button`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  border: none;
+  background: none;
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.sm};
+
+  &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
+`;
+var Row = import_styled_components17.default.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.base};
+`;
+var Titles = import_styled_components17.default.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+var Title = import_styled_components17.default.h2`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
+  font-weight: 700;
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  line-height: 1.2;
+`;
+var Subtitle = import_styled_components17.default.p`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+`;
+
+// src/components/PageHeader/index.tsx
+var import_jsx_runtime13 = require("react/jsx-runtime");
+function PageHeader({ title, subtitle, back, action }) {
+  const navigate = (0, import_react_router_dom2.useNavigate)();
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Wrapper4, { children: [
+    back && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Back, { onClick: () => navigate(-1), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_lucide_react3.ArrowLeft, { size: 15 }),
+      "Voltar"
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Row, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Titles, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Title, { children: title }),
+        subtitle && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Subtitle, { children: subtitle })
+      ] }),
+      action && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { children: action })
+    ] })
+  ] });
+}
+
+// src/components/Inputs/SegmentedControl/styles/SegmentedControl.ts
+var import_styled_components18 = __toESM(require("styled-components"));
+var Wrap = import_styled_components18.default.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+`;
+var Label2 = import_styled_components18.default.p`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
+  font-weight: 600;
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+var Toggle = import_styled_components18.default.div`
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  overflow: hidden;
+`;
+var Btn = import_styled_components18.default.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.buttonSm.fontSize};
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s, color 0.15s;
+  background: ${({ theme: theme2, $selected, $tone }) => $selected ? theme2.colors[$tone] : theme2.colors.canvas};
+  color: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.onDark : theme2.colors.muted};
+
+  & + & { border-left: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline}; }
+  &:hover {
+    background: ${({ theme: theme2, $selected, $tone }) => $selected ? $tone === "primary" ? theme2.colors.primaryActive : theme2.colors.ink : theme2.colors.surfaceSoft};
+  }
+`;
+
+// src/components/Inputs/SegmentedControl/index.tsx
+var import_jsx_runtime14 = require("react/jsx-runtime");
+function SegmentedControl({
+  value,
+  onChange,
+  options,
+  label,
+  tone = "ink"
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Wrap, { children: [
+    label && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Label2, { children: label }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Toggle, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+      Btn,
+      {
+        type: "button",
+        role: "radio",
+        "aria-checked": option.value === value,
+        $selected: option.value === value,
+        $tone: tone,
+        onClick: () => onChange(option.value),
+        children: option.label
+      },
+      String(option.value)
+    )) })
+  ] });
+}
+
+// src/components/Skeleton/styles/Skeleton.ts
+var import_styled_components19 = __toESM(require("styled-components"));
+var pulse = import_styled_components19.keyframes`
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+`;
+var Skeleton = import_styled_components19.default.div`
+  height: ${({ $h }) => $h != null ? $h : "16px"};
+  width: ${({ $w }) => $w != null ? $w : "100%"};
+  border-radius: 6px;
+  background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong};
+  animation: ${pulse} 1.4s ease-in-out infinite;
+`;
+
+// src/components/StatusBadge/index.tsx
+var import_styled_components20 = __toESM(require("styled-components"));
+var import_jsx_runtime15 = require("react/jsx-runtime");
+var StyledBadge = import_styled_components20.default.span`
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.badge.fontSize};
+  font-weight: 600;
+
+  ${({ $tone, theme: theme2 }) => $tone === "success" ? `background: ${theme2.colors.successSurface}; color: ${theme2.colors.success}; border: 1px solid ${theme2.colors.successBorder};` : `background: ${theme2.colors.warningSurface}; color: ${theme2.colors.warning}; border: 1px solid ${theme2.colors.warningBorder};`}
+`;
+function StatusBadge({ tone, children }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(StyledBadge, { $tone: tone, children });
+}
+
+// src/components/SummaryCard/styles/SummaryCard.ts
+var import_styled_components21 = __toESM(require("styled-components"));
+var Card2 = import_styled_components21.default.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
+  box-shadow: ${({ theme: theme2 }) => theme2.shadows.sm};
+  padding: ${({ theme: theme2 }) => theme2.spacing.md} ${({ theme: theme2 }) => theme2.spacing.base};
+  margin-top: ${({ theme: theme2 }) => theme2.spacing.base};
+
+  @media (max-width: 744px) {
+    position: fixed;
+    bottom: ${({ $bottomOffset }) => $bottomOffset != null ? $bottomOffset : "80px"};
+    left: 0;
+    right: 0;
+    z-index: 90;
+    margin-top: 0;
+    border: none;
+    border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+    border-radius: 0;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    padding-bottom: calc(${({ theme: theme2 }) => theme2.spacing.md} + env(safe-area-inset-bottom));
+    animation: ${fadeUp} 0.2s ease;
+  }
+`;
+var Label3 = import_styled_components21.default.p`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
+  font-weight: 600;
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+`;
+var Row2 = import_styled_components21.default.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  width: 100%;
+`;
+var Info2 = import_styled_components21.default.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  width: 100%;
+`;
+var Items = import_styled_components21.default.span`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  flex: 1;
+`;
+var EmptyMessage = (0, import_styled_components21.default)(Items)`
+  text-align: center;
+`;
+var Total = import_styled_components21.default.span`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
+  font-weight: 700;
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  text-align: right;
+  flex-shrink: 0;
+  min-width: fit-content;
+  margin-left: ${({ theme: theme2 }) => theme2.spacing.sm};
+`;
+var ItemDetail = import_styled_components21.default.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
+  padding: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
+`;
+var ItemDetailName = import_styled_components21.default.span`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  flex: 1;
+`;
+var ItemDetailPrice = import_styled_components21.default.span`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-align: right;
+`;
+var Divider = import_styled_components21.default.hr`
+  border: none;
+  border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
+`;
+var ButtonRow = import_styled_components21.default.div`
+  display: flex;
+  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
+
+  button {
+    flex: 1;
+  }
+`;
+
+// src/components/SummaryCard/index.tsx
+var import_jsx_runtime16 = require("react/jsx-runtime");
+function SummaryCard({
+  label = "Resumo",
+  items,
+  total,
+  onConfirm,
+  confirmText = "Confirmar",
+  loading = false,
+  disabled = false,
+  buttons,
+  emptyMessage = "Nenhum item selecionado",
+  bottomOffset
+}) {
+  const hasSubtotals = items.some((item) => item.subtotal !== void 0);
+  const itemsText = items.map((item) => `${item.qty}\xD7 ${item.name}`).join(", ");
+  const isEmpty = items.length === 0;
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Card2, { $bottomOffset: bottomOffset, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Label3, { style: { marginBottom: 0 }, children: label }),
+    isEmpty ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(ItemDetail, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(ItemDetailName, { children: [
+        item.qty,
+        "\xD7 ",
+        item.name
+      ] }),
+      item.subtotal !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(ItemDetailPrice, { children: formatCurrency(item.subtotal) })
+    ] }, item.name)) }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Row2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Items, { children: itemsText }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Total, { children: formatCurrency(total) })
+    ] }),
+    !isEmpty && hasSubtotals && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_jsx_runtime16.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Divider, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Row2, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Info2, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Total, { children: formatCurrency(total) }) }) })
+    ] }),
+    buttons && buttons.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(ButtonRow, { children: buttons.map((btn, idx) => /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+      Button,
+      {
+        variant: btn.variant || "primary",
+        size: "lg",
+        fullWidth: true,
+        onClick: btn.onClick,
+        disabled: btn.disabled || btn.loading,
+        children: btn.loading ? `${btn.text}...` : btn.text
+      },
+      idx
+    )) }) : onConfirm ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+      Button,
+      {
+        variant: "primary",
+        size: "lg",
+        fullWidth: true,
+        onClick: onConfirm,
+        disabled: disabled || loading || isEmpty,
+        children: loading ? `${confirmText}...` : confirmText
+      }
+    ) : null
+  ] });
+}
+
+// src/components/Tabs/styles/Tabs.ts
+var import_styled_components22 = __toESM(require("styled-components"));
+var TabBar = import_styled_components22.default.div.attrs({ role: "tablist" })`
+  display: flex;
+  border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+`;
+var Tab = import_styled_components22.default.button.attrs(({ $active }) => ({
+  type: "button",
+  role: "tab",
+  "aria-selected": $active
+}))`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  height: 44px;
+  padding: 0 ${({ theme: theme2 }) => theme2.spacing.sm};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.buttonMd.fontSize};
+  font-weight: ${({ $active }) => $active ? 600 : 400};
+  color: ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.muted};
+  background: none;
+  border: none;
+  border-bottom: 2px solid ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : "transparent"};
+  margin-bottom: -1px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
+`;
+var TabBadge = import_styled_components22.default.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  background: ${({ theme: theme2 }) => theme2.colors.primary};
+  color: ${({ theme: theme2 }) => theme2.colors.onPrimary};
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+`;
+
+// src/components/Toast/index.tsx
+var import_react_dom2 = require("react-dom");
+
+// src/components/Toast/styles/Toast.ts
+var import_styled_components23 = __toESM(require("styled-components"));
+var fadeOut = import_styled_components23.keyframes`
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(8px); }
+`;
+var ToastEl = import_styled_components23.default.div`
+  position: fixed;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: fit-content;
+  background: ${({ theme: theme2 }) => theme2.colors.ink};
+  color: ${({ theme: theme2 }) => theme2.colors.onDark};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: 14px;
+  font-weight: 600;
+  padding: ${({ theme: theme2 }) => `${theme2.spacing.sm} ${theme2.spacing.lg}`};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
+  pointer-events: none;
+  z-index: 9999;
+  white-space: nowrap;
+  text-align: center;
+  animation: ${({ $leaving }) => $leaving ? fadeOut : fadeUp} 0.25s ease forwards;
+`;
+
+// src/components/Toast/hooks/useToast.tsx
+var import_react5 = require("react");
+var import_jsx_runtime17 = require("react/jsx-runtime");
+function useToast(duration = 2500) {
+  const [state, setState] = (0, import_react5.useState)(null);
+  const timerRef = (0, import_react5.useRef)(null);
+  const show = (0, import_react5.useCallback)(
+    (message) => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      setState({ message, leaving: false });
+      timerRef.current = setTimeout(() => {
+        setState((s) => s ? { ...s, leaving: true } : null);
+        timerRef.current = setTimeout(() => setState(null), 300);
+      }, duration);
+    },
+    [duration]
+  );
+  const toast = state ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Toast, { message: state.message, leaving: state.leaving }) : null;
+  return { show, toast };
+}
+
+// src/components/Toast/index.tsx
+var import_jsx_runtime18 = require("react/jsx-runtime");
+function Toast({ message, leaving }) {
+  return (0, import_react_dom2.createPortal)(/* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ToastEl, { $leaving: leaving, children: message }), document.body);
+}
+
+// src/pages/LoginPage/index.tsx
+var import_zod2 = require("@hookform/resolvers/zod");
+var import_react_hook_form3 = require("react-hook-form");
+
+// src/pages/LoginPage/hooks/useLogin.ts
+var import_react8 = require("react");
+var import_react_router_dom3 = require("react-router-dom");
 
 // src/hooks/useAuth.ts
-var import_react5 = require("react");
+var import_react7 = require("react");
 
 // src/contexts/AuthContext.tsx
-var import_react4 = require("react");
-var import_jsx_runtime10 = require("react/jsx-runtime");
-var AuthContext = (0, import_react4.createContext)(null);
+var import_react6 = require("react");
+var import_jsx_runtime19 = require("react/jsx-runtime");
+var AuthContext = (0, import_react6.createContext)(null);
 function AuthProvider({ client, children }) {
   const authValue = useAuth(client);
-  return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(AuthContext.Provider, { value: authValue, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(AuthContext.Provider, { value: authValue, children });
 }
 
 // src/hooks/useAuth.ts
@@ -700,12 +1298,12 @@ async function fetchProfile(client, userId) {
   }
 }
 function useAuth(client) {
-  const [user, setUser] = (0, import_react5.useState)(null);
-  const [userEmail, setUserEmail] = (0, import_react5.useState)("");
-  const [loading, setLoading] = (0, import_react5.useState)(true);
-  const [error, setError] = (0, import_react5.useState)(null);
-  const [sessionUser, setSessionUser] = (0, import_react5.useState)(void 0);
-  (0, import_react5.useEffect)(() => {
+  const [user, setUser] = (0, import_react7.useState)(null);
+  const [userEmail, setUserEmail] = (0, import_react7.useState)("");
+  const [loading, setLoading] = (0, import_react7.useState)(true);
+  const [error, setError] = (0, import_react7.useState)(null);
+  const [sessionUser, setSessionUser] = (0, import_react7.useState)(void 0);
+  (0, import_react7.useEffect)(() => {
     const { data: listener } = client.auth.onAuthStateChange((_event, session) => {
       setSessionUser((prev) => {
         var _a;
@@ -739,7 +1337,7 @@ function useAuth(client) {
       listener == null ? void 0 : listener.subscription.unsubscribe();
     };
   }, [client]);
-  (0, import_react5.useEffect)(() => {
+  (0, import_react7.useEffect)(() => {
     if (sessionUser === void 0) return;
     if (!sessionUser) {
       setUser(null);
@@ -765,7 +1363,7 @@ function useAuth(client) {
       cancelled = true;
     };
   }, [client, sessionUser]);
-  const login = (0, import_react5.useCallback)(async (email, password) => {
+  const login = (0, import_react7.useCallback)(async (email, password) => {
     setError(null);
     const { error: signInError } = await client.auth.signInWithPassword({ email, password });
     if (signInError) {
@@ -775,12 +1373,12 @@ function useAuth(client) {
     }
     return null;
   }, [client]);
-  const logout = (0, import_react5.useCallback)(async () => {
+  const logout = (0, import_react7.useCallback)(async () => {
     await client.auth.signOut();
     setUser(null);
     setUserEmail("");
   }, [client]);
-  const updateProfile = (0, import_react5.useCallback)(async (name, email) => {
+  const updateProfile = (0, import_react7.useCallback)(async (name, email) => {
     const { data: { user: authUser } } = await client.auth.getUser();
     if (!authUser) return "Usu\xE1rio n\xE3o autenticado.";
     const { error: profileError } = await client.from("profiles").update({ name: name.trim() }).eq("id", authUser.id);
@@ -792,24 +1390,24 @@ function useAuth(client) {
     setUser((u) => u ? { ...u, name: name.trim() } : u);
     return null;
   }, [client, userEmail]);
-  return (0, import_react5.useMemo)(
+  return (0, import_react7.useMemo)(
     () => ({ user, userEmail, loading, error, login, logout, updateProfile }),
     [user, userEmail, loading, error, login, logout, updateProfile]
   );
 }
 function useAuthCtx() {
-  const ctx = (0, import_react5.useContext)(AuthContext);
+  const ctx = (0, import_react7.useContext)(AuthContext);
   if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
   return ctx;
 }
 
-// src/components/LoginPage/hooks/useLogin.ts
+// src/pages/LoginPage/hooks/useLogin.ts
 function useLogin(resolveRoute) {
-  const [error, setError] = (0, import_react6.useState)("");
-  const [submitting, setSubmitting] = (0, import_react6.useState)(false);
+  const [error, setError] = (0, import_react8.useState)("");
+  const [submitting, setSubmitting] = (0, import_react8.useState)(false);
   const { login, user } = useAuthCtx();
-  const navigate = (0, import_react_router_dom2.useNavigate)();
-  (0, import_react6.useEffect)(() => {
+  const navigate = (0, import_react_router_dom3.useNavigate)();
+  (0, import_react8.useEffect)(() => {
     if (user) {
       navigate(resolveRoute(user.role), { replace: true });
     }
@@ -826,9 +1424,9 @@ function useLogin(resolveRoute) {
   return { error, submitting, handleLogin };
 }
 
-// src/components/LoginPage/styles/Login.ts
-var import_styled_components14 = __toESM(require("styled-components"));
-var Page = import_styled_components14.default.div`
+// src/pages/LoginPage/styles/Login.ts
+var import_styled_components24 = __toESM(require("styled-components"));
+var Page = import_styled_components24.default.div`
   min-height: 100vh;
   display: flex;
 
@@ -836,7 +1434,7 @@ var Page = import_styled_components14.default.div`
     flex-direction: column;
   }
 `;
-var Brand2 = import_styled_components14.default.div`
+var Brand2 = import_styled_components24.default.div`
   flex: 0 0 420px;
   background: ${({ theme: theme2 }) => theme2.colors.primary};
   display: flex;
@@ -867,7 +1465,7 @@ var Brand2 = import_styled_components14.default.div`
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
   }
 `;
-var BrandMark = import_styled_components14.default.div`
+var BrandMark = import_styled_components24.default.div`
   width: 80px;
   height: 80px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
@@ -893,13 +1491,13 @@ var BrandMark = import_styled_components14.default.div`
     img { width: 38px; height: 38px; }
   }
 `;
-var BrandText = import_styled_components14.default.div`
+var BrandText = import_styled_components24.default.div`
   text-align: center;
   color: #fff;
   position: relative;
   z-index: 1;
 `;
-var BrandName2 = import_styled_components14.default.h1`
+var BrandName2 = import_styled_components24.default.h1`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.625rem;
   font-weight: 700;
@@ -911,13 +1509,13 @@ var BrandName2 = import_styled_components14.default.h1`
     font-size: 1.25rem;
   }
 `;
-var BrandSub = import_styled_components14.default.p`
+var BrandSub = import_styled_components24.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   opacity: 0.75;
   line-height: 1.4;
 `;
-var BrandQuote = import_styled_components14.default.blockquote`
+var BrandQuote = import_styled_components24.default.blockquote`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: rgba(255, 255, 255, 0.6);
@@ -932,7 +1530,7 @@ var BrandQuote = import_styled_components14.default.blockquote`
     display: none;
   }
 `;
-var FormPanel = import_styled_components14.default.div`
+var FormPanel = import_styled_components24.default.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -946,15 +1544,15 @@ var FormPanel = import_styled_components14.default.div`
     padding: ${({ theme: theme2 }) => theme2.spacing.xl} ${({ theme: theme2 }) => theme2.spacing.base};
   }
 `;
-var FormBox = import_styled_components14.default.div`
+var FormBox = import_styled_components24.default.div`
   width: 100%;
   max-width: 400px;
   animation: ${fadeUp} 0.35s ease;
 `;
-var FormHeader = import_styled_components14.default.div`
+var FormHeader = import_styled_components24.default.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var FormTitle = import_styled_components14.default.h2`
+var FormTitle = import_styled_components24.default.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.375rem;
   font-weight: 700;
@@ -962,17 +1560,17 @@ var FormTitle = import_styled_components14.default.h2`
   letter-spacing: -0.3px;
   margin-bottom: 6px;
 `;
-var FormSubtitle = import_styled_components14.default.p`
+var FormSubtitle = import_styled_components24.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Form = import_styled_components14.default.form`
+var Form = import_styled_components24.default.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var ErrorMsg = import_styled_components14.default.p`
+var ErrorMsg = import_styled_components24.default.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
   background: #fef2f2;
@@ -982,37 +1580,37 @@ var ErrorMsg = import_styled_components14.default.p`
   text-align: center;
 `;
 
-// src/components/LoginPage/validators/schema.ts
+// src/pages/LoginPage/validators/schema.ts
 var import_zod = require("zod");
 var loginSchema = import_zod.z.object({
   email: import_zod.z.string().email("E-mail inv\xE1lido"),
   password: import_zod.z.string().min(1, "Senha obrigat\xF3ria")
 });
 
-// src/components/LoginPage/index.tsx
-var import_jsx_runtime11 = require("react/jsx-runtime");
+// src/pages/LoginPage/index.tsx
+var import_jsx_runtime20 = require("react/jsx-runtime");
 function LoginPage({ brand, resolveRoute }) {
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
-  const { control, handleSubmit } = (0, import_react_hook_form2.useForm)({
+  const { control, handleSubmit } = (0, import_react_hook_form3.useForm)({
     resolver: (0, import_zod2.zodResolver)(loginSchema),
     defaultValues: { email: "", password: "" }
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Page, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Brand2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(BrandText, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(BrandSub, { children: brand.sub })
+  return /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Page, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Brand2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(BrandText, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(BrandSub, { children: brand.sub })
       ] }),
-      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(BrandQuote, { children: brand.quote })
+      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(FormBox, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(FormHeader, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(FormTitle, { children: "Bem-vindo" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(FormBox, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(FormHeader, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(FormTitle, { children: "Bem-vindo" }),
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Form, { onSubmit: handleSubmit(handleLogin), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Form, { onSubmit: handleSubmit(handleLogin), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
           TextInput,
           {
             label: "E-mail",
@@ -1023,7 +1621,7 @@ function LoginPage({ brand, resolveRoute }) {
             placeholder: "seu@email.com"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
           TextInput,
           {
             label: "Senha",
@@ -1033,7 +1631,7 @@ function LoginPage({ brand, resolveRoute }) {
             placeholder: "M\xEDnimo 6 caracteres"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
           Button,
           {
             variant: "primary",
@@ -1045,152 +1643,27 @@ function LoginPage({ brand, resolveRoute }) {
             children: submitting ? "Entrando..." : "Entrar"
           }
         ),
-        error && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ErrorMsg, { children: error })
+        error && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(ErrorMsg, { children: error })
       ] })
     ] }) })
   ] });
 }
 
-// src/components/ProfilePage/index.tsx
+// src/pages/ProfilePage/index.tsx
 var import_zod4 = require("@hookform/resolvers/zod");
-var import_react_hook_form3 = require("react-hook-form");
+var import_react_hook_form4 = require("react-hook-form");
 var import_react_router_dom4 = require("react-router-dom");
 
-// src/components/PageHeader/index.tsx
-var import_react_router_dom3 = require("react-router-dom");
-var import_lucide_react3 = require("lucide-react");
-
-// src/components/PageHeader/styles/PageHeader.ts
-var import_styled_components15 = __toESM(require("styled-components"));
-var Wrapper3 = import_styled_components15.default.div`
-  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
-`;
-var Back = import_styled_components15.default.button`
-  display: inline-flex;
-  align-items: center;
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-  border: none;
-  background: none;
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  cursor: pointer;
-  padding: 0;
-  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.sm};
-
-  &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
-`;
-var Row = import_styled_components15.default.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme: theme2 }) => theme2.spacing.base};
-`;
-var Titles = import_styled_components15.default.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-var Title = import_styled_components15.default.h2`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
-  font-weight: 700;
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  line-height: 1.2;
-`;
-var Subtitle = import_styled_components15.default.p`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-`;
-
-// src/components/PageHeader/index.tsx
-var import_jsx_runtime12 = require("react/jsx-runtime");
-function PageHeader({ title, subtitle, back, action }) {
-  const navigate = (0, import_react_router_dom3.useNavigate)();
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Wrapper3, { children: [
-    back && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Back, { onClick: () => navigate(-1), children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_lucide_react3.ArrowLeft, { size: 15 }),
-      "Voltar"
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Row, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Titles, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Title, { children: title }),
-        subtitle && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Subtitle, { children: subtitle })
-      ] }),
-      action && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { children: action })
-    ] })
-  ] });
-}
-
-// src/components/Toast/index.tsx
-var import_react_dom2 = require("react-dom");
-
-// src/components/Toast/styles/Toast.ts
-var import_styled_components16 = __toESM(require("styled-components"));
-var fadeOut = import_styled_components16.keyframes`
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(8px); }
-`;
-var ToastEl = import_styled_components16.default.div`
-  position: fixed;
-  bottom: 80px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  width: fit-content;
-  background: ${({ theme: theme2 }) => theme2.colors.ink};
-  color: ${({ theme: theme2 }) => theme2.colors.onDark};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: 14px;
-  font-weight: 600;
-  padding: ${({ theme: theme2 }) => `${theme2.spacing.sm} ${theme2.spacing.lg}`};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
-  pointer-events: none;
-  z-index: 9999;
-  white-space: nowrap;
-  text-align: center;
-  animation: ${({ $leaving }) => $leaving ? fadeOut : fadeUp} 0.25s ease forwards;
-`;
-
-// src/components/Toast/hooks/useToast.tsx
-var import_react7 = require("react");
-var import_jsx_runtime13 = require("react/jsx-runtime");
-function useToast(duration = 2500) {
-  const [state, setState] = (0, import_react7.useState)(null);
-  const timerRef = (0, import_react7.useRef)(null);
-  const show = (0, import_react7.useCallback)(
-    (message) => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-      setState({ message, leaving: false });
-      timerRef.current = setTimeout(() => {
-        setState((s) => s ? { ...s, leaving: true } : null);
-        timerRef.current = setTimeout(() => setState(null), 300);
-      }, duration);
-    },
-    [duration]
-  );
-  const toast = state ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Toast, { message: state.message, leaving: state.leaving }) : null;
-  return { show, toast };
-}
-
-// src/components/Toast/index.tsx
-var import_jsx_runtime14 = require("react/jsx-runtime");
-function Toast({ message, leaving }) {
-  return (0, import_react_dom2.createPortal)(/* @__PURE__ */ (0, import_jsx_runtime14.jsx)(ToastEl, { $leaving: leaving, children: message }), document.body);
-}
-
-// src/components/ProfilePage/styles/ProfilePage.ts
-var import_styled_components17 = __toESM(require("styled-components"));
-var Wrap = import_styled_components17.default.div`
+// src/pages/ProfilePage/styles/ProfilePage.ts
+var import_styled_components25 = __toESM(require("styled-components"));
+var Wrap2 = import_styled_components25.default.div`
   max-width: 560px;
 `;
-var Identity = import_styled_components17.default.div`
+var Identity = import_styled_components25.default.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Name = import_styled_components17.default.h2`
+var Name = import_styled_components25.default.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -1198,18 +1671,18 @@ var Name = import_styled_components17.default.h2`
   line-height: 1.1;
   margin-bottom: 4px;
 `;
-var RoleLabel = import_styled_components17.default.p`
+var RoleLabel = import_styled_components25.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Section = import_styled_components17.default.div`
+var Section = import_styled_components25.default.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SectionTitle = import_styled_components17.default.p`
+var SectionTitle = import_styled_components25.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -1217,7 +1690,7 @@ var SectionTitle = import_styled_components17.default.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var Actions = import_styled_components17.default.div`
+var Actions = import_styled_components25.default.div`
   display: flex;
   justify-content: flex-end;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -1229,15 +1702,15 @@ var Actions = import_styled_components17.default.div`
   }
 `;
 
-// src/components/ProfilePage/validators/schema.ts
+// src/pages/ProfilePage/validators/schema.ts
 var import_zod3 = require("zod");
 var profileSchema = import_zod3.z.object({
   name: import_zod3.z.string().min(3, "Informe pelo menos nome e sobrenome"),
   email: import_zod3.z.string().email("E-mail inv\xE1lido")
 });
 
-// src/components/ProfilePage/index.tsx
-var import_jsx_runtime15 = require("react/jsx-runtime");
+// src/pages/ProfilePage/index.tsx
+var import_jsx_runtime21 = require("react/jsx-runtime");
 function ProfilePage({ roleLabel }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
@@ -1247,7 +1720,7 @@ function ProfilePage({ roleLabel }) {
     control,
     handleSubmit,
     formState: { isSubmitting }
-  } = (0, import_react_hook_form3.useForm)({
+  } = (0, import_react_hook_form4.useForm)({
     resolver: (0, import_zod4.zodResolver)(profileSchema),
     defaultValues: { name: (_a = user == null ? void 0 : user.name) != null ? _a : "", email: userEmail }
   });
@@ -1255,497 +1728,24 @@ function ProfilePage({ roleLabel }) {
     const err = await updateProfile(data.name, data.email);
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Wrap, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(PageHeader, { title: "Meu perfil", back: true }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Identity, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
-      roleLabel && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(RoleLabel, { children: roleLabel })
+  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(Wrap2, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(PageHeader, { title: "Meu perfil", back: true }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(Identity, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
+      roleLabel && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(RoleLabel, { children: roleLabel })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Section, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(TextInput, { label: "Nome completo", control, name: "name", placeholder: "Nome e sobrenome" }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(TextInput, { label: "E-mail de acesso", control, name: "email", type: "email", placeholder: "seu@email.com" })
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(Section, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TextInput, { label: "Nome completo", control, name: "name", placeholder: "Nome e sobrenome" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(TextInput, { label: "E-mail de acesso", control, name: "email", type: "email", placeholder: "seu@email.com" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Actions, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: "Cancelar" }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es" })
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(Actions, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: "Cancelar" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es" })
     ] }),
     toast
   ] });
 }
-
-// src/components/Inputs/Select/index.tsx
-var import_react_hook_form4 = require("react-hook-form");
-
-// src/components/Inputs/Select/styles/Select.ts
-var import_styled_components18 = __toESM(require("styled-components"));
-var SelectField = import_styled_components18.default.select`
-  height: 56px;
-  padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
-  background: ${({ theme: theme2 }) => theme2.colors.canvas};
-  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  outline: none;
-  width: 100%;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23222222' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right ${({ theme: theme2 }) => theme2.spacing.md} center;
-  padding-right: ${({ theme: theme2 }) => theme2.spacing.xl};
-
-  &:focus {
-    border-width: 2px;
-    border-color: ${({ theme: theme2 }) => theme2.colors.ink};
-  }
-`;
-
-// src/components/Inputs/Select/index.tsx
-var import_jsx_runtime16 = require("react/jsx-runtime");
-function RawSelect({ label, wrapperStyle, error, children, ...rest }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SelectField, { ...rest, children }) });
-}
-function Select({
-  label,
-  control,
-  name,
-  wrapperStyle,
-  children
-}) {
-  var _a, _b;
-  const { field, fieldState } = (0, import_react_hook_form4.useController)({ control, name });
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SelectField, { value: (_b = field.value) != null ? _b : "", onChange: (e) => field.onChange(e.target.value), onBlur: field.onBlur, ref: field.ref, children }) });
-}
-
-// src/components/Modal/index.tsx
-var import_react8 = require("react");
-
-// src/components/Modal/styles/Modal.ts
-var import_styled_components19 = __toESM(require("styled-components"));
-var Overlay2 = import_styled_components19.default.div`
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: ${fadeIn} 0.2s ease;
-`;
-var Box2 = import_styled_components19.default.div`
-  background: ${({ theme: theme2 }) => theme2.colors.canvas};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.lg};
-  padding: 28px 32px;
-  width: 100%;
-  max-width: 60%;
-  box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
-  animation: ${fadeUp} 0.25s ease;
-
-  @media (max-width: 480px) {
-    max-width: 100%;
-    margin-top: 35%;
-    width: 100%;
-    height: 100%;
-    padding: 24px 20px;
-    overflow-y: auto;
-  }
-`;
-var ModalTitle = import_styled_components19.default.h3`
-  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
-  font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  margin-bottom: 24px;
-`;
-var ModalActions = import_styled_components19.default.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 28px;
-`;
-
-// src/components/Modal/index.tsx
-var import_jsx_runtime17 = require("react/jsx-runtime");
-function Modal({ children, close }) {
-  const boxRef = (0, import_react8.useRef)(null);
-  (0, import_react8.useEffect)(() => {
-    var _a;
-    (_a = boxRef.current) == null ? void 0 : _a.focus();
-    const onKeyDown = (e) => {
-      if (e.key === "Escape") close();
-    };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [close]);
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Overlay2, { onClick: close, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Box2, { ref: boxRef, role: "dialog", "aria-modal": "true", tabIndex: -1, onClick: (e) => e.stopPropagation(), children }) });
-}
-
-// src/components/Pagination/styles/Pagination.ts
-var import_styled_components20 = __toESM(require("styled-components"));
-var Wrapper4 = import_styled_components20.default.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-  margin-top: ${({ theme: theme2 }) => theme2.spacing.lg};
-`;
-var PageButton = import_styled_components20.default.button`
-  width: 36px;
-  height: 36px;
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  border: 1px solid ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.hairline};
-  background: ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.canvas};
-  color: ${({ theme: theme2, $active }) => $active ? theme2.colors.onDark : theme2.colors.ink};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  font-weight: ${({ $active }) => $active ? 600 : 400};
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
-
-  &:hover:not(:disabled) {
-    background: ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.surfaceSoft};
-  }
-
-  &:disabled { opacity: 0.35; cursor: not-allowed; }
-`;
-
-// src/components/Pagination/index.tsx
-var import_jsx_runtime18 = require("react/jsx-runtime");
-function Pagination({ currentPage, totalPages, onPageChange }) {
-  if (totalPages <= 1) return null;
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Wrapper4, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PageButton, { type: "button", "aria-label": "P\xE1gina anterior", onClick: () => onPageChange(currentPage - 1), disabled: currentPage === 1, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { "aria-hidden": "true", children: "\u2039" }) }),
-    Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-      PageButton,
-      {
-        type: "button",
-        $active: page === currentPage,
-        "aria-current": page === currentPage ? "page" : void 0,
-        "aria-label": `P\xE1gina ${page}`,
-        onClick: () => onPageChange(page),
-        children: page
-      },
-      page
-    )),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PageButton, { type: "button", "aria-label": "Pr\xF3xima p\xE1gina", onClick: () => onPageChange(currentPage + 1), disabled: currentPage === totalPages, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { "aria-hidden": "true", children: "\u203A" }) })
-  ] });
-}
-
-// src/components/Inputs/SegmentedControl/styles/SegmentedControl.ts
-var import_styled_components21 = __toESM(require("styled-components"));
-var Wrap2 = import_styled_components21.default.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-`;
-var Label2 = import_styled_components21.default.p`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
-  font-weight: 600;
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-`;
-var Toggle = import_styled_components21.default.div`
-  display: grid;
-  grid-auto-columns: 1fr;
-  grid-auto-flow: column;
-  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
-  overflow: hidden;
-`;
-var Btn = import_styled_components21.default.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 44px;
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.buttonSm.fontSize};
-  font-weight: 500;
-  cursor: pointer;
-  border: none;
-  transition: background 0.15s, color 0.15s;
-  background: ${({ theme: theme2, $selected, $tone }) => $selected ? theme2.colors[$tone] : theme2.colors.canvas};
-  color: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.onDark : theme2.colors.muted};
-
-  & + & { border-left: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline}; }
-  &:hover {
-    background: ${({ theme: theme2, $selected, $tone }) => $selected ? $tone === "primary" ? theme2.colors.primaryActive : theme2.colors.ink : theme2.colors.surfaceSoft};
-  }
-`;
-
-// src/components/Inputs/SegmentedControl/index.tsx
-var import_jsx_runtime19 = require("react/jsx-runtime");
-function SegmentedControl({
-  value,
-  onChange,
-  options,
-  label,
-  tone = "ink"
-}) {
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Wrap2, { children: [
-    label && /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Label2, { children: label }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Toggle, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
-      Btn,
-      {
-        type: "button",
-        role: "radio",
-        "aria-checked": option.value === value,
-        $selected: option.value === value,
-        $tone: tone,
-        onClick: () => onChange(option.value),
-        children: option.label
-      },
-      String(option.value)
-    )) })
-  ] });
-}
-
-// src/components/Skeleton/styles/Skeleton.ts
-var import_styled_components22 = __toESM(require("styled-components"));
-var pulse = import_styled_components22.keyframes`
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
-`;
-var Skeleton = import_styled_components22.default.div`
-  height: ${({ $h }) => $h != null ? $h : "16px"};
-  width: ${({ $w }) => $w != null ? $w : "100%"};
-  border-radius: 6px;
-  background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong};
-  animation: ${pulse} 1.4s ease-in-out infinite;
-`;
-
-// src/components/StatusBadge/index.tsx
-var import_styled_components23 = __toESM(require("styled-components"));
-var import_jsx_runtime20 = require("react/jsx-runtime");
-var StyledBadge = import_styled_components23.default.span`
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.badge.fontSize};
-  font-weight: 600;
-
-  ${({ $tone, theme: theme2 }) => $tone === "success" ? `background: ${theme2.colors.successSurface}; color: ${theme2.colors.success}; border: 1px solid ${theme2.colors.successBorder};` : `background: ${theme2.colors.warningSurface}; color: ${theme2.colors.warning}; border: 1px solid ${theme2.colors.warningBorder};`}
-`;
-function StatusBadge({ tone, children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(StyledBadge, { $tone: tone, children });
-}
-
-// src/components/SummaryCard/styles/SummaryCard.ts
-var import_styled_components24 = __toESM(require("styled-components"));
-var Card2 = import_styled_components24.default.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
-  background: ${({ theme: theme2 }) => theme2.colors.canvas};
-  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
-  box-shadow: ${({ theme: theme2 }) => theme2.shadows.sm};
-  padding: ${({ theme: theme2 }) => theme2.spacing.md} ${({ theme: theme2 }) => theme2.spacing.base};
-  margin-top: ${({ theme: theme2 }) => theme2.spacing.base};
-
-  @media (max-width: 744px) {
-    position: fixed;
-    bottom: ${({ $bottomOffset }) => $bottomOffset != null ? $bottomOffset : "80px"};
-    left: 0;
-    right: 0;
-    z-index: 90;
-    margin-top: 0;
-    border: none;
-    border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-    border-radius: 0;
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
-    padding-bottom: calc(${({ theme: theme2 }) => theme2.spacing.md} + env(safe-area-inset-bottom));
-    animation: ${fadeUp} 0.2s ease;
-  }
-`;
-var Label3 = import_styled_components24.default.p`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
-  font-weight: 600;
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 0;
-`;
-var Row2 = import_styled_components24.default.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme: theme2 }) => theme2.spacing.md};
-  width: 100%;
-`;
-var Info2 = import_styled_components24.default.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme: theme2 }) => theme2.spacing.md};
-  width: 100%;
-`;
-var Items = import_styled_components24.default.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  flex: 1;
-`;
-var EmptyMessage = (0, import_styled_components24.default)(Items)`
-  text-align: center;
-`;
-var Total = import_styled_components24.default.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
-  font-weight: 700;
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  text-align: right;
-  flex-shrink: 0;
-  min-width: fit-content;
-  margin-left: ${({ theme: theme2 }) => theme2.spacing.sm};
-`;
-var ItemDetail = import_styled_components24.default.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
-  padding: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
-`;
-var ItemDetailName = import_styled_components24.default.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  flex: 1;
-`;
-var ItemDetailPrice = import_styled_components24.default.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  white-space: nowrap;
-  flex-shrink: 0;
-  text-align: right;
-`;
-var Divider = import_styled_components24.default.hr`
-  border: none;
-  border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
-`;
-var ButtonRow = import_styled_components24.default.div`
-  display: flex;
-  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
-
-  button {
-    flex: 1;
-  }
-`;
-
-// src/components/SummaryCard/index.tsx
-var import_jsx_runtime21 = require("react/jsx-runtime");
-function SummaryCard({
-  label = "Resumo",
-  items,
-  total,
-  onConfirm,
-  confirmText = "Confirmar",
-  loading = false,
-  disabled = false,
-  buttons,
-  emptyMessage = "Nenhum item selecionado",
-  bottomOffset
-}) {
-  const hasSubtotals = items.some((item) => item.subtotal !== void 0);
-  const itemsText = items.map((item) => `${item.qty}\xD7 ${item.name}`).join(", ");
-  const isEmpty = items.length === 0;
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(Card2, { $bottomOffset: bottomOffset, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Label3, { style: { marginBottom: 0 }, children: label }),
-    isEmpty ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(ItemDetail, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(ItemDetailName, { children: [
-        item.qty,
-        "\xD7 ",
-        item.name
-      ] }),
-      item.subtotal !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(ItemDetailPrice, { children: formatCurrency(item.subtotal) })
-    ] }, item.name)) }) : /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(Row2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Items, { children: itemsText }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Total, { children: formatCurrency(total) })
-    ] }),
-    !isEmpty && hasSubtotals && /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(import_jsx_runtime21.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Divider, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Row2, { children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Info2, { children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Total, { children: formatCurrency(total) }) }) })
-    ] }),
-    buttons && buttons.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(ButtonRow, { children: buttons.map((btn, idx) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-      Button,
-      {
-        variant: btn.variant || "primary",
-        size: "lg",
-        fullWidth: true,
-        onClick: btn.onClick,
-        disabled: btn.disabled || btn.loading,
-        children: btn.loading ? `${btn.text}...` : btn.text
-      },
-      idx
-    )) }) : onConfirm ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-      Button,
-      {
-        variant: "primary",
-        size: "lg",
-        fullWidth: true,
-        onClick: onConfirm,
-        disabled: disabled || loading || isEmpty,
-        children: loading ? `${confirmText}...` : confirmText
-      }
-    ) : null
-  ] });
-}
-
-// src/components/Tabs/styles/Tabs.ts
-var import_styled_components25 = __toESM(require("styled-components"));
-var TabBar = import_styled_components25.default.div.attrs({ role: "tablist" })`
-  display: flex;
-  border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-`;
-var Tab = import_styled_components25.default.button.attrs(({ $active }) => ({
-  type: "button",
-  role: "tab",
-  "aria-selected": $active
-}))`
-  display: inline-flex;
-  align-items: center;
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-  height: 44px;
-  padding: 0 ${({ theme: theme2 }) => theme2.spacing.sm};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.buttonMd.fontSize};
-  font-weight: ${({ $active }) => $active ? 600 : 400};
-  color: ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.muted};
-  background: none;
-  border: none;
-  border-bottom: 2px solid ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : "transparent"};
-  margin-bottom: -1px;
-  cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
-
-  &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
-`;
-var TabBadge = import_styled_components25.default.span`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  background: ${({ theme: theme2 }) => theme2.colors.primary};
-  color: ${({ theme: theme2 }) => theme2.colors.onPrimary};
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1;
-`;
 
 // src/hooks/useMediaQuery.ts
 var import_react9 = require("react");

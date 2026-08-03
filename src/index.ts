@@ -9,10 +9,6 @@ export type { IEmptyProps } from './components/Empty';
 export { IconButton } from './components/IconButton';
 export type { IconButtonProps } from './components/IconButton/types';
 export { InfoBox } from './components/InfoBox';
-export { LoginPage } from './components/LoginPage';
-export type { LoginPageBrand, LoginPageProps } from './components/LoginPage';
-export { ProfilePage } from './components/ProfilePage';
-export type { ProfilePageProps } from './components/ProfilePage';
 export { BaseInput, ControlledBase, InputField } from './components/Inputs/BaseInput';
 export type { BaseInputProps } from './components/Inputs/BaseInput/types';
 export { RawSelect, Select } from './components/Inputs/Select';
@@ -32,6 +28,12 @@ export { Tab, TabBadge, TabBar } from './components/Tabs';
 export { Toast, useToast } from './components/Toast';
 export { Typography } from './components/Typography';
 export type { TypographyProps, TypographyType } from './components/Typography/types';
+
+// Pages
+export { LoginPage } from './pages/LoginPage';
+export type { LoginPageBrand, LoginPageProps } from './pages/LoginPage';
+export { ProfilePage } from './pages/ProfilePage';
+export type { ProfilePageProps } from './pages/ProfilePage';
 
 // Hooks
 export { useMediaQuery } from './hooks/useMediaQuery';

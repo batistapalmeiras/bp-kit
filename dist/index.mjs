@@ -383,60 +383,6 @@ function InfoBox({ variant = "info", children, style }) {
   ] });
 }
 
-// src/components/LoginPage/index.tsx
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-
-// src/components/Inputs/TextInput/index.tsx
-import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
-
-// src/utils/mask.ts
-function formatCurrency(value) {
-  const num = typeof value === "string" ? parseFloat(value) : value;
-  if (isNaN(num)) return "0,00";
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(num);
-}
-function parseCurrency(value) {
-  const onlyNumbers = value.replace(/\D/g, "");
-  if (!onlyNumbers) return 0;
-  return parseInt(onlyNumbers, 10) / 100;
-}
-function maskCurrencyInput(value) {
-  const onlyNumbers = value.replace(/\D/g, "");
-  if (!onlyNumbers) return "";
-  const num = parseInt(onlyNumbers, 10) / 100;
-  return formatCurrency(num).replace("R$ ", "");
-}
-function maskPhone(value) {
-  const onlyNumbers = value.replace(/\D/g, "");
-  if (onlyNumbers.length === 0) return "";
-  if (onlyNumbers.length <= 2) return `(${onlyNumbers}`;
-  if (onlyNumbers.length <= 7) return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2)}`;
-  if (onlyNumbers.length <= 10) return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2, 7)}-${onlyNumbers.slice(7)}`;
-  return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2, 7)}-${onlyNumbers.slice(7, 11)}`;
-}
-function parsePhone(value) {
-  return value.replace(/\D/g, "");
-}
-function formatCPF(value) {
-  const digits = value.replace(/\D/g, "").slice(0, 11);
-  return digits.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-}
-function formatCNPJ(value) {
-  const digits = value.replace(/\D/g, "").slice(0, 14);
-  return digits.replace(/(\d{2})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1/$2").replace(/(\d{4})(\d{1,2})$/, "$1-$2");
-}
-function formatCpfCnpj(value) {
-  const digits = value.replace(/\D/g, "");
-  return digits.length > 11 ? formatCNPJ(value) : formatCPF(value);
-}
-
 // src/components/Inputs/BaseInput/index.tsx
 import { Controller } from "react-hook-form";
 
@@ -520,14 +466,110 @@ function ControlledBase({
   );
 }
 
-// src/components/Inputs/TextInput/styles/TextInput.ts
+// src/components/Inputs/Select/index.tsx
+import { useController } from "react-hook-form";
+
+// src/components/Inputs/Select/styles/Select.ts
 import styled11 from "styled-components";
-var InputWrapper = styled11.div`
+var SelectField = styled11.select`
+  height: 56px;
+  padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  outline: none;
+  width: 100%;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23222222' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right ${({ theme: theme2 }) => theme2.spacing.md} center;
+  padding-right: ${({ theme: theme2 }) => theme2.spacing.xl};
+
+  &:focus {
+    border-width: 2px;
+    border-color: ${({ theme: theme2 }) => theme2.colors.ink};
+  }
+`;
+
+// src/components/Inputs/Select/index.tsx
+import { jsx as jsx9 } from "react/jsx-runtime";
+function RawSelect({ label, wrapperStyle, error, children, ...rest }) {
+  return /* @__PURE__ */ jsx9(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ jsx9(SelectField, { ...rest, children }) });
+}
+function Select({
+  label,
+  control,
+  name,
+  wrapperStyle,
+  children
+}) {
+  var _a, _b;
+  const { field, fieldState } = useController({ control, name });
+  return /* @__PURE__ */ jsx9(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ jsx9(SelectField, { value: (_b = field.value) != null ? _b : "", onChange: (e) => field.onChange(e.target.value), onBlur: field.onBlur, ref: field.ref, children }) });
+}
+
+// src/components/Inputs/TextInput/index.tsx
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+
+// src/utils/mask.ts
+function formatCurrency(value) {
+  const num = typeof value === "string" ? parseFloat(value) : value;
+  if (isNaN(num)) return "0,00";
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(num);
+}
+function parseCurrency(value) {
+  const onlyNumbers = value.replace(/\D/g, "");
+  if (!onlyNumbers) return 0;
+  return parseInt(onlyNumbers, 10) / 100;
+}
+function maskCurrencyInput(value) {
+  const onlyNumbers = value.replace(/\D/g, "");
+  if (!onlyNumbers) return "";
+  const num = parseInt(onlyNumbers, 10) / 100;
+  return formatCurrency(num).replace("R$ ", "");
+}
+function maskPhone(value) {
+  const onlyNumbers = value.replace(/\D/g, "");
+  if (onlyNumbers.length === 0) return "";
+  if (onlyNumbers.length <= 2) return `(${onlyNumbers}`;
+  if (onlyNumbers.length <= 7) return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2)}`;
+  if (onlyNumbers.length <= 10) return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2, 7)}-${onlyNumbers.slice(7)}`;
+  return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2, 7)}-${onlyNumbers.slice(7, 11)}`;
+}
+function parsePhone(value) {
+  return value.replace(/\D/g, "");
+}
+function formatCPF(value) {
+  const digits = value.replace(/\D/g, "").slice(0, 11);
+  return digits.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+}
+function formatCNPJ(value) {
+  const digits = value.replace(/\D/g, "").slice(0, 14);
+  return digits.replace(/(\d{2})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1/$2").replace(/(\d{4})(\d{1,2})$/, "$1-$2");
+}
+function formatCpfCnpj(value) {
+  const digits = value.replace(/\D/g, "");
+  return digits.length > 11 ? formatCNPJ(value) : formatCPF(value);
+}
+
+// src/components/Inputs/TextInput/styles/TextInput.ts
+import styled12 from "styled-components";
+var InputWrapper = styled12.div`
   position: relative;
   display: flex;
   align-items: center;
 `;
-var EyeButton = styled11.button`
+var EyeButton = styled12.button`
   position: absolute;
   right: 14px;
   background: none;
@@ -544,15 +586,15 @@ var EyeButton = styled11.button`
 `;
 
 // src/components/Inputs/TextInput/index.tsx
-import { jsx as jsx9, jsxs as jsxs7 } from "react/jsx-runtime";
+import { jsx as jsx10, jsxs as jsxs7 } from "react/jsx-runtime";
 function TextInput(props) {
   const { label, control, name, wrapperStyle, placeholder, currency, mask, ...rest } = props;
   const isPassword = rest.type === "password";
   const [showPassword, setShowPassword] = useState(false);
-  return /* @__PURE__ */ jsx9(ControlledBase, { label, control, name, wrapperStyle, children: (field) => {
+  return /* @__PURE__ */ jsx10(ControlledBase, { label, control, name, wrapperStyle, children: (field) => {
     var _a;
     return /* @__PURE__ */ jsxs7(InputWrapper, { children: [
-      /* @__PURE__ */ jsx9(
+      /* @__PURE__ */ jsx10(
         InputField,
         {
           ...rest,
@@ -575,25 +617,581 @@ function TextInput(props) {
           ref: field.ref
         }
       ),
-      isPassword && /* @__PURE__ */ jsx9(EyeButton, { type: "button", tabIndex: -1, onClick: () => setShowPassword((v) => !v), children: showPassword ? /* @__PURE__ */ jsx9(EyeOff, { size: 20 }) : /* @__PURE__ */ jsx9(Eye, { size: 20 }) })
+      isPassword && /* @__PURE__ */ jsx10(EyeButton, { type: "button", tabIndex: -1, onClick: () => setShowPassword((v) => !v), children: showPassword ? /* @__PURE__ */ jsx10(EyeOff, { size: 20 }) : /* @__PURE__ */ jsx10(Eye, { size: 20 }) })
     ] });
   } });
 }
 
-// src/components/LoginPage/hooks/useLogin.ts
-import { useEffect as useEffect2, useState as useState3 } from "react";
+// src/components/Modal/index.tsx
+import { useEffect, useRef } from "react";
+
+// src/components/Modal/styles/Modal.ts
+import styled13 from "styled-components";
+var Overlay2 = styled13.div`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: ${fadeIn} 0.2s ease;
+`;
+var Box2 = styled13.div`
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.lg};
+  padding: 28px 32px;
+  width: 100%;
+  max-width: 60%;
+  box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
+  animation: ${fadeUp} 0.25s ease;
+
+  @media (max-width: 480px) {
+    max-width: 100%;
+    margin-top: 35%;
+    width: 100%;
+    height: 100%;
+    padding: 24px 20px;
+    overflow-y: auto;
+  }
+`;
+var ModalTitle = styled13.h3`
+  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
+  font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  margin-bottom: 24px;
+`;
+var ModalActions = styled13.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 28px;
+`;
+
+// src/components/Modal/index.tsx
+import { jsx as jsx11 } from "react/jsx-runtime";
+function Modal({ children, close }) {
+  const boxRef = useRef(null);
+  useEffect(() => {
+    var _a;
+    (_a = boxRef.current) == null ? void 0 : _a.focus();
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") close();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [close]);
+  return /* @__PURE__ */ jsx11(Overlay2, { onClick: close, children: /* @__PURE__ */ jsx11(Box2, { ref: boxRef, role: "dialog", "aria-modal": "true", tabIndex: -1, onClick: (e) => e.stopPropagation(), children }) });
+}
+
+// src/components/Pagination/styles/Pagination.ts
+import styled14 from "styled-components";
+var Wrapper3 = styled14.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  margin-top: ${({ theme: theme2 }) => theme2.spacing.lg};
+`;
+var PageButton = styled14.button`
+  width: 36px;
+  height: 36px;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  border: 1px solid ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.hairline};
+  background: ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.canvas};
+  color: ${({ theme: theme2, $active }) => $active ? theme2.colors.onDark : theme2.colors.ink};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  font-weight: ${({ $active }) => $active ? 600 : 400};
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+
+  &:hover:not(:disabled) {
+    background: ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.surfaceSoft};
+  }
+
+  &:disabled { opacity: 0.35; cursor: not-allowed; }
+`;
+
+// src/components/Pagination/index.tsx
+import { jsx as jsx12, jsxs as jsxs8 } from "react/jsx-runtime";
+function Pagination({ currentPage, totalPages, onPageChange }) {
+  if (totalPages <= 1) return null;
+  return /* @__PURE__ */ jsxs8(Wrapper3, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
+    /* @__PURE__ */ jsx12(PageButton, { type: "button", "aria-label": "P\xE1gina anterior", onClick: () => onPageChange(currentPage - 1), disabled: currentPage === 1, children: /* @__PURE__ */ jsx12("span", { "aria-hidden": "true", children: "\u2039" }) }),
+    Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => /* @__PURE__ */ jsx12(
+      PageButton,
+      {
+        type: "button",
+        $active: page === currentPage,
+        "aria-current": page === currentPage ? "page" : void 0,
+        "aria-label": `P\xE1gina ${page}`,
+        onClick: () => onPageChange(page),
+        children: page
+      },
+      page
+    )),
+    /* @__PURE__ */ jsx12(PageButton, { type: "button", "aria-label": "Pr\xF3xima p\xE1gina", onClick: () => onPageChange(currentPage + 1), disabled: currentPage === totalPages, children: /* @__PURE__ */ jsx12("span", { "aria-hidden": "true", children: "\u203A" }) })
+  ] });
+}
+
+// src/components/PageHeader/index.tsx
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+
+// src/components/PageHeader/styles/PageHeader.ts
+import styled15 from "styled-components";
+var Wrapper4 = styled15.div`
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
+`;
+var Back = styled15.button`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  border: none;
+  background: none;
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.sm};
+
+  &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
+`;
+var Row = styled15.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.base};
+`;
+var Titles = styled15.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+var Title = styled15.h2`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
+  font-weight: 700;
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  line-height: 1.2;
+`;
+var Subtitle = styled15.p`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+`;
+
+// src/components/PageHeader/index.tsx
+import { jsx as jsx13, jsxs as jsxs9 } from "react/jsx-runtime";
+function PageHeader({ title, subtitle, back, action }) {
+  const navigate = useNavigate();
+  return /* @__PURE__ */ jsxs9(Wrapper4, { children: [
+    back && /* @__PURE__ */ jsxs9(Back, { onClick: () => navigate(-1), children: [
+      /* @__PURE__ */ jsx13(ArrowLeft, { size: 15 }),
+      "Voltar"
+    ] }),
+    /* @__PURE__ */ jsxs9(Row, { children: [
+      /* @__PURE__ */ jsxs9(Titles, { children: [
+        /* @__PURE__ */ jsx13(Title, { children: title }),
+        subtitle && /* @__PURE__ */ jsx13(Subtitle, { children: subtitle })
+      ] }),
+      action && /* @__PURE__ */ jsx13("div", { children: action })
+    ] })
+  ] });
+}
+
+// src/components/Inputs/SegmentedControl/styles/SegmentedControl.ts
+import styled16 from "styled-components";
+var Wrap = styled16.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+`;
+var Label2 = styled16.p`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
+  font-weight: 600;
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+var Toggle = styled16.div`
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  overflow: hidden;
+`;
+var Btn = styled16.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.buttonSm.fontSize};
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s, color 0.15s;
+  background: ${({ theme: theme2, $selected, $tone }) => $selected ? theme2.colors[$tone] : theme2.colors.canvas};
+  color: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.onDark : theme2.colors.muted};
+
+  & + & { border-left: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline}; }
+  &:hover {
+    background: ${({ theme: theme2, $selected, $tone }) => $selected ? $tone === "primary" ? theme2.colors.primaryActive : theme2.colors.ink : theme2.colors.surfaceSoft};
+  }
+`;
+
+// src/components/Inputs/SegmentedControl/index.tsx
+import { jsx as jsx14, jsxs as jsxs10 } from "react/jsx-runtime";
+function SegmentedControl({
+  value,
+  onChange,
+  options,
+  label,
+  tone = "ink"
+}) {
+  return /* @__PURE__ */ jsxs10(Wrap, { children: [
+    label && /* @__PURE__ */ jsx14(Label2, { children: label }),
+    /* @__PURE__ */ jsx14(Toggle, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ jsx14(
+      Btn,
+      {
+        type: "button",
+        role: "radio",
+        "aria-checked": option.value === value,
+        $selected: option.value === value,
+        $tone: tone,
+        onClick: () => onChange(option.value),
+        children: option.label
+      },
+      String(option.value)
+    )) })
+  ] });
+}
+
+// src/components/Skeleton/styles/Skeleton.ts
+import styled17, { keyframes as keyframes2 } from "styled-components";
+var pulse = keyframes2`
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+`;
+var Skeleton = styled17.div`
+  height: ${({ $h }) => $h != null ? $h : "16px"};
+  width: ${({ $w }) => $w != null ? $w : "100%"};
+  border-radius: 6px;
+  background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong};
+  animation: ${pulse} 1.4s ease-in-out infinite;
+`;
+
+// src/components/StatusBadge/index.tsx
+import styled18 from "styled-components";
+import { jsx as jsx15 } from "react/jsx-runtime";
+var StyledBadge = styled18.span`
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.badge.fontSize};
+  font-weight: 600;
+
+  ${({ $tone, theme: theme2 }) => $tone === "success" ? `background: ${theme2.colors.successSurface}; color: ${theme2.colors.success}; border: 1px solid ${theme2.colors.successBorder};` : `background: ${theme2.colors.warningSurface}; color: ${theme2.colors.warning}; border: 1px solid ${theme2.colors.warningBorder};`}
+`;
+function StatusBadge({ tone, children }) {
+  return /* @__PURE__ */ jsx15(StyledBadge, { $tone: tone, children });
+}
+
+// src/components/SummaryCard/styles/SummaryCard.ts
+import styled19 from "styled-components";
+var Card2 = styled19.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
+  box-shadow: ${({ theme: theme2 }) => theme2.shadows.sm};
+  padding: ${({ theme: theme2 }) => theme2.spacing.md} ${({ theme: theme2 }) => theme2.spacing.base};
+  margin-top: ${({ theme: theme2 }) => theme2.spacing.base};
+
+  @media (max-width: 744px) {
+    position: fixed;
+    bottom: ${({ $bottomOffset }) => $bottomOffset != null ? $bottomOffset : "80px"};
+    left: 0;
+    right: 0;
+    z-index: 90;
+    margin-top: 0;
+    border: none;
+    border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+    border-radius: 0;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    padding-bottom: calc(${({ theme: theme2 }) => theme2.spacing.md} + env(safe-area-inset-bottom));
+    animation: ${fadeUp} 0.2s ease;
+  }
+`;
+var Label3 = styled19.p`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
+  font-weight: 600;
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+`;
+var Row2 = styled19.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  width: 100%;
+`;
+var Info2 = styled19.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  width: 100%;
+`;
+var Items = styled19.span`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  flex: 1;
+`;
+var EmptyMessage = styled19(Items)`
+  text-align: center;
+`;
+var Total = styled19.span`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
+  font-weight: 700;
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  text-align: right;
+  flex-shrink: 0;
+  min-width: fit-content;
+  margin-left: ${({ theme: theme2 }) => theme2.spacing.sm};
+`;
+var ItemDetail = styled19.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
+  padding: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
+`;
+var ItemDetailName = styled19.span`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  flex: 1;
+`;
+var ItemDetailPrice = styled19.span`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-align: right;
+`;
+var Divider = styled19.hr`
+  border: none;
+  border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
+`;
+var ButtonRow = styled19.div`
+  display: flex;
+  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
+
+  button {
+    flex: 1;
+  }
+`;
+
+// src/components/SummaryCard/index.tsx
+import { Fragment as Fragment4, jsx as jsx16, jsxs as jsxs11 } from "react/jsx-runtime";
+function SummaryCard({
+  label = "Resumo",
+  items,
+  total,
+  onConfirm,
+  confirmText = "Confirmar",
+  loading = false,
+  disabled = false,
+  buttons,
+  emptyMessage = "Nenhum item selecionado",
+  bottomOffset
+}) {
+  const hasSubtotals = items.some((item) => item.subtotal !== void 0);
+  const itemsText = items.map((item) => `${item.qty}\xD7 ${item.name}`).join(", ");
+  const isEmpty = items.length === 0;
+  return /* @__PURE__ */ jsxs11(Card2, { $bottomOffset: bottomOffset, children: [
+    /* @__PURE__ */ jsx16(Label3, { style: { marginBottom: 0 }, children: label }),
+    isEmpty ? /* @__PURE__ */ jsx16(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ jsx16("div", { children: items.map((item) => /* @__PURE__ */ jsxs11(ItemDetail, { children: [
+      /* @__PURE__ */ jsxs11(ItemDetailName, { children: [
+        item.qty,
+        "\xD7 ",
+        item.name
+      ] }),
+      item.subtotal !== void 0 && /* @__PURE__ */ jsx16(ItemDetailPrice, { children: formatCurrency(item.subtotal) })
+    ] }, item.name)) }) : /* @__PURE__ */ jsxs11(Row2, { children: [
+      /* @__PURE__ */ jsx16(Items, { children: itemsText }),
+      /* @__PURE__ */ jsx16(Total, { children: formatCurrency(total) })
+    ] }),
+    !isEmpty && hasSubtotals && /* @__PURE__ */ jsxs11(Fragment4, { children: [
+      /* @__PURE__ */ jsx16(Divider, {}),
+      /* @__PURE__ */ jsx16(Row2, { children: /* @__PURE__ */ jsx16(Info2, { children: /* @__PURE__ */ jsx16(Total, { children: formatCurrency(total) }) }) })
+    ] }),
+    buttons && buttons.length > 0 ? /* @__PURE__ */ jsx16(ButtonRow, { children: buttons.map((btn, idx) => /* @__PURE__ */ jsx16(
+      Button,
+      {
+        variant: btn.variant || "primary",
+        size: "lg",
+        fullWidth: true,
+        onClick: btn.onClick,
+        disabled: btn.disabled || btn.loading,
+        children: btn.loading ? `${btn.text}...` : btn.text
+      },
+      idx
+    )) }) : onConfirm ? /* @__PURE__ */ jsx16(
+      Button,
+      {
+        variant: "primary",
+        size: "lg",
+        fullWidth: true,
+        onClick: onConfirm,
+        disabled: disabled || loading || isEmpty,
+        children: loading ? `${confirmText}...` : confirmText
+      }
+    ) : null
+  ] });
+}
+
+// src/components/Tabs/styles/Tabs.ts
+import styled20 from "styled-components";
+var TabBar = styled20.div.attrs({ role: "tablist" })`
+  display: flex;
+  border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+`;
+var Tab = styled20.button.attrs(({ $active }) => ({
+  type: "button",
+  role: "tab",
+  "aria-selected": $active
+}))`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  height: 44px;
+  padding: 0 ${({ theme: theme2 }) => theme2.spacing.sm};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.buttonMd.fontSize};
+  font-weight: ${({ $active }) => $active ? 600 : 400};
+  color: ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.muted};
+  background: none;
+  border: none;
+  border-bottom: 2px solid ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : "transparent"};
+  margin-bottom: -1px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
+`;
+var TabBadge = styled20.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  background: ${({ theme: theme2 }) => theme2.colors.primary};
+  color: ${({ theme: theme2 }) => theme2.colors.onPrimary};
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+`;
+
+// src/components/Toast/index.tsx
+import { createPortal as createPortal2 } from "react-dom";
+
+// src/components/Toast/styles/Toast.ts
+import styled21, { keyframes as keyframes3 } from "styled-components";
+var fadeOut = keyframes3`
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(8px); }
+`;
+var ToastEl = styled21.div`
+  position: fixed;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: fit-content;
+  background: ${({ theme: theme2 }) => theme2.colors.ink};
+  color: ${({ theme: theme2 }) => theme2.colors.onDark};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: 14px;
+  font-weight: 600;
+  padding: ${({ theme: theme2 }) => `${theme2.spacing.sm} ${theme2.spacing.lg}`};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
+  pointer-events: none;
+  z-index: 9999;
+  white-space: nowrap;
+  text-align: center;
+  animation: ${({ $leaving }) => $leaving ? fadeOut : fadeUp} 0.25s ease forwards;
+`;
+
+// src/components/Toast/hooks/useToast.tsx
+import { useCallback, useRef as useRef2, useState as useState2 } from "react";
+import { jsx as jsx17 } from "react/jsx-runtime";
+function useToast(duration = 2500) {
+  const [state, setState] = useState2(null);
+  const timerRef = useRef2(null);
+  const show = useCallback(
+    (message) => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      setState({ message, leaving: false });
+      timerRef.current = setTimeout(() => {
+        setState((s) => s ? { ...s, leaving: true } : null);
+        timerRef.current = setTimeout(() => setState(null), 300);
+      }, duration);
+    },
+    [duration]
+  );
+  const toast = state ? /* @__PURE__ */ jsx17(Toast, { message: state.message, leaving: state.leaving }) : null;
+  return { show, toast };
+}
+
+// src/components/Toast/index.tsx
+import { jsx as jsx18 } from "react/jsx-runtime";
+function Toast({ message, leaving }) {
+  return createPortal2(/* @__PURE__ */ jsx18(ToastEl, { $leaving: leaving, children: message }), document.body);
+}
+
+// src/pages/LoginPage/index.tsx
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+// src/pages/LoginPage/hooks/useLogin.ts
+import { useEffect as useEffect3, useState as useState4 } from "react";
+import { useNavigate as useNavigate2 } from "react-router-dom";
 
 // src/hooks/useAuth.ts
-import { useCallback, useContext, useEffect, useMemo, useState as useState2 } from "react";
+import { useCallback as useCallback2, useContext, useEffect as useEffect2, useMemo, useState as useState3 } from "react";
 
 // src/contexts/AuthContext.tsx
 import { createContext } from "react";
-import { jsx as jsx10 } from "react/jsx-runtime";
+import { jsx as jsx19 } from "react/jsx-runtime";
 var AuthContext = createContext(null);
 function AuthProvider({ client, children }) {
   const authValue = useAuth(client);
-  return /* @__PURE__ */ jsx10(AuthContext.Provider, { value: authValue, children });
+  return /* @__PURE__ */ jsx19(AuthContext.Provider, { value: authValue, children });
 }
 
 // src/hooks/useAuth.ts
@@ -612,12 +1210,12 @@ async function fetchProfile(client, userId) {
   }
 }
 function useAuth(client) {
-  const [user, setUser] = useState2(null);
-  const [userEmail, setUserEmail] = useState2("");
-  const [loading, setLoading] = useState2(true);
-  const [error, setError] = useState2(null);
-  const [sessionUser, setSessionUser] = useState2(void 0);
-  useEffect(() => {
+  const [user, setUser] = useState3(null);
+  const [userEmail, setUserEmail] = useState3("");
+  const [loading, setLoading] = useState3(true);
+  const [error, setError] = useState3(null);
+  const [sessionUser, setSessionUser] = useState3(void 0);
+  useEffect2(() => {
     const { data: listener } = client.auth.onAuthStateChange((_event, session) => {
       setSessionUser((prev) => {
         var _a;
@@ -651,7 +1249,7 @@ function useAuth(client) {
       listener == null ? void 0 : listener.subscription.unsubscribe();
     };
   }, [client]);
-  useEffect(() => {
+  useEffect2(() => {
     if (sessionUser === void 0) return;
     if (!sessionUser) {
       setUser(null);
@@ -677,7 +1275,7 @@ function useAuth(client) {
       cancelled = true;
     };
   }, [client, sessionUser]);
-  const login = useCallback(async (email, password) => {
+  const login = useCallback2(async (email, password) => {
     setError(null);
     const { error: signInError } = await client.auth.signInWithPassword({ email, password });
     if (signInError) {
@@ -687,12 +1285,12 @@ function useAuth(client) {
     }
     return null;
   }, [client]);
-  const logout = useCallback(async () => {
+  const logout = useCallback2(async () => {
     await client.auth.signOut();
     setUser(null);
     setUserEmail("");
   }, [client]);
-  const updateProfile = useCallback(async (name, email) => {
+  const updateProfile = useCallback2(async (name, email) => {
     const { data: { user: authUser } } = await client.auth.getUser();
     if (!authUser) return "Usu\xE1rio n\xE3o autenticado.";
     const { error: profileError } = await client.from("profiles").update({ name: name.trim() }).eq("id", authUser.id);
@@ -715,13 +1313,13 @@ function useAuthCtx() {
   return ctx;
 }
 
-// src/components/LoginPage/hooks/useLogin.ts
+// src/pages/LoginPage/hooks/useLogin.ts
 function useLogin(resolveRoute) {
-  const [error, setError] = useState3("");
-  const [submitting, setSubmitting] = useState3(false);
+  const [error, setError] = useState4("");
+  const [submitting, setSubmitting] = useState4(false);
   const { login, user } = useAuthCtx();
-  const navigate = useNavigate();
-  useEffect2(() => {
+  const navigate = useNavigate2();
+  useEffect3(() => {
     if (user) {
       navigate(resolveRoute(user.role), { replace: true });
     }
@@ -738,9 +1336,9 @@ function useLogin(resolveRoute) {
   return { error, submitting, handleLogin };
 }
 
-// src/components/LoginPage/styles/Login.ts
-import styled12 from "styled-components";
-var Page = styled12.div`
+// src/pages/LoginPage/styles/Login.ts
+import styled22 from "styled-components";
+var Page = styled22.div`
   min-height: 100vh;
   display: flex;
 
@@ -748,7 +1346,7 @@ var Page = styled12.div`
     flex-direction: column;
   }
 `;
-var Brand2 = styled12.div`
+var Brand2 = styled22.div`
   flex: 0 0 420px;
   background: ${({ theme: theme2 }) => theme2.colors.primary};
   display: flex;
@@ -779,7 +1377,7 @@ var Brand2 = styled12.div`
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
   }
 `;
-var BrandMark = styled12.div`
+var BrandMark = styled22.div`
   width: 80px;
   height: 80px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
@@ -805,13 +1403,13 @@ var BrandMark = styled12.div`
     img { width: 38px; height: 38px; }
   }
 `;
-var BrandText = styled12.div`
+var BrandText = styled22.div`
   text-align: center;
   color: #fff;
   position: relative;
   z-index: 1;
 `;
-var BrandName2 = styled12.h1`
+var BrandName2 = styled22.h1`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.625rem;
   font-weight: 700;
@@ -823,13 +1421,13 @@ var BrandName2 = styled12.h1`
     font-size: 1.25rem;
   }
 `;
-var BrandSub = styled12.p`
+var BrandSub = styled22.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   opacity: 0.75;
   line-height: 1.4;
 `;
-var BrandQuote = styled12.blockquote`
+var BrandQuote = styled22.blockquote`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: rgba(255, 255, 255, 0.6);
@@ -844,7 +1442,7 @@ var BrandQuote = styled12.blockquote`
     display: none;
   }
 `;
-var FormPanel = styled12.div`
+var FormPanel = styled22.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -858,15 +1456,15 @@ var FormPanel = styled12.div`
     padding: ${({ theme: theme2 }) => theme2.spacing.xl} ${({ theme: theme2 }) => theme2.spacing.base};
   }
 `;
-var FormBox = styled12.div`
+var FormBox = styled22.div`
   width: 100%;
   max-width: 400px;
   animation: ${fadeUp} 0.35s ease;
 `;
-var FormHeader = styled12.div`
+var FormHeader = styled22.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var FormTitle = styled12.h2`
+var FormTitle = styled22.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.375rem;
   font-weight: 700;
@@ -874,17 +1472,17 @@ var FormTitle = styled12.h2`
   letter-spacing: -0.3px;
   margin-bottom: 6px;
 `;
-var FormSubtitle = styled12.p`
+var FormSubtitle = styled22.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Form = styled12.form`
+var Form = styled22.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var ErrorMsg = styled12.p`
+var ErrorMsg = styled22.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
   background: #fef2f2;
@@ -894,37 +1492,37 @@ var ErrorMsg = styled12.p`
   text-align: center;
 `;
 
-// src/components/LoginPage/validators/schema.ts
+// src/pages/LoginPage/validators/schema.ts
 import { z } from "zod";
 var loginSchema = z.object({
   email: z.string().email("E-mail inv\xE1lido"),
   password: z.string().min(1, "Senha obrigat\xF3ria")
 });
 
-// src/components/LoginPage/index.tsx
-import { jsx as jsx11, jsxs as jsxs8 } from "react/jsx-runtime";
+// src/pages/LoginPage/index.tsx
+import { jsx as jsx20, jsxs as jsxs12 } from "react/jsx-runtime";
 function LoginPage({ brand, resolveRoute }) {
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" }
   });
-  return /* @__PURE__ */ jsxs8(Page, { children: [
-    /* @__PURE__ */ jsxs8(Brand2, { children: [
-      /* @__PURE__ */ jsx11(BrandMark, { children: /* @__PURE__ */ jsx11("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ jsxs8(BrandText, { children: [
-        /* @__PURE__ */ jsx11(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ jsx11(BrandSub, { children: brand.sub })
+  return /* @__PURE__ */ jsxs12(Page, { children: [
+    /* @__PURE__ */ jsxs12(Brand2, { children: [
+      /* @__PURE__ */ jsx20(BrandMark, { children: /* @__PURE__ */ jsx20("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ jsxs12(BrandText, { children: [
+        /* @__PURE__ */ jsx20(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ jsx20(BrandSub, { children: brand.sub })
       ] }),
-      brand.quote && /* @__PURE__ */ jsx11(BrandQuote, { children: brand.quote })
+      brand.quote && /* @__PURE__ */ jsx20(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ jsx11(FormPanel, { children: /* @__PURE__ */ jsxs8(FormBox, { children: [
-      /* @__PURE__ */ jsxs8(FormHeader, { children: [
-        /* @__PURE__ */ jsx11(FormTitle, { children: "Bem-vindo" }),
-        /* @__PURE__ */ jsx11(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
+    /* @__PURE__ */ jsx20(FormPanel, { children: /* @__PURE__ */ jsxs12(FormBox, { children: [
+      /* @__PURE__ */ jsxs12(FormHeader, { children: [
+        /* @__PURE__ */ jsx20(FormTitle, { children: "Bem-vindo" }),
+        /* @__PURE__ */ jsx20(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
       ] }),
-      /* @__PURE__ */ jsxs8(Form, { onSubmit: handleSubmit(handleLogin), children: [
-        /* @__PURE__ */ jsx11(
+      /* @__PURE__ */ jsxs12(Form, { onSubmit: handleSubmit(handleLogin), children: [
+        /* @__PURE__ */ jsx20(
           TextInput,
           {
             label: "E-mail",
@@ -935,7 +1533,7 @@ function LoginPage({ brand, resolveRoute }) {
             placeholder: "seu@email.com"
           }
         ),
-        /* @__PURE__ */ jsx11(
+        /* @__PURE__ */ jsx20(
           TextInput,
           {
             label: "Senha",
@@ -945,7 +1543,7 @@ function LoginPage({ brand, resolveRoute }) {
             placeholder: "M\xEDnimo 6 caracteres"
           }
         ),
-        /* @__PURE__ */ jsx11(
+        /* @__PURE__ */ jsx20(
           Button,
           {
             variant: "primary",
@@ -957,152 +1555,27 @@ function LoginPage({ brand, resolveRoute }) {
             children: submitting ? "Entrando..." : "Entrar"
           }
         ),
-        error && /* @__PURE__ */ jsx11(ErrorMsg, { children: error })
+        error && /* @__PURE__ */ jsx20(ErrorMsg, { children: error })
       ] })
     ] }) })
   ] });
 }
 
-// src/components/ProfilePage/index.tsx
+// src/pages/ProfilePage/index.tsx
 import { zodResolver as zodResolver2 } from "@hookform/resolvers/zod";
 import { useForm as useForm2 } from "react-hook-form";
 import { useNavigate as useNavigate3 } from "react-router-dom";
 
-// src/components/PageHeader/index.tsx
-import { useNavigate as useNavigate2 } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
-
-// src/components/PageHeader/styles/PageHeader.ts
-import styled13 from "styled-components";
-var Wrapper3 = styled13.div`
-  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
-`;
-var Back = styled13.button`
-  display: inline-flex;
-  align-items: center;
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-  border: none;
-  background: none;
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  cursor: pointer;
-  padding: 0;
-  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.sm};
-
-  &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
-`;
-var Row = styled13.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme: theme2 }) => theme2.spacing.base};
-`;
-var Titles = styled13.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-var Title = styled13.h2`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
-  font-weight: 700;
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  line-height: 1.2;
-`;
-var Subtitle = styled13.p`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-`;
-
-// src/components/PageHeader/index.tsx
-import { jsx as jsx12, jsxs as jsxs9 } from "react/jsx-runtime";
-function PageHeader({ title, subtitle, back, action }) {
-  const navigate = useNavigate2();
-  return /* @__PURE__ */ jsxs9(Wrapper3, { children: [
-    back && /* @__PURE__ */ jsxs9(Back, { onClick: () => navigate(-1), children: [
-      /* @__PURE__ */ jsx12(ArrowLeft, { size: 15 }),
-      "Voltar"
-    ] }),
-    /* @__PURE__ */ jsxs9(Row, { children: [
-      /* @__PURE__ */ jsxs9(Titles, { children: [
-        /* @__PURE__ */ jsx12(Title, { children: title }),
-        subtitle && /* @__PURE__ */ jsx12(Subtitle, { children: subtitle })
-      ] }),
-      action && /* @__PURE__ */ jsx12("div", { children: action })
-    ] })
-  ] });
-}
-
-// src/components/Toast/index.tsx
-import { createPortal as createPortal2 } from "react-dom";
-
-// src/components/Toast/styles/Toast.ts
-import styled14, { keyframes as keyframes2 } from "styled-components";
-var fadeOut = keyframes2`
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(8px); }
-`;
-var ToastEl = styled14.div`
-  position: fixed;
-  bottom: 80px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  width: fit-content;
-  background: ${({ theme: theme2 }) => theme2.colors.ink};
-  color: ${({ theme: theme2 }) => theme2.colors.onDark};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: 14px;
-  font-weight: 600;
-  padding: ${({ theme: theme2 }) => `${theme2.spacing.sm} ${theme2.spacing.lg}`};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
-  pointer-events: none;
-  z-index: 9999;
-  white-space: nowrap;
-  text-align: center;
-  animation: ${({ $leaving }) => $leaving ? fadeOut : fadeUp} 0.25s ease forwards;
-`;
-
-// src/components/Toast/hooks/useToast.tsx
-import { useCallback as useCallback2, useRef, useState as useState4 } from "react";
-import { jsx as jsx13 } from "react/jsx-runtime";
-function useToast(duration = 2500) {
-  const [state, setState] = useState4(null);
-  const timerRef = useRef(null);
-  const show = useCallback2(
-    (message) => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-      setState({ message, leaving: false });
-      timerRef.current = setTimeout(() => {
-        setState((s) => s ? { ...s, leaving: true } : null);
-        timerRef.current = setTimeout(() => setState(null), 300);
-      }, duration);
-    },
-    [duration]
-  );
-  const toast = state ? /* @__PURE__ */ jsx13(Toast, { message: state.message, leaving: state.leaving }) : null;
-  return { show, toast };
-}
-
-// src/components/Toast/index.tsx
-import { jsx as jsx14 } from "react/jsx-runtime";
-function Toast({ message, leaving }) {
-  return createPortal2(/* @__PURE__ */ jsx14(ToastEl, { $leaving: leaving, children: message }), document.body);
-}
-
-// src/components/ProfilePage/styles/ProfilePage.ts
-import styled15 from "styled-components";
-var Wrap = styled15.div`
+// src/pages/ProfilePage/styles/ProfilePage.ts
+import styled23 from "styled-components";
+var Wrap2 = styled23.div`
   max-width: 560px;
 `;
-var Identity = styled15.div`
+var Identity = styled23.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Name = styled15.h2`
+var Name = styled23.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -1110,18 +1583,18 @@ var Name = styled15.h2`
   line-height: 1.1;
   margin-bottom: 4px;
 `;
-var RoleLabel = styled15.p`
+var RoleLabel = styled23.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Section = styled15.div`
+var Section = styled23.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SectionTitle = styled15.p`
+var SectionTitle = styled23.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -1129,7 +1602,7 @@ var SectionTitle = styled15.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var Actions = styled15.div`
+var Actions = styled23.div`
   display: flex;
   justify-content: flex-end;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -1141,15 +1614,15 @@ var Actions = styled15.div`
   }
 `;
 
-// src/components/ProfilePage/validators/schema.ts
+// src/pages/ProfilePage/validators/schema.ts
 import { z as z2 } from "zod";
 var profileSchema = z2.object({
   name: z2.string().min(3, "Informe pelo menos nome e sobrenome"),
   email: z2.string().email("E-mail inv\xE1lido")
 });
 
-// src/components/ProfilePage/index.tsx
-import { jsx as jsx15, jsxs as jsxs10 } from "react/jsx-runtime";
+// src/pages/ProfilePage/index.tsx
+import { jsx as jsx21, jsxs as jsxs13 } from "react/jsx-runtime";
 function ProfilePage({ roleLabel }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
@@ -1167,497 +1640,24 @@ function ProfilePage({ roleLabel }) {
     const err = await updateProfile(data.name, data.email);
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
   };
-  return /* @__PURE__ */ jsxs10(Wrap, { children: [
-    /* @__PURE__ */ jsx15(PageHeader, { title: "Meu perfil", back: true }),
-    /* @__PURE__ */ jsxs10(Identity, { children: [
-      /* @__PURE__ */ jsx15(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
-      roleLabel && /* @__PURE__ */ jsx15(RoleLabel, { children: roleLabel })
+  return /* @__PURE__ */ jsxs13(Wrap2, { children: [
+    /* @__PURE__ */ jsx21(PageHeader, { title: "Meu perfil", back: true }),
+    /* @__PURE__ */ jsxs13(Identity, { children: [
+      /* @__PURE__ */ jsx21(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
+      roleLabel && /* @__PURE__ */ jsx21(RoleLabel, { children: roleLabel })
     ] }),
-    /* @__PURE__ */ jsxs10(Section, { children: [
-      /* @__PURE__ */ jsx15(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
-      /* @__PURE__ */ jsx15(TextInput, { label: "Nome completo", control, name: "name", placeholder: "Nome e sobrenome" }),
-      /* @__PURE__ */ jsx15(TextInput, { label: "E-mail de acesso", control, name: "email", type: "email", placeholder: "seu@email.com" })
+    /* @__PURE__ */ jsxs13(Section, { children: [
+      /* @__PURE__ */ jsx21(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
+      /* @__PURE__ */ jsx21(TextInput, { label: "Nome completo", control, name: "name", placeholder: "Nome e sobrenome" }),
+      /* @__PURE__ */ jsx21(TextInput, { label: "E-mail de acesso", control, name: "email", type: "email", placeholder: "seu@email.com" })
     ] }),
-    /* @__PURE__ */ jsxs10(Actions, { children: [
-      /* @__PURE__ */ jsx15(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: "Cancelar" }),
-      /* @__PURE__ */ jsx15(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es" })
+    /* @__PURE__ */ jsxs13(Actions, { children: [
+      /* @__PURE__ */ jsx21(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: "Cancelar" }),
+      /* @__PURE__ */ jsx21(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es" })
     ] }),
     toast
   ] });
 }
-
-// src/components/Inputs/Select/index.tsx
-import { useController } from "react-hook-form";
-
-// src/components/Inputs/Select/styles/Select.ts
-import styled16 from "styled-components";
-var SelectField = styled16.select`
-  height: 56px;
-  padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
-  background: ${({ theme: theme2 }) => theme2.colors.canvas};
-  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  outline: none;
-  width: 100%;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23222222' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right ${({ theme: theme2 }) => theme2.spacing.md} center;
-  padding-right: ${({ theme: theme2 }) => theme2.spacing.xl};
-
-  &:focus {
-    border-width: 2px;
-    border-color: ${({ theme: theme2 }) => theme2.colors.ink};
-  }
-`;
-
-// src/components/Inputs/Select/index.tsx
-import { jsx as jsx16 } from "react/jsx-runtime";
-function RawSelect({ label, wrapperStyle, error, children, ...rest }) {
-  return /* @__PURE__ */ jsx16(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ jsx16(SelectField, { ...rest, children }) });
-}
-function Select({
-  label,
-  control,
-  name,
-  wrapperStyle,
-  children
-}) {
-  var _a, _b;
-  const { field, fieldState } = useController({ control, name });
-  return /* @__PURE__ */ jsx16(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ jsx16(SelectField, { value: (_b = field.value) != null ? _b : "", onChange: (e) => field.onChange(e.target.value), onBlur: field.onBlur, ref: field.ref, children }) });
-}
-
-// src/components/Modal/index.tsx
-import { useEffect as useEffect3, useRef as useRef2 } from "react";
-
-// src/components/Modal/styles/Modal.ts
-import styled17 from "styled-components";
-var Overlay2 = styled17.div`
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: ${fadeIn} 0.2s ease;
-`;
-var Box2 = styled17.div`
-  background: ${({ theme: theme2 }) => theme2.colors.canvas};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.lg};
-  padding: 28px 32px;
-  width: 100%;
-  max-width: 60%;
-  box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
-  animation: ${fadeUp} 0.25s ease;
-
-  @media (max-width: 480px) {
-    max-width: 100%;
-    margin-top: 35%;
-    width: 100%;
-    height: 100%;
-    padding: 24px 20px;
-    overflow-y: auto;
-  }
-`;
-var ModalTitle = styled17.h3`
-  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
-  font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  margin-bottom: 24px;
-`;
-var ModalActions = styled17.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 28px;
-`;
-
-// src/components/Modal/index.tsx
-import { jsx as jsx17 } from "react/jsx-runtime";
-function Modal({ children, close }) {
-  const boxRef = useRef2(null);
-  useEffect3(() => {
-    var _a;
-    (_a = boxRef.current) == null ? void 0 : _a.focus();
-    const onKeyDown = (e) => {
-      if (e.key === "Escape") close();
-    };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [close]);
-  return /* @__PURE__ */ jsx17(Overlay2, { onClick: close, children: /* @__PURE__ */ jsx17(Box2, { ref: boxRef, role: "dialog", "aria-modal": "true", tabIndex: -1, onClick: (e) => e.stopPropagation(), children }) });
-}
-
-// src/components/Pagination/styles/Pagination.ts
-import styled18 from "styled-components";
-var Wrapper4 = styled18.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-  margin-top: ${({ theme: theme2 }) => theme2.spacing.lg};
-`;
-var PageButton = styled18.button`
-  width: 36px;
-  height: 36px;
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  border: 1px solid ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.hairline};
-  background: ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.canvas};
-  color: ${({ theme: theme2, $active }) => $active ? theme2.colors.onDark : theme2.colors.ink};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  font-weight: ${({ $active }) => $active ? 600 : 400};
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
-
-  &:hover:not(:disabled) {
-    background: ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.surfaceSoft};
-  }
-
-  &:disabled { opacity: 0.35; cursor: not-allowed; }
-`;
-
-// src/components/Pagination/index.tsx
-import { jsx as jsx18, jsxs as jsxs11 } from "react/jsx-runtime";
-function Pagination({ currentPage, totalPages, onPageChange }) {
-  if (totalPages <= 1) return null;
-  return /* @__PURE__ */ jsxs11(Wrapper4, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
-    /* @__PURE__ */ jsx18(PageButton, { type: "button", "aria-label": "P\xE1gina anterior", onClick: () => onPageChange(currentPage - 1), disabled: currentPage === 1, children: /* @__PURE__ */ jsx18("span", { "aria-hidden": "true", children: "\u2039" }) }),
-    Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => /* @__PURE__ */ jsx18(
-      PageButton,
-      {
-        type: "button",
-        $active: page === currentPage,
-        "aria-current": page === currentPage ? "page" : void 0,
-        "aria-label": `P\xE1gina ${page}`,
-        onClick: () => onPageChange(page),
-        children: page
-      },
-      page
-    )),
-    /* @__PURE__ */ jsx18(PageButton, { type: "button", "aria-label": "Pr\xF3xima p\xE1gina", onClick: () => onPageChange(currentPage + 1), disabled: currentPage === totalPages, children: /* @__PURE__ */ jsx18("span", { "aria-hidden": "true", children: "\u203A" }) })
-  ] });
-}
-
-// src/components/Inputs/SegmentedControl/styles/SegmentedControl.ts
-import styled19 from "styled-components";
-var Wrap2 = styled19.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-`;
-var Label2 = styled19.p`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
-  font-weight: 600;
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-`;
-var Toggle = styled19.div`
-  display: grid;
-  grid-auto-columns: 1fr;
-  grid-auto-flow: column;
-  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
-  overflow: hidden;
-`;
-var Btn = styled19.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 44px;
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.buttonSm.fontSize};
-  font-weight: 500;
-  cursor: pointer;
-  border: none;
-  transition: background 0.15s, color 0.15s;
-  background: ${({ theme: theme2, $selected, $tone }) => $selected ? theme2.colors[$tone] : theme2.colors.canvas};
-  color: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.onDark : theme2.colors.muted};
-
-  & + & { border-left: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline}; }
-  &:hover {
-    background: ${({ theme: theme2, $selected, $tone }) => $selected ? $tone === "primary" ? theme2.colors.primaryActive : theme2.colors.ink : theme2.colors.surfaceSoft};
-  }
-`;
-
-// src/components/Inputs/SegmentedControl/index.tsx
-import { jsx as jsx19, jsxs as jsxs12 } from "react/jsx-runtime";
-function SegmentedControl({
-  value,
-  onChange,
-  options,
-  label,
-  tone = "ink"
-}) {
-  return /* @__PURE__ */ jsxs12(Wrap2, { children: [
-    label && /* @__PURE__ */ jsx19(Label2, { children: label }),
-    /* @__PURE__ */ jsx19(Toggle, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ jsx19(
-      Btn,
-      {
-        type: "button",
-        role: "radio",
-        "aria-checked": option.value === value,
-        $selected: option.value === value,
-        $tone: tone,
-        onClick: () => onChange(option.value),
-        children: option.label
-      },
-      String(option.value)
-    )) })
-  ] });
-}
-
-// src/components/Skeleton/styles/Skeleton.ts
-import styled20, { keyframes as keyframes3 } from "styled-components";
-var pulse = keyframes3`
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
-`;
-var Skeleton = styled20.div`
-  height: ${({ $h }) => $h != null ? $h : "16px"};
-  width: ${({ $w }) => $w != null ? $w : "100%"};
-  border-radius: 6px;
-  background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong};
-  animation: ${pulse} 1.4s ease-in-out infinite;
-`;
-
-// src/components/StatusBadge/index.tsx
-import styled21 from "styled-components";
-import { jsx as jsx20 } from "react/jsx-runtime";
-var StyledBadge = styled21.span`
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.badge.fontSize};
-  font-weight: 600;
-
-  ${({ $tone, theme: theme2 }) => $tone === "success" ? `background: ${theme2.colors.successSurface}; color: ${theme2.colors.success}; border: 1px solid ${theme2.colors.successBorder};` : `background: ${theme2.colors.warningSurface}; color: ${theme2.colors.warning}; border: 1px solid ${theme2.colors.warningBorder};`}
-`;
-function StatusBadge({ tone, children }) {
-  return /* @__PURE__ */ jsx20(StyledBadge, { $tone: tone, children });
-}
-
-// src/components/SummaryCard/styles/SummaryCard.ts
-import styled22 from "styled-components";
-var Card2 = styled22.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
-  background: ${({ theme: theme2 }) => theme2.colors.canvas};
-  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
-  box-shadow: ${({ theme: theme2 }) => theme2.shadows.sm};
-  padding: ${({ theme: theme2 }) => theme2.spacing.md} ${({ theme: theme2 }) => theme2.spacing.base};
-  margin-top: ${({ theme: theme2 }) => theme2.spacing.base};
-
-  @media (max-width: 744px) {
-    position: fixed;
-    bottom: ${({ $bottomOffset }) => $bottomOffset != null ? $bottomOffset : "80px"};
-    left: 0;
-    right: 0;
-    z-index: 90;
-    margin-top: 0;
-    border: none;
-    border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-    border-radius: 0;
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
-    padding-bottom: calc(${({ theme: theme2 }) => theme2.spacing.md} + env(safe-area-inset-bottom));
-    animation: ${fadeUp} 0.2s ease;
-  }
-`;
-var Label3 = styled22.p`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
-  font-weight: 600;
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 0;
-`;
-var Row2 = styled22.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme: theme2 }) => theme2.spacing.md};
-  width: 100%;
-`;
-var Info2 = styled22.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme: theme2 }) => theme2.spacing.md};
-  width: 100%;
-`;
-var Items = styled22.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  flex: 1;
-`;
-var EmptyMessage = styled22(Items)`
-  text-align: center;
-`;
-var Total = styled22.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
-  font-weight: 700;
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  text-align: right;
-  flex-shrink: 0;
-  min-width: fit-content;
-  margin-left: ${({ theme: theme2 }) => theme2.spacing.sm};
-`;
-var ItemDetail = styled22.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
-  padding: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
-`;
-var ItemDetailName = styled22.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  flex: 1;
-`;
-var ItemDetailPrice = styled22.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  white-space: nowrap;
-  flex-shrink: 0;
-  text-align: right;
-`;
-var Divider = styled22.hr`
-  border: none;
-  border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
-`;
-var ButtonRow = styled22.div`
-  display: flex;
-  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
-
-  button {
-    flex: 1;
-  }
-`;
-
-// src/components/SummaryCard/index.tsx
-import { Fragment as Fragment4, jsx as jsx21, jsxs as jsxs13 } from "react/jsx-runtime";
-function SummaryCard({
-  label = "Resumo",
-  items,
-  total,
-  onConfirm,
-  confirmText = "Confirmar",
-  loading = false,
-  disabled = false,
-  buttons,
-  emptyMessage = "Nenhum item selecionado",
-  bottomOffset
-}) {
-  const hasSubtotals = items.some((item) => item.subtotal !== void 0);
-  const itemsText = items.map((item) => `${item.qty}\xD7 ${item.name}`).join(", ");
-  const isEmpty = items.length === 0;
-  return /* @__PURE__ */ jsxs13(Card2, { $bottomOffset: bottomOffset, children: [
-    /* @__PURE__ */ jsx21(Label3, { style: { marginBottom: 0 }, children: label }),
-    isEmpty ? /* @__PURE__ */ jsx21(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ jsx21("div", { children: items.map((item) => /* @__PURE__ */ jsxs13(ItemDetail, { children: [
-      /* @__PURE__ */ jsxs13(ItemDetailName, { children: [
-        item.qty,
-        "\xD7 ",
-        item.name
-      ] }),
-      item.subtotal !== void 0 && /* @__PURE__ */ jsx21(ItemDetailPrice, { children: formatCurrency(item.subtotal) })
-    ] }, item.name)) }) : /* @__PURE__ */ jsxs13(Row2, { children: [
-      /* @__PURE__ */ jsx21(Items, { children: itemsText }),
-      /* @__PURE__ */ jsx21(Total, { children: formatCurrency(total) })
-    ] }),
-    !isEmpty && hasSubtotals && /* @__PURE__ */ jsxs13(Fragment4, { children: [
-      /* @__PURE__ */ jsx21(Divider, {}),
-      /* @__PURE__ */ jsx21(Row2, { children: /* @__PURE__ */ jsx21(Info2, { children: /* @__PURE__ */ jsx21(Total, { children: formatCurrency(total) }) }) })
-    ] }),
-    buttons && buttons.length > 0 ? /* @__PURE__ */ jsx21(ButtonRow, { children: buttons.map((btn, idx) => /* @__PURE__ */ jsx21(
-      Button,
-      {
-        variant: btn.variant || "primary",
-        size: "lg",
-        fullWidth: true,
-        onClick: btn.onClick,
-        disabled: btn.disabled || btn.loading,
-        children: btn.loading ? `${btn.text}...` : btn.text
-      },
-      idx
-    )) }) : onConfirm ? /* @__PURE__ */ jsx21(
-      Button,
-      {
-        variant: "primary",
-        size: "lg",
-        fullWidth: true,
-        onClick: onConfirm,
-        disabled: disabled || loading || isEmpty,
-        children: loading ? `${confirmText}...` : confirmText
-      }
-    ) : null
-  ] });
-}
-
-// src/components/Tabs/styles/Tabs.ts
-import styled23 from "styled-components";
-var TabBar = styled23.div.attrs({ role: "tablist" })`
-  display: flex;
-  border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-`;
-var Tab = styled23.button.attrs(({ $active }) => ({
-  type: "button",
-  role: "tab",
-  "aria-selected": $active
-}))`
-  display: inline-flex;
-  align-items: center;
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-  height: 44px;
-  padding: 0 ${({ theme: theme2 }) => theme2.spacing.sm};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.buttonMd.fontSize};
-  font-weight: ${({ $active }) => $active ? 600 : 400};
-  color: ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.muted};
-  background: none;
-  border: none;
-  border-bottom: 2px solid ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : "transparent"};
-  margin-bottom: -1px;
-  cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
-
-  &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
-`;
-var TabBadge = styled23.span`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  background: ${({ theme: theme2 }) => theme2.colors.primary};
-  color: ${({ theme: theme2 }) => theme2.colors.onPrimary};
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1;
-`;
 
 // src/hooks/useMediaQuery.ts
 import { useEffect as useEffect4, useState as useState5 } from "react";

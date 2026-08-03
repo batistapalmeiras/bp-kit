@@ -3,10 +3,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 // Components
-import { Button } from '../Button';
-import { TextInput } from '../Inputs/TextInput';
-import { PageHeader } from '../PageHeader';
-import { useToast } from '../Toast';
+import { Button } from '../../components/Button';
+import { TextInput } from '../../components/Inputs/TextInput';
+import { PageHeader } from '../../components/PageHeader';
+import { useToast } from '../../components/Toast';
 // Local
 import { useAuthCtx } from '../../hooks/useAuth';
 import { Actions, Identity, Name, RoleLabel, Section, SectionTitle, Wrap } from './styles';

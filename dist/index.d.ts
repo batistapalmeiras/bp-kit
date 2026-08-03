@@ -73,26 +73,6 @@ interface Props$3 {
 }
 declare function InfoBox({ variant, children, style }: Props$3): react__default.JSX.Element;
 
-interface LoginPageBrand {
-    icon: string;
-    iconAlt: string;
-    name: string;
-    sub: string;
-    quote?: string;
-}
-interface LoginPageProps {
-    brand: LoginPageBrand;
-    /** Maps the logged-in user's `role` (raw string from `profiles.role`) to the route they land on. */
-    resolveRoute: (role: string) => string;
-}
-declare function LoginPage({ brand, resolveRoute }: LoginPageProps): react.JSX.Element;
-
-interface ProfilePageProps {
-    /** Display label for the user's role (e.g. "Administrador"). Each app defines its own role vocabulary. */
-    roleLabel?: string;
-}
-declare function ProfilePage({ roleLabel }: ProfilePageProps): react.JSX.Element;
-
 interface BaseInputProps {
     label: string;
     wrapperStyle?: React.CSSProperties;
@@ -258,6 +238,25 @@ interface TypographyProps extends HTMLAttributes<HTMLElement> {
 }
 
 declare function Typography({ type, as, children, ...rest }: TypographyProps): react.JSX.Element;
+
+interface LoginPageBrand {
+    icon: string;
+    iconAlt: string;
+    name: string;
+    sub: string;
+    quote?: string;
+}
+interface LoginPageProps {
+    brand: LoginPageBrand;
+    resolveRoute: (role: string) => string;
+}
+declare function LoginPage({ brand, resolveRoute }: LoginPageProps): react.JSX.Element;
+
+interface ProfilePageProps {
+    /** Display label for the user's role (e.g. "Administrador"). Each app defines its own role vocabulary. */
+    roleLabel?: string;
+}
+declare function ProfilePage({ roleLabel }: ProfilePageProps): react.JSX.Element;
 
 declare function useMediaQuery(query: string): boolean;
 
