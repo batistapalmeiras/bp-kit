@@ -13,12 +13,16 @@ export { BaseInput, ControlledBase, InputField } from './components/Inputs/BaseI
 export type { BaseInputProps } from './components/Inputs/BaseInput/types';
 export { Checkbox } from './components/Inputs/Checkbox';
 export type { CheckboxProps } from './components/Inputs/Checkbox/types';
+export { RadioGroup } from './components/Inputs/RadioGroup';
+export type { RadioGroupOption, RadioGroupProps } from './components/Inputs/RadioGroup/types';
 export { RawSelect, Select } from './components/Inputs/Select';
 export { TextInput } from './components/Inputs/TextInput';
 export type { CurrencyFieldProps, TextFieldProps } from './components/Inputs/TextInput/types';
 export { Modal, ModalActions, ModalTitle } from './components/Modal';
 export { Pagination } from './components/Pagination';
 export { PageHeader } from './components/PageHeader';
+export { SearchInput } from './components/SearchInput';
+export type { SearchInputProps } from './components/SearchInput/types';
 export { SegmentedControl } from './components/Inputs/SegmentedControl';
 export type { SegmentedControlOption, SegmentedControlTone } from './components/Inputs/SegmentedControl/types';
 export { Skeleton } from './components/Skeleton';
