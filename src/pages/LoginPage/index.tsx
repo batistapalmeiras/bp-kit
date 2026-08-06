@@ -6,6 +6,7 @@ import { Button } from '../../components/Button';
 import { TextInput } from '../../components/Inputs/TextInput';
 // Local
 import { useLogin } from './hooks';
+import { text } from '../../text';
 import {
   Brand,
   BrandMark,
@@ -66,12 +67,12 @@ export function LoginPage({ brand, resolveRoute }: LoginPageProps) {
 
           <Form onSubmit={handleSubmit(handleLogin)}>
             <TextInput
-              label="E-mail"
+              label={text.fields.email}
               control={control}
               name="email"
               type="email"
               autoFocus
-              placeholder="seu@email.com"
+              placeholder={text.fields.emailPlaceholder}
             />
             <TextInput
               label="Senha"

@@ -54,6 +54,9 @@ export * from './contexts';
 // Types
 export * from './types';
 
+// Text
+export { text } from './text';
+
 // Styles
 // Local
 import './styles/styled.d';

@@ -9,6 +9,7 @@ import { PageHeader } from '../../components/PageHeader';
 import { useToast } from '../../components/Toast';
 // Local
 import { useAuthCtx } from '../../hooks/useAuth';
+import { text } from '../../text';
 import { Actions, Identity, Name, RoleLabel, Section, SectionTitle, Wrap } from './styles';
 import { ProfileFormValues, profileSchema } from './validators';
 
@@ -47,13 +48,19 @@ export function ProfilePage({ roleLabel }: ProfilePageProps) {
 
       <Section>
         <SectionTitle>Informações pessoais</SectionTitle>
-        <TextInput label="Nome completo" control={control} name="name" placeholder="Nome e sobrenome" />
-        <TextInput label="E-mail de acesso" control={control} name="email" type="email" placeholder="seu@email.com" />
+        <TextInput label={text.fields.fullName} control={control} name="name" placeholder="Nome e sobrenome" />
+        <TextInput
+          label="E-mail de acesso"
+          control={control}
+          name="email"
+          type="email"
+          placeholder={text.fields.emailPlaceholder}
+        />
       </Section>
 
       <Actions>
         <Button variant="secondary" size="md" onClick={() => navigate(-1)}>
-          Cancelar
+          {text.actions.cancel}
         </Button>
         <Button variant="primary" size="md" onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>
           {isSubmitting ? 'Salvando...' : 'Salvar alterações'}
