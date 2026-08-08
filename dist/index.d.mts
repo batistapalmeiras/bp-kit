@@ -1,5 +1,5 @@
 import * as react from 'react';
-import react__default, { ButtonHTMLAttributes, ReactNode, InputHTMLAttributes, SelectHTMLAttributes, HTMLAttributes, ElementType } from 'react';
+import react__default, { ButtonHTMLAttributes, ReactNode, InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes, HTMLAttributes, ElementType } from 'react';
 import * as styled_components_dist_types from 'styled-components/dist/types';
 import * as styled_components from 'styled-components';
 import { FieldValues, FieldPath, Control, ControllerRenderProps } from 'react-hook-form';
@@ -128,6 +128,23 @@ interface RawSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 
 declare function RawSelect({ label, wrapperStyle, error, children, ...rest }: RawSelectProps): react.JSX.Element;
 declare function Select<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, children, }: SelectProps<T, N>): react.JSX.Element;
+
+interface TextareaProps<T extends FieldValues, N extends FieldPath<T>> {
+    label: string;
+    control: Control<T>;
+    name: N;
+    wrapperStyle?: React.CSSProperties;
+    placeholder?: string;
+    rows?: number;
+}
+interface RawTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+    label: string;
+    wrapperStyle?: React.CSSProperties;
+    error?: string;
+}
+
+declare function RawTextarea({ label, wrapperStyle, error, ...rest }: RawTextareaProps): react.JSX.Element;
+declare function Textarea<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, placeholder, rows, }: TextareaProps<T, N>): react.JSX.Element;
 
 interface BaseFieldProps<T extends FieldValues, N extends FieldPath<T>> {
     label: string;
@@ -341,6 +358,31 @@ declare function fetchProfile(client: SupabaseClient, userId: string): Promise<U
 declare function useAuth(client: SupabaseClient): AuthContextValue;
 declare function useAuthCtx(): AuthContextValue;
 
+declare const text: {
+    actions: {
+        cancel: string;
+        confirm: string;
+        remove: string;
+        actionsColumn: string;
+    };
+    fields: {
+        name: string;
+        fullName: string;
+        email: string;
+        emailPlaceholder: string;
+        phone: string;
+        status: string;
+    };
+    validation: {
+        required: (what: string) => string;
+        selectRequired: (what: string) => string;
+        emailInvalid: string;
+    };
+    feedback: {
+        loadError: string;
+    };
+};
+
 declare const theme: {
     readonly colors: {
         readonly primary: "#78b9a4";
@@ -545,4 +587,4 @@ declare function formatCPF(value: string): string;
 declare function formatCNPJ(value: string): string;
 declare function formatCpfCnpj(value: string): string;
 
-export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, Empty, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, Empty, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, Textarea, type TextareaProps, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };

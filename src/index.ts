@@ -16,6 +16,8 @@ export type { CheckboxProps } from './components/Inputs/Checkbox/types';
 export { RadioGroup } from './components/Inputs/RadioGroup';
 export type { RadioGroupOption, RadioGroupProps } from './components/Inputs/RadioGroup/types';
 export { RawSelect, Select } from './components/Inputs/Select';
+export { RawTextarea, Textarea } from './components/Inputs/Textarea';
+export type { RawTextareaProps, TextareaProps } from './components/Inputs/Textarea/types';
 export { TextInput } from './components/Inputs/TextInput';
 export type { CurrencyFieldProps, TextFieldProps } from './components/Inputs/TextInput/types';
 export { Modal, ModalActions, ModalTitle } from './components/Modal';
