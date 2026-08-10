@@ -19,6 +19,7 @@ export const StatsGrid = styled.div<{ $columns?: number }>`
 `;
 
 export const StatCard = styled.div<{ $tone?: StatTone }>`
+  min-width: 0;
   background: ${({ theme, $tone }) =>
     $tone === 'warning' ? theme.colors.warningSurface : $tone === 'danger' ? '#fff0f3' : theme.colors.canvas};
   border: 1px solid ${({ theme, $tone }) =>
