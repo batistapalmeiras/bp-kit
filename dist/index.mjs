@@ -1240,6 +1240,7 @@ var StatsGrid = styled23.div`
   }
 `;
 var StatCard = styled23.div`
+  min-width: 0;
   background: ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningSurface : $tone === "danger" ? "#fff0f3" : theme2.colors.canvas};
   border: 1px solid ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningBorder : $tone === "danger" ? "#ffd1da" : theme2.colors.hairline};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
@@ -1763,7 +1764,7 @@ var Brand2 = styled27.div`
   }
 
   @media (max-width: 768px) {
-    flex: none;
+    flex: 1;
     padding: ${({ theme: theme2 }) => theme2.spacing.xl} ${({ theme: theme2 }) => theme2.spacing.base};
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
   }
@@ -1843,8 +1844,16 @@ var FormPanel = styled27.div`
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
 
   @media (max-width: 768px) {
-  justify-content: flex-start;
-    padding: ${({ theme: theme2 }) => theme2.spacing.xl} ${({ theme: theme2 }) => theme2.spacing.base};
+    flex: none;
+    justify-content: flex-start;
+    padding: ${({ theme: theme2 }) => theme2.spacing.xl} ${({ theme: theme2 }) => theme2.spacing.base}
+      ${({ theme: theme2 }) => theme2.spacing.xxl};
+    border-radius: ${({ theme: theme2 }) => theme2.rounded.xl} ${({ theme: theme2 }) => theme2.rounded.xl} 0 0;
+    margin-top: -${({ theme: theme2 }) => theme2.rounded.lg};
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.05);
+    animation: ${slideUp} 0.35s ease;
   }
 `;
 var FormBox = styled27.div`
@@ -1872,6 +1881,11 @@ var Form = styled27.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
+`;
+var SubmitButton = styled27(Button)`
+  @media (max-width: 768px) {
+    border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  }
 `;
 var ErrorMsg = styled27.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
@@ -1935,7 +1949,7 @@ function LoginPage({ brand, resolveRoute }) {
           }
         ),
         /* @__PURE__ */ jsx24(
-          Button,
+          SubmitButton,
           {
             variant: "primary",
             size: "lg",

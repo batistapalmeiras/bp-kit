@@ -1,7 +1,8 @@
 // Libs
 import styled from 'styled-components';
 // Components
-import { fadeUp } from '../../../styles/animations';
+import { Button } from '../../../components/Button';
+import { fadeUp, slideUp } from '../../../styles/animations';
 
 export const Page = styled.div`
   min-height: 100vh;
@@ -38,7 +39,7 @@ export const Brand = styled.div`
   }
 
   @media (max-width: 768px) {
-    flex: none;
+    flex: 1;
     padding: ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.base};
     gap: ${({ theme }) => theme.spacing.md};
   }
@@ -124,8 +125,16 @@ export const FormPanel = styled.div`
   background: ${({ theme }) => theme.colors.canvas};
 
   @media (max-width: 768px) {
-  justify-content: flex-start;
-    padding: ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.base};
+    flex: none;
+    justify-content: flex-start;
+    padding: ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.base}
+      ${({ theme }) => theme.spacing.xxl};
+    border-radius: ${({ theme }) => theme.rounded.xl} ${({ theme }) => theme.rounded.xl} 0 0;
+    margin-top: -${({ theme }) => theme.rounded.lg};
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.05);
+    animation: ${slideUp} 0.35s ease;
   }
 `;
 
@@ -158,6 +167,12 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.md};
+`;
+
+export const SubmitButton = styled(Button)`
+  @media (max-width: 768px) {
+    border-radius: ${({ theme }) => theme.rounded.full};
+  }
 `;
 
 export const ErrorMsg = styled.p`

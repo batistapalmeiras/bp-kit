@@ -2,7 +2,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 // Components
-import { Button } from '../../components/Button';
 import { TextInput } from '../../components/Inputs/TextInput';
 // Local
 import { useLogin } from './hooks';
@@ -22,6 +21,7 @@ import {
   FormSubtitle,
   FormTitle,
   Page,
+  SubmitButton,
 } from './styles';
 import { LoginFormValues, loginSchema } from './validators';
 
@@ -81,7 +81,7 @@ export function LoginPage({ brand, resolveRoute }: LoginPageProps) {
               type="password"
               placeholder="Mínimo 6 caracteres"
             />
-            <Button
+            <SubmitButton
               variant="primary"
               size="lg"
               fullWidth
@@ -90,7 +90,7 @@ export function LoginPage({ brand, resolveRoute }: LoginPageProps) {
               style={{ marginTop: 8 }}
             >
               {submitting ? 'Entrando...' : 'Entrar'}
-            </Button>
+            </SubmitButton>
             {error && <ErrorMsg>{error}</ErrorMsg>}
           </Form>
         </FormBox>
