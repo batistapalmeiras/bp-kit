@@ -6,6 +6,7 @@ export type { ButtonProps } from './components/Button/types';
 export { Chip, ChipBar } from './components/Chip';
 export { Empty } from './components/Empty';
 export type { IEmptyProps } from './components/Empty';
+export { Form } from './components/Form';
 export { IconButton } from './components/IconButton';
 export type { IconButtonProps } from './components/IconButton/types';
 export { InfoBox } from './components/InfoBox';
