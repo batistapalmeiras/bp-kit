@@ -46,6 +46,7 @@ export const Panel = styled.div`
   position: absolute;
   top: calc(100% + ${({ theme }) => theme.spacing.xs});
   left: 0;
+  right: 0;
   z-index: 20;
   background: ${({ theme }) => theme.colors.canvas};
   border: 1px solid ${({ theme }) => theme.colors.hairline};

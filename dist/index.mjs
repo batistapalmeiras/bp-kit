@@ -599,6 +599,7 @@ var Panel = styled12.div`
   position: absolute;
   top: calc(100% + ${({ theme: theme2 }) => theme2.spacing.xs});
   left: 0;
+  right: 0;
   z-index: 20;
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
   border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
@@ -803,7 +804,6 @@ var MonthGrid = styled14.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-  width: 240px;
 `;
 var MonthCell = styled14.button`
   padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
