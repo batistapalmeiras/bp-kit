@@ -13,6 +13,10 @@ export { BaseInput, ControlledBase, InputField } from './components/Inputs/BaseI
 export type { BaseInputProps } from './components/Inputs/BaseInput/types';
 export { Checkbox } from './components/Inputs/Checkbox';
 export type { CheckboxProps } from './components/Inputs/Checkbox/types';
+export { DatePicker } from './components/Inputs/DatePicker';
+export type { DatePickerProps } from './components/Inputs/DatePicker/types';
+export { MonthPicker } from './components/Inputs/MonthPicker';
+export type { MonthPickerProps } from './components/Inputs/MonthPicker/types';
 export { RadioGroup } from './components/Inputs/RadioGroup';
 export type { RadioGroupOption, RadioGroupProps } from './components/Inputs/RadioGroup/types';
 export { RawSelect, Select } from './components/Inputs/Select';

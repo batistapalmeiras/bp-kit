@@ -98,6 +98,27 @@ interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'typ
 
 declare const Checkbox: react.ForwardRefExoticComponent<CheckboxProps & react.RefAttributes<HTMLInputElement>>;
 
+interface DatePickerProps<T extends FieldValues, N extends FieldPath<T>> {
+    label: string;
+    control: Control<T>;
+    name: N;
+    wrapperStyle?: React.CSSProperties;
+    placeholder?: string;
+    isDateDisabled?: (date: Date) => boolean;
+}
+
+declare function DatePicker<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, placeholder, isDateDisabled, }: DatePickerProps<T, N>): react.JSX.Element;
+
+interface MonthPickerProps<T extends FieldValues, N extends FieldPath<T>> {
+    label: string;
+    control: Control<T>;
+    name: N;
+    wrapperStyle?: React.CSSProperties;
+    placeholder?: string;
+}
+
+declare function MonthPicker<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, placeholder, }: MonthPickerProps<T, N>): react.JSX.Element;
+
 interface RadioGroupOption {
     value: string;
     label: string;
@@ -587,4 +608,4 @@ declare function formatCPF(value: string): string;
 declare function formatCNPJ(value: string): string;
 declare function formatCpfCnpj(value: string): string;
 
-export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, Empty, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, Textarea, type TextareaProps, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, Textarea, type TextareaProps, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };

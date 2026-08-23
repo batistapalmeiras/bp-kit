@@ -554,9 +554,351 @@ var Checkbox = forwardRef3(function Checkbox2({ label, ...rest }, ref) {
   ] });
 });
 
-// src/components/Inputs/RadioGroup/styles/RadioGroup.ts
+// src/components/Inputs/DatePicker/index.tsx
+import { useEffect, useRef, useState } from "react";
+import { useController } from "react-hook-form";
+import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+
+// src/components/Inputs/_shared/PickerElements.ts
 import styled12 from "styled-components";
-var HiddenInput2 = styled12.input`
+var Wrapper4 = styled12.div`
+  position: relative;
+`;
+var Trigger = styled12.button`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
+  width: 100%;
+  height: 56px;
+  padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: ${({ theme: theme2 }) => theme2.colors.borderStrong};
+  }
+
+  ${({ $open, theme: theme2 }) => $open && `
+    border-color: ${theme2.colors.ink};
+    border-width: 2px;
+    padding: 0 calc(${theme2.spacing.md} - 1px);
+  `}
+`;
+var Placeholder = styled12.span`
+  color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
+`;
+var Panel = styled12.div`
+  position: absolute;
+  top: calc(100% + ${({ theme: theme2 }) => theme2.spacing.xs});
+  left: 0;
+  z-index: 20;
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
+  box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
+  padding: ${({ theme: theme2 }) => theme2.spacing.base};
+  animation: ${fadeDown} 0.15s ease-out;
+`;
+var PanelHeader = styled12.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.base};
+`;
+var HeaderLabel = styled12.span`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.titleSm.fontSize};
+  font-weight: ${({ theme: theme2 }) => theme2.typography.titleSm.fontWeight};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+`;
+var NavButton = styled12.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong};
+  }
+`;
+
+// src/components/Inputs/DatePicker/styles/DatePicker.ts
+import styled13 from "styled-components";
+var WeekdayRow = styled13.div`
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.xs};
+`;
+var WeekdayLabel = styled13.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
+`;
+var DayGrid = styled13.div`
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+`;
+var DayCell = styled13.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primary : "transparent"};
+  color: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.onPrimary : theme2.colors.ink};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  font-weight: ${({ $selected, $today }) => $selected || $today ? 600 : 400};
+  box-shadow: ${({ theme: theme2, $today, $selected }) => $today && !$selected ? `inset 0 0 0 1px ${theme2.colors.ink}` : "none"};
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) {
+    background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primaryActive : theme2.colors.surfaceStrong};
+  }
+
+  &:disabled {
+    color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
+    cursor: not-allowed;
+  }
+`;
+
+// src/components/Inputs/DatePicker/index.tsx
+import { jsx as jsx10, jsxs as jsxs8 } from "react/jsx-runtime";
+var WEEKDAY_LABELS = ["dom", "seg", "ter", "qua", "qui", "sex", "s\xE1b"];
+var FULL_MONTH_LABELS = [
+  "janeiro",
+  "fevereiro",
+  "mar\xE7o",
+  "abril",
+  "maio",
+  "junho",
+  "julho",
+  "agosto",
+  "setembro",
+  "outubro",
+  "novembro",
+  "dezembro"
+];
+function parseDateValue(value) {
+  if (!value) return null;
+  const [y, m, d] = value.split("-").map(Number);
+  if (!y || !m || !d) return null;
+  return new Date(y, m - 1, d);
+}
+function formatDateValue(value) {
+  const date = parseDateValue(value);
+  if (!date) return null;
+  return `${date.getDate()} de ${FULL_MONTH_LABELS[date.getMonth()]} de ${date.getFullYear()}`;
+}
+function toDateKey(date) {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+function buildMonthGrid(year, month) {
+  const firstDay = new Date(year, month, 1);
+  const startOffset = firstDay.getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const cells = [];
+  for (let i = 0; i < startOffset; i++) cells.push(null);
+  for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
+  while (cells.length % 7 !== 0) cells.push(null);
+  return cells;
+}
+function DatePicker({
+  label,
+  control,
+  name,
+  wrapperStyle,
+  placeholder = "Selecione a data",
+  isDateDisabled
+}) {
+  var _a, _b;
+  const { field, fieldState } = useController({ control, name });
+  const [open, setOpen] = useState(false);
+  const selectedDate = parseDateValue(field.value);
+  const [viewDate, setViewDate] = useState(() => selectedDate != null ? selectedDate : /* @__PURE__ */ new Date());
+  const ref = useRef(null);
+  useEffect(() => {
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+  const today = /* @__PURE__ */ new Date();
+  const todayKey = toDateKey(today);
+  const selectedKey = selectedDate ? toDateKey(selectedDate) : null;
+  const cells = buildMonthGrid(viewDate.getFullYear(), viewDate.getMonth());
+  const changeMonth = (delta) => setViewDate((d) => new Date(d.getFullYear(), d.getMonth() + delta, 1));
+  const selectDay = (date) => {
+    field.onChange(toDateKey(date));
+    setOpen(false);
+  };
+  return /* @__PURE__ */ jsx10(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ jsxs8(Wrapper4, { ref, children: [
+    /* @__PURE__ */ jsxs8(Trigger, { type: "button", $open: open, onClick: () => setOpen((v) => !v), children: [
+      (_b = formatDateValue(field.value)) != null ? _b : /* @__PURE__ */ jsx10(Placeholder, { children: placeholder }),
+      /* @__PURE__ */ jsx10(Calendar, { size: 18 })
+    ] }),
+    open && /* @__PURE__ */ jsxs8(Panel, { children: [
+      /* @__PURE__ */ jsxs8(PanelHeader, { children: [
+        /* @__PURE__ */ jsx10(NavButton, { type: "button", onClick: () => changeMonth(-1), "aria-label": "M\xEAs anterior", children: /* @__PURE__ */ jsx10(ChevronLeft, { size: 18 }) }),
+        /* @__PURE__ */ jsxs8(HeaderLabel, { children: [
+          FULL_MONTH_LABELS[viewDate.getMonth()],
+          " de ",
+          viewDate.getFullYear()
+        ] }),
+        /* @__PURE__ */ jsx10(NavButton, { type: "button", onClick: () => changeMonth(1), "aria-label": "Pr\xF3ximo m\xEAs", children: /* @__PURE__ */ jsx10(ChevronRight, { size: 18 }) })
+      ] }),
+      /* @__PURE__ */ jsx10(WeekdayRow, { children: WEEKDAY_LABELS.map((w) => /* @__PURE__ */ jsx10(WeekdayLabel, { children: w }, w)) }),
+      /* @__PURE__ */ jsx10(DayGrid, { children: cells.map(
+        (date, i) => date ? /* @__PURE__ */ jsx10(
+          DayCell,
+          {
+            type: "button",
+            disabled: isDateDisabled ? isDateDisabled(date) : false,
+            $selected: toDateKey(date) === selectedKey,
+            $today: toDateKey(date) === todayKey,
+            onClick: () => selectDay(date),
+            children: date.getDate()
+          },
+          toDateKey(date)
+        ) : /* @__PURE__ */ jsx10("span", {}, `empty-${i}`)
+      ) })
+    ] })
+  ] }) });
+}
+
+// src/components/Inputs/MonthPicker/index.tsx
+import { useEffect as useEffect2, useRef as useRef2, useState as useState2 } from "react";
+import { useController as useController2 } from "react-hook-form";
+import { Calendar as Calendar2, ChevronLeft as ChevronLeft2, ChevronRight as ChevronRight2 } from "lucide-react";
+
+// src/components/Inputs/MonthPicker/styles/MonthPicker.ts
+import styled14 from "styled-components";
+var MonthGrid = styled14.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  width: 240px;
+`;
+var MonthCell = styled14.button`
+  padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
+  border: none;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primary : "transparent"};
+  color: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.onPrimary : theme2.colors.ink};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  font-weight: ${({ $selected }) => $selected ? 600 : 400};
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primaryActive : theme2.colors.surfaceStrong};
+  }
+`;
+
+// src/components/Inputs/MonthPicker/index.tsx
+import { jsx as jsx11, jsxs as jsxs9 } from "react/jsx-runtime";
+var MONTH_LABELS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+var FULL_MONTH_LABELS2 = [
+  "janeiro",
+  "fevereiro",
+  "mar\xE7o",
+  "abril",
+  "maio",
+  "junho",
+  "julho",
+  "agosto",
+  "setembro",
+  "outubro",
+  "novembro",
+  "dezembro"
+];
+function formatMonthValue(value) {
+  if (!value) return null;
+  const [year, month] = value.split("-").map(Number);
+  if (!year || !month) return null;
+  return `${FULL_MONTH_LABELS2[month - 1]} de ${year}`;
+}
+function MonthPicker({
+  label,
+  control,
+  name,
+  wrapperStyle,
+  placeholder = "Selecione o m\xEAs"
+}) {
+  var _a, _b;
+  const { field, fieldState } = useController2({ control, name });
+  const [open, setOpen] = useState2(false);
+  const [viewYear, setViewYear] = useState2(
+    () => field.value ? Number(String(field.value).split("-")[0]) : (/* @__PURE__ */ new Date()).getFullYear()
+  );
+  const ref = useRef2(null);
+  useEffect2(() => {
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+  const [selectedYear, selectedMonth] = field.value ? String(field.value).split("-").map(Number) : [null, null];
+  const selectMonth = (monthIndex) => {
+    field.onChange(`${viewYear}-${String(monthIndex + 1).padStart(2, "0")}`);
+    setOpen(false);
+  };
+  return /* @__PURE__ */ jsx11(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ jsxs9(Wrapper4, { ref, children: [
+    /* @__PURE__ */ jsxs9(Trigger, { type: "button", $open: open, onClick: () => setOpen((v) => !v), children: [
+      (_b = formatMonthValue(field.value)) != null ? _b : /* @__PURE__ */ jsx11(Placeholder, { children: placeholder }),
+      /* @__PURE__ */ jsx11(Calendar2, { size: 18 })
+    ] }),
+    open && /* @__PURE__ */ jsxs9(Panel, { children: [
+      /* @__PURE__ */ jsxs9(PanelHeader, { children: [
+        /* @__PURE__ */ jsx11(NavButton, { type: "button", onClick: () => setViewYear((y) => y - 1), "aria-label": "Ano anterior", children: /* @__PURE__ */ jsx11(ChevronLeft2, { size: 18 }) }),
+        /* @__PURE__ */ jsx11(HeaderLabel, { children: viewYear }),
+        /* @__PURE__ */ jsx11(NavButton, { type: "button", onClick: () => setViewYear((y) => y + 1), "aria-label": "Pr\xF3ximo ano", children: /* @__PURE__ */ jsx11(ChevronRight2, { size: 18 }) })
+      ] }),
+      /* @__PURE__ */ jsx11(MonthGrid, { children: MONTH_LABELS.map((monthLabel, i) => /* @__PURE__ */ jsx11(
+        MonthCell,
+        {
+          type: "button",
+          $selected: selectedYear === viewYear && selectedMonth === i + 1,
+          onClick: () => selectMonth(i),
+          children: monthLabel
+        },
+        monthLabel
+      )) })
+    ] })
+  ] }) });
+}
+
+// src/components/Inputs/RadioGroup/styles/RadioGroup.ts
+import styled15 from "styled-components";
+var HiddenInput2 = styled15.input`
   position: absolute;
   width: 20px;
   height: 20px;
@@ -568,7 +910,7 @@ var HiddenInput2 = styled12.input`
     cursor: not-allowed;
   }
 `;
-var Dot = styled12.span`
+var Dot = styled15.span`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -614,7 +956,7 @@ var Dot = styled12.span`
     opacity: 0.5;
   }
 `;
-var OptionWrapper = styled12.label`
+var OptionWrapper = styled15.label`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -629,12 +971,12 @@ var OptionWrapper = styled12.label`
     color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
   }
 `;
-var Group = styled12.div`
+var Group = styled15.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
 `;
-var GroupLabel = styled12.span`
+var GroupLabel = styled15.span`
   display: block;
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.caption.fontWeight};
@@ -644,12 +986,12 @@ var GroupLabel = styled12.span`
 `;
 
 // src/components/Inputs/RadioGroup/index.tsx
-import { jsx as jsx10, jsxs as jsxs8 } from "react/jsx-runtime";
+import { jsx as jsx12, jsxs as jsxs10 } from "react/jsx-runtime";
 function RadioGroup({ name, options, value, onChange, label, disabled }) {
-  return /* @__PURE__ */ jsxs8("div", { children: [
-    label && /* @__PURE__ */ jsx10(GroupLabel, { children: label }),
-    /* @__PURE__ */ jsx10(Group, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ jsxs8(OptionWrapper, { children: [
-      /* @__PURE__ */ jsx10(
+  return /* @__PURE__ */ jsxs10("div", { children: [
+    label && /* @__PURE__ */ jsx12(GroupLabel, { children: label }),
+    /* @__PURE__ */ jsx12(Group, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ jsxs10(OptionWrapper, { children: [
+      /* @__PURE__ */ jsx12(
         HiddenInput2,
         {
           type: "radio",
@@ -660,18 +1002,18 @@ function RadioGroup({ name, options, value, onChange, label, disabled }) {
           onChange: () => onChange == null ? void 0 : onChange(option.value)
         }
       ),
-      /* @__PURE__ */ jsx10(Dot, {}),
+      /* @__PURE__ */ jsx12(Dot, {}),
       option.label
     ] }, option.value)) })
   ] });
 }
 
 // src/components/Inputs/Select/index.tsx
-import { useController } from "react-hook-form";
+import { useController as useController3 } from "react-hook-form";
 
 // src/components/Inputs/Select/styles/Select.ts
-import styled13 from "styled-components";
-var SelectField = styled13.select`
+import styled16 from "styled-components";
+var SelectField = styled16.select`
   height: 56px;
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
@@ -696,9 +1038,9 @@ var SelectField = styled13.select`
 `;
 
 // src/components/Inputs/Select/index.tsx
-import { jsx as jsx11 } from "react/jsx-runtime";
+import { jsx as jsx13 } from "react/jsx-runtime";
 function RawSelect({ label, wrapperStyle, error, children, ...rest }) {
-  return /* @__PURE__ */ jsx11(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ jsx11(SelectField, { ...rest, children }) });
+  return /* @__PURE__ */ jsx13(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ jsx13(SelectField, { ...rest, children }) });
 }
 function Select({
   label,
@@ -708,16 +1050,16 @@ function Select({
   children
 }) {
   var _a, _b;
-  const { field, fieldState } = useController({ control, name });
-  return /* @__PURE__ */ jsx11(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ jsx11(SelectField, { value: (_b = field.value) != null ? _b : "", onChange: (e) => field.onChange(e.target.value), onBlur: field.onBlur, ref: field.ref, children }) });
+  const { field, fieldState } = useController3({ control, name });
+  return /* @__PURE__ */ jsx13(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ jsx13(SelectField, { value: (_b = field.value) != null ? _b : "", onChange: (e) => field.onChange(e.target.value), onBlur: field.onBlur, ref: field.ref, children }) });
 }
 
 // src/components/Inputs/Textarea/index.tsx
-import { useController as useController2 } from "react-hook-form";
+import { useController as useController4 } from "react-hook-form";
 
 // src/components/Inputs/Textarea/styles/Textarea.ts
-import styled14 from "styled-components";
-var TextareaField = styled14.textarea`
+import styled17 from "styled-components";
+var TextareaField = styled17.textarea`
   width: 100%;
   min-height: 140px;
   padding: ${({ theme: theme2 }) => theme2.spacing.sm} ${({ theme: theme2 }) => theme2.spacing.md};
@@ -754,9 +1096,9 @@ var TextareaField = styled14.textarea`
 `;
 
 // src/components/Inputs/Textarea/index.tsx
-import { jsx as jsx12 } from "react/jsx-runtime";
+import { jsx as jsx14 } from "react/jsx-runtime";
 function RawTextarea({ label, wrapperStyle, error, ...rest }) {
-  return /* @__PURE__ */ jsx12(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ jsx12(TextareaField, { ...rest }) });
+  return /* @__PURE__ */ jsx14(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ jsx14(TextareaField, { ...rest }) });
 }
 function Textarea({
   label,
@@ -767,8 +1109,8 @@ function Textarea({
   rows
 }) {
   var _a, _b;
-  const { field, fieldState } = useController2({ control, name });
-  return /* @__PURE__ */ jsx12(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ jsx12(
+  const { field, fieldState } = useController4({ control, name });
+  return /* @__PURE__ */ jsx14(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ jsx14(
     TextareaField,
     {
       placeholder,
@@ -782,7 +1124,7 @@ function Textarea({
 }
 
 // src/components/Inputs/TextInput/index.tsx
-import { useState } from "react";
+import { useState as useState3 } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 // src/utils/mask.ts
@@ -832,13 +1174,13 @@ function formatCpfCnpj(value) {
 }
 
 // src/components/Inputs/TextInput/styles/TextInput.ts
-import styled15 from "styled-components";
-var InputWrapper = styled15.div`
+import styled18 from "styled-components";
+var InputWrapper = styled18.div`
   position: relative;
   display: flex;
   align-items: center;
 `;
-var EyeButton = styled15.button`
+var EyeButton = styled18.button`
   position: absolute;
   right: 14px;
   background: none;
@@ -855,15 +1197,15 @@ var EyeButton = styled15.button`
 `;
 
 // src/components/Inputs/TextInput/index.tsx
-import { jsx as jsx13, jsxs as jsxs9 } from "react/jsx-runtime";
+import { jsx as jsx15, jsxs as jsxs11 } from "react/jsx-runtime";
 function TextInput(props) {
   const { label, control, name, wrapperStyle, placeholder, currency, mask, ...rest } = props;
   const isPassword = rest.type === "password";
-  const [showPassword, setShowPassword] = useState(false);
-  return /* @__PURE__ */ jsx13(ControlledBase, { label, control, name, wrapperStyle, children: (field) => {
+  const [showPassword, setShowPassword] = useState3(false);
+  return /* @__PURE__ */ jsx15(ControlledBase, { label, control, name, wrapperStyle, children: (field) => {
     var _a;
-    return /* @__PURE__ */ jsxs9(InputWrapper, { children: [
-      /* @__PURE__ */ jsx13(
+    return /* @__PURE__ */ jsxs11(InputWrapper, { children: [
+      /* @__PURE__ */ jsx15(
         InputField,
         {
           ...rest,
@@ -886,17 +1228,17 @@ function TextInput(props) {
           ref: field.ref
         }
       ),
-      isPassword && /* @__PURE__ */ jsx13(EyeButton, { type: "button", tabIndex: -1, onClick: () => setShowPassword((v) => !v), children: showPassword ? /* @__PURE__ */ jsx13(EyeOff, { size: 20 }) : /* @__PURE__ */ jsx13(Eye, { size: 20 }) })
+      isPassword && /* @__PURE__ */ jsx15(EyeButton, { type: "button", tabIndex: -1, onClick: () => setShowPassword((v) => !v), children: showPassword ? /* @__PURE__ */ jsx15(EyeOff, { size: 20 }) : /* @__PURE__ */ jsx15(Eye, { size: 20 }) })
     ] });
   } });
 }
 
 // src/components/Modal/index.tsx
-import { useEffect, useRef } from "react";
+import { useEffect as useEffect3, useRef as useRef3 } from "react";
 
 // src/components/Modal/styles/Modal.ts
-import styled16 from "styled-components";
-var Overlay2 = styled16.div`
+import styled19 from "styled-components";
+var Overlay2 = styled19.div`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
@@ -906,7 +1248,7 @@ var Overlay2 = styled16.div`
   z-index: 1000;
   animation: ${fadeIn} 0.2s ease;
 `;
-var Box3 = styled16.div`
+var Box3 = styled19.div`
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.lg};
   padding: 28px 32px;
@@ -924,13 +1266,13 @@ var Box3 = styled16.div`
     overflow-y: auto;
   }
 `;
-var ModalTitle = styled16.h3`
+var ModalTitle = styled19.h3`
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   margin-bottom: 24px;
 `;
-var ModalActions = styled16.div`
+var ModalActions = styled19.div`
   display: flex;
   justify-content: flex-end;
   gap: 8px;
@@ -938,10 +1280,10 @@ var ModalActions = styled16.div`
 `;
 
 // src/components/Modal/index.tsx
-import { jsx as jsx14 } from "react/jsx-runtime";
+import { jsx as jsx16 } from "react/jsx-runtime";
 function Modal({ children, close }) {
-  const boxRef = useRef(null);
-  useEffect(() => {
+  const boxRef = useRef3(null);
+  useEffect3(() => {
     var _a;
     (_a = boxRef.current) == null ? void 0 : _a.focus();
     const onKeyDown = (e) => {
@@ -950,19 +1292,19 @@ function Modal({ children, close }) {
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [close]);
-  return /* @__PURE__ */ jsx14(Overlay2, { onClick: close, children: /* @__PURE__ */ jsx14(Box3, { ref: boxRef, role: "dialog", "aria-modal": "true", tabIndex: -1, onClick: (e) => e.stopPropagation(), children }) });
+  return /* @__PURE__ */ jsx16(Overlay2, { onClick: close, children: /* @__PURE__ */ jsx16(Box3, { ref: boxRef, role: "dialog", "aria-modal": "true", tabIndex: -1, onClick: (e) => e.stopPropagation(), children }) });
 }
 
 // src/components/Pagination/styles/Pagination.ts
-import styled17 from "styled-components";
-var Wrapper4 = styled17.div`
+import styled20 from "styled-components";
+var Wrapper5 = styled20.div`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
   margin-top: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var PageButton = styled17.button`
+var PageButton = styled20.button`
   width: 36px;
   height: 36px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
@@ -983,12 +1325,12 @@ var PageButton = styled17.button`
 `;
 
 // src/components/Pagination/index.tsx
-import { jsx as jsx15, jsxs as jsxs10 } from "react/jsx-runtime";
+import { jsx as jsx17, jsxs as jsxs12 } from "react/jsx-runtime";
 function Pagination({ currentPage, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
-  return /* @__PURE__ */ jsxs10(Wrapper4, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
-    /* @__PURE__ */ jsx15(PageButton, { type: "button", "aria-label": "P\xE1gina anterior", onClick: () => onPageChange(currentPage - 1), disabled: currentPage === 1, children: /* @__PURE__ */ jsx15("span", { "aria-hidden": "true", children: "\u2039" }) }),
-    Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => /* @__PURE__ */ jsx15(
+  return /* @__PURE__ */ jsxs12(Wrapper5, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
+    /* @__PURE__ */ jsx17(PageButton, { type: "button", "aria-label": "P\xE1gina anterior", onClick: () => onPageChange(currentPage - 1), disabled: currentPage === 1, children: /* @__PURE__ */ jsx17("span", { "aria-hidden": "true", children: "\u2039" }) }),
+    Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => /* @__PURE__ */ jsx17(
       PageButton,
       {
         type: "button",
@@ -1000,7 +1342,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
       },
       page
     )),
-    /* @__PURE__ */ jsx15(PageButton, { type: "button", "aria-label": "Pr\xF3xima p\xE1gina", onClick: () => onPageChange(currentPage + 1), disabled: currentPage === totalPages, children: /* @__PURE__ */ jsx15("span", { "aria-hidden": "true", children: "\u203A" }) })
+    /* @__PURE__ */ jsx17(PageButton, { type: "button", "aria-label": "Pr\xF3xima p\xE1gina", onClick: () => onPageChange(currentPage + 1), disabled: currentPage === totalPages, children: /* @__PURE__ */ jsx17("span", { "aria-hidden": "true", children: "\u203A" }) })
   ] });
 }
 
@@ -1009,11 +1351,11 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
 // src/components/PageHeader/styles/PageHeader.ts
-import styled18 from "styled-components";
-var Wrapper5 = styled18.div`
+import styled21 from "styled-components";
+var Wrapper6 = styled21.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var Back = styled18.button`
+var Back = styled21.button`
   display: inline-flex;
   align-items: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
@@ -1028,45 +1370,45 @@ var Back = styled18.button`
 
   &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
 `;
-var Row = styled18.div`
+var Row = styled21.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.base};
 `;
-var Titles = styled18.div`
+var Titles = styled21.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
 `;
-var Title = styled18.h2`
+var Title = styled21.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   line-height: 1.2;
 `;
-var Subtitle = styled18.p`
+var Subtitle = styled21.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
 
 // src/components/PageHeader/index.tsx
-import { jsx as jsx16, jsxs as jsxs11 } from "react/jsx-runtime";
+import { jsx as jsx18, jsxs as jsxs13 } from "react/jsx-runtime";
 function PageHeader({ title, subtitle, back, action }) {
   const navigate = useNavigate();
-  return /* @__PURE__ */ jsxs11(Wrapper5, { children: [
-    back && /* @__PURE__ */ jsxs11(Back, { onClick: () => navigate(-1), children: [
-      /* @__PURE__ */ jsx16(ArrowLeft, { size: 15 }),
+  return /* @__PURE__ */ jsxs13(Wrapper6, { children: [
+    back && /* @__PURE__ */ jsxs13(Back, { onClick: () => navigate(-1), children: [
+      /* @__PURE__ */ jsx18(ArrowLeft, { size: 15 }),
       "Voltar"
     ] }),
-    /* @__PURE__ */ jsxs11(Row, { children: [
-      /* @__PURE__ */ jsxs11(Titles, { children: [
-        /* @__PURE__ */ jsx16(Title, { children: title }),
-        subtitle && /* @__PURE__ */ jsx16(Subtitle, { children: subtitle })
+    /* @__PURE__ */ jsxs13(Row, { children: [
+      /* @__PURE__ */ jsxs13(Titles, { children: [
+        /* @__PURE__ */ jsx18(Title, { children: title }),
+        subtitle && /* @__PURE__ */ jsx18(Subtitle, { children: subtitle })
       ] }),
-      action && /* @__PURE__ */ jsx16("div", { children: action })
+      action && /* @__PURE__ */ jsx18("div", { children: action })
     ] })
   ] });
 }
@@ -1075,8 +1417,8 @@ function PageHeader({ title, subtitle, back, action }) {
 import { Search } from "lucide-react";
 
 // src/components/SearchInput/styles/SearchInput.ts
-import styled19 from "styled-components";
-var Wrapper6 = styled19.div`
+import styled22 from "styled-components";
+var Wrapper7 = styled22.div`
   position: relative;
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
 
@@ -1089,7 +1431,7 @@ var Wrapper6 = styled19.div`
     pointer-events: none;
   }
 `;
-var Field = styled19.input`
+var Field = styled22.input`
   width: 100%;
   height: 40px;
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.base} 0 36px;
@@ -1112,22 +1454,22 @@ var Field = styled19.input`
 `;
 
 // src/components/SearchInput/index.tsx
-import { jsx as jsx17, jsxs as jsxs12 } from "react/jsx-runtime";
+import { jsx as jsx19, jsxs as jsxs14 } from "react/jsx-runtime";
 function SearchInput({ value, onChange, placeholder }) {
-  return /* @__PURE__ */ jsxs12(Wrapper6, { children: [
-    /* @__PURE__ */ jsx17(Search, { size: 16 }),
-    /* @__PURE__ */ jsx17(Field, { placeholder, value, onChange: (e) => onChange(e.target.value) })
+  return /* @__PURE__ */ jsxs14(Wrapper7, { children: [
+    /* @__PURE__ */ jsx19(Search, { size: 16 }),
+    /* @__PURE__ */ jsx19(Field, { placeholder, value, onChange: (e) => onChange(e.target.value) })
   ] });
 }
 
 // src/components/Inputs/SegmentedControl/styles/SegmentedControl.ts
-import styled20 from "styled-components";
-var Wrap = styled20.div`
+import styled23 from "styled-components";
+var Wrap = styled23.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Label2 = styled20.p`
+var Label2 = styled23.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -1135,7 +1477,7 @@ var Label2 = styled20.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var Toggle = styled20.div`
+var Toggle = styled23.div`
   display: grid;
   grid-auto-columns: 1fr;
   grid-auto-flow: column;
@@ -1143,7 +1485,7 @@ var Toggle = styled20.div`
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
   overflow: hidden;
 `;
-var Btn = styled20.button`
+var Btn = styled23.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1164,7 +1506,7 @@ var Btn = styled20.button`
 `;
 
 // src/components/Inputs/SegmentedControl/index.tsx
-import { jsx as jsx18, jsxs as jsxs13 } from "react/jsx-runtime";
+import { jsx as jsx20, jsxs as jsxs15 } from "react/jsx-runtime";
 function SegmentedControl({
   value,
   onChange,
@@ -1172,9 +1514,9 @@ function SegmentedControl({
   label,
   tone = "ink"
 }) {
-  return /* @__PURE__ */ jsxs13(Wrap, { children: [
-    label && /* @__PURE__ */ jsx18(Label2, { children: label }),
-    /* @__PURE__ */ jsx18(Toggle, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ jsx18(
+  return /* @__PURE__ */ jsxs15(Wrap, { children: [
+    label && /* @__PURE__ */ jsx20(Label2, { children: label }),
+    /* @__PURE__ */ jsx20(Toggle, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ jsx20(
       Btn,
       {
         type: "button",
@@ -1191,12 +1533,12 @@ function SegmentedControl({
 }
 
 // src/components/Skeleton/styles/Skeleton.ts
-import styled21, { keyframes as keyframes2 } from "styled-components";
+import styled24, { keyframes as keyframes2 } from "styled-components";
 var pulse = keyframes2`
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.4; }
 `;
-var Skeleton = styled21.div`
+var Skeleton = styled24.div`
   height: ${({ $h }) => $h != null ? $h : "16px"};
   width: ${({ $w }) => $w != null ? $w : "100%"};
   border-radius: 6px;
@@ -1205,9 +1547,9 @@ var Skeleton = styled21.div`
 `;
 
 // src/components/StatusBadge/index.tsx
-import styled22 from "styled-components";
-import { jsx as jsx19 } from "react/jsx-runtime";
-var StyledBadge = styled22.span`
+import styled25 from "styled-components";
+import { jsx as jsx21 } from "react/jsx-runtime";
+var StyledBadge = styled25.span`
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -1220,12 +1562,12 @@ var StyledBadge = styled22.span`
   ${({ $tone, theme: theme2 }) => $tone === "success" ? `background: ${theme2.colors.successSurface}; color: ${theme2.colors.success}; border: 1px solid ${theme2.colors.successBorder};` : `background: ${theme2.colors.warningSurface}; color: ${theme2.colors.warning}; border: 1px solid ${theme2.colors.warningBorder};`}
 `;
 function StatusBadge({ tone, children }) {
-  return /* @__PURE__ */ jsx19(StyledBadge, { $tone: tone, children });
+  return /* @__PURE__ */ jsx21(StyledBadge, { $tone: tone, children });
 }
 
 // src/components/StatsGrid/styles/StatsGrid.ts
-import styled23 from "styled-components";
-var StatsGrid = styled23.div`
+import styled26 from "styled-components";
+var StatsGrid = styled26.div`
   display: grid;
   grid-template-columns: repeat(${({ $columns }) => $columns != null ? $columns : 4}, 1fr);
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
@@ -1239,7 +1581,7 @@ var StatsGrid = styled23.div`
     grid-template-columns: 1fr;
   }
 `;
-var StatCard = styled23.div`
+var StatCard = styled26.div`
   min-width: 0;
   background: ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningSurface : $tone === "danger" ? "#fff0f3" : theme2.colors.canvas};
   border: 1px solid ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningBorder : $tone === "danger" ? "#ffd1da" : theme2.colors.hairline};
@@ -1247,7 +1589,7 @@ var StatCard = styled23.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.base};
   box-shadow: ${({ theme: theme2 }) => theme2.shadows.sm};
 `;
-var StatLabel = styled23.p`
+var StatLabel = styled26.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
@@ -1256,7 +1598,7 @@ var StatLabel = styled23.p`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-var StatValue = styled23.p`
+var StatValue = styled26.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -1265,8 +1607,8 @@ var StatValue = styled23.p`
 `;
 
 // src/components/SummaryCard/styles/SummaryCard.ts
-import styled24 from "styled-components";
-var Card2 = styled24.div`
+import styled27 from "styled-components";
+var Card2 = styled27.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -1292,7 +1634,7 @@ var Card2 = styled24.div`
     animation: ${fadeUp} 0.2s ease;
   }
 `;
-var Label3 = styled24.p`
+var Label3 = styled27.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -1301,14 +1643,14 @@ var Label3 = styled24.p`
   letter-spacing: 0.5px;
   margin: 0;
 `;
-var Row2 = styled24.div`
+var Row2 = styled27.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
   width: 100%;
 `;
-var Info2 = styled24.div`
+var Info2 = styled27.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1316,16 +1658,16 @@ var Info2 = styled24.div`
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
   width: 100%;
 `;
-var Items = styled24.span`
+var Items = styled27.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
   flex: 1;
 `;
-var EmptyMessage = styled24(Items)`
+var EmptyMessage = styled27(Items)`
   text-align: center;
 `;
-var Total = styled24.span`
+var Total = styled27.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -1335,20 +1677,20 @@ var Total = styled24.span`
   min-width: fit-content;
   margin-left: ${({ theme: theme2 }) => theme2.spacing.sm};
 `;
-var ItemDetail = styled24.div`
+var ItemDetail = styled27.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
   padding: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
 `;
-var ItemDetailName = styled24.span`
+var ItemDetailName = styled27.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   flex: 1;
 `;
-var ItemDetailPrice = styled24.span`
+var ItemDetailPrice = styled27.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
@@ -1356,12 +1698,12 @@ var ItemDetailPrice = styled24.span`
   flex-shrink: 0;
   text-align: right;
 `;
-var Divider = styled24.hr`
+var Divider = styled27.hr`
   border: none;
   border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
 `;
-var ButtonRow = styled24.div`
+var ButtonRow = styled27.div`
   display: flex;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
 
@@ -1371,7 +1713,7 @@ var ButtonRow = styled24.div`
 `;
 
 // src/components/SummaryCard/index.tsx
-import { Fragment as Fragment4, jsx as jsx20, jsxs as jsxs14 } from "react/jsx-runtime";
+import { Fragment as Fragment4, jsx as jsx22, jsxs as jsxs16 } from "react/jsx-runtime";
 function SummaryCard({
   label = "Resumo",
   items,
@@ -1387,24 +1729,24 @@ function SummaryCard({
   const hasSubtotals = items.some((item) => item.subtotal !== void 0);
   const itemsText = items.map((item) => `${item.qty}\xD7 ${item.name}`).join(", ");
   const isEmpty = items.length === 0;
-  return /* @__PURE__ */ jsxs14(Card2, { $bottomOffset: bottomOffset, children: [
-    /* @__PURE__ */ jsx20(Label3, { style: { marginBottom: 0 }, children: label }),
-    isEmpty ? /* @__PURE__ */ jsx20(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ jsx20("div", { children: items.map((item) => /* @__PURE__ */ jsxs14(ItemDetail, { children: [
-      /* @__PURE__ */ jsxs14(ItemDetailName, { children: [
+  return /* @__PURE__ */ jsxs16(Card2, { $bottomOffset: bottomOffset, children: [
+    /* @__PURE__ */ jsx22(Label3, { style: { marginBottom: 0 }, children: label }),
+    isEmpty ? /* @__PURE__ */ jsx22(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ jsx22("div", { children: items.map((item) => /* @__PURE__ */ jsxs16(ItemDetail, { children: [
+      /* @__PURE__ */ jsxs16(ItemDetailName, { children: [
         item.qty,
         "\xD7 ",
         item.name
       ] }),
-      item.subtotal !== void 0 && /* @__PURE__ */ jsx20(ItemDetailPrice, { children: formatCurrency(item.subtotal) })
-    ] }, item.name)) }) : /* @__PURE__ */ jsxs14(Row2, { children: [
-      /* @__PURE__ */ jsx20(Items, { children: itemsText }),
-      /* @__PURE__ */ jsx20(Total, { children: formatCurrency(total) })
+      item.subtotal !== void 0 && /* @__PURE__ */ jsx22(ItemDetailPrice, { children: formatCurrency(item.subtotal) })
+    ] }, item.name)) }) : /* @__PURE__ */ jsxs16(Row2, { children: [
+      /* @__PURE__ */ jsx22(Items, { children: itemsText }),
+      /* @__PURE__ */ jsx22(Total, { children: formatCurrency(total) })
     ] }),
-    !isEmpty && hasSubtotals && /* @__PURE__ */ jsxs14(Fragment4, { children: [
-      /* @__PURE__ */ jsx20(Divider, {}),
-      /* @__PURE__ */ jsx20(Row2, { children: /* @__PURE__ */ jsx20(Info2, { children: /* @__PURE__ */ jsx20(Total, { children: formatCurrency(total) }) }) })
+    !isEmpty && hasSubtotals && /* @__PURE__ */ jsxs16(Fragment4, { children: [
+      /* @__PURE__ */ jsx22(Divider, {}),
+      /* @__PURE__ */ jsx22(Row2, { children: /* @__PURE__ */ jsx22(Info2, { children: /* @__PURE__ */ jsx22(Total, { children: formatCurrency(total) }) }) })
     ] }),
-    buttons && buttons.length > 0 ? /* @__PURE__ */ jsx20(ButtonRow, { children: buttons.map((btn, idx) => /* @__PURE__ */ jsx20(
+    buttons && buttons.length > 0 ? /* @__PURE__ */ jsx22(ButtonRow, { children: buttons.map((btn, idx) => /* @__PURE__ */ jsx22(
       Button,
       {
         variant: btn.variant || "primary",
@@ -1415,7 +1757,7 @@ function SummaryCard({
         children: btn.loading ? `${btn.text}...` : btn.text
       },
       idx
-    )) }) : onConfirm ? /* @__PURE__ */ jsx20(
+    )) }) : onConfirm ? /* @__PURE__ */ jsx22(
       Button,
       {
         variant: "primary",
@@ -1430,14 +1772,14 @@ function SummaryCard({
 }
 
 // src/components/Tabs/styles/Tabs.ts
-import styled25 from "styled-components";
-var TabBar = styled25.div.attrs({ role: "tablist" })`
+import styled28 from "styled-components";
+var TabBar = styled28.div.attrs({ role: "tablist" })`
   display: flex;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Tab = styled25.button.attrs(({ $active }) => ({
+var Tab = styled28.button.attrs(({ $active }) => ({
   type: "button",
   role: "tab",
   "aria-selected": $active
@@ -1460,7 +1802,7 @@ var Tab = styled25.button.attrs(({ $active }) => ({
 
   &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
 `;
-var TabBadge = styled25.span`
+var TabBadge = styled28.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1479,12 +1821,12 @@ var TabBadge = styled25.span`
 import { createPortal as createPortal2 } from "react-dom";
 
 // src/components/Toast/styles/Toast.ts
-import styled26, { keyframes as keyframes3 } from "styled-components";
+import styled29, { keyframes as keyframes3 } from "styled-components";
 var fadeOut = keyframes3`
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(8px); }
 `;
-var ToastEl = styled26.div`
+var ToastEl = styled29.div`
   position: fixed;
   bottom: 80px;
   left: 0;
@@ -1507,11 +1849,11 @@ var ToastEl = styled26.div`
 `;
 
 // src/components/Toast/hooks/useToast.tsx
-import { useCallback, useRef as useRef2, useState as useState2 } from "react";
-import { jsx as jsx21 } from "react/jsx-runtime";
+import { useCallback, useRef as useRef4, useState as useState4 } from "react";
+import { jsx as jsx23 } from "react/jsx-runtime";
 function useToast(duration = 2500) {
-  const [state, setState] = useState2(null);
-  const timerRef = useRef2(null);
+  const [state, setState] = useState4(null);
+  const timerRef = useRef4(null);
   const show = useCallback(
     (message) => {
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -1523,14 +1865,14 @@ function useToast(duration = 2500) {
     },
     [duration]
   );
-  const toast = state ? /* @__PURE__ */ jsx21(Toast, { message: state.message, leaving: state.leaving }) : null;
+  const toast = state ? /* @__PURE__ */ jsx23(Toast, { message: state.message, leaving: state.leaving }) : null;
   return { show, toast };
 }
 
 // src/components/Toast/index.tsx
-import { jsx as jsx22 } from "react/jsx-runtime";
+import { jsx as jsx24 } from "react/jsx-runtime";
 function Toast({ message, leaving }) {
-  return createPortal2(/* @__PURE__ */ jsx22(ToastEl, { $leaving: leaving, children: message }), document.body);
+  return createPortal2(/* @__PURE__ */ jsx24(ToastEl, { $leaving: leaving, children: message }), document.body);
 }
 
 // src/pages/LoginPage/index.tsx
@@ -1538,19 +1880,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 // src/pages/LoginPage/hooks/useLogin.ts
-import { useEffect as useEffect3, useState as useState4 } from "react";
+import { useEffect as useEffect5, useState as useState6 } from "react";
 import { useNavigate as useNavigate2 } from "react-router-dom";
 
 // src/hooks/useAuth.ts
-import { useCallback as useCallback2, useContext, useEffect as useEffect2, useMemo, useState as useState3 } from "react";
+import { useCallback as useCallback2, useContext, useEffect as useEffect4, useMemo, useState as useState5 } from "react";
 
 // src/contexts/AuthContext.tsx
 import { createContext } from "react";
-import { jsx as jsx23 } from "react/jsx-runtime";
+import { jsx as jsx25 } from "react/jsx-runtime";
 var AuthContext = createContext(null);
 function AuthProvider({ client, children }) {
   const authValue = useAuth(client);
-  return /* @__PURE__ */ jsx23(AuthContext.Provider, { value: authValue, children });
+  return /* @__PURE__ */ jsx25(AuthContext.Provider, { value: authValue, children });
 }
 
 // src/hooks/useAuth.ts
@@ -1569,12 +1911,12 @@ async function fetchProfile(client, userId) {
   }
 }
 function useAuth(client) {
-  const [user, setUser] = useState3(null);
-  const [userEmail, setUserEmail] = useState3("");
-  const [loading, setLoading] = useState3(true);
-  const [error, setError] = useState3(null);
-  const [sessionUser, setSessionUser] = useState3(void 0);
-  useEffect2(() => {
+  const [user, setUser] = useState5(null);
+  const [userEmail, setUserEmail] = useState5("");
+  const [loading, setLoading] = useState5(true);
+  const [error, setError] = useState5(null);
+  const [sessionUser, setSessionUser] = useState5(void 0);
+  useEffect4(() => {
     const { data: listener } = client.auth.onAuthStateChange((_event, session) => {
       setSessionUser((prev) => {
         var _a;
@@ -1608,7 +1950,7 @@ function useAuth(client) {
       listener == null ? void 0 : listener.subscription.unsubscribe();
     };
   }, [client]);
-  useEffect2(() => {
+  useEffect4(() => {
     if (sessionUser === void 0) return;
     if (!sessionUser) {
       setUser(null);
@@ -1674,11 +2016,11 @@ function useAuthCtx() {
 
 // src/pages/LoginPage/hooks/useLogin.ts
 function useLogin(resolveRoute) {
-  const [error, setError] = useState4("");
-  const [submitting, setSubmitting] = useState4(false);
+  const [error, setError] = useState6("");
+  const [submitting, setSubmitting] = useState6(false);
   const { login, user } = useAuthCtx();
   const navigate = useNavigate2();
-  useEffect3(() => {
+  useEffect5(() => {
     if (user) {
       navigate(resolveRoute(user.role), { replace: true });
     }
@@ -1729,8 +2071,8 @@ var feedback = {
 var text = { actions, fields, validation, feedback };
 
 // src/pages/LoginPage/styles/Login.ts
-import styled27 from "styled-components";
-var Page = styled27.div`
+import styled30 from "styled-components";
+var Page = styled30.div`
   min-height: 100vh;
   display: flex;
 
@@ -1738,7 +2080,7 @@ var Page = styled27.div`
     flex-direction: column;
   }
 `;
-var Brand2 = styled27.div`
+var Brand2 = styled30.div`
   flex: 0 0 420px;
   background: ${({ theme: theme2 }) => theme2.colors.primary};
   display: flex;
@@ -1769,7 +2111,7 @@ var Brand2 = styled27.div`
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
   }
 `;
-var BrandMark = styled27.div`
+var BrandMark = styled30.div`
   width: 80px;
   height: 80px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
@@ -1795,13 +2137,13 @@ var BrandMark = styled27.div`
     img { width: 38px; height: 38px; }
   }
 `;
-var BrandText = styled27.div`
+var BrandText = styled30.div`
   text-align: center;
   color: #fff;
   position: relative;
   z-index: 1;
 `;
-var BrandName2 = styled27.h1`
+var BrandName2 = styled30.h1`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.625rem;
   font-weight: 700;
@@ -1813,13 +2155,13 @@ var BrandName2 = styled27.h1`
     font-size: 1.25rem;
   }
 `;
-var BrandSub = styled27.p`
+var BrandSub = styled30.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   opacity: 0.75;
   line-height: 1.4;
 `;
-var BrandQuote = styled27.blockquote`
+var BrandQuote = styled30.blockquote`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: rgba(255, 255, 255, 0.6);
@@ -1834,7 +2176,7 @@ var BrandQuote = styled27.blockquote`
     display: none;
   }
 `;
-var FormPanel = styled27.div`
+var FormPanel = styled30.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -1856,15 +2198,15 @@ var FormPanel = styled27.div`
     animation: ${slideUp} 0.35s ease;
   }
 `;
-var FormBox = styled27.div`
+var FormBox = styled30.div`
   width: 100%;
   max-width: 400px;
   animation: ${fadeUp} 0.35s ease;
 `;
-var FormHeader = styled27.div`
+var FormHeader = styled30.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var FormTitle = styled27.h2`
+var FormTitle = styled30.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.375rem;
   font-weight: 700;
@@ -1872,22 +2214,22 @@ var FormTitle = styled27.h2`
   letter-spacing: -0.3px;
   margin-bottom: 6px;
 `;
-var FormSubtitle = styled27.p`
+var FormSubtitle = styled30.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Form = styled27.form`
+var Form = styled30.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SubmitButton = styled27(Button)`
+var SubmitButton = styled30(Button)`
   @media (max-width: 768px) {
     border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
   }
 `;
-var ErrorMsg = styled27.p`
+var ErrorMsg = styled30.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
   background: #fef2f2;
@@ -1905,29 +2247,29 @@ var loginSchema = z.object({
 });
 
 // src/pages/LoginPage/index.tsx
-import { jsx as jsx24, jsxs as jsxs15 } from "react/jsx-runtime";
+import { jsx as jsx26, jsxs as jsxs17 } from "react/jsx-runtime";
 function LoginPage({ brand, resolveRoute }) {
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" }
   });
-  return /* @__PURE__ */ jsxs15(Page, { children: [
-    /* @__PURE__ */ jsxs15(Brand2, { children: [
-      /* @__PURE__ */ jsx24(BrandMark, { children: /* @__PURE__ */ jsx24("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ jsxs15(BrandText, { children: [
-        /* @__PURE__ */ jsx24(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ jsx24(BrandSub, { children: brand.sub })
+  return /* @__PURE__ */ jsxs17(Page, { children: [
+    /* @__PURE__ */ jsxs17(Brand2, { children: [
+      /* @__PURE__ */ jsx26(BrandMark, { children: /* @__PURE__ */ jsx26("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ jsxs17(BrandText, { children: [
+        /* @__PURE__ */ jsx26(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ jsx26(BrandSub, { children: brand.sub })
       ] }),
-      brand.quote && /* @__PURE__ */ jsx24(BrandQuote, { children: brand.quote })
+      brand.quote && /* @__PURE__ */ jsx26(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ jsx24(FormPanel, { children: /* @__PURE__ */ jsxs15(FormBox, { children: [
-      /* @__PURE__ */ jsxs15(FormHeader, { children: [
-        /* @__PURE__ */ jsx24(FormTitle, { children: "Bem-vindo" }),
-        /* @__PURE__ */ jsx24(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
+    /* @__PURE__ */ jsx26(FormPanel, { children: /* @__PURE__ */ jsxs17(FormBox, { children: [
+      /* @__PURE__ */ jsxs17(FormHeader, { children: [
+        /* @__PURE__ */ jsx26(FormTitle, { children: "Bem-vindo" }),
+        /* @__PURE__ */ jsx26(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
       ] }),
-      /* @__PURE__ */ jsxs15(Form, { onSubmit: handleSubmit(handleLogin), children: [
-        /* @__PURE__ */ jsx24(
+      /* @__PURE__ */ jsxs17(Form, { onSubmit: handleSubmit(handleLogin), children: [
+        /* @__PURE__ */ jsx26(
           TextInput,
           {
             label: text.fields.email,
@@ -1938,7 +2280,7 @@ function LoginPage({ brand, resolveRoute }) {
             placeholder: text.fields.emailPlaceholder
           }
         ),
-        /* @__PURE__ */ jsx24(
+        /* @__PURE__ */ jsx26(
           TextInput,
           {
             label: "Senha",
@@ -1948,7 +2290,7 @@ function LoginPage({ brand, resolveRoute }) {
             placeholder: "M\xEDnimo 6 caracteres"
           }
         ),
-        /* @__PURE__ */ jsx24(
+        /* @__PURE__ */ jsx26(
           SubmitButton,
           {
             variant: "primary",
@@ -1960,7 +2302,7 @@ function LoginPage({ brand, resolveRoute }) {
             children: submitting ? "Entrando..." : "Entrar"
           }
         ),
-        error && /* @__PURE__ */ jsx24(ErrorMsg, { children: error })
+        error && /* @__PURE__ */ jsx26(ErrorMsg, { children: error })
       ] })
     ] }) })
   ] });
@@ -1972,15 +2314,15 @@ import { useForm as useForm2 } from "react-hook-form";
 import { useNavigate as useNavigate3 } from "react-router-dom";
 
 // src/pages/ProfilePage/styles/ProfilePage.ts
-import styled28 from "styled-components";
-var Wrap2 = styled28.div`
+import styled31 from "styled-components";
+var Wrap2 = styled31.div`
   max-width: 560px;
 `;
-var Identity = styled28.div`
+var Identity = styled31.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Name = styled28.h2`
+var Name = styled31.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -1988,18 +2330,18 @@ var Name = styled28.h2`
   line-height: 1.1;
   margin-bottom: 4px;
 `;
-var RoleLabel = styled28.p`
+var RoleLabel = styled31.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Section = styled28.div`
+var Section = styled31.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SectionTitle = styled28.p`
+var SectionTitle = styled31.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -2007,7 +2349,7 @@ var SectionTitle = styled28.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var Actions = styled28.div`
+var Actions = styled31.div`
   display: flex;
   justify-content: flex-end;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -2027,7 +2369,7 @@ var profileSchema = z2.object({
 });
 
 // src/pages/ProfilePage/index.tsx
-import { jsx as jsx25, jsxs as jsxs16 } from "react/jsx-runtime";
+import { jsx as jsx27, jsxs as jsxs18 } from "react/jsx-runtime";
 function ProfilePage({ roleLabel }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
@@ -2045,16 +2387,16 @@ function ProfilePage({ roleLabel }) {
     const err = await updateProfile(data.name, data.email);
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
   };
-  return /* @__PURE__ */ jsxs16(Wrap2, { children: [
-    /* @__PURE__ */ jsx25(PageHeader, { title: "Meu perfil", back: true }),
-    /* @__PURE__ */ jsxs16(Identity, { children: [
-      /* @__PURE__ */ jsx25(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
-      roleLabel && /* @__PURE__ */ jsx25(RoleLabel, { children: roleLabel })
+  return /* @__PURE__ */ jsxs18(Wrap2, { children: [
+    /* @__PURE__ */ jsx27(PageHeader, { title: "Meu perfil", back: true }),
+    /* @__PURE__ */ jsxs18(Identity, { children: [
+      /* @__PURE__ */ jsx27(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
+      roleLabel && /* @__PURE__ */ jsx27(RoleLabel, { children: roleLabel })
     ] }),
-    /* @__PURE__ */ jsxs16(Section, { children: [
-      /* @__PURE__ */ jsx25(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
-      /* @__PURE__ */ jsx25(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
-      /* @__PURE__ */ jsx25(
+    /* @__PURE__ */ jsxs18(Section, { children: [
+      /* @__PURE__ */ jsx27(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
+      /* @__PURE__ */ jsx27(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
+      /* @__PURE__ */ jsx27(
         TextInput,
         {
           label: "E-mail de acesso",
@@ -2065,19 +2407,19 @@ function ProfilePage({ roleLabel }) {
         }
       )
     ] }),
-    /* @__PURE__ */ jsxs16(Actions, { children: [
-      /* @__PURE__ */ jsx25(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
-      /* @__PURE__ */ jsx25(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es" })
+    /* @__PURE__ */ jsxs18(Actions, { children: [
+      /* @__PURE__ */ jsx27(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
+      /* @__PURE__ */ jsx27(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es" })
     ] }),
     toast
   ] });
 }
 
 // src/hooks/useMediaQuery.ts
-import { useEffect as useEffect4, useState as useState5 } from "react";
+import { useEffect as useEffect6, useState as useState7 } from "react";
 function useMediaQuery(query) {
-  const [matches, setMatches] = useState5(() => window.matchMedia(query).matches);
-  useEffect4(() => {
+  const [matches, setMatches] = useState7(() => window.matchMedia(query).matches);
+  useEffect6(() => {
     const mq = window.matchMedia(query);
     const handler = (e) => setMatches(e.matches);
     mq.addEventListener("change", handler);
@@ -2087,10 +2429,10 @@ function useMediaQuery(query) {
 }
 
 // src/hooks/useModal.ts
-import { createElement, useState as useState6 } from "react";
+import { createElement, useState as useState8 } from "react";
 import { createPortal as createPortal3 } from "react-dom";
 function useModal() {
-  const [content, setContent] = useState6(null);
+  const [content, setContent] = useState8(null);
   const open = (c) => setContent(c);
   const close = () => setContent(null);
   const modal = content !== null ? createPortal3(createElement(Modal, { close, children: content }), document.body) : null;
@@ -2344,6 +2686,7 @@ export {
   Chip,
   ChipBar,
   ControlledBase,
+  DatePicker,
   Empty,
   GlobalStyles_default as GlobalStyles,
   IconButton,
@@ -2353,6 +2696,7 @@ export {
   Modal,
   ModalActions,
   ModalTitle,
+  MonthPicker,
   PageHeader,
   Pagination,
   ProfilePage,
