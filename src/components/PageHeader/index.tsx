@@ -19,9 +19,8 @@ export function PageHeader({ title, subtitle, back, action }: Props) {
   return (
     <Wrapper>
       {back && (
-        <Back onClick={() => navigate(-1)}>
-          <ArrowLeft size={15} />
-          Voltar
+        <Back onClick={() => navigate(-1)} aria-label="Voltar">
+          <ArrowLeft size={20} />
         </Back>
       )}
       <Row>

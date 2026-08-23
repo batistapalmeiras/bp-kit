@@ -1358,17 +1358,19 @@ var Wrapper6 = styled21.div`
 var Back = styled21.button`
   display: inline-flex;
   align-items: center;
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  justify-content: center;
+  width: 36px;
+  height: 36px;
   border: none;
-  background: none;
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  background: transparent;
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
   cursor: pointer;
-  padding: 0;
+  margin-left: -${({ theme: theme2 }) => theme2.spacing.xs};
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.sm};
+  transition: background 0.15s;
 
-  &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
+  &:hover { background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong}; }
 `;
 var Row = styled21.div`
   display: flex;
@@ -1399,10 +1401,7 @@ import { jsx as jsx18, jsxs as jsxs13 } from "react/jsx-runtime";
 function PageHeader({ title, subtitle, back, action }) {
   const navigate = useNavigate();
   return /* @__PURE__ */ jsxs13(Wrapper6, { children: [
-    back && /* @__PURE__ */ jsxs13(Back, { onClick: () => navigate(-1), children: [
-      /* @__PURE__ */ jsx18(ArrowLeft, { size: 15 }),
-      "Voltar"
-    ] }),
+    back && /* @__PURE__ */ jsx18(Back, { onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ jsx18(ArrowLeft, { size: 20 }) }),
     /* @__PURE__ */ jsxs13(Row, { children: [
       /* @__PURE__ */ jsxs13(Titles, { children: [
         /* @__PURE__ */ jsx18(Title, { children: title }),

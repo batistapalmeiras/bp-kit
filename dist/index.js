@@ -1458,17 +1458,19 @@ var Wrapper6 = import_styled_components23.default.div`
 var Back = import_styled_components23.default.button`
   display: inline-flex;
   align-items: center;
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  justify-content: center;
+  width: 36px;
+  height: 36px;
   border: none;
-  background: none;
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  background: transparent;
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
   cursor: pointer;
-  padding: 0;
+  margin-left: -${({ theme: theme2 }) => theme2.spacing.xs};
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.sm};
+  transition: background 0.15s;
 
-  &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
+  &:hover { background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong}; }
 `;
 var Row = import_styled_components23.default.div`
   display: flex;
@@ -1499,10 +1501,7 @@ var import_jsx_runtime18 = require("react/jsx-runtime");
 function PageHeader({ title, subtitle, back, action }) {
   const navigate = (0, import_react_router_dom2.useNavigate)();
   return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Wrapper6, { children: [
-    back && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Back, { onClick: () => navigate(-1), children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_lucide_react6.ArrowLeft, { size: 15 }),
-      "Voltar"
-    ] }),
+    back && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Back, { onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_lucide_react6.ArrowLeft, { size: 20 }) }),
     /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Row, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Titles, { children: [
         /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Title, { children: title }),

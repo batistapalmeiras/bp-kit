@@ -8,17 +8,19 @@ export const Wrapper = styled.div`
 export const Back = styled.button`
   display: inline-flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
+  justify-content: center;
+  width: 36px;
+  height: 36px;
   border: none;
-  background: none;
-  color: ${({ theme }) => theme.colors.muted};
-  font-family: ${({ theme }) => theme.typography.fontFamily};
-  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  border-radius: ${({ theme }) => theme.rounded.full};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.ink};
   cursor: pointer;
-  padding: 0;
+  margin-left: -${({ theme }) => theme.spacing.xs};
   margin-bottom: ${({ theme }) => theme.spacing.sm};
+  transition: background 0.15s;
 
-  &:hover { color: ${({ theme }) => theme.colors.ink}; }
+  &:hover { background: ${({ theme }) => theme.colors.surfaceStrong}; }
 `;
 
 export const Row = styled.div`
