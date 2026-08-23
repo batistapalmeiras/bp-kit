@@ -21,6 +21,8 @@ export type { MonthPickerProps } from './components/Inputs/MonthPicker/types';
 export { RadioGroup } from './components/Inputs/RadioGroup';
 export type { RadioGroupOption, RadioGroupProps } from './components/Inputs/RadioGroup/types';
 export { RawSelect, Select } from './components/Inputs/Select';
+export { Switch } from './components/Inputs/Switch';
+export type { SwitchProps } from './components/Inputs/Switch/types';
 export { RawTextarea, Textarea } from './components/Inputs/Textarea';
 export type { RawTextareaProps, TextareaProps } from './components/Inputs/Textarea/types';
 export { TextInput } from './components/Inputs/TextInput';
