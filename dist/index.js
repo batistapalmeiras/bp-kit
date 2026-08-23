@@ -924,20 +924,20 @@ var MonthCell = import_styled_components16.default.button`
 
 // src/components/Inputs/MonthPicker/index.tsx
 var import_jsx_runtime11 = require("react/jsx-runtime");
-var MONTH_LABELS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+var MONTH_LABELS = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 var FULL_MONTH_LABELS2 = [
-  "janeiro",
-  "fevereiro",
-  "mar\xE7o",
-  "abril",
-  "maio",
-  "junho",
-  "julho",
-  "agosto",
-  "setembro",
-  "outubro",
-  "novembro",
-  "dezembro"
+  "Janeiro",
+  "Fevereiro",
+  "Mar\xE7o",
+  "Abril",
+  "Maio",
+  "Junho",
+  "Julho",
+  "Agosto",
+  "Setembro",
+  "Outubro",
+  "Novembro",
+  "Dezembro"
 ];
 function formatMonthValue(value) {
   if (!value) return null;
