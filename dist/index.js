@@ -124,6 +124,10 @@ var slideUp = import_styled_components.keyframes`
   from { transform: translateY(100%); }
   to   { transform: translateY(0); }
 `;
+var slideInRight = import_styled_components.keyframes`
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+`;
 
 // src/components/BottomSheet/styles/BottomSheet.ts
 var Overlay = import_styled_components2.default.div`
@@ -1440,6 +1444,10 @@ var Overlay2 = import_styled_components23.default.div`
   justify-content: center;
   z-index: 1000;
   animation: ${fadeIn} 0.2s ease;
+
+  @media (min-width: 745px) {
+    justify-content: ${({ $variant }) => $variant === "drawer" ? "flex-end" : "center"};
+  }
 `;
 var Box3 = import_styled_components23.default.div`
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
@@ -1458,6 +1466,20 @@ var Box3 = import_styled_components23.default.div`
     padding: 24px 20px;
     overflow-y: auto;
   }
+
+  /* Opt-in via variant="drawer" (see useModal) — on desktop/tablet, opens
+     as a right-side drawer instead of a centered dialog. Apps that don't
+     pass it keep the centered dialog unchanged at every breakpoint. */
+  ${({ $variant }) => $variant === "drawer" && import_styled_components23.css`
+      @media (min-width: 745px) {
+        max-width: min(90vw, 440px);
+        height: 100%;
+        border-radius: 0;
+        padding: 32px;
+        overflow-y: auto;
+        animation: ${slideInRight} 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+      }
+    `}
 `;
 var ModalTitle = import_styled_components23.default.h3`
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
@@ -1474,7 +1496,7 @@ var ModalActions = import_styled_components23.default.div`
 
 // src/components/Modal/index.tsx
 var import_jsx_runtime17 = require("react/jsx-runtime");
-function Modal({ children, close }) {
+function Modal({ children, close, variant = "dialog" }) {
   const boxRef = (0, import_react8.useRef)(null);
   (0, import_react8.useEffect)(() => {
     var _a;
@@ -1485,7 +1507,18 @@ function Modal({ children, close }) {
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [close]);
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Overlay2, { onClick: close, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Box3, { ref: boxRef, role: "dialog", "aria-modal": "true", tabIndex: -1, onClick: (e) => e.stopPropagation(), children }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Overlay2, { $variant: variant, onClick: close, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+    Box3,
+    {
+      ref: boxRef,
+      $variant: variant,
+      role: "dialog",
+      "aria-modal": "true",
+      tabIndex: -1,
+      onClick: (e) => e.stopPropagation(),
+      children
+    }
+  ) });
 }
 
 // src/components/Pagination/styles/Pagination.ts
@@ -2623,11 +2656,11 @@ function useMediaQuery(query) {
 // src/hooks/useModal.ts
 var import_react14 = require("react");
 var import_react_dom3 = require("react-dom");
-function useModal() {
+function useModal(variant = "dialog") {
   const [content, setContent] = (0, import_react14.useState)(null);
   const open = (c) => setContent(c);
   const close = () => setContent(null);
-  const modal = content !== null ? (0, import_react_dom3.createPortal)((0, import_react14.createElement)(Modal, { close, children: content }), document.body) : null;
+  const modal = content !== null ? (0, import_react_dom3.createPortal)((0, import_react14.createElement)(Modal, { close, variant, children: content }), document.body) : null;
   return { open, close, modal };
 }
 

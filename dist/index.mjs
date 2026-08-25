@@ -22,6 +22,10 @@ var slideUp = keyframes`
   from { transform: translateY(100%); }
   to   { transform: translateY(0); }
 `;
+var slideInRight = keyframes`
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+`;
 
 // src/components/BottomSheet/styles/BottomSheet.ts
 var Overlay = styled.div`
@@ -1328,7 +1332,7 @@ function TextInput(props) {
 import { useEffect as useEffect3, useRef as useRef3 } from "react";
 
 // src/components/Modal/styles/Modal.ts
-import styled21 from "styled-components";
+import styled21, { css as css5 } from "styled-components";
 var Overlay2 = styled21.div`
   position: fixed;
   inset: 0;
@@ -1338,6 +1342,10 @@ var Overlay2 = styled21.div`
   justify-content: center;
   z-index: 1000;
   animation: ${fadeIn} 0.2s ease;
+
+  @media (min-width: 745px) {
+    justify-content: ${({ $variant }) => $variant === "drawer" ? "flex-end" : "center"};
+  }
 `;
 var Box3 = styled21.div`
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
@@ -1356,6 +1364,20 @@ var Box3 = styled21.div`
     padding: 24px 20px;
     overflow-y: auto;
   }
+
+  /* Opt-in via variant="drawer" (see useModal) — on desktop/tablet, opens
+     as a right-side drawer instead of a centered dialog. Apps that don't
+     pass it keep the centered dialog unchanged at every breakpoint. */
+  ${({ $variant }) => $variant === "drawer" && css5`
+      @media (min-width: 745px) {
+        max-width: min(90vw, 440px);
+        height: 100%;
+        border-radius: 0;
+        padding: 32px;
+        overflow-y: auto;
+        animation: ${slideInRight} 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+      }
+    `}
 `;
 var ModalTitle = styled21.h3`
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
@@ -1372,7 +1394,7 @@ var ModalActions = styled21.div`
 
 // src/components/Modal/index.tsx
 import { jsx as jsx17 } from "react/jsx-runtime";
-function Modal({ children, close }) {
+function Modal({ children, close, variant = "dialog" }) {
   const boxRef = useRef3(null);
   useEffect3(() => {
     var _a;
@@ -1383,7 +1405,18 @@ function Modal({ children, close }) {
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [close]);
-  return /* @__PURE__ */ jsx17(Overlay2, { onClick: close, children: /* @__PURE__ */ jsx17(Box3, { ref: boxRef, role: "dialog", "aria-modal": "true", tabIndex: -1, onClick: (e) => e.stopPropagation(), children }) });
+  return /* @__PURE__ */ jsx17(Overlay2, { $variant: variant, onClick: close, children: /* @__PURE__ */ jsx17(
+    Box3,
+    {
+      ref: boxRef,
+      $variant: variant,
+      role: "dialog",
+      "aria-modal": "true",
+      tabIndex: -1,
+      onClick: (e) => e.stopPropagation(),
+      children
+    }
+  ) });
 }
 
 // src/components/Pagination/styles/Pagination.ts
@@ -2521,11 +2554,11 @@ function useMediaQuery(query) {
 // src/hooks/useModal.ts
 import { createElement, useState as useState8 } from "react";
 import { createPortal as createPortal3 } from "react-dom";
-function useModal() {
+function useModal(variant = "dialog") {
   const [content, setContent] = useState8(null);
   const open = (c) => setContent(c);
   const close = () => setContent(null);
-  const modal = content !== null ? createPortal3(createElement(Modal, { close, children: content }), document.body) : null;
+  const modal = content !== null ? createPortal3(createElement(Modal, { close, variant, children: content }), document.body) : null;
   return { open, close, modal };
 }
 

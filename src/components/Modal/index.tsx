@@ -7,9 +7,10 @@ export { ModalActions, ModalTitle } from './styles';
 interface Props {
   children: React.ReactNode;
   close: () => void;
+  variant?: 'dialog' | 'drawer';
 }
 
-export function Modal({ children, close }: Props) {
+export function Modal({ children, close, variant = 'dialog' }: Props) {
   const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,8 +23,15 @@ export function Modal({ children, close }: Props) {
   }, [close]);
 
   return (
-    <Overlay onClick={close}>
-      <Box ref={boxRef} role="dialog" aria-modal="true" tabIndex={-1} onClick={(e) => e.stopPropagation()}>
+    <Overlay $variant={variant} onClick={close}>
+      <Box
+        ref={boxRef}
+        $variant={variant}
+        role="dialog"
+        aria-modal="true"
+        tabIndex={-1}
+        onClick={(e) => e.stopPropagation()}
+      >
         {children}
       </Box>
     </Overlay>

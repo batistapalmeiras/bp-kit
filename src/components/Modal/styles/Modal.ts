@@ -1,9 +1,9 @@
 // Libs
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 // Components
-import { fadeIn, fadeUp } from '../../../styles/animations';
+import { fadeIn, fadeUp, slideInRight } from '../../../styles/animations';
 
-export const Overlay = styled.div`
+export const Overlay = styled.div<{ $variant: 'dialog' | 'drawer' }>`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
@@ -12,9 +12,13 @@ export const Overlay = styled.div`
   justify-content: center;
   z-index: 1000;
   animation: ${fadeIn} 0.2s ease;
+
+  @media (min-width: 745px) {
+    justify-content: ${({ $variant }) => ($variant === 'drawer' ? 'flex-end' : 'center')};
+  }
 `;
 
-export const Box = styled.div`
+export const Box = styled.div<{ $variant: 'dialog' | 'drawer' }>`
   background: ${({ theme }) => theme.colors.canvas};
   border-radius: ${({ theme }) => theme.rounded.lg};
   padding: 28px 32px;
@@ -31,6 +35,22 @@ export const Box = styled.div`
     padding: 24px 20px;
     overflow-y: auto;
   }
+
+  /* Opt-in via variant="drawer" (see useModal) — on desktop/tablet, opens
+     as a right-side drawer instead of a centered dialog. Apps that don't
+     pass it keep the centered dialog unchanged at every breakpoint. */
+  ${({ $variant }) =>
+    $variant === 'drawer' &&
+    css`
+      @media (min-width: 745px) {
+        max-width: min(90vw, 440px);
+        height: 100%;
+        border-radius: 0;
+        padding: 32px;
+        overflow-y: auto;
+        animation: ${slideInRight} 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+      }
+    `}
 `;
 
 export const ModalTitle = styled.h3`

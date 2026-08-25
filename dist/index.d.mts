@@ -199,8 +199,9 @@ declare const ModalActions: styled_components_dist_types.IStyledComponentBase<"w
 interface Props$1 {
     children: react__default.ReactNode;
     close: () => void;
+    variant?: 'dialog' | 'drawer';
 }
-declare function Modal({ children, close }: Props$1): react__default.JSX.Element;
+declare function Modal({ children, close, variant }: Props$1): react__default.JSX.Element;
 
 interface PaginationProps {
     currentPage: number;
@@ -355,7 +356,7 @@ declare function ProfilePage({ roleLabel }: ProfilePageProps): react.JSX.Element
 
 declare function useMediaQuery(query: string): boolean;
 
-declare function useModal(): {
+declare function useModal(variant?: 'dialog' | 'drawer'): {
     open: (c: ReactNode) => void;
     close: () => void;
     modal: react.ReactPortal | null;
