@@ -394,6 +394,7 @@ interface AuthContextValue {
     login: (email: string, password: string) => Promise<string | null>;
     logout: () => Promise<void>;
     updateProfile: (name: string, email: string) => Promise<string | null>;
+    updatePassword: (newPassword: string) => Promise<string | null>;
 }
 declare const AuthContext: react.Context<AuthContextValue | null>;
 declare function AuthProvider({ client, children }: {
@@ -419,11 +420,14 @@ declare const text: {
         emailPlaceholder: string;
         phone: string;
         status: string;
+        password: string;
     };
     validation: {
         required: (what: string) => string;
         selectRequired: (what: string) => string;
         emailInvalid: string;
+        passwordMin: string;
+        passwordMismatch: string;
     };
     feedback: {
         loadError: string;

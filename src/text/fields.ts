@@ -5,4 +5,5 @@ export const fields = {
   emailPlaceholder: 'seu@email.com',
   phone: 'Telefone',
   status: 'Status',
+  password: 'Senha',
 };

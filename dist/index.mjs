@@ -2276,9 +2276,14 @@ function useAuth(client) {
     setUser((u) => u ? { ...u, name: name.trim() } : u);
     return null;
   }, [client, userEmail]);
+  const updatePassword = useCallback2(async (newPassword) => {
+    const { error: passwordError } = await client.auth.updateUser({ password: newPassword });
+    if (passwordError) return "Erro ao atualizar senha.";
+    return null;
+  }, [client]);
   return useMemo(
-    () => ({ user, userEmail, loading, error, login, logout, updateProfile }),
-    [user, userEmail, loading, error, login, logout, updateProfile]
+    () => ({ user, userEmail, loading, error, login, logout, updateProfile, updatePassword }),
+    [user, userEmail, loading, error, login, logout, updateProfile, updatePassword]
   );
 }
 function useAuthCtx() {
@@ -2325,14 +2330,17 @@ var fields = {
   email: "E-mail",
   emailPlaceholder: "seu@email.com",
   phone: "Telefone",
-  status: "Status"
+  status: "Status",
+  password: "Senha"
 };
 
 // src/text/validation.ts
 var validation = {
   required: (what) => `Informe ${what}`,
   selectRequired: (what) => `Selecione ${what}`,
-  emailInvalid: "E-mail inv\xE1lido"
+  emailInvalid: "E-mail inv\xE1lido",
+  passwordMin: "A senha deve ter pelo menos 6 caracteres",
+  passwordMismatch: "As senhas n\xE3o coincidem"
 };
 
 // src/text/feedback.ts
@@ -2640,12 +2648,19 @@ var profileSchema = z2.object({
   name: z2.string().min(3, "Informe pelo menos nome e sobrenome"),
   email: z2.string().email(text.validation.emailInvalid)
 });
+var passwordSchema = z2.object({
+  password: z2.string().min(6, text.validation.passwordMin),
+  confirmPassword: z2.string()
+}).refine((data) => data.password === data.confirmPassword, {
+  message: text.validation.passwordMismatch,
+  path: ["confirmPassword"]
+});
 
 // src/pages/ProfilePage/index.tsx
 import { jsx as jsx29, jsxs as jsxs20 } from "react/jsx-runtime";
 function ProfilePage({ roleLabel }) {
   var _a, _b;
-  const { user, userEmail, updateProfile } = useAuthCtx();
+  const { user, userEmail, updateProfile, updatePassword } = useAuthCtx();
   const navigate = useNavigate3();
   const { show: showToast, toast } = useToast();
   const {
@@ -2656,9 +2671,23 @@ function ProfilePage({ roleLabel }) {
     resolver: zodResolver2(profileSchema),
     defaultValues: { name: (_a = user == null ? void 0 : user.name) != null ? _a : "", email: userEmail }
   });
+  const {
+    control: passwordControl,
+    handleSubmit: handlePasswordSubmit,
+    reset: resetPasswordForm,
+    formState: { isSubmitting: isChangingPassword }
+  } = useForm2({
+    resolver: zodResolver2(passwordSchema),
+    defaultValues: { password: "", confirmPassword: "" }
+  });
   const onSubmit = async (data) => {
     const err = await updateProfile(data.name, data.email);
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
+  };
+  const onPasswordSubmit = async (data) => {
+    const err = await updatePassword(data.password);
+    showToast(err != null ? err : "Senha atualizada com sucesso.");
+    if (!err) resetPasswordForm();
   };
   return /* @__PURE__ */ jsxs20(Wrap3, { children: [
     /* @__PURE__ */ jsx29(PageHeader, { title: "Meu perfil", back: true }),
@@ -2684,6 +2713,30 @@ function ProfilePage({ roleLabel }) {
       /* @__PURE__ */ jsx29(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
       /* @__PURE__ */ jsx29(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es" })
     ] }),
+    /* @__PURE__ */ jsxs20(Section, { children: [
+      /* @__PURE__ */ jsx29(SectionTitle, { children: "Seguran\xE7a" }),
+      /* @__PURE__ */ jsx29(TextInput, { label: "Nova senha", control: passwordControl, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
+      /* @__PURE__ */ jsx29(
+        TextInput,
+        {
+          label: "Confirmar nova senha",
+          control: passwordControl,
+          name: "confirmPassword",
+          type: "password",
+          placeholder: "Repita a nova senha"
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsx29(Actions, { children: /* @__PURE__ */ jsx29(
+      Button,
+      {
+        variant: "primary",
+        size: "md",
+        onClick: handlePasswordSubmit(onPasswordSubmit),
+        disabled: isChangingPassword,
+        children: isChangingPassword ? "Salvando..." : "Alterar senha"
+      }
+    ) }),
     toast
   ] });
 }

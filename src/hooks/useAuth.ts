@@ -36,14 +36,9 @@ export function useAuth(client: SupabaseClient): AuthContextValue {
   const [userEmail, setUserEmail] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  // undefined = sessão ainda não resolvida; null = sem sessão
   const [sessionUser, setSessionUser] = useState<SessionUser | null | undefined>(undefined);
 
   useEffect(() => {
-    // O callback de onAuthStateChange roda segurando o lock interno de auth do
-    // supabase-js: qualquer `await` em outra chamada da lib aqui dentro (ex.
-    // fetchProfile → getSession) causa deadlock. Só registra a sessão em estado;
-    // o perfil é buscado no efeito abaixo, fora do lock.
     const { data: listener } = client.auth.onAuthStateChange((_event, session) => {
       setSessionUser((prev) => {
         const next = session?.user
@@ -149,9 +144,15 @@ export function useAuth(client: SupabaseClient): AuthContextValue {
     return null;
   }, [client, userEmail]);
 
+  const updatePassword = useCallback(async (newPassword: string): Promise<string | null> => {
+    const { error: passwordError } = await client.auth.updateUser({ password: newPassword });
+    if (passwordError) return 'Erro ao atualizar senha.';
+    return null;
+  }, [client]);
+
   return useMemo(
-    () => ({ user, userEmail, loading, error, login, logout, updateProfile }),
-    [user, userEmail, loading, error, login, logout, updateProfile],
+    () => ({ user, userEmail, loading, error, login, logout, updateProfile, updatePassword }),
+    [user, userEmail, loading, error, login, logout, updateProfile, updatePassword],
   );
 }
 

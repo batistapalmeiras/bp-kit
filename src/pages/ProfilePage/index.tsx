@@ -11,7 +11,7 @@ import { useToast } from '../../components/Toast';
 import { useAuthCtx } from '../../hooks/useAuth';
 import { text } from '../../text';
 import { Actions, Identity, Name, RoleLabel, Section, SectionTitle, Wrap } from './styles';
-import { ProfileFormValues, profileSchema } from './validators';
+import { PasswordFormValues, passwordSchema, ProfileFormValues, profileSchema } from './validators';
 
 export interface ProfilePageProps {
   /** Display label for the user's role (e.g. "Administrador"). Each app defines its own role vocabulary. */
@@ -19,7 +19,7 @@ export interface ProfilePageProps {
 }
 
 export function ProfilePage({ roleLabel }: ProfilePageProps) {
-  const { user, userEmail, updateProfile } = useAuthCtx();
+  const { user, userEmail, updateProfile, updatePassword } = useAuthCtx();
   const navigate = useNavigate();
   const { show: showToast, toast } = useToast();
 
@@ -32,9 +32,25 @@ export function ProfilePage({ roleLabel }: ProfilePageProps) {
     defaultValues: { name: user?.name ?? '', email: userEmail },
   });
 
+  const {
+    control: passwordControl,
+    handleSubmit: handlePasswordSubmit,
+    reset: resetPasswordForm,
+    formState: { isSubmitting: isChangingPassword },
+  } = useForm<PasswordFormValues>({
+    resolver: zodResolver(passwordSchema),
+    defaultValues: { password: '', confirmPassword: '' },
+  });
+
   const onSubmit = async (data: ProfileFormValues) => {
     const err = await updateProfile(data.name, data.email);
     showToast(err ?? 'Perfil atualizado com sucesso.');
+  };
+
+  const onPasswordSubmit = async (data: PasswordFormValues) => {
+    const err = await updatePassword(data.password);
+    showToast(err ?? 'Senha atualizada com sucesso.');
+    if (!err) resetPasswordForm();
   };
 
   return (
@@ -64,6 +80,29 @@ export function ProfilePage({ roleLabel }: ProfilePageProps) {
         </Button>
         <Button variant="primary" size="md" onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>
           {isSubmitting ? 'Salvando...' : 'Salvar alterações'}
+        </Button>
+      </Actions>
+
+      <Section>
+        <SectionTitle>Segurança</SectionTitle>
+        <TextInput label="Nova senha" control={passwordControl} name="password" type="password" placeholder="Mínimo 6 caracteres" />
+        <TextInput
+          label="Confirmar nova senha"
+          control={passwordControl}
+          name="confirmPassword"
+          type="password"
+          placeholder="Repita a nova senha"
+        />
+      </Section>
+
+      <Actions>
+        <Button
+          variant="primary"
+          size="md"
+          onClick={handlePasswordSubmit(onPasswordSubmit)}
+          disabled={isChangingPassword}
+        >
+          {isChangingPassword ? 'Salvando...' : 'Alterar senha'}
         </Button>
       </Actions>
       {toast}
