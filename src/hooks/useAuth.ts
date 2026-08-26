@@ -4,6 +4,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { SupabaseClient } from '@supabase/supabase-js';
 // Components
 import { AuthContext, AuthContextValue } from '../contexts/AuthContext';
+import { text } from '../text';
 import { User } from '../types';
 
 export async function fetchProfile(client: SupabaseClient, userId: string): Promise<User | null> {
@@ -146,7 +147,12 @@ export function useAuth(client: SupabaseClient): AuthContextValue {
 
   const updatePassword = useCallback(async (newPassword: string): Promise<string | null> => {
     const { error: passwordError } = await client.auth.updateUser({ password: newPassword });
-    if (passwordError) return 'Erro ao atualizar senha.';
+    if (passwordError) {
+      if ('code' in passwordError && passwordError.code === 'same_password') {
+        return text.validation.passwordSameAsOld;
+      }
+      return 'Erro ao atualizar senha.';
+    }
     return null;
   }, [client]);
 

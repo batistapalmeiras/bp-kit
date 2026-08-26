@@ -432,6 +432,7 @@ declare const text: {
         emailInvalid: string;
         passwordMin: string;
         passwordMismatch: string;
+        passwordSameAsOld: string;
     };
     feedback: {
         loadError: string;

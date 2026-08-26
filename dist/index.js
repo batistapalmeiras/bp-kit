@@ -2272,6 +2272,43 @@ function AuthProvider({ client, children }) {
   return /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(AuthContext.Provider, { value: authValue, children });
 }
 
+// src/text/actions.ts
+var actions = {
+  cancel: "Cancelar",
+  confirm: "Confirmar",
+  remove: "Remover",
+  actionsColumn: "A\xE7\xF5es"
+};
+
+// src/text/fields.ts
+var fields = {
+  name: "Nome",
+  fullName: "Nome completo",
+  email: "E-mail",
+  emailPlaceholder: "seu@email.com",
+  phone: "Telefone",
+  status: "Status",
+  password: "Senha"
+};
+
+// src/text/validation.ts
+var validation = {
+  required: (what) => `Informe ${what}`,
+  selectRequired: (what) => `Selecione ${what}`,
+  emailInvalid: "E-mail inv\xE1lido",
+  passwordMin: "A senha deve ter pelo menos 6 caracteres",
+  passwordMismatch: "As senhas n\xE3o coincidem",
+  passwordSameAsOld: "A nova senha deve ser diferente da senha atual"
+};
+
+// src/text/feedback.ts
+var feedback = {
+  loadError: "Erro ao carregar"
+};
+
+// src/text/index.ts
+var text = { actions, fields, validation, feedback };
+
 // src/hooks/useAuth.ts
 async function fetchProfile(client, userId) {
   try {
@@ -2382,7 +2419,12 @@ function useAuth(client) {
   }, [client, userEmail]);
   const updatePassword = (0, import_react12.useCallback)(async (newPassword) => {
     const { error: passwordError } = await client.auth.updateUser({ password: newPassword });
-    if (passwordError) return "Erro ao atualizar senha.";
+    if (passwordError) {
+      if ("code" in passwordError && passwordError.code === "same_password") {
+        return text.validation.passwordSameAsOld;
+      }
+      return "Erro ao atualizar senha.";
+    }
     return null;
   }, [client]);
   return (0, import_react12.useMemo)(
@@ -2418,42 +2460,6 @@ function useLogin(resolveRoute) {
   };
   return { error, submitting, handleLogin };
 }
-
-// src/text/actions.ts
-var actions = {
-  cancel: "Cancelar",
-  confirm: "Confirmar",
-  remove: "Remover",
-  actionsColumn: "A\xE7\xF5es"
-};
-
-// src/text/fields.ts
-var fields = {
-  name: "Nome",
-  fullName: "Nome completo",
-  email: "E-mail",
-  emailPlaceholder: "seu@email.com",
-  phone: "Telefone",
-  status: "Status",
-  password: "Senha"
-};
-
-// src/text/validation.ts
-var validation = {
-  required: (what) => `Informe ${what}`,
-  selectRequired: (what) => `Selecione ${what}`,
-  emailInvalid: "E-mail inv\xE1lido",
-  passwordMin: "A senha deve ter pelo menos 6 caracteres",
-  passwordMismatch: "As senhas n\xE3o coincidem"
-};
-
-// src/text/feedback.ts
-var feedback = {
-  loadError: "Erro ao carregar"
-};
-
-// src/text/index.ts
-var text = { actions, fields, validation, feedback };
 
 // src/pages/LoginPage/styles/Login.ts
 var import_styled_components35 = __toESM(require("styled-components"));
