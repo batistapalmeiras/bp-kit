@@ -18,6 +18,8 @@ export { DatePicker } from './components/Inputs/DatePicker';
 export type { DatePickerProps } from './components/Inputs/DatePicker/types';
 export { MonthPicker } from './components/Inputs/MonthPicker';
 export type { MonthPickerProps } from './components/Inputs/MonthPicker/types';
+export { MultiSelect } from './components/Inputs/MultiSelect';
+export type { MultiSelectOption, MultiSelectProps } from './components/Inputs/MultiSelect/types';
 export { RadioGroup } from './components/Inputs/RadioGroup';
 export type { RadioGroupOption, RadioGroupProps } from './components/Inputs/RadioGroup/types';
 export { RawSelect, Select } from './components/Inputs/Select';
