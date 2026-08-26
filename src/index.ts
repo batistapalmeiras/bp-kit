@@ -53,6 +53,7 @@ export { LoginPage } from './pages/LoginPage';
 export type { LoginPageBrand, LoginPageProps } from './pages/LoginPage';
 export { ProfilePage } from './pages/ProfilePage';
 export type { ProfilePageProps } from './pages/ProfilePage';
+export { ChangePasswordPage } from './pages/ChangePasswordPage';
 
 // Hooks
 export { useMediaQuery } from './hooks/useMediaQuery';

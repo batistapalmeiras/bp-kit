@@ -1,2 +1,2 @@
-export { profileSchema, passwordSchema } from './schema';
-export type { ProfileFormValues, PasswordFormValues } from './schema';
+export { profileSchema } from './schema';
+export type { ProfileFormValues } from './schema';

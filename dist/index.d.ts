@@ -368,8 +368,12 @@ declare function LoginPage({ brand, resolveRoute }: LoginPageProps): react.JSX.E
 interface ProfilePageProps {
     /** Display label for the user's role (e.g. "Administrador"). Each app defines its own role vocabulary. */
     roleLabel?: string;
+    /** Route to the app's "Alterar senha" screen (bp-kit's ChangePasswordPage mounted there). Omit to hide the Segurança section entirely. */
+    changePasswordPath?: string;
 }
-declare function ProfilePage({ roleLabel }: ProfilePageProps): react.JSX.Element;
+declare function ProfilePage({ roleLabel, changePasswordPath }: ProfilePageProps): react.JSX.Element;
+
+declare function ChangePasswordPage(): react.JSX.Element;
 
 declare function useMediaQuery(query: string): boolean;
 
@@ -638,4 +642,4 @@ declare function formatCPF(value: string): string;
 declare function formatCNPJ(value: string): string;
 declare function formatCpfCnpj(value: string): string;
 
-export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, Textarea, type TextareaProps, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, Textarea, type TextareaProps, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };

@@ -2648,19 +2648,12 @@ var profileSchema = z2.object({
   name: z2.string().min(3, "Informe pelo menos nome e sobrenome"),
   email: z2.string().email(text.validation.emailInvalid)
 });
-var passwordSchema = z2.object({
-  password: z2.string().min(6, text.validation.passwordMin),
-  confirmPassword: z2.string()
-}).refine((data) => data.password === data.confirmPassword, {
-  message: text.validation.passwordMismatch,
-  path: ["confirmPassword"]
-});
 
 // src/pages/ProfilePage/index.tsx
-import { jsx as jsx29, jsxs as jsxs20 } from "react/jsx-runtime";
-function ProfilePage({ roleLabel }) {
+import { Fragment as Fragment6, jsx as jsx29, jsxs as jsxs20 } from "react/jsx-runtime";
+function ProfilePage({ roleLabel, changePasswordPath }) {
   var _a, _b;
-  const { user, userEmail, updateProfile, updatePassword } = useAuthCtx();
+  const { user, userEmail, updateProfile } = useAuthCtx();
   const navigate = useNavigate3();
   const { show: showToast, toast } = useToast();
   const {
@@ -2671,23 +2664,9 @@ function ProfilePage({ roleLabel }) {
     resolver: zodResolver2(profileSchema),
     defaultValues: { name: (_a = user == null ? void 0 : user.name) != null ? _a : "", email: userEmail }
   });
-  const {
-    control: passwordControl,
-    handleSubmit: handlePasswordSubmit,
-    reset: resetPasswordForm,
-    formState: { isSubmitting: isChangingPassword }
-  } = useForm2({
-    resolver: zodResolver2(passwordSchema),
-    defaultValues: { password: "", confirmPassword: "" }
-  });
   const onSubmit = async (data) => {
     const err = await updateProfile(data.name, data.email);
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
-  };
-  const onPasswordSubmit = async (data) => {
-    const err = await updatePassword(data.password);
-    showToast(err != null ? err : "Senha atualizada com sucesso.");
-    if (!err) resetPasswordForm();
   };
   return /* @__PURE__ */ jsxs20(Wrap3, { children: [
     /* @__PURE__ */ jsx29(PageHeader, { title: "Meu perfil", back: true }),
@@ -2713,30 +2692,68 @@ function ProfilePage({ roleLabel }) {
       /* @__PURE__ */ jsx29(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
       /* @__PURE__ */ jsx29(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es" })
     ] }),
-    /* @__PURE__ */ jsxs20(Section, { children: [
-      /* @__PURE__ */ jsx29(SectionTitle, { children: "Seguran\xE7a" }),
-      /* @__PURE__ */ jsx29(TextInput, { label: "Nova senha", control: passwordControl, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
-      /* @__PURE__ */ jsx29(
+    changePasswordPath && /* @__PURE__ */ jsxs20(Fragment6, { children: [
+      /* @__PURE__ */ jsx29(Section, { children: /* @__PURE__ */ jsx29(SectionTitle, { children: "Seguran\xE7a" }) }),
+      /* @__PURE__ */ jsx29(Actions, { children: /* @__PURE__ */ jsx29(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
+    ] }),
+    toast
+  ] });
+}
+
+// src/pages/ChangePasswordPage/index.tsx
+import { zodResolver as zodResolver3 } from "@hookform/resolvers/zod";
+import { useForm as useForm3 } from "react-hook-form";
+import { useNavigate as useNavigate4 } from "react-router-dom";
+
+// src/pages/ChangePasswordPage/validators/schema.ts
+import { z as z3 } from "zod";
+var passwordSchema = z3.object({
+  password: z3.string().min(6, text.validation.passwordMin),
+  confirmPassword: z3.string()
+}).refine((data) => data.password === data.confirmPassword, {
+  message: text.validation.passwordMismatch,
+  path: ["confirmPassword"]
+});
+
+// src/pages/ChangePasswordPage/index.tsx
+import { jsx as jsx30, jsxs as jsxs21 } from "react/jsx-runtime";
+function ChangePasswordPage() {
+  const { updatePassword } = useAuthCtx();
+  const navigate = useNavigate4();
+  const { show: showToast, toast } = useToast();
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting }
+  } = useForm3({
+    resolver: zodResolver3(passwordSchema),
+    defaultValues: { password: "", confirmPassword: "" }
+  });
+  const onSubmit = async (data) => {
+    const err = await updatePassword(data.password);
+    showToast(err != null ? err : "Senha atualizada com sucesso.");
+    if (!err) reset();
+  };
+  return /* @__PURE__ */ jsxs21(Wrap3, { children: [
+    /* @__PURE__ */ jsx30(PageHeader, { title: "Alterar senha", back: true }),
+    /* @__PURE__ */ jsxs21(Section, { children: [
+      /* @__PURE__ */ jsx30(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
+      /* @__PURE__ */ jsx30(
         TextInput,
         {
           label: "Confirmar nova senha",
-          control: passwordControl,
+          control,
           name: "confirmPassword",
           type: "password",
           placeholder: "Repita a nova senha"
         }
       )
     ] }),
-    /* @__PURE__ */ jsx29(Actions, { children: /* @__PURE__ */ jsx29(
-      Button,
-      {
-        variant: "primary",
-        size: "md",
-        onClick: handlePasswordSubmit(onPasswordSubmit),
-        disabled: isChangingPassword,
-        children: isChangingPassword ? "Salvando..." : "Alterar senha"
-      }
-    ) }),
+    /* @__PURE__ */ jsxs21(Actions, { children: [
+      /* @__PURE__ */ jsx30(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
+      /* @__PURE__ */ jsx30(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar nova senha" })
+    ] }),
     toast
   ] });
 }
@@ -3008,6 +3025,7 @@ export {
   Brand,
   Button,
   Card,
+  ChangePasswordPage,
   Checkbox,
   Chip,
   ChipBar,

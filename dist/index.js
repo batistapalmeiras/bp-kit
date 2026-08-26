@@ -37,6 +37,7 @@ __export(src_exports, {
   Brand: () => Brand,
   Button: () => Button,
   Card: () => Card,
+  ChangePasswordPage: () => ChangePasswordPage,
   Checkbox: () => Checkbox,
   Chip: () => Chip,
   ChipBar: () => ChipBar,
@@ -2751,19 +2752,12 @@ var profileSchema = import_zod3.z.object({
   name: import_zod3.z.string().min(3, "Informe pelo menos nome e sobrenome"),
   email: import_zod3.z.string().email(text.validation.emailInvalid)
 });
-var passwordSchema = import_zod3.z.object({
-  password: import_zod3.z.string().min(6, text.validation.passwordMin),
-  confirmPassword: import_zod3.z.string()
-}).refine((data) => data.password === data.confirmPassword, {
-  message: text.validation.passwordMismatch,
-  path: ["confirmPassword"]
-});
 
 // src/pages/ProfilePage/index.tsx
 var import_jsx_runtime29 = require("react/jsx-runtime");
-function ProfilePage({ roleLabel }) {
+function ProfilePage({ roleLabel, changePasswordPath }) {
   var _a, _b;
-  const { user, userEmail, updateProfile, updatePassword } = useAuthCtx();
+  const { user, userEmail, updateProfile } = useAuthCtx();
   const navigate = (0, import_react_router_dom4.useNavigate)();
   const { show: showToast, toast } = useToast();
   const {
@@ -2774,23 +2768,9 @@ function ProfilePage({ roleLabel }) {
     resolver: (0, import_zod4.zodResolver)(profileSchema),
     defaultValues: { name: (_a = user == null ? void 0 : user.name) != null ? _a : "", email: userEmail }
   });
-  const {
-    control: passwordControl,
-    handleSubmit: handlePasswordSubmit,
-    reset: resetPasswordForm,
-    formState: { isSubmitting: isChangingPassword }
-  } = (0, import_react_hook_form7.useForm)({
-    resolver: (0, import_zod4.zodResolver)(passwordSchema),
-    defaultValues: { password: "", confirmPassword: "" }
-  });
   const onSubmit = async (data) => {
     const err = await updateProfile(data.name, data.email);
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
-  };
-  const onPasswordSubmit = async (data) => {
-    const err = await updatePassword(data.password);
-    showToast(err != null ? err : "Senha atualizada com sucesso.");
-    if (!err) resetPasswordForm();
   };
   return /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Wrap3, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(PageHeader, { title: "Meu perfil", back: true }),
@@ -2816,30 +2796,68 @@ function ProfilePage({ roleLabel }) {
       /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
       /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Section, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(SectionTitle, { children: "Seguran\xE7a" }),
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(TextInput, { label: "Nova senha", control: passwordControl, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
+    changePasswordPath && /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(import_jsx_runtime29.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Section, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(SectionTitle, { children: "Seguran\xE7a" }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
+    ] }),
+    toast
+  ] });
+}
+
+// src/pages/ChangePasswordPage/index.tsx
+var import_zod6 = require("@hookform/resolvers/zod");
+var import_react_hook_form8 = require("react-hook-form");
+var import_react_router_dom5 = require("react-router-dom");
+
+// src/pages/ChangePasswordPage/validators/schema.ts
+var import_zod5 = require("zod");
+var passwordSchema = import_zod5.z.object({
+  password: import_zod5.z.string().min(6, text.validation.passwordMin),
+  confirmPassword: import_zod5.z.string()
+}).refine((data) => data.password === data.confirmPassword, {
+  message: text.validation.passwordMismatch,
+  path: ["confirmPassword"]
+});
+
+// src/pages/ChangePasswordPage/index.tsx
+var import_jsx_runtime30 = require("react/jsx-runtime");
+function ChangePasswordPage() {
+  const { updatePassword } = useAuthCtx();
+  const navigate = (0, import_react_router_dom5.useNavigate)();
+  const { show: showToast, toast } = useToast();
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting }
+  } = (0, import_react_hook_form8.useForm)({
+    resolver: (0, import_zod6.zodResolver)(passwordSchema),
+    defaultValues: { password: "", confirmPassword: "" }
+  });
+  const onSubmit = async (data) => {
+    const err = await updatePassword(data.password);
+    showToast(err != null ? err : "Senha atualizada com sucesso.");
+    if (!err) reset();
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Wrap3, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(PageHeader, { title: "Alterar senha", back: true }),
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Section, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
         TextInput,
         {
           label: "Confirmar nova senha",
-          control: passwordControl,
+          control,
           name: "confirmPassword",
           type: "password",
           placeholder: "Repita a nova senha"
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-      Button,
-      {
-        variant: "primary",
-        size: "md",
-        onClick: handlePasswordSubmit(onPasswordSubmit),
-        disabled: isChangingPassword,
-        children: isChangingPassword ? "Salvando..." : "Alterar senha"
-      }
-    ) }),
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Actions, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar nova senha" })
+    ] }),
     toast
   ] });
 }
@@ -3112,6 +3130,7 @@ var theme = {
   Brand,
   Button,
   Card,
+  ChangePasswordPage,
   Checkbox,
   Chip,
   ChipBar,

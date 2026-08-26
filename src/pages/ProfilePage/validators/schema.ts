@@ -9,15 +9,3 @@ export const profileSchema = z.object({
 });
 
 export type ProfileFormValues = z.infer<typeof profileSchema>;
-
-export const passwordSchema = z
-  .object({
-    password: z.string().min(6, text.validation.passwordMin),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: text.validation.passwordMismatch,
-    path: ['confirmPassword'],
-  });
-
-export type PasswordFormValues = z.infer<typeof passwordSchema>;
