@@ -22,6 +22,7 @@ export function ChangePasswordPage() {
     control,
     handleSubmit,
     reset,
+    setError,
     formState: { isSubmitting },
   } = useForm<PasswordFormValues>({
     resolver: zodResolver(passwordSchema),
@@ -30,8 +31,12 @@ export function ChangePasswordPage() {
 
   const onSubmit = async (data: PasswordFormValues) => {
     const err = await updatePassword(data.password);
-    showToast(err ?? 'Senha atualizada com sucesso.');
-    if (!err) reset();
+    if (err) {
+      setError('password', { message: err });
+      return;
+    }
+    showToast('Senha atualizada com sucesso.');
+    reset();
   };
 
   return (

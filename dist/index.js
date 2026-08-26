@@ -2835,6 +2835,7 @@ function ChangePasswordPage() {
     control,
     handleSubmit,
     reset,
+    setError,
     formState: { isSubmitting }
   } = (0, import_react_hook_form8.useForm)({
     resolver: (0, import_zod6.zodResolver)(passwordSchema),
@@ -2842,8 +2843,12 @@ function ChangePasswordPage() {
   });
   const onSubmit = async (data) => {
     const err = await updatePassword(data.password);
-    showToast(err != null ? err : "Senha atualizada com sucesso.");
-    if (!err) reset();
+    if (err) {
+      setError("password", { message: err });
+      return;
+    }
+    showToast("Senha atualizada com sucesso.");
+    reset();
   };
   return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Wrap3, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(PageHeader, { title: "Alterar senha", back: true }),
