@@ -10,7 +10,7 @@ import { useToast } from '../../components/Toast';
 // Local
 import { useAuthCtx } from '../../hooks/useAuth';
 import { text } from '../../text';
-import { Actions, Identity, Name, RoleLabel, Section, SectionTitle, Wrap } from './styles';
+import { Actions, Identity, Name, RoleLabel, Section, SectionDivider, SectionTitle, Wrap } from './styles';
 import { ProfileFormValues, profileSchema } from './validators';
 
 export interface ProfilePageProps {
@@ -50,6 +50,7 @@ export function ProfilePage({ roleLabel, changePasswordPath }: ProfilePageProps)
 
       <Section>
         <SectionTitle>Informações pessoais</SectionTitle>
+        <SectionDivider />
         <TextInput label={text.fields.fullName} control={control} name="name" placeholder="Nome e sobrenome" />
         <TextInput
           label="E-mail de acesso"

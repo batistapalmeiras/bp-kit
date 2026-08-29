@@ -2740,6 +2740,9 @@ var SectionTitle = import_styled_components36.default.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
+var SectionDivider = import_styled_components36.default.div`
+  border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
+`;
 var Actions = import_styled_components36.default.div`
   display: flex;
   justify-content: flex-end;
@@ -2786,6 +2789,7 @@ function ProfilePage({ roleLabel, changePasswordPath }) {
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Section, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(SectionDivider, {}),
       /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
       /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
         TextInput,

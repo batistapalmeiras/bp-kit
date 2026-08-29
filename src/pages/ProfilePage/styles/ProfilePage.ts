@@ -41,6 +41,10 @@ export const SectionTitle = styled.p`
   letter-spacing: 0.5px;
 `;
 
+export const SectionDivider = styled.div`
+  border-top: 1px solid ${({ theme }) => theme.colors.hairlineSoft};
+`;
+
 export const Actions = styled.div`
   display: flex;
   justify-content: flex-end;

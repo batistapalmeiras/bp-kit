@@ -2636,6 +2636,9 @@ var SectionTitle = styled34.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
+var SectionDivider = styled34.div`
+  border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
+`;
 var Actions = styled34.div`
   display: flex;
   justify-content: flex-end;
@@ -2682,6 +2685,7 @@ function ProfilePage({ roleLabel, changePasswordPath }) {
     ] }),
     /* @__PURE__ */ jsxs20(Section, { children: [
       /* @__PURE__ */ jsx29(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
+      /* @__PURE__ */ jsx29(SectionDivider, {}),
       /* @__PURE__ */ jsx29(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
       /* @__PURE__ */ jsx29(
         TextInput,
