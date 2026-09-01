@@ -1,6 +1,6 @@
 {
   "name": "bp-kit",
-  "version": "1.7.5",
+  "version": "1.7.6",
   "private": true,
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

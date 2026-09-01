@@ -117,6 +117,24 @@ interface DatePickerProps<T extends FieldValues, N extends FieldPath<T>> {
 
 declare function DatePicker<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, placeholder, isDateDisabled, initialMonth, }: DatePickerProps<T, N>): react.JSX.Element;
 
+interface ImageUploadItem {
+    id: string;
+    url: string;
+    file?: File;
+}
+interface ImageUploadProps {
+    label?: string;
+    value: ImageUploadItem[];
+    onChange: (value: ImageUploadItem[]) => void;
+    maxFiles?: number;
+    accept?: string;
+    hint?: string;
+    error?: string;
+    wrapperStyle?: React.CSSProperties;
+}
+
+declare function ImageUpload({ label, value, onChange, maxFiles, accept, hint, error, wrapperStyle, }: ImageUploadProps): react.JSX.Element;
+
 interface MonthPickerProps<T extends FieldValues, N extends FieldPath<T>> {
     label: string;
     control: Control<T>;
@@ -654,4 +672,4 @@ declare function formatCPF(value: string): string;
 declare function formatCNPJ(value: string): string;
 declare function formatCpfCnpj(value: string): string;
 
-export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DangerLink, DatePicker, type DatePickerProps, Empty, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, Textarea, type TextareaProps, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DangerLink, DatePicker, type DatePickerProps, Empty, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, Textarea, type TextareaProps, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };

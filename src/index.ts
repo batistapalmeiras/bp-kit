@@ -17,6 +17,8 @@ export { Checkbox } from './components/Inputs/Checkbox';
 export type { CheckboxProps } from './components/Inputs/Checkbox/types';
 export { DatePicker } from './components/Inputs/DatePicker';
 export type { DatePickerProps } from './components/Inputs/DatePicker/types';
+export { ImageUpload } from './components/Inputs/ImageUpload';
+export type { ImageUploadItem, ImageUploadProps } from './components/Inputs/ImageUpload/types';
 export { MonthPicker } from './components/Inputs/MonthPicker';
 export type { MonthPickerProps } from './components/Inputs/MonthPicker/types';
 export { MultiSelect } from './components/Inputs/MultiSelect';
