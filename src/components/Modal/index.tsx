@@ -3,8 +3,9 @@ import React, { useEffect, useRef } from 'react';
 // Libs
 import { X } from 'lucide-react';
 // Local
-import { Box, CloseButton, Overlay, TitleRow, TitleText } from './styles';
+import { Box, CloseButton, ModalVariant, Overlay, TitleRow, TitleText } from './styles';
 export { ModalActions } from './styles';
+export type { ModalVariant } from './styles';
 
 interface ModalTitleProps {
   children: React.ReactNode;
@@ -29,7 +30,7 @@ export function ModalTitle({ children, onClose }: ModalTitleProps) {
 interface Props {
   children: React.ReactNode;
   close: () => void;
-  variant?: 'dialog' | 'drawer';
+  variant?: ModalVariant;
 }
 
 export function Modal({ children, close, variant = 'dialog' }: Props) {

@@ -26,6 +26,8 @@ declare const Card: styled_components_dist_types.IStyledComponentBase<"web", sty
     $hoverable?: boolean | undefined;
 }, never>>> & string;
 
+declare const DangerLink: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<react.DetailedHTMLProps<react.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, never> & Partial<Pick<react.DetailedHTMLProps<react.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, never>>> & string;
+
 type ButtonVariant = 'primary' | 'secondary' | 'danger';
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 
@@ -107,9 +109,13 @@ interface DatePickerProps<T extends FieldValues, N extends FieldPath<T>> {
     wrapperStyle?: React.CSSProperties;
     placeholder?: string;
     isDateDisabled?: (date: Date) => boolean;
+    /** Month to open the calendar on when there's no value yet (defaults to
+     * today's month) — e.g. the earliest allowed date, so the picker doesn't
+     * land on a month that's entirely disabled by isDateDisabled. */
+    initialMonth?: Date;
 }
 
-declare function DatePicker<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, placeholder, isDateDisabled, }: DatePickerProps<T, N>): react.JSX.Element;
+declare function DatePicker<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, placeholder, isDateDisabled, initialMonth, }: DatePickerProps<T, N>): react.JSX.Element;
 
 interface MonthPickerProps<T extends FieldValues, N extends FieldPath<T>> {
     label: string;
@@ -210,6 +216,7 @@ interface TextFieldProps<T extends FieldValues, N extends FieldPath<T>> extends 
 type Props$2<T extends FieldValues, N extends FieldPath<T>> = TextFieldProps<T, N> | CurrencyFieldProps<T, N>;
 declare function TextInput<T extends FieldValues, N extends FieldPath<T>>(props: Props$2<T, N>): react.JSX.Element;
 
+type ModalVariant = 'dialog' | 'drawer' | 'drawer-wide';
 declare const ModalActions: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, never> & Partial<Pick<react.DetailedHTMLProps<react.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, never>>> & string;
 
 interface ModalTitleProps {
@@ -220,7 +227,7 @@ declare function ModalTitle({ children, onClose }: ModalTitleProps): react__defa
 interface Props$1 {
     children: react__default.ReactNode;
     close: () => void;
-    variant?: 'dialog' | 'drawer';
+    variant?: ModalVariant;
 }
 declare function Modal({ children, close, variant }: Props$1): react__default.JSX.Element;
 
@@ -381,7 +388,7 @@ declare function ChangePasswordPage(): react.JSX.Element;
 
 declare function useMediaQuery(query: string): boolean;
 
-declare function useModal(variant?: 'dialog' | 'drawer'): {
+declare function useModal(variant?: ModalVariant): {
     open: (c: ReactNode) => void;
     close: () => void;
     modal: react.ReactPortal | null;
@@ -647,4 +654,4 @@ declare function formatCPF(value: string): string;
 declare function formatCNPJ(value: string): string;
 declare function formatCpfCnpj(value: string): string;
 
-export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, Textarea, type TextareaProps, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DangerLink, DatePicker, type DatePickerProps, Empty, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, Textarea, type TextareaProps, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };

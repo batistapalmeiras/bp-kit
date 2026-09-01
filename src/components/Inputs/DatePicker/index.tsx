@@ -54,12 +54,22 @@ export function DatePicker<T extends FieldValues, N extends FieldPath<T>>({
   wrapperStyle,
   placeholder = 'Selecione a data',
   isDateDisabled,
+  initialMonth,
 }: DatePickerProps<T, N>) {
   const { field, fieldState } = useController({ control, name });
   const [open, setOpen] = useState(false);
   const selectedDate = parseDateValue(field.value);
-  const [viewDate, setViewDate] = useState(() => selectedDate ?? new Date());
+  const [viewDate, setViewDate] = useState(() => selectedDate ?? initialMonth ?? new Date());
   const ref = useRef<HTMLDivElement>(null);
+
+  // If the initial month arrives after mount (e.g. it depends on data fetched
+  // by the parent) and the field is still empty, jump the calendar to it once.
+  useEffect(() => {
+    if (!selectedDate && initialMonth) {
+      setViewDate(initialMonth);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialMonth]);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {

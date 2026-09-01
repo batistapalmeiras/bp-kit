@@ -3,7 +3,9 @@ import styled, { css } from 'styled-components';
 // Components
 import { fadeIn, fadeUp, slideInRight } from '../../../styles/animations';
 
-export const Overlay = styled.div<{ $variant: 'dialog' | 'drawer' }>`
+export type ModalVariant = 'dialog' | 'drawer' | 'drawer-wide';
+
+export const Overlay = styled.div<{ $variant: ModalVariant }>`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
@@ -14,11 +16,11 @@ export const Overlay = styled.div<{ $variant: 'dialog' | 'drawer' }>`
   animation: ${fadeIn} 0.2s ease;
 
   @media (min-width: 745px) {
-    justify-content: ${({ $variant }) => ($variant === 'drawer' ? 'flex-end' : 'center')};
+    justify-content: ${({ $variant }) => ($variant === 'dialog' ? 'center' : 'flex-end')};
   }
 `;
 
-export const Box = styled.div<{ $variant: 'dialog' | 'drawer' }>`
+export const Box = styled.div<{ $variant: ModalVariant }>`
   background: ${({ theme }) => theme.colors.canvas};
   border-radius: ${({ theme }) => theme.rounded.lg};
   padding: 28px 32px;
@@ -36,21 +38,26 @@ export const Box = styled.div<{ $variant: 'dialog' | 'drawer' }>`
     overflow-y: auto;
   }
 
-  /* Opt-in via variant="drawer" (see useModal) — on desktop/tablet, opens
-     as a right-side drawer instead of a centered dialog. Apps that don't
-     pass it keep the centered dialog unchanged at every breakpoint. */
+  /* Opt-in via variant="drawer"/"drawer-wide" (see useModal) — on
+     desktop/tablet, opens as a right-side drawer instead of a centered
+     dialog. Apps that don't pass it keep the centered dialog unchanged at
+     every breakpoint. "drawer-wide" is the same slide-in-from-the-right
+     drawer, just noticeably wider — reaching further toward the middle of
+     the screen instead of hugging the edge — for a form substantial enough
+     that 440px feels cramped. */
   ${({ $variant }) =>
-    $variant === 'drawer' &&
-    css`
-      @media (min-width: 745px) {
-        max-width: min(90vw, 440px);
-        height: 100%;
-        border-radius: 0;
-        padding: 32px;
-        overflow-y: auto;
-        animation: ${slideInRight} 0.25s cubic-bezier(0.32, 0.72, 0, 1);
-      }
-    `}
+    (($variant === 'drawer' || $variant === 'drawer-wide') &&
+      css`
+        @media (min-width: 745px) {
+          max-width: ${$variant === 'drawer-wide' ? 'min(90vw, 720px)' : 'min(90vw, 440px)'};
+          height: 100%;
+          border-radius: 0;
+          padding: 32px;
+          overflow-y: auto;
+          animation: ${slideInRight} 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+      `) ||
+    undefined}
 `;
 
 export const TitleRow = styled.div`

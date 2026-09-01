@@ -42,6 +42,7 @@ __export(src_exports, {
   Chip: () => Chip,
   ChipBar: () => ChipBar,
   ControlledBase: () => ControlledBase,
+  DangerLink: () => DangerLink,
   DatePicker: () => DatePicker,
   Empty: () => Empty,
   Form: () => Form,
@@ -239,34 +240,54 @@ var Card = import_styled_components4.default.div`
   `}
 `;
 
+// src/components/DangerLink/styles.ts
+var import_styled_components5 = __toESM(require("styled-components"));
+var DangerLink = import_styled_components5.default.button`
+  display: block;
+  width: 100%;
+  text-align: center;
+  border: none;
+  background: none;
+  padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: ${({ theme: theme2 }) => theme2.colors.primaryErrorTextHover};
+  }
+`;
+
 // src/components/Button/index.tsx
 var import_react = require("react");
 
 // src/components/Button/styles/Button.ts
-var import_styled_components6 = __toESM(require("styled-components"));
+var import_styled_components7 = __toESM(require("styled-components"));
 
 // src/components/_shared/buttonBase.ts
-var import_styled_components5 = require("styled-components");
+var import_styled_components6 = require("styled-components");
 var sizeStyles = {
-  xs: import_styled_components5.css`
+  xs: import_styled_components6.css`
     height: 32px;
     padding: 0 ${({ theme: theme2 }) => theme2.spacing.sm};
     font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
     font-weight: 600;
   `,
-  sm: import_styled_components5.css`
+  sm: import_styled_components6.css`
     height: 36px;
     padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
     font-size: ${({ theme: theme2 }) => theme2.typography.buttonSm.fontSize};
     font-weight: ${({ theme: theme2 }) => theme2.typography.buttonSm.fontWeight};
   `,
-  md: import_styled_components5.css`
+  md: import_styled_components6.css`
     height: 44px;
     padding: 0 ${({ theme: theme2 }) => theme2.spacing.lg};
     font-size: ${({ theme: theme2 }) => theme2.typography.buttonMd.fontSize};
     font-weight: ${({ theme: theme2 }) => theme2.typography.buttonMd.fontWeight};
   `,
-  lg: import_styled_components5.css`
+  lg: import_styled_components6.css`
     height: 52px;
     padding: 0 ${({ theme: theme2 }) => theme2.spacing.xl};
     font-size: ${({ theme: theme2 }) => theme2.typography.buttonMd.fontSize};
@@ -274,7 +295,7 @@ var sizeStyles = {
   `
 };
 var variantStyles = {
-  primary: import_styled_components5.css`
+  primary: import_styled_components6.css`
     background: ${({ theme: theme2 }) => theme2.colors.primary};
     color: ${({ theme: theme2 }) => theme2.colors.onPrimary};
     border: none;
@@ -282,7 +303,7 @@ var variantStyles = {
     &:hover:not(:disabled) { background: ${({ theme: theme2 }) => theme2.colors.primaryActive}; }
     &:disabled { background: ${({ theme: theme2 }) => theme2.colors.primaryDisabled}; cursor: not-allowed; }
   `,
-  secondary: import_styled_components5.css`
+  secondary: import_styled_components6.css`
     background: ${({ theme: theme2 }) => theme2.colors.canvas};
     color: ${({ theme: theme2 }) => theme2.colors.ink};
     border: 1px solid ${({ theme: theme2 }) => theme2.colors.borderStrong};
@@ -290,7 +311,7 @@ var variantStyles = {
     &:hover:not(:disabled) { background: ${({ theme: theme2 }) => theme2.colors.surfaceSoft}; }
     &:disabled { color: ${({ theme: theme2 }) => theme2.colors.mutedSoft}; border-color: ${({ theme: theme2 }) => theme2.colors.hairline}; cursor: not-allowed; }
   `,
-  danger: import_styled_components5.css`
+  danger: import_styled_components6.css`
     background: ${({ theme: theme2 }) => theme2.colors.canvas};
     color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
     border: 1px solid ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
@@ -299,7 +320,7 @@ var variantStyles = {
     &:disabled { opacity: 0.5; cursor: not-allowed; }
   `
 };
-var buttonBaseCss = import_styled_components5.css`
+var buttonBaseCss = import_styled_components6.css`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -319,7 +340,7 @@ var buttonBaseCss = import_styled_components5.css`
 `;
 
 // src/components/Button/styles/Button.ts
-var StyledButton = import_styled_components6.default.button`
+var StyledButton = import_styled_components7.default.button`
   ${buttonBaseCss}
   ${({ $size }) => sizeStyles[$size]}
   ${({ $variant }) => variantStyles[$variant]}
@@ -332,14 +353,14 @@ var Button = (0, import_react.forwardRef)(function Button2({ variant = "primary"
 });
 
 // src/components/Chip/styles/Chip.ts
-var import_styled_components7 = __toESM(require("styled-components"));
-var ChipBar = import_styled_components7.default.div`
+var import_styled_components8 = __toESM(require("styled-components"));
+var ChipBar = import_styled_components8.default.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
   padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
 `;
-var Chip = import_styled_components7.default.button`
+var Chip = import_styled_components8.default.button`
   display: inline-flex;
   align-items: center;
   height: 28px;
@@ -361,20 +382,20 @@ var Chip = import_styled_components7.default.button`
 `;
 
 // src/components/Typography/styles/Typography.ts
-var import_styled_components8 = __toESM(require("styled-components"));
+var import_styled_components9 = __toESM(require("styled-components"));
 var styleMap = {
-  h1: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.displayXl.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayXl.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayXl.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
-  h2: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.displayMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
-  h3: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displaySm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
-  h4: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.titleMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.titleMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.titleMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
-  h5: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.titleSm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.titleSm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.titleSm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
-  h6: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize}; font-weight: 600; line-height: ${({ theme: theme2 }) => theme2.typography.bodySm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
-  p: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.bodyMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.body};`,
-  span: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.bodyMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.body};`,
-  label: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.caption.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.caption.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.muted}; text-transform: uppercase; letter-spacing: 0.5px;`,
-  caption: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.captionSm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.captionSm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.muted};`,
-  error: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.bodySm.fontWeight}; color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};`,
-  micro: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.microLabel.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.microLabel.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.microLabel.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.muted}; text-transform: uppercase; letter-spacing: 0.5px;`
+  h1: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.displayXl.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayXl.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayXl.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  h2: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.displayMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  h3: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displaySm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  h4: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.titleMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.titleMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.titleMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  h5: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.titleSm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.titleSm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.titleSm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  h6: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize}; font-weight: 600; line-height: ${({ theme: theme2 }) => theme2.typography.bodySm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  p: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.bodyMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.body};`,
+  span: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.bodyMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.body};`,
+  label: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.caption.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.caption.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.muted}; text-transform: uppercase; letter-spacing: 0.5px;`,
+  caption: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.captionSm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.captionSm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.muted};`,
+  error: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.bodySm.fontWeight}; color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};`,
+  micro: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.microLabel.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.microLabel.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.microLabel.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.muted}; text-transform: uppercase; letter-spacing: 0.5px;`
 };
 var defaultTagMap = {
   h1: "h1",
@@ -390,7 +411,7 @@ var defaultTagMap = {
   error: "p",
   micro: "p"
 };
-var StyledText = import_styled_components8.default.p`
+var StyledText = import_styled_components9.default.p`
   ${({ $type }) => styleMap[$type]}
 `;
 
@@ -402,8 +423,8 @@ function Typography({ type, as, children, ...rest }) {
 }
 
 // src/components/Empty/styles/Empty.ts
-var import_styled_components9 = __toESM(require("styled-components"));
-var Wrapper = import_styled_components9.default.div`
+var import_styled_components10 = __toESM(require("styled-components"));
+var Wrapper = import_styled_components10.default.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -423,8 +444,8 @@ function Empty({ title, description }) {
 }
 
 // src/components/Form/index.ts
-var import_styled_components10 = __toESM(require("styled-components"));
-var Form = import_styled_components10.default.form`
+var import_styled_components11 = __toESM(require("styled-components"));
+var Form = import_styled_components11.default.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
@@ -434,9 +455,9 @@ var Form = import_styled_components10.default.form`
 var import_react2 = require("react");
 
 // src/components/IconButton/styles/IconButton.ts
-var import_styled_components11 = __toESM(require("styled-components"));
+var import_styled_components12 = __toESM(require("styled-components"));
 var iconBoxSize = { xs: 14, sm: 16, md: 18, lg: 20 };
-var IconWrap = import_styled_components11.default.span`
+var IconWrap = import_styled_components12.default.span`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -447,11 +468,11 @@ var IconWrap = import_styled_components11.default.span`
 
   svg { display: block; width: 100%; height: 100%; }
 `;
-var StyledButton2 = import_styled_components11.default.button`
+var StyledButton2 = import_styled_components12.default.button`
   ${buttonBaseCss}
   ${({ $size }) => sizeStyles[$size]}
   ${({ $variant }) => variantStyles[$variant]}
-  ${({ $iconOnly }) => $iconOnly && import_styled_components11.css`padding: 0; aspect-ratio: 1 / 1;`}
+  ${({ $iconOnly }) => $iconOnly && import_styled_components12.css`padding: 0; aspect-ratio: 1 / 1;`}
 `;
 
 // src/components/IconButton/index.tsx
@@ -470,8 +491,8 @@ var IconButton = (0, import_react2.forwardRef)(function IconButton2({ icon, icon
 var import_lucide_react = require("lucide-react");
 
 // src/components/InfoBox/styles/InfoBox.ts
-var import_styled_components12 = __toESM(require("styled-components"));
-var Box = import_styled_components12.default.div`
+var import_styled_components13 = __toESM(require("styled-components"));
+var Box = import_styled_components13.default.div`
   display: flex;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
   padding: ${({ theme: theme2 }) => theme2.spacing.md};
@@ -503,23 +524,23 @@ function InfoBox({ variant = "info", children, style }) {
 var import_react_hook_form = require("react-hook-form");
 
 // src/components/Inputs/BaseInput/styles/BaseInput.ts
-var import_styled_components13 = __toESM(require("styled-components"));
-var Wrapper2 = import_styled_components13.default.div`
+var import_styled_components14 = __toESM(require("styled-components"));
+var Wrapper2 = import_styled_components14.default.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Label = import_styled_components13.default.label`
+var Label = import_styled_components14.default.label`
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.caption.fontWeight};
   line-height: ${({ theme: theme2 }) => theme2.typography.caption.lineHeight};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var ErrorText = import_styled_components13.default.span`
+var ErrorText = import_styled_components14.default.span`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
 `;
-var InputField = import_styled_components13.default.input`
+var InputField = import_styled_components14.default.input`
   height: 56px;
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
@@ -587,8 +608,8 @@ var import_react3 = require("react");
 var import_lucide_react2 = require("lucide-react");
 
 // src/components/Inputs/Checkbox/styles/Checkbox.ts
-var import_styled_components14 = __toESM(require("styled-components"));
-var HiddenInput = import_styled_components14.default.input`
+var import_styled_components15 = __toESM(require("styled-components"));
+var HiddenInput = import_styled_components15.default.input`
   position: absolute;
   width: 20px;
   height: 20px;
@@ -600,7 +621,7 @@ var HiddenInput = import_styled_components14.default.input`
     cursor: not-allowed;
   }
 `;
-var Box2 = import_styled_components14.default.span`
+var Box2 = import_styled_components15.default.span`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -644,7 +665,7 @@ var Box2 = import_styled_components14.default.span`
     opacity: 0.5;
   }
 `;
-var Wrapper3 = import_styled_components14.default.label`
+var Wrapper3 = import_styled_components15.default.label`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -676,11 +697,11 @@ var import_react_hook_form2 = require("react-hook-form");
 var import_lucide_react3 = require("lucide-react");
 
 // src/components/Inputs/_shared/PickerElements.ts
-var import_styled_components15 = __toESM(require("styled-components"));
-var Wrapper4 = import_styled_components15.default.div`
+var import_styled_components16 = __toESM(require("styled-components"));
+var Wrapper4 = import_styled_components16.default.div`
   position: relative;
 `;
-var Trigger = import_styled_components15.default.button`
+var Trigger = import_styled_components16.default.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -708,10 +729,10 @@ var Trigger = import_styled_components15.default.button`
     padding: 0 calc(${theme2.spacing.md} - 1px);
   `}
 `;
-var Placeholder = import_styled_components15.default.span`
+var Placeholder = import_styled_components16.default.span`
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
 `;
-var Panel = import_styled_components15.default.div`
+var Panel = import_styled_components16.default.div`
   position: absolute;
   top: calc(100% + ${({ theme: theme2 }) => theme2.spacing.xs});
   left: 0;
@@ -724,19 +745,19 @@ var Panel = import_styled_components15.default.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.base};
   animation: ${fadeDown} 0.15s ease-out;
 `;
-var PanelHeader = import_styled_components15.default.div`
+var PanelHeader = import_styled_components16.default.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.base};
 `;
-var HeaderLabel = import_styled_components15.default.span`
+var HeaderLabel = import_styled_components16.default.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.titleSm.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.titleSm.fontWeight};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
 `;
-var NavButton = import_styled_components15.default.button`
+var NavButton = import_styled_components16.default.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -754,13 +775,13 @@ var NavButton = import_styled_components15.default.button`
 `;
 
 // src/components/Inputs/DatePicker/styles/DatePicker.ts
-var import_styled_components16 = __toESM(require("styled-components"));
-var WeekdayRow = import_styled_components16.default.div`
+var import_styled_components17 = __toESM(require("styled-components"));
+var WeekdayRow = import_styled_components17.default.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var WeekdayLabel = import_styled_components16.default.span`
+var WeekdayLabel = import_styled_components17.default.span`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -769,12 +790,12 @@ var WeekdayLabel = import_styled_components16.default.span`
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
 `;
-var DayGrid = import_styled_components16.default.div`
+var DayGrid = import_styled_components17.default.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 2px;
 `;
-var DayCell = import_styled_components16.default.button`
+var DayCell = import_styled_components17.default.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -851,14 +872,23 @@ function DatePicker({
   name,
   wrapperStyle,
   placeholder = "Selecione a data",
-  isDateDisabled
+  isDateDisabled,
+  initialMonth
 }) {
   var _a, _b;
   const { field, fieldState } = (0, import_react_hook_form2.useController)({ control, name });
   const [open, setOpen] = (0, import_react4.useState)(false);
   const selectedDate = parseDateValue(field.value);
-  const [viewDate, setViewDate] = (0, import_react4.useState)(() => selectedDate != null ? selectedDate : /* @__PURE__ */ new Date());
+  const [viewDate, setViewDate] = (0, import_react4.useState)(() => {
+    var _a2;
+    return (_a2 = selectedDate != null ? selectedDate : initialMonth) != null ? _a2 : /* @__PURE__ */ new Date();
+  });
   const ref = (0, import_react4.useRef)(null);
+  (0, import_react4.useEffect)(() => {
+    if (!selectedDate && initialMonth) {
+      setViewDate(initialMonth);
+    }
+  }, [initialMonth]);
   (0, import_react4.useEffect)(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
@@ -915,13 +945,13 @@ var import_react_hook_form3 = require("react-hook-form");
 var import_lucide_react4 = require("lucide-react");
 
 // src/components/Inputs/MonthPicker/styles/MonthPicker.ts
-var import_styled_components17 = __toESM(require("styled-components"));
-var MonthGrid = import_styled_components17.default.div`
+var import_styled_components18 = __toESM(require("styled-components"));
+var MonthGrid = import_styled_components18.default.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var MonthCell = import_styled_components17.default.button`
+var MonthCell = import_styled_components18.default.button`
   padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
   border: none;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
@@ -1016,11 +1046,11 @@ function MonthPicker({
 var import_react6 = require("react");
 
 // src/components/Inputs/MultiSelect/styles/MultiSelect.ts
-var import_styled_components18 = __toESM(require("styled-components"));
-var Wrap = import_styled_components18.default.div`
+var import_styled_components19 = __toESM(require("styled-components"));
+var Wrap = import_styled_components19.default.div`
   position: relative;
 `;
-var Field = import_styled_components18.default.div`
+var Field = import_styled_components19.default.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1048,7 +1078,7 @@ var Field = import_styled_components18.default.div`
       cursor: not-allowed;
     `}
 `;
-var Chip2 = import_styled_components18.default.span`
+var Chip2 = import_styled_components19.default.span`
   display: inline-flex;
   align-items: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
@@ -1061,7 +1091,7 @@ var Chip2 = import_styled_components18.default.span`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
 `;
-var RemoveChip = import_styled_components18.default.button`
+var RemoveChip = import_styled_components19.default.button`
   display: grid;
   place-items: center;
   width: 20px;
@@ -1079,7 +1109,7 @@ var RemoveChip = import_styled_components18.default.button`
     color: ${({ theme: theme2 }) => theme2.colors.ink};
   }
 `;
-var SearchInput = import_styled_components18.default.input`
+var SearchInput = import_styled_components19.default.input`
   flex: 1 1 80px;
   min-width: 80px;
   height: 32px;
@@ -1098,7 +1128,7 @@ var SearchInput = import_styled_components18.default.input`
     cursor: not-allowed;
   }
 `;
-var Dropdown = import_styled_components18.default.div`
+var Dropdown = import_styled_components19.default.div`
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
@@ -1112,7 +1142,7 @@ var Dropdown = import_styled_components18.default.div`
   z-index: 20;
   padding: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var DropdownOption = import_styled_components18.default.div`
+var DropdownOption = import_styled_components19.default.div`
   display: flex;
   align-items: center;
   width: 100%;
@@ -1130,13 +1160,13 @@ var DropdownOption = import_styled_components18.default.div`
       pointer-events: none;
     `}
 `;
-var EmptyOption = import_styled_components18.default.div`
+var EmptyOption = import_styled_components19.default.div`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
   padding: ${({ theme: theme2 }) => theme2.spacing.sm};
 `;
-var LimitHint = import_styled_components18.default.p`
+var LimitHint = import_styled_components19.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
@@ -1239,8 +1269,8 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
 }
 
 // src/components/Inputs/RadioGroup/styles/RadioGroup.ts
-var import_styled_components19 = __toESM(require("styled-components"));
-var HiddenInput2 = import_styled_components19.default.input`
+var import_styled_components20 = __toESM(require("styled-components"));
+var HiddenInput2 = import_styled_components20.default.input`
   position: absolute;
   width: 20px;
   height: 20px;
@@ -1252,7 +1282,7 @@ var HiddenInput2 = import_styled_components19.default.input`
     cursor: not-allowed;
   }
 `;
-var Dot = import_styled_components19.default.span`
+var Dot = import_styled_components20.default.span`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -1298,7 +1328,7 @@ var Dot = import_styled_components19.default.span`
     opacity: 0.5;
   }
 `;
-var OptionWrapper = import_styled_components19.default.label`
+var OptionWrapper = import_styled_components20.default.label`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -1313,12 +1343,12 @@ var OptionWrapper = import_styled_components19.default.label`
     color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
   }
 `;
-var Group = import_styled_components19.default.div`
+var Group = import_styled_components20.default.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
 `;
-var GroupLabel = import_styled_components19.default.span`
+var GroupLabel = import_styled_components20.default.span`
   display: block;
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.caption.fontWeight};
@@ -1354,8 +1384,8 @@ function RadioGroup({ name, options, value, onChange, label, disabled }) {
 var import_react_hook_form4 = require("react-hook-form");
 
 // src/components/Inputs/Select/styles/Select.ts
-var import_styled_components20 = __toESM(require("styled-components"));
-var SelectField = import_styled_components20.default.select`
+var import_styled_components21 = __toESM(require("styled-components"));
+var SelectField = import_styled_components21.default.select`
   height: 56px;
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
@@ -1400,8 +1430,8 @@ function Select({
 var import_react7 = require("react");
 
 // src/components/Inputs/Switch/styles/Switch.ts
-var import_styled_components21 = __toESM(require("styled-components"));
-var HiddenInput3 = import_styled_components21.default.input`
+var import_styled_components22 = __toESM(require("styled-components"));
+var HiddenInput3 = import_styled_components22.default.input`
   position: absolute;
   width: 40px;
   height: 22px;
@@ -1413,7 +1443,7 @@ var HiddenInput3 = import_styled_components21.default.input`
     cursor: not-allowed;
   }
 `;
-var Track = import_styled_components21.default.span`
+var Track = import_styled_components22.default.span`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -1453,7 +1483,7 @@ var Track = import_styled_components21.default.span`
     opacity: 0.5;
   }
 `;
-var Wrapper5 = import_styled_components21.default.label`
+var Wrapper5 = import_styled_components22.default.label`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -1483,8 +1513,8 @@ var Switch = (0, import_react7.forwardRef)(function Switch2({ label, ...rest }, 
 var import_react_hook_form5 = require("react-hook-form");
 
 // src/components/Inputs/Textarea/styles/Textarea.ts
-var import_styled_components22 = __toESM(require("styled-components"));
-var TextareaField = import_styled_components22.default.textarea`
+var import_styled_components23 = __toESM(require("styled-components"));
+var TextareaField = import_styled_components23.default.textarea`
   width: 100%;
   min-height: 140px;
   padding: ${({ theme: theme2 }) => theme2.spacing.sm} ${({ theme: theme2 }) => theme2.spacing.md};
@@ -1599,13 +1629,13 @@ function formatCpfCnpj(value) {
 }
 
 // src/components/Inputs/TextInput/styles/TextInput.ts
-var import_styled_components23 = __toESM(require("styled-components"));
-var InputWrapper = import_styled_components23.default.div`
+var import_styled_components24 = __toESM(require("styled-components"));
+var InputWrapper = import_styled_components24.default.div`
   position: relative;
   display: flex;
   align-items: center;
 `;
-var EyeButton = import_styled_components23.default.button`
+var EyeButton = import_styled_components24.default.button`
   position: absolute;
   right: 14px;
   background: none;
@@ -1663,8 +1693,8 @@ var import_react9 = require("react");
 var import_lucide_react6 = require("lucide-react");
 
 // src/components/Modal/styles/Modal.ts
-var import_styled_components24 = __toESM(require("styled-components"));
-var Overlay2 = import_styled_components24.default.div`
+var import_styled_components25 = __toESM(require("styled-components"));
+var Overlay2 = import_styled_components25.default.div`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
@@ -1675,10 +1705,10 @@ var Overlay2 = import_styled_components24.default.div`
   animation: ${fadeIn} 0.2s ease;
 
   @media (min-width: 745px) {
-    justify-content: ${({ $variant }) => $variant === "drawer" ? "flex-end" : "center"};
+    justify-content: ${({ $variant }) => $variant === "dialog" ? "center" : "flex-end"};
   }
 `;
-var Box3 = import_styled_components24.default.div`
+var Box3 = import_styled_components25.default.div`
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.lg};
   padding: 28px 32px;
@@ -1696,33 +1726,37 @@ var Box3 = import_styled_components24.default.div`
     overflow-y: auto;
   }
 
-  /* Opt-in via variant="drawer" (see useModal) — on desktop/tablet, opens
-     as a right-side drawer instead of a centered dialog. Apps that don't
-     pass it keep the centered dialog unchanged at every breakpoint. */
-  ${({ $variant }) => $variant === "drawer" && import_styled_components24.css`
-      @media (min-width: 745px) {
-        max-width: min(90vw, 440px);
-        height: 100%;
-        border-radius: 0;
-        padding: 32px;
-        overflow-y: auto;
-        animation: ${slideInRight} 0.25s cubic-bezier(0.32, 0.72, 0, 1);
-      }
-    `}
+  /* Opt-in via variant="drawer"/"drawer-wide" (see useModal) — on
+     desktop/tablet, opens as a right-side drawer instead of a centered
+     dialog. Apps that don't pass it keep the centered dialog unchanged at
+     every breakpoint. "drawer-wide" is the same slide-in-from-the-right
+     drawer, just noticeably wider — reaching further toward the middle of
+     the screen instead of hugging the edge — for a form substantial enough
+     that 440px feels cramped. */
+  ${({ $variant }) => ($variant === "drawer" || $variant === "drawer-wide") && import_styled_components25.css`
+        @media (min-width: 745px) {
+          max-width: ${$variant === "drawer-wide" ? "min(90vw, 720px)" : "min(90vw, 440px)"};
+          height: 100%;
+          border-radius: 0;
+          padding: 32px;
+          overflow-y: auto;
+          animation: ${slideInRight} 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+      ` || void 0}
 `;
-var TitleRow = import_styled_components24.default.div`
+var TitleRow = import_styled_components25.default.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
   margin-bottom: 24px;
 `;
-var TitleText = import_styled_components24.default.h3`
+var TitleText = import_styled_components25.default.h3`
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
 `;
-var CloseButton = import_styled_components24.default.button`
+var CloseButton = import_styled_components25.default.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1741,7 +1775,7 @@ var CloseButton = import_styled_components24.default.button`
     color: ${({ theme: theme2 }) => theme2.colors.ink};
   }
 `;
-var ModalActions = import_styled_components24.default.div`
+var ModalActions = import_styled_components25.default.div`
   display: flex;
   justify-content: flex-end;
   gap: 8px;
@@ -1782,15 +1816,15 @@ function Modal({ children, close, variant = "dialog" }) {
 }
 
 // src/components/Pagination/styles/Pagination.ts
-var import_styled_components25 = __toESM(require("styled-components"));
-var Wrapper6 = import_styled_components25.default.div`
+var import_styled_components26 = __toESM(require("styled-components"));
+var Wrapper6 = import_styled_components26.default.div`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
   margin-top: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var PageButton = import_styled_components25.default.button`
+var PageButton = import_styled_components26.default.button`
   width: 36px;
   height: 36px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
@@ -1837,11 +1871,11 @@ var import_react_router_dom2 = require("react-router-dom");
 var import_lucide_react7 = require("lucide-react");
 
 // src/components/PageHeader/styles/PageHeader.ts
-var import_styled_components26 = __toESM(require("styled-components"));
-var Wrapper7 = import_styled_components26.default.div`
+var import_styled_components27 = __toESM(require("styled-components"));
+var Wrapper7 = import_styled_components27.default.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var Back = import_styled_components26.default.button`
+var Back = import_styled_components27.default.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1858,25 +1892,25 @@ var Back = import_styled_components26.default.button`
 
   &:hover { background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong}; }
 `;
-var Row = import_styled_components26.default.div`
+var Row = import_styled_components27.default.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.base};
 `;
-var Titles = import_styled_components26.default.div`
+var Titles = import_styled_components27.default.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
 `;
-var Title = import_styled_components26.default.h2`
+var Title = import_styled_components27.default.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   line-height: 1.2;
 `;
-var Subtitle = import_styled_components26.default.p`
+var Subtitle = import_styled_components27.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
@@ -1902,8 +1936,8 @@ function PageHeader({ title, subtitle, back, action }) {
 var import_lucide_react8 = require("lucide-react");
 
 // src/components/SearchInput/styles/SearchInput.ts
-var import_styled_components27 = __toESM(require("styled-components"));
-var Wrapper8 = import_styled_components27.default.div`
+var import_styled_components28 = __toESM(require("styled-components"));
+var Wrapper8 = import_styled_components28.default.div`
   position: relative;
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
 
@@ -1916,7 +1950,7 @@ var Wrapper8 = import_styled_components27.default.div`
     pointer-events: none;
   }
 `;
-var Field2 = import_styled_components27.default.input`
+var Field2 = import_styled_components28.default.input`
   width: 100%;
   height: 40px;
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.base} 0 36px;
@@ -1948,13 +1982,13 @@ function SearchInput2({ value, onChange, placeholder }) {
 }
 
 // src/components/Inputs/SegmentedControl/styles/SegmentedControl.ts
-var import_styled_components28 = __toESM(require("styled-components"));
-var Wrap2 = import_styled_components28.default.div`
+var import_styled_components29 = __toESM(require("styled-components"));
+var Wrap2 = import_styled_components29.default.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Label2 = import_styled_components28.default.p`
+var Label2 = import_styled_components29.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -1962,7 +1996,7 @@ var Label2 = import_styled_components28.default.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var Toggle = import_styled_components28.default.div`
+var Toggle = import_styled_components29.default.div`
   display: grid;
   grid-auto-columns: 1fr;
   grid-auto-flow: column;
@@ -1970,7 +2004,7 @@ var Toggle = import_styled_components28.default.div`
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
   overflow: hidden;
 `;
-var Btn = import_styled_components28.default.button`
+var Btn = import_styled_components29.default.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2018,12 +2052,12 @@ function SegmentedControl({
 }
 
 // src/components/Skeleton/styles/Skeleton.ts
-var import_styled_components29 = __toESM(require("styled-components"));
-var pulse = import_styled_components29.keyframes`
+var import_styled_components30 = __toESM(require("styled-components"));
+var pulse = import_styled_components30.keyframes`
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.4; }
 `;
-var Skeleton = import_styled_components29.default.div`
+var Skeleton = import_styled_components30.default.div`
   height: ${({ $h }) => $h != null ? $h : "16px"};
   width: ${({ $w }) => $w != null ? $w : "100%"};
   border-radius: 6px;
@@ -2032,9 +2066,9 @@ var Skeleton = import_styled_components29.default.div`
 `;
 
 // src/components/StatusBadge/index.tsx
-var import_styled_components30 = __toESM(require("styled-components"));
+var import_styled_components31 = __toESM(require("styled-components"));
 var import_jsx_runtime23 = require("react/jsx-runtime");
-var StyledBadge = import_styled_components30.default.span`
+var StyledBadge = import_styled_components31.default.span`
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -2051,8 +2085,8 @@ function StatusBadge({ tone, children }) {
 }
 
 // src/components/StatsGrid/styles/StatsGrid.ts
-var import_styled_components31 = __toESM(require("styled-components"));
-var StatsGrid = import_styled_components31.default.div`
+var import_styled_components32 = __toESM(require("styled-components"));
+var StatsGrid = import_styled_components32.default.div`
   display: grid;
   grid-template-columns: repeat(${({ $columns }) => $columns != null ? $columns : 4}, 1fr);
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
@@ -2066,7 +2100,7 @@ var StatsGrid = import_styled_components31.default.div`
     grid-template-columns: 1fr;
   }
 `;
-var StatCard = import_styled_components31.default.div`
+var StatCard = import_styled_components32.default.div`
   min-width: 0;
   background: ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningSurface : $tone === "danger" ? "#fff0f3" : theme2.colors.canvas};
   border: 1px solid ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningBorder : $tone === "danger" ? "#ffd1da" : theme2.colors.hairline};
@@ -2074,7 +2108,7 @@ var StatCard = import_styled_components31.default.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.base};
   box-shadow: ${({ theme: theme2 }) => theme2.shadows.sm};
 `;
-var StatLabel = import_styled_components31.default.p`
+var StatLabel = import_styled_components32.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
@@ -2083,7 +2117,7 @@ var StatLabel = import_styled_components31.default.p`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-var StatValue = import_styled_components31.default.p`
+var StatValue = import_styled_components32.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -2092,8 +2126,8 @@ var StatValue = import_styled_components31.default.p`
 `;
 
 // src/components/SummaryCard/styles/SummaryCard.ts
-var import_styled_components32 = __toESM(require("styled-components"));
-var Card2 = import_styled_components32.default.div`
+var import_styled_components33 = __toESM(require("styled-components"));
+var Card2 = import_styled_components33.default.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -2119,7 +2153,7 @@ var Card2 = import_styled_components32.default.div`
     animation: ${fadeUp} 0.2s ease;
   }
 `;
-var Label3 = import_styled_components32.default.p`
+var Label3 = import_styled_components33.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -2128,14 +2162,14 @@ var Label3 = import_styled_components32.default.p`
   letter-spacing: 0.5px;
   margin: 0;
 `;
-var Row2 = import_styled_components32.default.div`
+var Row2 = import_styled_components33.default.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
   width: 100%;
 `;
-var Info2 = import_styled_components32.default.div`
+var Info2 = import_styled_components33.default.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -2143,16 +2177,16 @@ var Info2 = import_styled_components32.default.div`
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
   width: 100%;
 `;
-var Items = import_styled_components32.default.span`
+var Items = import_styled_components33.default.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
   flex: 1;
 `;
-var EmptyMessage = (0, import_styled_components32.default)(Items)`
+var EmptyMessage = (0, import_styled_components33.default)(Items)`
   text-align: center;
 `;
-var Total = import_styled_components32.default.span`
+var Total = import_styled_components33.default.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -2162,20 +2196,20 @@ var Total = import_styled_components32.default.span`
   min-width: fit-content;
   margin-left: ${({ theme: theme2 }) => theme2.spacing.sm};
 `;
-var ItemDetail = import_styled_components32.default.div`
+var ItemDetail = import_styled_components33.default.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
   padding: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
 `;
-var ItemDetailName = import_styled_components32.default.span`
+var ItemDetailName = import_styled_components33.default.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   flex: 1;
 `;
-var ItemDetailPrice = import_styled_components32.default.span`
+var ItemDetailPrice = import_styled_components33.default.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
@@ -2183,12 +2217,12 @@ var ItemDetailPrice = import_styled_components32.default.span`
   flex-shrink: 0;
   text-align: right;
 `;
-var Divider = import_styled_components32.default.hr`
+var Divider = import_styled_components33.default.hr`
   border: none;
   border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
 `;
-var ButtonRow = import_styled_components32.default.div`
+var ButtonRow = import_styled_components33.default.div`
   display: flex;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
 
@@ -2257,14 +2291,14 @@ function SummaryCard({
 }
 
 // src/components/Tabs/styles/Tabs.ts
-var import_styled_components33 = __toESM(require("styled-components"));
-var TabBar = import_styled_components33.default.div.attrs({ role: "tablist" })`
+var import_styled_components34 = __toESM(require("styled-components"));
+var TabBar = import_styled_components34.default.div.attrs({ role: "tablist" })`
   display: flex;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Tab = import_styled_components33.default.button.attrs(({ $active }) => ({
+var Tab = import_styled_components34.default.button.attrs(({ $active }) => ({
   type: "button",
   role: "tab",
   "aria-selected": $active
@@ -2287,7 +2321,7 @@ var Tab = import_styled_components33.default.button.attrs(({ $active }) => ({
 
   &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
 `;
-var TabBadge = import_styled_components33.default.span`
+var TabBadge = import_styled_components34.default.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2306,12 +2340,12 @@ var TabBadge = import_styled_components33.default.span`
 var import_react_dom2 = require("react-dom");
 
 // src/components/Toast/styles/Toast.ts
-var import_styled_components34 = __toESM(require("styled-components"));
-var fadeOut = import_styled_components34.keyframes`
+var import_styled_components35 = __toESM(require("styled-components"));
+var fadeOut = import_styled_components35.keyframes`
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(8px); }
 `;
-var ToastEl = import_styled_components34.default.div`
+var ToastEl = import_styled_components35.default.div`
   position: fixed;
   bottom: 80px;
   left: 0;
@@ -2570,8 +2604,8 @@ function useLogin(resolveRoute) {
 }
 
 // src/pages/LoginPage/styles/Login.ts
-var import_styled_components35 = __toESM(require("styled-components"));
-var Page = import_styled_components35.default.div`
+var import_styled_components36 = __toESM(require("styled-components"));
+var Page = import_styled_components36.default.div`
   min-height: 100vh;
   display: flex;
 
@@ -2579,7 +2613,7 @@ var Page = import_styled_components35.default.div`
     flex-direction: column;
   }
 `;
-var Brand2 = import_styled_components35.default.div`
+var Brand2 = import_styled_components36.default.div`
   flex: 0 0 420px;
   background: ${({ theme: theme2 }) => theme2.colors.primary};
   display: flex;
@@ -2610,7 +2644,7 @@ var Brand2 = import_styled_components35.default.div`
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
   }
 `;
-var BrandMark = import_styled_components35.default.div`
+var BrandMark = import_styled_components36.default.div`
   width: 80px;
   height: 80px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
@@ -2636,13 +2670,13 @@ var BrandMark = import_styled_components35.default.div`
     img { width: 38px; height: 38px; }
   }
 `;
-var BrandText = import_styled_components35.default.div`
+var BrandText = import_styled_components36.default.div`
   text-align: center;
   color: #fff;
   position: relative;
   z-index: 1;
 `;
-var BrandName2 = import_styled_components35.default.h1`
+var BrandName2 = import_styled_components36.default.h1`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.625rem;
   font-weight: 700;
@@ -2654,13 +2688,13 @@ var BrandName2 = import_styled_components35.default.h1`
     font-size: 1.25rem;
   }
 `;
-var BrandSub = import_styled_components35.default.p`
+var BrandSub = import_styled_components36.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   opacity: 0.75;
   line-height: 1.4;
 `;
-var BrandQuote = import_styled_components35.default.blockquote`
+var BrandQuote = import_styled_components36.default.blockquote`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: rgba(255, 255, 255, 0.6);
@@ -2675,7 +2709,7 @@ var BrandQuote = import_styled_components35.default.blockquote`
     display: none;
   }
 `;
-var FormPanel = import_styled_components35.default.div`
+var FormPanel = import_styled_components36.default.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -2697,15 +2731,15 @@ var FormPanel = import_styled_components35.default.div`
     animation: ${slideUp} 0.35s ease;
   }
 `;
-var FormBox = import_styled_components35.default.div`
+var FormBox = import_styled_components36.default.div`
   width: 100%;
   max-width: 400px;
   animation: ${fadeUp} 0.35s ease;
 `;
-var FormHeader = import_styled_components35.default.div`
+var FormHeader = import_styled_components36.default.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var FormTitle = import_styled_components35.default.h2`
+var FormTitle = import_styled_components36.default.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.375rem;
   font-weight: 700;
@@ -2713,22 +2747,22 @@ var FormTitle = import_styled_components35.default.h2`
   letter-spacing: -0.3px;
   margin-bottom: 6px;
 `;
-var FormSubtitle = import_styled_components35.default.p`
+var FormSubtitle = import_styled_components36.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Form2 = import_styled_components35.default.form`
+var Form2 = import_styled_components36.default.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SubmitButton = (0, import_styled_components35.default)(Button)`
+var SubmitButton = (0, import_styled_components36.default)(Button)`
   @media (max-width: 768px) {
     border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
   }
 `;
-var ErrorMsg = import_styled_components35.default.p`
+var ErrorMsg = import_styled_components36.default.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
   background: #fef2f2;
@@ -2813,15 +2847,15 @@ var import_react_hook_form7 = require("react-hook-form");
 var import_react_router_dom4 = require("react-router-dom");
 
 // src/pages/ProfilePage/styles/ProfilePage.ts
-var import_styled_components36 = __toESM(require("styled-components"));
-var Wrap3 = import_styled_components36.default.div`
+var import_styled_components37 = __toESM(require("styled-components"));
+var Wrap3 = import_styled_components37.default.div`
   max-width: 560px;
 `;
-var Identity = import_styled_components36.default.div`
+var Identity = import_styled_components37.default.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Name = import_styled_components36.default.h2`
+var Name = import_styled_components37.default.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -2829,18 +2863,18 @@ var Name = import_styled_components36.default.h2`
   line-height: 1.1;
   margin-bottom: 4px;
 `;
-var RoleLabel = import_styled_components36.default.p`
+var RoleLabel = import_styled_components37.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Section = import_styled_components36.default.div`
+var Section = import_styled_components37.default.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SectionTitle = import_styled_components36.default.p`
+var SectionTitle = import_styled_components37.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -2848,10 +2882,10 @@ var SectionTitle = import_styled_components36.default.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var SectionDivider = import_styled_components36.default.div`
+var SectionDivider = import_styled_components37.default.div`
   border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Actions = import_styled_components36.default.div`
+var Actions = import_styled_components37.default.div`
   display: flex;
   justify-content: flex-end;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -3010,11 +3044,11 @@ function useModal(variant = "dialog") {
 }
 
 // src/styles/styled.d.ts
-var import_styled_components37 = require("styled-components");
+var import_styled_components38 = require("styled-components");
 
 // src/styles/GlobalStyles.ts
-var import_styled_components38 = require("styled-components");
-var GlobalStyles = import_styled_components38.createGlobalStyle`
+var import_styled_components39 = require("styled-components");
+var GlobalStyles = import_styled_components39.createGlobalStyle`
   *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -3258,6 +3292,7 @@ var theme = {
   Chip,
   ChipBar,
   ControlledBase,
+  DangerLink,
   DatePicker,
   Empty,
   Form,

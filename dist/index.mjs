@@ -135,11 +135,31 @@ var Card = styled3.div`
   `}
 `;
 
+// src/components/DangerLink/styles.ts
+import styled4 from "styled-components";
+var DangerLink = styled4.button`
+  display: block;
+  width: 100%;
+  text-align: center;
+  border: none;
+  background: none;
+  padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: ${({ theme: theme2 }) => theme2.colors.primaryErrorTextHover};
+  }
+`;
+
 // src/components/Button/index.tsx
 import { forwardRef } from "react";
 
 // src/components/Button/styles/Button.ts
-import styled4 from "styled-components";
+import styled5 from "styled-components";
 
 // src/components/_shared/buttonBase.ts
 import { css as css2 } from "styled-components";
@@ -215,7 +235,7 @@ var buttonBaseCss = css2`
 `;
 
 // src/components/Button/styles/Button.ts
-var StyledButton = styled4.button`
+var StyledButton = styled5.button`
   ${buttonBaseCss}
   ${({ $size }) => sizeStyles[$size]}
   ${({ $variant }) => variantStyles[$variant]}
@@ -228,14 +248,14 @@ var Button = forwardRef(function Button2({ variant = "primary", size = "md", ful
 });
 
 // src/components/Chip/styles/Chip.ts
-import styled5 from "styled-components";
-var ChipBar = styled5.div`
+import styled6 from "styled-components";
+var ChipBar = styled6.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
   padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
 `;
-var Chip = styled5.button`
+var Chip = styled6.button`
   display: inline-flex;
   align-items: center;
   height: 28px;
@@ -257,7 +277,7 @@ var Chip = styled5.button`
 `;
 
 // src/components/Typography/styles/Typography.ts
-import styled6, { css as css3 } from "styled-components";
+import styled7, { css as css3 } from "styled-components";
 var styleMap = {
   h1: css3`font-size: ${({ theme: theme2 }) => theme2.typography.displayXl.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayXl.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayXl.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
   h2: css3`font-size: ${({ theme: theme2 }) => theme2.typography.displayMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
@@ -286,7 +306,7 @@ var defaultTagMap = {
   error: "p",
   micro: "p"
 };
-var StyledText = styled6.p`
+var StyledText = styled7.p`
   ${({ $type }) => styleMap[$type]}
 `;
 
@@ -298,8 +318,8 @@ function Typography({ type, as, children, ...rest }) {
 }
 
 // src/components/Empty/styles/Empty.ts
-import styled7 from "styled-components";
-var Wrapper = styled7.div`
+import styled8 from "styled-components";
+var Wrapper = styled8.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -319,8 +339,8 @@ function Empty({ title, description }) {
 }
 
 // src/components/Form/index.ts
-import styled8 from "styled-components";
-var Form = styled8.form`
+import styled9 from "styled-components";
+var Form = styled9.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
@@ -330,9 +350,9 @@ var Form = styled8.form`
 import { forwardRef as forwardRef2 } from "react";
 
 // src/components/IconButton/styles/IconButton.ts
-import styled9, { css as css4 } from "styled-components";
+import styled10, { css as css4 } from "styled-components";
 var iconBoxSize = { xs: 14, sm: 16, md: 18, lg: 20 };
-var IconWrap = styled9.span`
+var IconWrap = styled10.span`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -343,7 +363,7 @@ var IconWrap = styled9.span`
 
   svg { display: block; width: 100%; height: 100%; }
 `;
-var StyledButton2 = styled9.button`
+var StyledButton2 = styled10.button`
   ${buttonBaseCss}
   ${({ $size }) => sizeStyles[$size]}
   ${({ $variant }) => variantStyles[$variant]}
@@ -366,8 +386,8 @@ var IconButton = forwardRef2(function IconButton2({ icon, iconPosition = "left",
 import { AlertTriangle, Info } from "lucide-react";
 
 // src/components/InfoBox/styles/InfoBox.ts
-import styled10 from "styled-components";
-var Box = styled10.div`
+import styled11 from "styled-components";
+var Box = styled11.div`
   display: flex;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
   padding: ${({ theme: theme2 }) => theme2.spacing.md};
@@ -399,23 +419,23 @@ function InfoBox({ variant = "info", children, style }) {
 import { Controller } from "react-hook-form";
 
 // src/components/Inputs/BaseInput/styles/BaseInput.ts
-import styled11 from "styled-components";
-var Wrapper2 = styled11.div`
+import styled12 from "styled-components";
+var Wrapper2 = styled12.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Label = styled11.label`
+var Label = styled12.label`
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.caption.fontWeight};
   line-height: ${({ theme: theme2 }) => theme2.typography.caption.lineHeight};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var ErrorText = styled11.span`
+var ErrorText = styled12.span`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
 `;
-var InputField = styled11.input`
+var InputField = styled12.input`
   height: 56px;
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
@@ -483,8 +503,8 @@ import { forwardRef as forwardRef3 } from "react";
 import { Check } from "lucide-react";
 
 // src/components/Inputs/Checkbox/styles/Checkbox.ts
-import styled12 from "styled-components";
-var HiddenInput = styled12.input`
+import styled13 from "styled-components";
+var HiddenInput = styled13.input`
   position: absolute;
   width: 20px;
   height: 20px;
@@ -496,7 +516,7 @@ var HiddenInput = styled12.input`
     cursor: not-allowed;
   }
 `;
-var Box2 = styled12.span`
+var Box2 = styled13.span`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -540,7 +560,7 @@ var Box2 = styled12.span`
     opacity: 0.5;
   }
 `;
-var Wrapper3 = styled12.label`
+var Wrapper3 = styled13.label`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -572,11 +592,11 @@ import { useController } from "react-hook-form";
 import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 
 // src/components/Inputs/_shared/PickerElements.ts
-import styled13 from "styled-components";
-var Wrapper4 = styled13.div`
+import styled14 from "styled-components";
+var Wrapper4 = styled14.div`
   position: relative;
 `;
-var Trigger = styled13.button`
+var Trigger = styled14.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -604,10 +624,10 @@ var Trigger = styled13.button`
     padding: 0 calc(${theme2.spacing.md} - 1px);
   `}
 `;
-var Placeholder = styled13.span`
+var Placeholder = styled14.span`
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
 `;
-var Panel = styled13.div`
+var Panel = styled14.div`
   position: absolute;
   top: calc(100% + ${({ theme: theme2 }) => theme2.spacing.xs});
   left: 0;
@@ -620,19 +640,19 @@ var Panel = styled13.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.base};
   animation: ${fadeDown} 0.15s ease-out;
 `;
-var PanelHeader = styled13.div`
+var PanelHeader = styled14.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.base};
 `;
-var HeaderLabel = styled13.span`
+var HeaderLabel = styled14.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.titleSm.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.titleSm.fontWeight};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
 `;
-var NavButton = styled13.button`
+var NavButton = styled14.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -650,13 +670,13 @@ var NavButton = styled13.button`
 `;
 
 // src/components/Inputs/DatePicker/styles/DatePicker.ts
-import styled14 from "styled-components";
-var WeekdayRow = styled14.div`
+import styled15 from "styled-components";
+var WeekdayRow = styled15.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var WeekdayLabel = styled14.span`
+var WeekdayLabel = styled15.span`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -665,12 +685,12 @@ var WeekdayLabel = styled14.span`
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
 `;
-var DayGrid = styled14.div`
+var DayGrid = styled15.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 2px;
 `;
-var DayCell = styled14.button`
+var DayCell = styled15.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -747,14 +767,23 @@ function DatePicker({
   name,
   wrapperStyle,
   placeholder = "Selecione a data",
-  isDateDisabled
+  isDateDisabled,
+  initialMonth
 }) {
   var _a, _b;
   const { field, fieldState } = useController({ control, name });
   const [open, setOpen] = useState(false);
   const selectedDate = parseDateValue(field.value);
-  const [viewDate, setViewDate] = useState(() => selectedDate != null ? selectedDate : /* @__PURE__ */ new Date());
+  const [viewDate, setViewDate] = useState(() => {
+    var _a2;
+    return (_a2 = selectedDate != null ? selectedDate : initialMonth) != null ? _a2 : /* @__PURE__ */ new Date();
+  });
   const ref = useRef(null);
+  useEffect(() => {
+    if (!selectedDate && initialMonth) {
+      setViewDate(initialMonth);
+    }
+  }, [initialMonth]);
   useEffect(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
@@ -811,13 +840,13 @@ import { useController as useController2 } from "react-hook-form";
 import { Calendar as Calendar2, ChevronLeft as ChevronLeft2, ChevronRight as ChevronRight2 } from "lucide-react";
 
 // src/components/Inputs/MonthPicker/styles/MonthPicker.ts
-import styled15 from "styled-components";
-var MonthGrid = styled15.div`
+import styled16 from "styled-components";
+var MonthGrid = styled16.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var MonthCell = styled15.button`
+var MonthCell = styled16.button`
   padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
   border: none;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
@@ -912,11 +941,11 @@ function MonthPicker({
 import { useEffect as useEffect3, useRef as useRef3, useState as useState3 } from "react";
 
 // src/components/Inputs/MultiSelect/styles/MultiSelect.ts
-import styled16 from "styled-components";
-var Wrap = styled16.div`
+import styled17 from "styled-components";
+var Wrap = styled17.div`
   position: relative;
 `;
-var Field = styled16.div`
+var Field = styled17.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -944,7 +973,7 @@ var Field = styled16.div`
       cursor: not-allowed;
     `}
 `;
-var Chip2 = styled16.span`
+var Chip2 = styled17.span`
   display: inline-flex;
   align-items: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
@@ -957,7 +986,7 @@ var Chip2 = styled16.span`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
 `;
-var RemoveChip = styled16.button`
+var RemoveChip = styled17.button`
   display: grid;
   place-items: center;
   width: 20px;
@@ -975,7 +1004,7 @@ var RemoveChip = styled16.button`
     color: ${({ theme: theme2 }) => theme2.colors.ink};
   }
 `;
-var SearchInput = styled16.input`
+var SearchInput = styled17.input`
   flex: 1 1 80px;
   min-width: 80px;
   height: 32px;
@@ -994,7 +1023,7 @@ var SearchInput = styled16.input`
     cursor: not-allowed;
   }
 `;
-var Dropdown = styled16.div`
+var Dropdown = styled17.div`
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
@@ -1008,7 +1037,7 @@ var Dropdown = styled16.div`
   z-index: 20;
   padding: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var DropdownOption = styled16.div`
+var DropdownOption = styled17.div`
   display: flex;
   align-items: center;
   width: 100%;
@@ -1026,13 +1055,13 @@ var DropdownOption = styled16.div`
       pointer-events: none;
     `}
 `;
-var EmptyOption = styled16.div`
+var EmptyOption = styled17.div`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
   padding: ${({ theme: theme2 }) => theme2.spacing.sm};
 `;
-var LimitHint = styled16.p`
+var LimitHint = styled17.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
@@ -1135,8 +1164,8 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
 }
 
 // src/components/Inputs/RadioGroup/styles/RadioGroup.ts
-import styled17 from "styled-components";
-var HiddenInput2 = styled17.input`
+import styled18 from "styled-components";
+var HiddenInput2 = styled18.input`
   position: absolute;
   width: 20px;
   height: 20px;
@@ -1148,7 +1177,7 @@ var HiddenInput2 = styled17.input`
     cursor: not-allowed;
   }
 `;
-var Dot = styled17.span`
+var Dot = styled18.span`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -1194,7 +1223,7 @@ var Dot = styled17.span`
     opacity: 0.5;
   }
 `;
-var OptionWrapper = styled17.label`
+var OptionWrapper = styled18.label`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -1209,12 +1238,12 @@ var OptionWrapper = styled17.label`
     color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
   }
 `;
-var Group = styled17.div`
+var Group = styled18.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
 `;
-var GroupLabel = styled17.span`
+var GroupLabel = styled18.span`
   display: block;
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.caption.fontWeight};
@@ -1250,8 +1279,8 @@ function RadioGroup({ name, options, value, onChange, label, disabled }) {
 import { useController as useController3 } from "react-hook-form";
 
 // src/components/Inputs/Select/styles/Select.ts
-import styled18 from "styled-components";
-var SelectField = styled18.select`
+import styled19 from "styled-components";
+var SelectField = styled19.select`
   height: 56px;
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
@@ -1296,8 +1325,8 @@ function Select({
 import { forwardRef as forwardRef4 } from "react";
 
 // src/components/Inputs/Switch/styles/Switch.ts
-import styled19 from "styled-components";
-var HiddenInput3 = styled19.input`
+import styled20 from "styled-components";
+var HiddenInput3 = styled20.input`
   position: absolute;
   width: 40px;
   height: 22px;
@@ -1309,7 +1338,7 @@ var HiddenInput3 = styled19.input`
     cursor: not-allowed;
   }
 `;
-var Track = styled19.span`
+var Track = styled20.span`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -1349,7 +1378,7 @@ var Track = styled19.span`
     opacity: 0.5;
   }
 `;
-var Wrapper5 = styled19.label`
+var Wrapper5 = styled20.label`
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -1379,8 +1408,8 @@ var Switch = forwardRef4(function Switch2({ label, ...rest }, ref) {
 import { useController as useController4 } from "react-hook-form";
 
 // src/components/Inputs/Textarea/styles/Textarea.ts
-import styled20 from "styled-components";
-var TextareaField = styled20.textarea`
+import styled21 from "styled-components";
+var TextareaField = styled21.textarea`
   width: 100%;
   min-height: 140px;
   padding: ${({ theme: theme2 }) => theme2.spacing.sm} ${({ theme: theme2 }) => theme2.spacing.md};
@@ -1495,13 +1524,13 @@ function formatCpfCnpj(value) {
 }
 
 // src/components/Inputs/TextInput/styles/TextInput.ts
-import styled21 from "styled-components";
-var InputWrapper = styled21.div`
+import styled22 from "styled-components";
+var InputWrapper = styled22.div`
   position: relative;
   display: flex;
   align-items: center;
 `;
-var EyeButton = styled21.button`
+var EyeButton = styled22.button`
   position: absolute;
   right: 14px;
   background: none;
@@ -1559,8 +1588,8 @@ import { useEffect as useEffect4, useRef as useRef4 } from "react";
 import { X } from "lucide-react";
 
 // src/components/Modal/styles/Modal.ts
-import styled22, { css as css5 } from "styled-components";
-var Overlay2 = styled22.div`
+import styled23, { css as css5 } from "styled-components";
+var Overlay2 = styled23.div`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
@@ -1571,10 +1600,10 @@ var Overlay2 = styled22.div`
   animation: ${fadeIn} 0.2s ease;
 
   @media (min-width: 745px) {
-    justify-content: ${({ $variant }) => $variant === "drawer" ? "flex-end" : "center"};
+    justify-content: ${({ $variant }) => $variant === "dialog" ? "center" : "flex-end"};
   }
 `;
-var Box3 = styled22.div`
+var Box3 = styled23.div`
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.lg};
   padding: 28px 32px;
@@ -1592,33 +1621,37 @@ var Box3 = styled22.div`
     overflow-y: auto;
   }
 
-  /* Opt-in via variant="drawer" (see useModal) — on desktop/tablet, opens
-     as a right-side drawer instead of a centered dialog. Apps that don't
-     pass it keep the centered dialog unchanged at every breakpoint. */
-  ${({ $variant }) => $variant === "drawer" && css5`
-      @media (min-width: 745px) {
-        max-width: min(90vw, 440px);
-        height: 100%;
-        border-radius: 0;
-        padding: 32px;
-        overflow-y: auto;
-        animation: ${slideInRight} 0.25s cubic-bezier(0.32, 0.72, 0, 1);
-      }
-    `}
+  /* Opt-in via variant="drawer"/"drawer-wide" (see useModal) — on
+     desktop/tablet, opens as a right-side drawer instead of a centered
+     dialog. Apps that don't pass it keep the centered dialog unchanged at
+     every breakpoint. "drawer-wide" is the same slide-in-from-the-right
+     drawer, just noticeably wider — reaching further toward the middle of
+     the screen instead of hugging the edge — for a form substantial enough
+     that 440px feels cramped. */
+  ${({ $variant }) => ($variant === "drawer" || $variant === "drawer-wide") && css5`
+        @media (min-width: 745px) {
+          max-width: ${$variant === "drawer-wide" ? "min(90vw, 720px)" : "min(90vw, 440px)"};
+          height: 100%;
+          border-radius: 0;
+          padding: 32px;
+          overflow-y: auto;
+          animation: ${slideInRight} 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+      ` || void 0}
 `;
-var TitleRow = styled22.div`
+var TitleRow = styled23.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
   margin-bottom: 24px;
 `;
-var TitleText = styled22.h3`
+var TitleText = styled23.h3`
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
 `;
-var CloseButton = styled22.button`
+var CloseButton = styled23.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1637,7 +1670,7 @@ var CloseButton = styled22.button`
     color: ${({ theme: theme2 }) => theme2.colors.ink};
   }
 `;
-var ModalActions = styled22.div`
+var ModalActions = styled23.div`
   display: flex;
   justify-content: flex-end;
   gap: 8px;
@@ -1678,15 +1711,15 @@ function Modal({ children, close, variant = "dialog" }) {
 }
 
 // src/components/Pagination/styles/Pagination.ts
-import styled23 from "styled-components";
-var Wrapper6 = styled23.div`
+import styled24 from "styled-components";
+var Wrapper6 = styled24.div`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
   margin-top: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var PageButton = styled23.button`
+var PageButton = styled24.button`
   width: 36px;
   height: 36px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
@@ -1733,11 +1766,11 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
 // src/components/PageHeader/styles/PageHeader.ts
-import styled24 from "styled-components";
-var Wrapper7 = styled24.div`
+import styled25 from "styled-components";
+var Wrapper7 = styled25.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var Back = styled24.button`
+var Back = styled25.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1754,25 +1787,25 @@ var Back = styled24.button`
 
   &:hover { background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong}; }
 `;
-var Row = styled24.div`
+var Row = styled25.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.base};
 `;
-var Titles = styled24.div`
+var Titles = styled25.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
 `;
-var Title = styled24.h2`
+var Title = styled25.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   line-height: 1.2;
 `;
-var Subtitle = styled24.p`
+var Subtitle = styled25.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
@@ -1798,8 +1831,8 @@ function PageHeader({ title, subtitle, back, action }) {
 import { Search } from "lucide-react";
 
 // src/components/SearchInput/styles/SearchInput.ts
-import styled25 from "styled-components";
-var Wrapper8 = styled25.div`
+import styled26 from "styled-components";
+var Wrapper8 = styled26.div`
   position: relative;
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
 
@@ -1812,7 +1845,7 @@ var Wrapper8 = styled25.div`
     pointer-events: none;
   }
 `;
-var Field2 = styled25.input`
+var Field2 = styled26.input`
   width: 100%;
   height: 40px;
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.base} 0 36px;
@@ -1844,13 +1877,13 @@ function SearchInput2({ value, onChange, placeholder }) {
 }
 
 // src/components/Inputs/SegmentedControl/styles/SegmentedControl.ts
-import styled26 from "styled-components";
-var Wrap2 = styled26.div`
+import styled27 from "styled-components";
+var Wrap2 = styled27.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Label2 = styled26.p`
+var Label2 = styled27.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -1858,7 +1891,7 @@ var Label2 = styled26.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var Toggle = styled26.div`
+var Toggle = styled27.div`
   display: grid;
   grid-auto-columns: 1fr;
   grid-auto-flow: column;
@@ -1866,7 +1899,7 @@ var Toggle = styled26.div`
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
   overflow: hidden;
 `;
-var Btn = styled26.button`
+var Btn = styled27.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1914,12 +1947,12 @@ function SegmentedControl({
 }
 
 // src/components/Skeleton/styles/Skeleton.ts
-import styled27, { keyframes as keyframes2 } from "styled-components";
+import styled28, { keyframes as keyframes2 } from "styled-components";
 var pulse = keyframes2`
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.4; }
 `;
-var Skeleton = styled27.div`
+var Skeleton = styled28.div`
   height: ${({ $h }) => $h != null ? $h : "16px"};
   width: ${({ $w }) => $w != null ? $w : "100%"};
   border-radius: 6px;
@@ -1928,9 +1961,9 @@ var Skeleton = styled27.div`
 `;
 
 // src/components/StatusBadge/index.tsx
-import styled28 from "styled-components";
+import styled29 from "styled-components";
 import { jsx as jsx23 } from "react/jsx-runtime";
-var StyledBadge = styled28.span`
+var StyledBadge = styled29.span`
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -1947,8 +1980,8 @@ function StatusBadge({ tone, children }) {
 }
 
 // src/components/StatsGrid/styles/StatsGrid.ts
-import styled29 from "styled-components";
-var StatsGrid = styled29.div`
+import styled30 from "styled-components";
+var StatsGrid = styled30.div`
   display: grid;
   grid-template-columns: repeat(${({ $columns }) => $columns != null ? $columns : 4}, 1fr);
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
@@ -1962,7 +1995,7 @@ var StatsGrid = styled29.div`
     grid-template-columns: 1fr;
   }
 `;
-var StatCard = styled29.div`
+var StatCard = styled30.div`
   min-width: 0;
   background: ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningSurface : $tone === "danger" ? "#fff0f3" : theme2.colors.canvas};
   border: 1px solid ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningBorder : $tone === "danger" ? "#ffd1da" : theme2.colors.hairline};
@@ -1970,7 +2003,7 @@ var StatCard = styled29.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.base};
   box-shadow: ${({ theme: theme2 }) => theme2.shadows.sm};
 `;
-var StatLabel = styled29.p`
+var StatLabel = styled30.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
@@ -1979,7 +2012,7 @@ var StatLabel = styled29.p`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-var StatValue = styled29.p`
+var StatValue = styled30.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -1988,8 +2021,8 @@ var StatValue = styled29.p`
 `;
 
 // src/components/SummaryCard/styles/SummaryCard.ts
-import styled30 from "styled-components";
-var Card2 = styled30.div`
+import styled31 from "styled-components";
+var Card2 = styled31.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -2015,7 +2048,7 @@ var Card2 = styled30.div`
     animation: ${fadeUp} 0.2s ease;
   }
 `;
-var Label3 = styled30.p`
+var Label3 = styled31.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -2024,14 +2057,14 @@ var Label3 = styled30.p`
   letter-spacing: 0.5px;
   margin: 0;
 `;
-var Row2 = styled30.div`
+var Row2 = styled31.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
   width: 100%;
 `;
-var Info2 = styled30.div`
+var Info2 = styled31.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -2039,16 +2072,16 @@ var Info2 = styled30.div`
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
   width: 100%;
 `;
-var Items = styled30.span`
+var Items = styled31.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
   flex: 1;
 `;
-var EmptyMessage = styled30(Items)`
+var EmptyMessage = styled31(Items)`
   text-align: center;
 `;
-var Total = styled30.span`
+var Total = styled31.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -2058,20 +2091,20 @@ var Total = styled30.span`
   min-width: fit-content;
   margin-left: ${({ theme: theme2 }) => theme2.spacing.sm};
 `;
-var ItemDetail = styled30.div`
+var ItemDetail = styled31.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
   padding: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
 `;
-var ItemDetailName = styled30.span`
+var ItemDetailName = styled31.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   flex: 1;
 `;
-var ItemDetailPrice = styled30.span`
+var ItemDetailPrice = styled31.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
@@ -2079,12 +2112,12 @@ var ItemDetailPrice = styled30.span`
   flex-shrink: 0;
   text-align: right;
 `;
-var Divider = styled30.hr`
+var Divider = styled31.hr`
   border: none;
   border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
 `;
-var ButtonRow = styled30.div`
+var ButtonRow = styled31.div`
   display: flex;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
 
@@ -2153,14 +2186,14 @@ function SummaryCard({
 }
 
 // src/components/Tabs/styles/Tabs.ts
-import styled31 from "styled-components";
-var TabBar = styled31.div.attrs({ role: "tablist" })`
+import styled32 from "styled-components";
+var TabBar = styled32.div.attrs({ role: "tablist" })`
   display: flex;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Tab = styled31.button.attrs(({ $active }) => ({
+var Tab = styled32.button.attrs(({ $active }) => ({
   type: "button",
   role: "tab",
   "aria-selected": $active
@@ -2183,7 +2216,7 @@ var Tab = styled31.button.attrs(({ $active }) => ({
 
   &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
 `;
-var TabBadge = styled31.span`
+var TabBadge = styled32.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2202,12 +2235,12 @@ var TabBadge = styled31.span`
 import { createPortal as createPortal2 } from "react-dom";
 
 // src/components/Toast/styles/Toast.ts
-import styled32, { keyframes as keyframes3 } from "styled-components";
+import styled33, { keyframes as keyframes3 } from "styled-components";
 var fadeOut = keyframes3`
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(8px); }
 `;
-var ToastEl = styled32.div`
+var ToastEl = styled33.div`
   position: fixed;
   bottom: 80px;
   left: 0;
@@ -2466,8 +2499,8 @@ function useLogin(resolveRoute) {
 }
 
 // src/pages/LoginPage/styles/Login.ts
-import styled33 from "styled-components";
-var Page = styled33.div`
+import styled34 from "styled-components";
+var Page = styled34.div`
   min-height: 100vh;
   display: flex;
 
@@ -2475,7 +2508,7 @@ var Page = styled33.div`
     flex-direction: column;
   }
 `;
-var Brand2 = styled33.div`
+var Brand2 = styled34.div`
   flex: 0 0 420px;
   background: ${({ theme: theme2 }) => theme2.colors.primary};
   display: flex;
@@ -2506,7 +2539,7 @@ var Brand2 = styled33.div`
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
   }
 `;
-var BrandMark = styled33.div`
+var BrandMark = styled34.div`
   width: 80px;
   height: 80px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
@@ -2532,13 +2565,13 @@ var BrandMark = styled33.div`
     img { width: 38px; height: 38px; }
   }
 `;
-var BrandText = styled33.div`
+var BrandText = styled34.div`
   text-align: center;
   color: #fff;
   position: relative;
   z-index: 1;
 `;
-var BrandName2 = styled33.h1`
+var BrandName2 = styled34.h1`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.625rem;
   font-weight: 700;
@@ -2550,13 +2583,13 @@ var BrandName2 = styled33.h1`
     font-size: 1.25rem;
   }
 `;
-var BrandSub = styled33.p`
+var BrandSub = styled34.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   opacity: 0.75;
   line-height: 1.4;
 `;
-var BrandQuote = styled33.blockquote`
+var BrandQuote = styled34.blockquote`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: rgba(255, 255, 255, 0.6);
@@ -2571,7 +2604,7 @@ var BrandQuote = styled33.blockquote`
     display: none;
   }
 `;
-var FormPanel = styled33.div`
+var FormPanel = styled34.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -2593,15 +2626,15 @@ var FormPanel = styled33.div`
     animation: ${slideUp} 0.35s ease;
   }
 `;
-var FormBox = styled33.div`
+var FormBox = styled34.div`
   width: 100%;
   max-width: 400px;
   animation: ${fadeUp} 0.35s ease;
 `;
-var FormHeader = styled33.div`
+var FormHeader = styled34.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var FormTitle = styled33.h2`
+var FormTitle = styled34.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.375rem;
   font-weight: 700;
@@ -2609,22 +2642,22 @@ var FormTitle = styled33.h2`
   letter-spacing: -0.3px;
   margin-bottom: 6px;
 `;
-var FormSubtitle = styled33.p`
+var FormSubtitle = styled34.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Form2 = styled33.form`
+var Form2 = styled34.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SubmitButton = styled33(Button)`
+var SubmitButton = styled34(Button)`
   @media (max-width: 768px) {
     border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
   }
 `;
-var ErrorMsg = styled33.p`
+var ErrorMsg = styled34.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
   background: #fef2f2;
@@ -2709,15 +2742,15 @@ import { useForm as useForm2 } from "react-hook-form";
 import { useNavigate as useNavigate3 } from "react-router-dom";
 
 // src/pages/ProfilePage/styles/ProfilePage.ts
-import styled34 from "styled-components";
-var Wrap3 = styled34.div`
+import styled35 from "styled-components";
+var Wrap3 = styled35.div`
   max-width: 560px;
 `;
-var Identity = styled34.div`
+var Identity = styled35.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Name = styled34.h2`
+var Name = styled35.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -2725,18 +2758,18 @@ var Name = styled34.h2`
   line-height: 1.1;
   margin-bottom: 4px;
 `;
-var RoleLabel = styled34.p`
+var RoleLabel = styled35.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Section = styled34.div`
+var Section = styled35.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SectionTitle = styled34.p`
+var SectionTitle = styled35.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -2744,10 +2777,10 @@ var SectionTitle = styled34.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var SectionDivider = styled34.div`
+var SectionDivider = styled35.div`
   border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Actions = styled34.div`
+var Actions = styled35.div`
   display: flex;
   justify-content: flex-end;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -3153,6 +3186,7 @@ export {
   Chip,
   ChipBar,
   ControlledBase,
+  DangerLink,
   DatePicker,
   Empty,
   Form,
