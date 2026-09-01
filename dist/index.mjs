@@ -344,6 +344,11 @@ var Form = styled9.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
+
+  @media (min-width: ${({ theme: theme2 }) => theme2.breakpoints.mobile}) {
+    margin-left: auto;
+    margin-right: auto;
+  }
 `;
 
 // src/components/IconButton/index.tsx
