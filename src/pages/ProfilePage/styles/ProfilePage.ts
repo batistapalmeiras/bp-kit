@@ -60,6 +60,12 @@ export const Actions = styled.div`
 // Follows right after an Actions block (which already carries its own
 // divider + top padding) — a second border-top + spacing.lg here would
 // stack into an oversized gap, so this only adds a little breathing room.
+// Mobile-only: on tablet/desktop the app's own nav chrome (sidebar footer,
+// etc.) already offers Sair, so repeating it here is redundant.
 export const LogoutAction = styled.div`
   margin-top: ${({ theme }) => theme.spacing.md};
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    display: none;
+  }
 `;

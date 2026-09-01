@@ -2976,6 +2976,10 @@ var Actions = styled36.div`
 `;
 var LogoutAction = styled36.div`
   margin-top: ${({ theme: theme2 }) => theme2.spacing.md};
+
+  @media (min-width: ${({ theme: theme2 }) => theme2.breakpoints.mobile}) {
+    display: none;
+  }
 `;
 
 // src/pages/ProfilePage/validators/schema.ts

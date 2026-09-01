@@ -3082,6 +3082,10 @@ var Actions = import_styled_components38.default.div`
 `;
 var LogoutAction = import_styled_components38.default.div`
   margin-top: ${({ theme: theme2 }) => theme2.spacing.md};
+
+  @media (min-width: ${({ theme: theme2 }) => theme2.breakpoints.mobile}) {
+    display: none;
+  }
 `;
 
 // src/pages/ProfilePage/validators/schema.ts
