@@ -1660,6 +1660,7 @@ function TextInput(props) {
 
 // src/components/Modal/index.tsx
 var import_react9 = require("react");
+var import_lucide_react6 = require("lucide-react");
 
 // src/components/Modal/styles/Modal.ts
 var import_styled_components24 = __toESM(require("styled-components"));
@@ -1709,11 +1710,36 @@ var Box3 = import_styled_components24.default.div`
       }
     `}
 `;
-var ModalTitle = import_styled_components24.default.h3`
+var TitleRow = import_styled_components24.default.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  margin-bottom: 24px;
+`;
+var TitleText = import_styled_components24.default.h3`
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
-  margin-bottom: 24px;
+`;
+var CloseButton = import_styled_components24.default.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  margin-top: 2px;
+  border: none;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  background: transparent;
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong};
+    color: ${({ theme: theme2 }) => theme2.colors.ink};
+  }
 `;
 var ModalActions = import_styled_components24.default.div`
   display: flex;
@@ -1724,6 +1750,12 @@ var ModalActions = import_styled_components24.default.div`
 
 // src/components/Modal/index.tsx
 var import_jsx_runtime18 = require("react/jsx-runtime");
+function ModalTitle({ children, onClose }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(TitleRow, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TitleText, { children }),
+    onClose && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(CloseButton, { type: "button", onClick: onClose, "aria-label": "Fechar", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_lucide_react6.X, { size: 18 }) })
+  ] });
+}
 function Modal({ children, close, variant = "dialog" }) {
   const boxRef = (0, import_react9.useRef)(null);
   (0, import_react9.useEffect)(() => {
@@ -1802,7 +1834,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
 
 // src/components/PageHeader/index.tsx
 var import_react_router_dom2 = require("react-router-dom");
-var import_lucide_react6 = require("lucide-react");
+var import_lucide_react7 = require("lucide-react");
 
 // src/components/PageHeader/styles/PageHeader.ts
 var import_styled_components26 = __toESM(require("styled-components"));
@@ -1855,7 +1887,7 @@ var import_jsx_runtime20 = require("react/jsx-runtime");
 function PageHeader({ title, subtitle, back, action }) {
   const navigate = (0, import_react_router_dom2.useNavigate)();
   return /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Wrapper7, { children: [
-    back && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(Back, { onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(import_lucide_react6.ArrowLeft, { size: 20 }) }),
+    back && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(Back, { onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(import_lucide_react7.ArrowLeft, { size: 20 }) }),
     /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Row, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Titles, { children: [
         /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(Title, { children: title }),
@@ -1867,7 +1899,7 @@ function PageHeader({ title, subtitle, back, action }) {
 }
 
 // src/components/SearchInput/index.tsx
-var import_lucide_react7 = require("lucide-react");
+var import_lucide_react8 = require("lucide-react");
 
 // src/components/SearchInput/styles/SearchInput.ts
 var import_styled_components27 = __toESM(require("styled-components"));
@@ -1910,7 +1942,7 @@ var Field2 = import_styled_components27.default.input`
 var import_jsx_runtime21 = require("react/jsx-runtime");
 function SearchInput2({ value, onChange, placeholder }) {
   return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(Wrapper8, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_lucide_react7.Search, { size: 16 }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_lucide_react8.Search, { size: 16 }),
     /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Field2, { placeholder, value, onChange: (e) => onChange(e.target.value) })
   ] });
 }

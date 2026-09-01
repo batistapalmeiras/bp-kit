@@ -210,9 +210,13 @@ interface TextFieldProps<T extends FieldValues, N extends FieldPath<T>> extends 
 type Props$2<T extends FieldValues, N extends FieldPath<T>> = TextFieldProps<T, N> | CurrencyFieldProps<T, N>;
 declare function TextInput<T extends FieldValues, N extends FieldPath<T>>(props: Props$2<T, N>): react.JSX.Element;
 
-declare const ModalTitle: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>, never> & Partial<Pick<react.DetailedHTMLProps<react.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>, never>>> & string;
 declare const ModalActions: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, never> & Partial<Pick<react.DetailedHTMLProps<react.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, never>>> & string;
 
+interface ModalTitleProps {
+    children: react__default.ReactNode;
+    onClose?: () => void;
+}
+declare function ModalTitle({ children, onClose }: ModalTitleProps): react__default.JSX.Element;
 interface Props$1 {
     children: react__default.ReactNode;
     close: () => void;

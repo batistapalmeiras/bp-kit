@@ -1556,6 +1556,7 @@ function TextInput(props) {
 
 // src/components/Modal/index.tsx
 import { useEffect as useEffect4, useRef as useRef4 } from "react";
+import { X } from "lucide-react";
 
 // src/components/Modal/styles/Modal.ts
 import styled22, { css as css5 } from "styled-components";
@@ -1605,11 +1606,36 @@ var Box3 = styled22.div`
       }
     `}
 `;
-var ModalTitle = styled22.h3`
+var TitleRow = styled22.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  margin-bottom: 24px;
+`;
+var TitleText = styled22.h3`
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
-  margin-bottom: 24px;
+`;
+var CloseButton = styled22.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  margin-top: 2px;
+  border: none;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  background: transparent;
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong};
+    color: ${({ theme: theme2 }) => theme2.colors.ink};
+  }
 `;
 var ModalActions = styled22.div`
   display: flex;
@@ -1619,7 +1645,13 @@ var ModalActions = styled22.div`
 `;
 
 // src/components/Modal/index.tsx
-import { jsx as jsx18 } from "react/jsx-runtime";
+import { jsx as jsx18, jsxs as jsxs14 } from "react/jsx-runtime";
+function ModalTitle({ children, onClose }) {
+  return /* @__PURE__ */ jsxs14(TitleRow, { children: [
+    /* @__PURE__ */ jsx18(TitleText, { children }),
+    onClose && /* @__PURE__ */ jsx18(CloseButton, { type: "button", onClick: onClose, "aria-label": "Fechar", children: /* @__PURE__ */ jsx18(X, { size: 18 }) })
+  ] });
+}
 function Modal({ children, close, variant = "dialog" }) {
   const boxRef = useRef4(null);
   useEffect4(() => {
@@ -1675,10 +1707,10 @@ var PageButton = styled23.button`
 `;
 
 // src/components/Pagination/index.tsx
-import { jsx as jsx19, jsxs as jsxs14 } from "react/jsx-runtime";
+import { jsx as jsx19, jsxs as jsxs15 } from "react/jsx-runtime";
 function Pagination({ currentPage, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
-  return /* @__PURE__ */ jsxs14(Wrapper6, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
+  return /* @__PURE__ */ jsxs15(Wrapper6, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
     /* @__PURE__ */ jsx19(PageButton, { type: "button", "aria-label": "P\xE1gina anterior", onClick: () => onPageChange(currentPage - 1), disabled: currentPage === 1, children: /* @__PURE__ */ jsx19("span", { "aria-hidden": "true", children: "\u2039" }) }),
     Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => /* @__PURE__ */ jsx19(
       PageButton,
@@ -1747,13 +1779,13 @@ var Subtitle = styled24.p`
 `;
 
 // src/components/PageHeader/index.tsx
-import { jsx as jsx20, jsxs as jsxs15 } from "react/jsx-runtime";
+import { jsx as jsx20, jsxs as jsxs16 } from "react/jsx-runtime";
 function PageHeader({ title, subtitle, back, action }) {
   const navigate = useNavigate();
-  return /* @__PURE__ */ jsxs15(Wrapper7, { children: [
+  return /* @__PURE__ */ jsxs16(Wrapper7, { children: [
     back && /* @__PURE__ */ jsx20(Back, { onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ jsx20(ArrowLeft, { size: 20 }) }),
-    /* @__PURE__ */ jsxs15(Row, { children: [
-      /* @__PURE__ */ jsxs15(Titles, { children: [
+    /* @__PURE__ */ jsxs16(Row, { children: [
+      /* @__PURE__ */ jsxs16(Titles, { children: [
         /* @__PURE__ */ jsx20(Title, { children: title }),
         subtitle && /* @__PURE__ */ jsx20(Subtitle, { children: subtitle })
       ] }),
@@ -1803,9 +1835,9 @@ var Field2 = styled25.input`
 `;
 
 // src/components/SearchInput/index.tsx
-import { jsx as jsx21, jsxs as jsxs16 } from "react/jsx-runtime";
+import { jsx as jsx21, jsxs as jsxs17 } from "react/jsx-runtime";
 function SearchInput2({ value, onChange, placeholder }) {
-  return /* @__PURE__ */ jsxs16(Wrapper8, { children: [
+  return /* @__PURE__ */ jsxs17(Wrapper8, { children: [
     /* @__PURE__ */ jsx21(Search, { size: 16 }),
     /* @__PURE__ */ jsx21(Field2, { placeholder, value, onChange: (e) => onChange(e.target.value) })
   ] });
@@ -1855,7 +1887,7 @@ var Btn = styled26.button`
 `;
 
 // src/components/Inputs/SegmentedControl/index.tsx
-import { jsx as jsx22, jsxs as jsxs17 } from "react/jsx-runtime";
+import { jsx as jsx22, jsxs as jsxs18 } from "react/jsx-runtime";
 function SegmentedControl({
   value,
   onChange,
@@ -1863,7 +1895,7 @@ function SegmentedControl({
   label,
   tone = "ink"
 }) {
-  return /* @__PURE__ */ jsxs17(Wrap2, { children: [
+  return /* @__PURE__ */ jsxs18(Wrap2, { children: [
     label && /* @__PURE__ */ jsx22(Label2, { children: label }),
     /* @__PURE__ */ jsx22(Toggle, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ jsx22(
       Btn,
@@ -2062,7 +2094,7 @@ var ButtonRow = styled30.div`
 `;
 
 // src/components/SummaryCard/index.tsx
-import { Fragment as Fragment4, jsx as jsx24, jsxs as jsxs18 } from "react/jsx-runtime";
+import { Fragment as Fragment4, jsx as jsx24, jsxs as jsxs19 } from "react/jsx-runtime";
 function SummaryCard({
   label = "Resumo",
   items,
@@ -2078,20 +2110,20 @@ function SummaryCard({
   const hasSubtotals = items.some((item) => item.subtotal !== void 0);
   const itemsText = items.map((item) => `${item.qty}\xD7 ${item.name}`).join(", ");
   const isEmpty = items.length === 0;
-  return /* @__PURE__ */ jsxs18(Card2, { $bottomOffset: bottomOffset, children: [
+  return /* @__PURE__ */ jsxs19(Card2, { $bottomOffset: bottomOffset, children: [
     /* @__PURE__ */ jsx24(Label3, { style: { marginBottom: 0 }, children: label }),
-    isEmpty ? /* @__PURE__ */ jsx24(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ jsx24("div", { children: items.map((item) => /* @__PURE__ */ jsxs18(ItemDetail, { children: [
-      /* @__PURE__ */ jsxs18(ItemDetailName, { children: [
+    isEmpty ? /* @__PURE__ */ jsx24(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ jsx24("div", { children: items.map((item) => /* @__PURE__ */ jsxs19(ItemDetail, { children: [
+      /* @__PURE__ */ jsxs19(ItemDetailName, { children: [
         item.qty,
         "\xD7 ",
         item.name
       ] }),
       item.subtotal !== void 0 && /* @__PURE__ */ jsx24(ItemDetailPrice, { children: formatCurrency(item.subtotal) })
-    ] }, item.name)) }) : /* @__PURE__ */ jsxs18(Row2, { children: [
+    ] }, item.name)) }) : /* @__PURE__ */ jsxs19(Row2, { children: [
       /* @__PURE__ */ jsx24(Items, { children: itemsText }),
       /* @__PURE__ */ jsx24(Total, { children: formatCurrency(total) })
     ] }),
-    !isEmpty && hasSubtotals && /* @__PURE__ */ jsxs18(Fragment4, { children: [
+    !isEmpty && hasSubtotals && /* @__PURE__ */ jsxs19(Fragment4, { children: [
       /* @__PURE__ */ jsx24(Divider, {}),
       /* @__PURE__ */ jsx24(Row2, { children: /* @__PURE__ */ jsx24(Info2, { children: /* @__PURE__ */ jsx24(Total, { children: formatCurrency(total) }) }) })
     ] }),
@@ -2610,28 +2642,28 @@ var loginSchema = z.object({
 });
 
 // src/pages/LoginPage/index.tsx
-import { jsx as jsx28, jsxs as jsxs19 } from "react/jsx-runtime";
+import { jsx as jsx28, jsxs as jsxs20 } from "react/jsx-runtime";
 function LoginPage({ brand, resolveRoute }) {
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" }
   });
-  return /* @__PURE__ */ jsxs19(Page, { children: [
-    /* @__PURE__ */ jsxs19(Brand2, { children: [
+  return /* @__PURE__ */ jsxs20(Page, { children: [
+    /* @__PURE__ */ jsxs20(Brand2, { children: [
       /* @__PURE__ */ jsx28(BrandMark, { children: /* @__PURE__ */ jsx28("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ jsxs19(BrandText, { children: [
+      /* @__PURE__ */ jsxs20(BrandText, { children: [
         /* @__PURE__ */ jsx28(BrandName2, { children: brand.name }),
         /* @__PURE__ */ jsx28(BrandSub, { children: brand.sub })
       ] }),
       brand.quote && /* @__PURE__ */ jsx28(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ jsx28(FormPanel, { children: /* @__PURE__ */ jsxs19(FormBox, { children: [
-      /* @__PURE__ */ jsxs19(FormHeader, { children: [
+    /* @__PURE__ */ jsx28(FormPanel, { children: /* @__PURE__ */ jsxs20(FormBox, { children: [
+      /* @__PURE__ */ jsxs20(FormHeader, { children: [
         /* @__PURE__ */ jsx28(FormTitle, { children: "Bem-vindo" }),
         /* @__PURE__ */ jsx28(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
       ] }),
-      /* @__PURE__ */ jsxs19(Form2, { onSubmit: handleSubmit(handleLogin), children: [
+      /* @__PURE__ */ jsxs20(Form2, { onSubmit: handleSubmit(handleLogin), children: [
         /* @__PURE__ */ jsx28(
           TextInput,
           {
@@ -2735,7 +2767,7 @@ var profileSchema = z2.object({
 });
 
 // src/pages/ProfilePage/index.tsx
-import { Fragment as Fragment5, jsx as jsx29, jsxs as jsxs20 } from "react/jsx-runtime";
+import { Fragment as Fragment5, jsx as jsx29, jsxs as jsxs21 } from "react/jsx-runtime";
 function ProfilePage({ roleLabel, changePasswordPath }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
@@ -2753,13 +2785,13 @@ function ProfilePage({ roleLabel, changePasswordPath }) {
     const err = await updateProfile(data.name, data.email);
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
   };
-  return /* @__PURE__ */ jsxs20(Wrap3, { children: [
+  return /* @__PURE__ */ jsxs21(Wrap3, { children: [
     /* @__PURE__ */ jsx29(PageHeader, { title: "Meu perfil", back: true }),
-    /* @__PURE__ */ jsxs20(Identity, { children: [
+    /* @__PURE__ */ jsxs21(Identity, { children: [
       /* @__PURE__ */ jsx29(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
       roleLabel && /* @__PURE__ */ jsx29(RoleLabel, { children: roleLabel })
     ] }),
-    /* @__PURE__ */ jsxs20(Section, { children: [
+    /* @__PURE__ */ jsxs21(Section, { children: [
       /* @__PURE__ */ jsx29(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
       /* @__PURE__ */ jsx29(SectionDivider, {}),
       /* @__PURE__ */ jsx29(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
@@ -2774,11 +2806,11 @@ function ProfilePage({ roleLabel, changePasswordPath }) {
         }
       )
     ] }),
-    /* @__PURE__ */ jsxs20(Actions, { children: [
+    /* @__PURE__ */ jsxs21(Actions, { children: [
       /* @__PURE__ */ jsx29(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
       /* @__PURE__ */ jsx29(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es" })
     ] }),
-    changePasswordPath && /* @__PURE__ */ jsxs20(Fragment5, { children: [
+    changePasswordPath && /* @__PURE__ */ jsxs21(Fragment5, { children: [
       /* @__PURE__ */ jsx29(Section, { children: /* @__PURE__ */ jsx29(SectionTitle, { children: "Seguran\xE7a" }) }),
       /* @__PURE__ */ jsx29(Actions, { children: /* @__PURE__ */ jsx29(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
     ] }),
@@ -2802,7 +2834,7 @@ var passwordSchema = z3.object({
 });
 
 // src/pages/ChangePasswordPage/index.tsx
-import { jsx as jsx30, jsxs as jsxs21 } from "react/jsx-runtime";
+import { jsx as jsx30, jsxs as jsxs22 } from "react/jsx-runtime";
 function ChangePasswordPage() {
   const { updatePassword } = useAuthCtx();
   const navigate = useNavigate4();
@@ -2826,9 +2858,9 @@ function ChangePasswordPage() {
     showToast("Senha atualizada com sucesso.");
     reset();
   };
-  return /* @__PURE__ */ jsxs21(Wrap3, { children: [
+  return /* @__PURE__ */ jsxs22(Wrap3, { children: [
     /* @__PURE__ */ jsx30(PageHeader, { title: "Alterar senha", back: true }),
-    /* @__PURE__ */ jsxs21(Section, { children: [
+    /* @__PURE__ */ jsxs22(Section, { children: [
       /* @__PURE__ */ jsx30(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
       /* @__PURE__ */ jsx30(
         TextInput,
@@ -2841,7 +2873,7 @@ function ChangePasswordPage() {
         }
       )
     ] }),
-    /* @__PURE__ */ jsxs21(Actions, { children: [
+    /* @__PURE__ */ jsxs22(Actions, { children: [
       /* @__PURE__ */ jsx30(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
       /* @__PURE__ */ jsx30(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar nova senha" })
     ] }),

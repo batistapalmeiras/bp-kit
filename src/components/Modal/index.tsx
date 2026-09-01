@@ -1,8 +1,30 @@
 // React
 import React, { useEffect, useRef } from 'react';
+// Libs
+import { X } from 'lucide-react';
 // Local
-import { Box, Overlay } from './styles';
-export { ModalActions, ModalTitle } from './styles';
+import { Box, CloseButton, Overlay, TitleRow, TitleText } from './styles';
+export { ModalActions } from './styles';
+
+interface ModalTitleProps {
+  children: React.ReactNode;
+  onClose?: () => void;
+}
+
+// onClose is optional so existing call sites (<ModalTitle>Texto</ModalTitle>,
+// relying on the backdrop click or Escape to dismiss) keep working unchanged.
+export function ModalTitle({ children, onClose }: ModalTitleProps) {
+  return (
+    <TitleRow>
+      <TitleText>{children}</TitleText>
+      {onClose && (
+        <CloseButton type="button" onClick={onClose} aria-label="Fechar">
+          <X size={18} />
+        </CloseButton>
+      )}
+    </TitleRow>
+  );
+}
 
 interface Props {
   children: React.ReactNode;

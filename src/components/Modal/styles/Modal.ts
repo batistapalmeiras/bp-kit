@@ -53,11 +53,38 @@ export const Box = styled.div<{ $variant: 'dialog' | 'drawer' }>`
     `}
 `;
 
-export const ModalTitle = styled.h3`
+export const TitleRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing.md};
+  margin-bottom: 24px;
+`;
+
+export const TitleText = styled.h3`
   font-size: ${({ theme }) => theme.typography.displaySm.fontSize};
   font-weight: ${({ theme }) => theme.typography.displaySm.fontWeight};
   color: ${({ theme }) => theme.colors.ink};
-  margin-bottom: 24px;
+`;
+
+export const CloseButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  margin-top: 2px;
+  border: none;
+  border-radius: ${({ theme }) => theme.rounded.full};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.muted};
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.surfaceStrong};
+    color: ${({ theme }) => theme.colors.ink};
+  }
 `;
 
 export const ModalActions = styled.div`
