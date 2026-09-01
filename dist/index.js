@@ -1219,18 +1219,15 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
       visibleOptions.map((o) => {
         const checked = value.includes(o.value);
         const rowDisabled = !checked && atLimit;
-        return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-          DropdownOption,
+        return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(DropdownOption, { role: "option", "aria-selected": checked, $disabled: rowDisabled, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          Checkbox,
           {
-            role: "option",
-            "aria-selected": checked,
-            $disabled: rowDisabled,
-            onClick: () => !rowDisabled && toggle(o.value),
-            children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Checkbox, { checked, onChange: () => {
-            }, tabIndex: -1, label: o.label })
-          },
-          o.value
-        );
+            checked,
+            disabled: rowDisabled,
+            onChange: () => toggle(o.value),
+            label: o.label
+          }
+        ) }, o.value);
       })
     ] }),
     atLimit && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(LimitHint, { children: [

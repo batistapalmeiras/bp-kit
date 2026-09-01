@@ -95,14 +95,13 @@ export function MultiSelect({ label, options, value, onChange, placeholder = 'Bu
               const checked = value.includes(o.value);
               const rowDisabled = !checked && atLimit;
               return (
-                <DropdownOption
-                  key={o.value}
-                  role="option"
-                  aria-selected={checked}
-                  $disabled={rowDisabled}
-                  onClick={() => !rowDisabled && toggle(o.value)}
-                >
-                  <Checkbox checked={checked} onChange={() => {}} tabIndex={-1} label={o.label} />
+                <DropdownOption key={o.value} role="option" aria-selected={checked} $disabled={rowDisabled}>
+                  <Checkbox
+                    checked={checked}
+                    disabled={rowDisabled}
+                    onChange={() => toggle(o.value)}
+                    label={o.label}
+                  />
                 </DropdownOption>
               );
             })}
