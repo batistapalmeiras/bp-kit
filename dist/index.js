@@ -3028,6 +3028,7 @@ function LoginPage({ brand, resolveRoute }) {
 var import_zod4 = require("@hookform/resolvers/zod");
 var import_react_hook_form7 = require("react-hook-form");
 var import_react_router_dom4 = require("react-router-dom");
+var import_lucide_react10 = require("lucide-react");
 
 // src/pages/ProfilePage/styles/ProfilePage.ts
 var import_styled_components38 = __toESM(require("styled-components"));
@@ -3079,6 +3080,9 @@ var Actions = import_styled_components38.default.div`
     button { flex: 1; }
   }
 `;
+var LogoutAction = import_styled_components38.default.div`
+  margin-top: ${({ theme: theme2 }) => theme2.spacing.md};
+`;
 
 // src/pages/ProfilePage/validators/schema.ts
 var import_zod3 = require("zod");
@@ -3129,13 +3133,19 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Actions, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es" })
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_lucide_react10.Save, { size: 16 }),
+        isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es"
+      ] })
     ] }),
     changePasswordPath && /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_jsx_runtime30.Fragment, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Section, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionTitle, { children: "Seguran\xE7a" }) }),
       /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
     ] }),
-    onLogout && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: "Sair" }) }),
+    onLogout && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(LogoutAction, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_lucide_react10.LogOut, { size: 16 }),
+      "Sair"
+    ] }) }),
     toast
   ] });
 }

@@ -56,3 +56,10 @@ export const Actions = styled.div`
     button { flex: 1; }
   }
 `;
+
+// Follows right after an Actions block (which already carries its own
+// divider + top padding) — a second border-top + spacing.lg here would
+// stack into an oversized gap, so this only adds a little breathing room.
+export const LogoutAction = styled.div`
+  margin-top: ${({ theme }) => theme.spacing.md};
+`;

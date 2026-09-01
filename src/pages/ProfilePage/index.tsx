@@ -2,6 +2,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+// Libs
+import { LogOut, Save } from 'lucide-react';
 // Components
 import { Button } from '../../components/Button';
 import { TextInput } from '../../components/Inputs/TextInput';
@@ -10,7 +12,7 @@ import { useToast } from '../../components/Toast';
 // Local
 import { useAuthCtx } from '../../hooks/useAuth';
 import { text } from '../../text';
-import { Actions, Identity, Name, RoleLabel, Section, SectionDivider, SectionTitle, Wrap } from './styles';
+import { Actions, Identity, LogoutAction, Name, RoleLabel, Section, SectionDivider, SectionTitle, Wrap } from './styles';
 import { ProfileFormValues, profileSchema } from './validators';
 
 export interface ProfilePageProps {
@@ -68,6 +70,7 @@ export function ProfilePage({ roleLabel, changePasswordPath, onLogout }: Profile
           {text.actions.cancel}
         </Button>
         <Button variant="primary" size="md" onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>
+          <Save size={16} />
           {isSubmitting ? 'Salvando...' : 'Salvar alterações'}
         </Button>
       </Actions>
@@ -85,11 +88,12 @@ export function ProfilePage({ roleLabel, changePasswordPath, onLogout }: Profile
         </>
       )}
       {onLogout && (
-        <Actions>
+        <LogoutAction>
           <Button variant="danger" size="md" onClick={onLogout} fullWidth>
+            <LogOut size={16} />
             Sair
           </Button>
-        </Actions>
+        </LogoutAction>
       )}
       {toast}
     </Wrap>

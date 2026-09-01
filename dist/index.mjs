@@ -2922,6 +2922,7 @@ function LoginPage({ brand, resolveRoute }) {
 import { zodResolver as zodResolver2 } from "@hookform/resolvers/zod";
 import { useForm as useForm2 } from "react-hook-form";
 import { useNavigate as useNavigate3 } from "react-router-dom";
+import { LogOut, Save } from "lucide-react";
 
 // src/pages/ProfilePage/styles/ProfilePage.ts
 import styled36 from "styled-components";
@@ -2973,6 +2974,9 @@ var Actions = styled36.div`
     button { flex: 1; }
   }
 `;
+var LogoutAction = styled36.div`
+  margin-top: ${({ theme: theme2 }) => theme2.spacing.md};
+`;
 
 // src/pages/ProfilePage/validators/schema.ts
 import { z as z2 } from "zod";
@@ -3023,13 +3027,19 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
     ] }),
     /* @__PURE__ */ jsxs22(Actions, { children: [
       /* @__PURE__ */ jsx30(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
-      /* @__PURE__ */ jsx30(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es" })
+      /* @__PURE__ */ jsxs22(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
+        /* @__PURE__ */ jsx30(Save, { size: 16 }),
+        isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es"
+      ] })
     ] }),
     changePasswordPath && /* @__PURE__ */ jsxs22(Fragment5, { children: [
       /* @__PURE__ */ jsx30(Section, { children: /* @__PURE__ */ jsx30(SectionTitle, { children: "Seguran\xE7a" }) }),
       /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsx30(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
     ] }),
-    onLogout && /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsx30(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: "Sair" }) }),
+    onLogout && /* @__PURE__ */ jsx30(LogoutAction, { children: /* @__PURE__ */ jsxs22(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
+      /* @__PURE__ */ jsx30(LogOut, { size: 16 }),
+      "Sair"
+    ] }) }),
     toast
   ] });
 }
