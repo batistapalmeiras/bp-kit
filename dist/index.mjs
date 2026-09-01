@@ -2983,7 +2983,7 @@ var profileSchema = z2.object({
 
 // src/pages/ProfilePage/index.tsx
 import { Fragment as Fragment5, jsx as jsx30, jsxs as jsxs22 } from "react/jsx-runtime";
-function ProfilePage({ roleLabel, changePasswordPath }) {
+function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
   const navigate = useNavigate3();
@@ -3029,6 +3029,7 @@ function ProfilePage({ roleLabel, changePasswordPath }) {
       /* @__PURE__ */ jsx30(Section, { children: /* @__PURE__ */ jsx30(SectionTitle, { children: "Seguran\xE7a" }) }),
       /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsx30(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
     ] }),
+    onLogout && /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsx30(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: "Sair" }) }),
     toast
   ] });
 }

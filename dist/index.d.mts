@@ -399,8 +399,10 @@ interface ProfilePageProps {
     roleLabel?: string;
     /** Route to the app's "Alterar senha" screen (bp-kit's ChangePasswordPage mounted there). Omit to hide the Segurança section entirely. */
     changePasswordPath?: string;
+    /** Sign the user out. Omit to hide the Sair action entirely. */
+    onLogout?: () => void;
 }
-declare function ProfilePage({ roleLabel, changePasswordPath }: ProfilePageProps): react.JSX.Element;
+declare function ProfilePage({ roleLabel, changePasswordPath, onLogout }: ProfilePageProps): react.JSX.Element;
 
 declare function ChangePasswordPage(): react.JSX.Element;
 

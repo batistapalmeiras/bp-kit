@@ -18,9 +18,11 @@ export interface ProfilePageProps {
   roleLabel?: string;
   /** Route to the app's "Alterar senha" screen (bp-kit's ChangePasswordPage mounted there). Omit to hide the Segurança section entirely. */
   changePasswordPath?: string;
+  /** Sign the user out. Omit to hide the Sair action entirely. */
+  onLogout?: () => void;
 }
 
-export function ProfilePage({ roleLabel, changePasswordPath }: ProfilePageProps) {
+export function ProfilePage({ roleLabel, changePasswordPath, onLogout }: ProfilePageProps) {
   const { user, userEmail, updateProfile } = useAuthCtx();
   const navigate = useNavigate();
   const { show: showToast, toast } = useToast();
@@ -81,6 +83,13 @@ export function ProfilePage({ roleLabel, changePasswordPath }: ProfilePageProps)
             </Button>
           </Actions>
         </>
+      )}
+      {onLogout && (
+        <Actions>
+          <Button variant="danger" size="md" onClick={onLogout} fullWidth>
+            Sair
+          </Button>
+        </Actions>
       )}
       {toast}
     </Wrap>

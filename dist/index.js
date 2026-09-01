@@ -3089,7 +3089,7 @@ var profileSchema = import_zod3.z.object({
 
 // src/pages/ProfilePage/index.tsx
 var import_jsx_runtime30 = require("react/jsx-runtime");
-function ProfilePage({ roleLabel, changePasswordPath }) {
+function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
   const navigate = (0, import_react_router_dom4.useNavigate)();
@@ -3135,6 +3135,7 @@ function ProfilePage({ roleLabel, changePasswordPath }) {
       /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Section, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionTitle, { children: "Seguran\xE7a" }) }),
       /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
     ] }),
+    onLogout && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: "Sair" }) }),
     toast
   ] });
 }
