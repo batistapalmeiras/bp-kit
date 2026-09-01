@@ -1020,11 +1020,33 @@ var import_styled_components18 = __toESM(require("styled-components"));
 var Wrap = import_styled_components18.default.div`
   position: relative;
 `;
-var ChipRow = import_styled_components18.default.div`
+var Field = import_styled_components18.default.div`
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.xs};
+  min-height: 56px;
+  padding: ${({ theme: theme2 }) => theme2.spacing.xs} ${({ theme: theme2 }) => theme2.spacing.md};
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  cursor: text;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    border-color: ${({ theme: theme2 }) => theme2.colors.borderStrong};
+  }
+
+  ${({ $focused, theme: theme2 }) => $focused && `
+      border-color: ${theme2.colors.ink};
+      border-width: 2px;
+      padding: calc(${theme2.spacing.xs} - 1px) calc(${theme2.spacing.md} - 1px);
+    `}
+
+  ${({ $disabled, theme: theme2 }) => $disabled && `
+      background: ${theme2.colors.surfaceSoft};
+      cursor: not-allowed;
+    `}
 `;
 var Chip2 = import_styled_components18.default.span`
   display: inline-flex;
@@ -1057,7 +1079,25 @@ var RemoveChip = import_styled_components18.default.button`
     color: ${({ theme: theme2 }) => theme2.colors.ink};
   }
 `;
-var SearchInput = (0, import_styled_components18.default)(InputField)``;
+var SearchInput = import_styled_components18.default.input`
+  flex: 1 1 80px;
+  min-width: 80px;
+  height: 32px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+
+  &::placeholder {
+    color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+`;
 var Dropdown = import_styled_components18.default.div`
   position: absolute;
   top: calc(100% + 4px);
@@ -1072,23 +1112,23 @@ var Dropdown = import_styled_components18.default.div`
   z-index: 20;
   padding: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var DropdownOption = import_styled_components18.default.button`
+var DropdownOption = import_styled_components18.default.div`
   display: flex;
   align-items: center;
   width: 100%;
-  text-align: left;
-  background: none;
-  border: none;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
   padding: ${({ theme: theme2 }) => theme2.spacing.sm};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
   cursor: pointer;
 
   &:hover {
     background: ${({ theme: theme2 }) => theme2.colors.surfaceSoft};
   }
+
+  ${({ $disabled }) => $disabled && `
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    `}
 `;
 var EmptyOption = import_styled_components18.default.div`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
@@ -1109,6 +1149,7 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
   const [query, setQuery] = (0, import_react6.useState)("");
   const [open, setOpen] = (0, import_react6.useState)(false);
   const wrapRef = (0, import_react6.useRef)(null);
+  const inputRef = (0, import_react6.useRef)(null);
   (0, import_react6.useEffect)(() => {
     if (!open) return;
     const onClickOutside = (e) => {
@@ -1123,36 +1164,74 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
     return (_b = (_a = options.find((o) => o.value === v)) == null ? void 0 : _a.label) != null ? _b : v;
   };
   const q = query.trim().toLowerCase();
-  const available = options.filter((o) => !value.includes(o.value) && (!q || o.label.toLowerCase().includes(q)));
-  const add = (v) => {
+  const visibleOptions = options.filter((o) => !q || o.label.toLowerCase().includes(q));
+  const toggle = (v) => {
+    if (value.includes(v)) {
+      onChange(value.filter((x) => x !== v));
+      return;
+    }
     if (atLimit) return;
     onChange([...value, v]);
     setQuery("");
   };
   const remove = (v) => onChange(value.filter((x) => x !== v));
+  const focusField = () => {
+    var _a;
+    if (!disabled) (_a = inputRef.current) == null ? void 0 : _a.focus();
+  };
   return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(BaseInput, { label, error, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Wrap, { ref: wrapRef, children: [
-    value.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(ChipRow, { children: value.map((v) => /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Chip2, { children: [
-      labelFor(v),
-      !disabled && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(RemoveChip, { type: "button", onClick: () => remove(v), "aria-label": `Remover ${labelFor(v)}`, children: "\xD7" })
-    ] }, v)) }),
-    !disabled && !atLimit && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_jsx_runtime12.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Field, { $focused: open, $disabled: disabled, onClick: focusField, children: [
+      value.map((v) => /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Chip2, { children: [
+        labelFor(v),
+        !disabled && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          RemoveChip,
+          {
+            type: "button",
+            onClick: (e) => {
+              e.stopPropagation();
+              remove(v);
+            },
+            "aria-label": `Remover ${labelFor(v)}`,
+            children: "\xD7"
+          }
+        )
+      ] }, v)),
+      !disabled && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
         SearchInput,
         {
+          ref: inputRef,
           type: "text",
-          placeholder,
+          placeholder: value.length === 0 ? placeholder : "",
           value: query,
           onFocus: () => setOpen(true),
           onChange: (e) => {
             setQuery(e.target.value);
             setOpen(true);
+          },
+          onKeyDown: (e) => {
+            if (e.key === "Backspace" && query === "" && value.length > 0) remove(value[value.length - 1]);
           }
         }
-      ),
-      open && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Dropdown, { role: "listbox", children: [
-        available.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
-        available.map((o) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(DropdownOption, { type: "button", role: "option", onClick: () => add(o.value), children: o.label }, o.value))
-      ] })
+      )
+    ] }),
+    open && !disabled && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Dropdown, { role: "listbox", children: [
+      visibleOptions.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
+      visibleOptions.map((o) => {
+        const checked = value.includes(o.value);
+        const rowDisabled = !checked && atLimit;
+        return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          DropdownOption,
+          {
+            role: "option",
+            "aria-selected": checked,
+            $disabled: rowDisabled,
+            onClick: () => !rowDisabled && toggle(o.value),
+            children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Checkbox, { checked, onChange: () => {
+            }, tabIndex: -1, label: o.label })
+          },
+          o.value
+        );
+      })
     ] }),
     atLimit && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(LimitHint, { children: [
       "Limite de ",
@@ -1808,7 +1887,7 @@ var Wrapper8 = import_styled_components27.default.div`
     pointer-events: none;
   }
 `;
-var Field = import_styled_components27.default.input`
+var Field2 = import_styled_components27.default.input`
   width: 100%;
   height: 40px;
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.base} 0 36px;
@@ -1835,7 +1914,7 @@ var import_jsx_runtime21 = require("react/jsx-runtime");
 function SearchInput2({ value, onChange, placeholder }) {
   return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(Wrapper8, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_lucide_react7.Search, { size: 16 }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Field, { placeholder, value, onChange: (e) => onChange(e.target.value) })
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Field2, { placeholder, value, onChange: (e) => onChange(e.target.value) })
   ] });
 }
 

@@ -916,11 +916,33 @@ import styled16 from "styled-components";
 var Wrap = styled16.div`
   position: relative;
 `;
-var ChipRow = styled16.div`
+var Field = styled16.div`
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.xs};
+  min-height: 56px;
+  padding: ${({ theme: theme2 }) => theme2.spacing.xs} ${({ theme: theme2 }) => theme2.spacing.md};
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  cursor: text;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    border-color: ${({ theme: theme2 }) => theme2.colors.borderStrong};
+  }
+
+  ${({ $focused, theme: theme2 }) => $focused && `
+      border-color: ${theme2.colors.ink};
+      border-width: 2px;
+      padding: calc(${theme2.spacing.xs} - 1px) calc(${theme2.spacing.md} - 1px);
+    `}
+
+  ${({ $disabled, theme: theme2 }) => $disabled && `
+      background: ${theme2.colors.surfaceSoft};
+      cursor: not-allowed;
+    `}
 `;
 var Chip2 = styled16.span`
   display: inline-flex;
@@ -953,7 +975,25 @@ var RemoveChip = styled16.button`
     color: ${({ theme: theme2 }) => theme2.colors.ink};
   }
 `;
-var SearchInput = styled16(InputField)``;
+var SearchInput = styled16.input`
+  flex: 1 1 80px;
+  min-width: 80px;
+  height: 32px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+
+  &::placeholder {
+    color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+`;
 var Dropdown = styled16.div`
   position: absolute;
   top: calc(100% + 4px);
@@ -968,23 +1008,23 @@ var Dropdown = styled16.div`
   z-index: 20;
   padding: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var DropdownOption = styled16.button`
+var DropdownOption = styled16.div`
   display: flex;
   align-items: center;
   width: 100%;
-  text-align: left;
-  background: none;
-  border: none;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
   padding: ${({ theme: theme2 }) => theme2.spacing.sm};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
   cursor: pointer;
 
   &:hover {
     background: ${({ theme: theme2 }) => theme2.colors.surfaceSoft};
   }
+
+  ${({ $disabled }) => $disabled && `
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    `}
 `;
 var EmptyOption = styled16.div`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
@@ -1000,11 +1040,12 @@ var LimitHint = styled16.p`
 `;
 
 // src/components/Inputs/MultiSelect/index.tsx
-import { Fragment as Fragment4, jsx as jsx12, jsxs as jsxs10 } from "react/jsx-runtime";
+import { jsx as jsx12, jsxs as jsxs10 } from "react/jsx-runtime";
 function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2026", disabled, max, error }) {
   const [query, setQuery] = useState3("");
   const [open, setOpen] = useState3(false);
   const wrapRef = useRef3(null);
+  const inputRef = useRef3(null);
   useEffect3(() => {
     if (!open) return;
     const onClickOutside = (e) => {
@@ -1019,36 +1060,74 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
     return (_b = (_a = options.find((o) => o.value === v)) == null ? void 0 : _a.label) != null ? _b : v;
   };
   const q = query.trim().toLowerCase();
-  const available = options.filter((o) => !value.includes(o.value) && (!q || o.label.toLowerCase().includes(q)));
-  const add = (v) => {
+  const visibleOptions = options.filter((o) => !q || o.label.toLowerCase().includes(q));
+  const toggle = (v) => {
+    if (value.includes(v)) {
+      onChange(value.filter((x) => x !== v));
+      return;
+    }
     if (atLimit) return;
     onChange([...value, v]);
     setQuery("");
   };
   const remove = (v) => onChange(value.filter((x) => x !== v));
+  const focusField = () => {
+    var _a;
+    if (!disabled) (_a = inputRef.current) == null ? void 0 : _a.focus();
+  };
   return /* @__PURE__ */ jsx12(BaseInput, { label, error, children: /* @__PURE__ */ jsxs10(Wrap, { ref: wrapRef, children: [
-    value.length > 0 && /* @__PURE__ */ jsx12(ChipRow, { children: value.map((v) => /* @__PURE__ */ jsxs10(Chip2, { children: [
-      labelFor(v),
-      !disabled && /* @__PURE__ */ jsx12(RemoveChip, { type: "button", onClick: () => remove(v), "aria-label": `Remover ${labelFor(v)}`, children: "\xD7" })
-    ] }, v)) }),
-    !disabled && !atLimit && /* @__PURE__ */ jsxs10(Fragment4, { children: [
-      /* @__PURE__ */ jsx12(
+    /* @__PURE__ */ jsxs10(Field, { $focused: open, $disabled: disabled, onClick: focusField, children: [
+      value.map((v) => /* @__PURE__ */ jsxs10(Chip2, { children: [
+        labelFor(v),
+        !disabled && /* @__PURE__ */ jsx12(
+          RemoveChip,
+          {
+            type: "button",
+            onClick: (e) => {
+              e.stopPropagation();
+              remove(v);
+            },
+            "aria-label": `Remover ${labelFor(v)}`,
+            children: "\xD7"
+          }
+        )
+      ] }, v)),
+      !disabled && /* @__PURE__ */ jsx12(
         SearchInput,
         {
+          ref: inputRef,
           type: "text",
-          placeholder,
+          placeholder: value.length === 0 ? placeholder : "",
           value: query,
           onFocus: () => setOpen(true),
           onChange: (e) => {
             setQuery(e.target.value);
             setOpen(true);
+          },
+          onKeyDown: (e) => {
+            if (e.key === "Backspace" && query === "" && value.length > 0) remove(value[value.length - 1]);
           }
         }
-      ),
-      open && /* @__PURE__ */ jsxs10(Dropdown, { role: "listbox", children: [
-        available.length === 0 && /* @__PURE__ */ jsx12(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
-        available.map((o) => /* @__PURE__ */ jsx12(DropdownOption, { type: "button", role: "option", onClick: () => add(o.value), children: o.label }, o.value))
-      ] })
+      )
+    ] }),
+    open && !disabled && /* @__PURE__ */ jsxs10(Dropdown, { role: "listbox", children: [
+      visibleOptions.length === 0 && /* @__PURE__ */ jsx12(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
+      visibleOptions.map((o) => {
+        const checked = value.includes(o.value);
+        const rowDisabled = !checked && atLimit;
+        return /* @__PURE__ */ jsx12(
+          DropdownOption,
+          {
+            role: "option",
+            "aria-selected": checked,
+            $disabled: rowDisabled,
+            onClick: () => !rowDisabled && toggle(o.value),
+            children: /* @__PURE__ */ jsx12(Checkbox, { checked, onChange: () => {
+            }, tabIndex: -1, label: o.label })
+          },
+          o.value
+        );
+      })
     ] }),
     atLimit && /* @__PURE__ */ jsxs10(LimitHint, { children: [
       "Limite de ",
@@ -1704,7 +1783,7 @@ var Wrapper8 = styled25.div`
     pointer-events: none;
   }
 `;
-var Field = styled25.input`
+var Field2 = styled25.input`
   width: 100%;
   height: 40px;
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.base} 0 36px;
@@ -1731,7 +1810,7 @@ import { jsx as jsx21, jsxs as jsxs16 } from "react/jsx-runtime";
 function SearchInput2({ value, onChange, placeholder }) {
   return /* @__PURE__ */ jsxs16(Wrapper8, { children: [
     /* @__PURE__ */ jsx21(Search, { size: 16 }),
-    /* @__PURE__ */ jsx21(Field, { placeholder, value, onChange: (e) => onChange(e.target.value) })
+    /* @__PURE__ */ jsx21(Field2, { placeholder, value, onChange: (e) => onChange(e.target.value) })
   ] });
 }
 
@@ -1986,7 +2065,7 @@ var ButtonRow = styled30.div`
 `;
 
 // src/components/SummaryCard/index.tsx
-import { Fragment as Fragment5, jsx as jsx24, jsxs as jsxs18 } from "react/jsx-runtime";
+import { Fragment as Fragment4, jsx as jsx24, jsxs as jsxs18 } from "react/jsx-runtime";
 function SummaryCard({
   label = "Resumo",
   items,
@@ -2015,7 +2094,7 @@ function SummaryCard({
       /* @__PURE__ */ jsx24(Items, { children: itemsText }),
       /* @__PURE__ */ jsx24(Total, { children: formatCurrency(total) })
     ] }),
-    !isEmpty && hasSubtotals && /* @__PURE__ */ jsxs18(Fragment5, { children: [
+    !isEmpty && hasSubtotals && /* @__PURE__ */ jsxs18(Fragment4, { children: [
       /* @__PURE__ */ jsx24(Divider, {}),
       /* @__PURE__ */ jsx24(Row2, { children: /* @__PURE__ */ jsx24(Info2, { children: /* @__PURE__ */ jsx24(Total, { children: formatCurrency(total) }) }) })
     ] }),
@@ -2659,7 +2738,7 @@ var profileSchema = z2.object({
 });
 
 // src/pages/ProfilePage/index.tsx
-import { Fragment as Fragment6, jsx as jsx29, jsxs as jsxs20 } from "react/jsx-runtime";
+import { Fragment as Fragment5, jsx as jsx29, jsxs as jsxs20 } from "react/jsx-runtime";
 function ProfilePage({ roleLabel, changePasswordPath }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
@@ -2702,7 +2781,7 @@ function ProfilePage({ roleLabel, changePasswordPath }) {
       /* @__PURE__ */ jsx29(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
       /* @__PURE__ */ jsx29(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es" })
     ] }),
-    changePasswordPath && /* @__PURE__ */ jsxs20(Fragment6, { children: [
+    changePasswordPath && /* @__PURE__ */ jsxs20(Fragment5, { children: [
       /* @__PURE__ */ jsx29(Section, { children: /* @__PURE__ */ jsx29(SectionTitle, { children: "Seguran\xE7a" }) }),
       /* @__PURE__ */ jsx29(Actions, { children: /* @__PURE__ */ jsx29(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
     ] }),

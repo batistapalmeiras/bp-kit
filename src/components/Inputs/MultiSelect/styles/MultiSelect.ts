@@ -1,17 +1,44 @@
 // Libs
 import styled from 'styled-components';
-// Components
-import { InputField } from '../../BaseInput/styles';
 
 export const Wrap = styled.div`
   position: relative;
 `;
 
-export const ChipRow = styled.div`
+// The whole bordered box (chips + search text share it) — reads as one
+// input, MUI-multi-select style, instead of loose chips floating above a
+// separate search field.
+export const Field = styled.div<{ $focused?: boolean; $disabled?: boolean }>`
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: ${({ theme }) => theme.spacing.xs};
-  margin-bottom: ${({ theme }) => theme.spacing.xs};
+  min-height: 56px;
+  padding: ${({ theme }) => theme.spacing.xs} ${({ theme }) => theme.spacing.md};
+  background: ${({ theme }) => theme.colors.canvas};
+  border: 1px solid ${({ theme }) => theme.colors.hairline};
+  border-radius: ${({ theme }) => theme.rounded.sm};
+  cursor: text;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.borderStrong};
+  }
+
+  ${({ $focused, theme }) =>
+    $focused &&
+    `
+      border-color: ${theme.colors.ink};
+      border-width: 2px;
+      padding: calc(${theme.spacing.xs} - 1px) calc(${theme.spacing.md} - 1px);
+    `}
+
+  ${({ $disabled, theme }) =>
+    $disabled &&
+    `
+      background: ${theme.colors.surfaceSoft};
+      cursor: not-allowed;
+    `}
 `;
 
 export const Chip = styled.span`
@@ -47,7 +74,26 @@ export const RemoveChip = styled.button`
   }
 `;
 
-export const SearchInput = styled(InputField)``;
+// Borderless — sits inline inside Field, which owns the actual input chrome.
+export const SearchInput = styled.input`
+  flex: 1 1 80px;
+  min-width: 80px;
+  height: 32px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.bodyMd.fontSize};
+  color: ${({ theme }) => theme.colors.ink};
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.mutedSoft};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+`;
 
 export const Dropdown = styled.div`
   position: absolute;
@@ -64,23 +110,27 @@ export const Dropdown = styled.div`
   padding: ${({ theme }) => theme.spacing.xs};
 `;
 
-export const DropdownOption = styled.button`
+// A div, not a button — it wraps a Checkbox (itself a <label>), and
+// interactive-in-interactive nesting gets flaky with real buttons.
+export const DropdownOption = styled.div<{ $disabled?: boolean }>`
   display: flex;
   align-items: center;
   width: 100%;
-  text-align: left;
-  background: none;
-  border: none;
   border-radius: ${({ theme }) => theme.rounded.sm};
   padding: ${({ theme }) => theme.spacing.sm};
-  font-family: ${({ theme }) => theme.typography.fontFamily};
-  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
-  color: ${({ theme }) => theme.colors.ink};
   cursor: pointer;
 
   &:hover {
     background: ${({ theme }) => theme.colors.surfaceSoft};
   }
+
+  ${({ $disabled }) =>
+    $disabled &&
+    `
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    `}
 `;
 
 export const EmptyOption = styled.div`
