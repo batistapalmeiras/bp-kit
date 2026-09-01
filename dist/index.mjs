@@ -1974,15 +1974,6 @@ var Row = styled26.div`
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.base};
-
-  // A wide action button squeezes the title column when they share a row,
-  // wrapping a longer subtitle across several lines. Below tablet there's
-  // rarely room for both side by side, so stack the action under the
-  // titles instead of forcing them to share the width.
-  @media (max-width: ${({ theme: theme2 }) => theme2.breakpoints.mobile}) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 `;
 var Titles = styled26.div`
   display: flex;
