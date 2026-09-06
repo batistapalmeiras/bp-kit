@@ -15,7 +15,7 @@ import {
   BrandSub,
   BrandText,
   ErrorMsg,
-  FooterLink,
+  ForgotLink,
   Form,
   FormBox,
   FormHeader,
@@ -85,6 +85,11 @@ export function LoginPage({ brand, resolveRoute, forgotPasswordPath }: LoginPage
               type="password"
               placeholder="Mínimo 6 caracteres"
             />
+            {forgotPasswordPath && (
+              <ForgotLink type="button" onClick={() => navigate(forgotPasswordPath)}>
+                Esqueci minha senha
+              </ForgotLink>
+            )}
             <SubmitButton
               variant="primary"
               size="lg"
@@ -97,11 +102,6 @@ export function LoginPage({ brand, resolveRoute, forgotPasswordPath }: LoginPage
             </SubmitButton>
             {error && <ErrorMsg>{error}</ErrorMsg>}
           </Form>
-          {forgotPasswordPath && (
-            <FooterLink type="button" onClick={() => navigate(forgotPasswordPath)}>
-              Esqueci minha senha
-            </FooterLink>
-          )}
         </FormBox>
       </FormPanel>
     </Page>

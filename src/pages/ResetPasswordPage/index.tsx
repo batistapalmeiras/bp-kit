@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+// Libs
+import { Save } from 'lucide-react';
 // Components
 import { TextInput } from '../../components/Inputs/TextInput';
 import { useAuthCtx } from '../../hooks/useAuth';
@@ -123,7 +125,14 @@ export function ResetPasswordPage({ brand, loginPath }: ResetPasswordPageProps) 
                 disabled={isSubmitting}
                 style={{ marginTop: 8 }}
               >
-                {isSubmitting ? 'Salvando...' : 'Salvar nova senha'}
+                {isSubmitting ? (
+                  'Salvando...'
+                ) : (
+                  <>
+                    <Save size={16} />
+                    Salvar nova senha
+                  </>
+                )}
               </SubmitButton>
             </Form>
           )}

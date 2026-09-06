@@ -2863,6 +2863,39 @@ var FooterLink = styled35.button`
     text-decoration: underline;
   }
 `;
+var ForgotLink = styled35.button`
+  align-self: flex-end;
+  margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.primary};
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+var BackLink = styled35.button`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  cursor: pointer;
+
+  &:hover {
+    color: ${({ theme: theme2 }) => theme2.colors.ink};
+  }
+`;
 var SuccessMsg = styled35.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
@@ -2935,6 +2968,7 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath }) {
             placeholder: "M\xEDnimo 6 caracteres"
           }
         ),
+        forgotPasswordPath && /* @__PURE__ */ jsx29(ForgotLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" }),
         /* @__PURE__ */ jsx29(
           SubmitButton,
           {
@@ -2948,8 +2982,7 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath }) {
           }
         ),
         error && /* @__PURE__ */ jsx29(ErrorMsg, { children: error })
-      ] }),
-      forgotPasswordPath && /* @__PURE__ */ jsx29(FooterLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" })
+      ] })
     ] }) })
   ] });
 }
@@ -3088,6 +3121,7 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
 import { zodResolver as zodResolver3 } from "@hookform/resolvers/zod";
 import { useForm as useForm3 } from "react-hook-form";
 import { useNavigate as useNavigate5 } from "react-router-dom";
+import { Save as Save2 } from "lucide-react";
 
 // src/pages/ChangePasswordPage/validators/schema.ts
 import { z as z3 } from "zod";
@@ -3100,7 +3134,7 @@ var passwordSchema = z3.object({
 });
 
 // src/pages/ChangePasswordPage/index.tsx
-import { jsx as jsx31, jsxs as jsxs23 } from "react/jsx-runtime";
+import { Fragment as Fragment6, jsx as jsx31, jsxs as jsxs23 } from "react/jsx-runtime";
 function ChangePasswordPage() {
   const { updatePassword } = useAuthCtx();
   const navigate = useNavigate5();
@@ -3141,7 +3175,10 @@ function ChangePasswordPage() {
     ] }),
     /* @__PURE__ */ jsxs23(Actions, { children: [
       /* @__PURE__ */ jsx31(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
-      /* @__PURE__ */ jsx31(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar nova senha" })
+      /* @__PURE__ */ jsx31(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs23(Fragment6, { children: [
+        /* @__PURE__ */ jsx31(Save2, { size: 16 }),
+        "Salvar nova senha"
+      ] }) })
     ] }),
     toast
   ] });
@@ -3151,6 +3188,7 @@ function ChangePasswordPage() {
 import { zodResolver as zodResolver4 } from "@hookform/resolvers/zod";
 import { useForm as useForm4 } from "react-hook-form";
 import { useNavigate as useNavigate6 } from "react-router-dom";
+import { ArrowLeft as ArrowLeft2, Send } from "lucide-react";
 
 // src/pages/ForgotPasswordPage/hooks/useForgotPassword.ts
 import { useState as useState9 } from "react";
@@ -3181,7 +3219,7 @@ var forgotPasswordSchema = z4.object({
 });
 
 // src/pages/ForgotPasswordPage/index.tsx
-import { jsx as jsx32, jsxs as jsxs24 } from "react/jsx-runtime";
+import { Fragment as Fragment7, jsx as jsx32, jsxs as jsxs24 } from "react/jsx-runtime";
 function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
   const { submitting, sent, error, handleSubmit: submit } = useForgotPassword(resetPasswordPath);
   const navigate = useNavigate6();
@@ -3199,6 +3237,10 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
       brand.quote && /* @__PURE__ */ jsx32(BrandQuote, { children: brand.quote })
     ] }),
     /* @__PURE__ */ jsx32(FormPanel, { children: /* @__PURE__ */ jsxs24(FormBox, { children: [
+      /* @__PURE__ */ jsxs24(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
+        /* @__PURE__ */ jsx32(ArrowLeft2, { size: 16 }),
+        "Voltar para o login"
+      ] }),
       /* @__PURE__ */ jsxs24(FormHeader, { children: [
         /* @__PURE__ */ jsx32(FormTitle, { children: "Esqueci minha senha" }),
         /* @__PURE__ */ jsx32(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
@@ -3224,12 +3266,14 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
             type: "submit",
             disabled: submitting,
             style: { marginTop: 8 },
-            children: submitting ? "Enviando..." : "Enviar link"
+            children: submitting ? "Enviando..." : /* @__PURE__ */ jsxs24(Fragment7, { children: [
+              /* @__PURE__ */ jsx32(Send, { size: 16 }),
+              "Enviar link"
+            ] })
           }
         ),
         error && /* @__PURE__ */ jsx32(ErrorMsg, { children: error })
-      ] }),
-      /* @__PURE__ */ jsx32(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
+      ] })
     ] }) })
   ] });
 }
@@ -3239,7 +3283,8 @@ import { useState as useState10 } from "react";
 import { zodResolver as zodResolver5 } from "@hookform/resolvers/zod";
 import { useForm as useForm5 } from "react-hook-form";
 import { useNavigate as useNavigate7 } from "react-router-dom";
-import { Fragment as Fragment6, jsx as jsx33, jsxs as jsxs25 } from "react/jsx-runtime";
+import { Save as Save3 } from "lucide-react";
+import { Fragment as Fragment8, jsx as jsx33, jsxs as jsxs25 } from "react/jsx-runtime";
 function ResetPasswordPage({ brand, loginPath }) {
   const { user, loading, updatePassword, logout } = useAuthCtx();
   const navigate = useNavigate7();
@@ -3277,11 +3322,11 @@ function ResetPasswordPage({ brand, loginPath }) {
         /* @__PURE__ */ jsx33(FormTitle, { children: "Nova senha" }),
         /* @__PURE__ */ jsx33(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
       ] }),
-      done && /* @__PURE__ */ jsxs25(Fragment6, { children: [
+      done && /* @__PURE__ */ jsxs25(Fragment8, { children: [
         /* @__PURE__ */ jsx33(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
         /* @__PURE__ */ jsx33(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
       ] }),
-      invalidLink && /* @__PURE__ */ jsxs25(Fragment6, { children: [
+      invalidLink && /* @__PURE__ */ jsxs25(Fragment8, { children: [
         /* @__PURE__ */ jsx33(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
         /* @__PURE__ */ jsx33(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
       ] }),
@@ -3316,7 +3361,10 @@ function ResetPasswordPage({ brand, loginPath }) {
             type: "submit",
             disabled: isSubmitting,
             style: { marginTop: 8 },
-            children: isSubmitting ? "Salvando..." : "Salvar nova senha"
+            children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs25(Fragment8, { children: [
+              /* @__PURE__ */ jsx33(Save3, { size: 16 }),
+              "Salvar nova senha"
+            ] })
           }
         )
       ] })

@@ -194,6 +194,45 @@ export const FooterLink = styled.button`
   }
 `;
 
+// Sits right under the password field, as a Form flex-column child —
+// align-self (not text-align/margin-left auto) is what pushes it right.
+export const ForgotLink = styled.button`
+  align-self: flex-end;
+  margin: ${({ theme }) => theme.spacing.xs} 0;
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  color: ${({ theme }) => theme.colors.primary};
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+// Top-of-panel "go back" — pure navigation, but the back arrow is the same
+// idiom PageHeader's own back button already uses elsewhere in the app.
+export const BackLink = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.xs};
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  color: ${({ theme }) => theme.colors.muted};
+  cursor: pointer;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.ink};
+  }
+`;
+
 export const SuccessMsg = styled.p`
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
   color: ${({ theme }) => theme.colors.ink};

@@ -2,12 +2,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+// Libs
+import { ArrowLeft, Send } from 'lucide-react';
 // Components
 import { TextInput } from '../../components/Inputs/TextInput';
 // Local
 import { useForgotPassword } from './hooks';
 import { LoginPageBrand } from '../LoginPage';
 import {
+  BackLink,
   Brand,
   BrandMark,
   BrandName,
@@ -15,7 +18,6 @@ import {
   BrandSub,
   BrandText,
   ErrorMsg,
-  FooterLink,
   Form,
   FormBox,
   FormHeader,
@@ -57,6 +59,11 @@ export function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }: Forg
 
       <FormPanel>
         <FormBox>
+          <BackLink type="button" onClick={() => navigate(loginPath)}>
+            <ArrowLeft size={16} />
+            Voltar para o login
+          </BackLink>
+
           <FormHeader>
             <FormTitle>Esqueci minha senha</FormTitle>
             <FormSubtitle>Informe seu e-mail e enviaremos um link para redefinir sua senha</FormSubtitle>
@@ -84,15 +91,18 @@ export function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }: Forg
                 disabled={submitting}
                 style={{ marginTop: 8 }}
               >
-                {submitting ? 'Enviando...' : 'Enviar link'}
+                {submitting ? (
+                  'Enviando...'
+                ) : (
+                  <>
+                    <Send size={16} />
+                    Enviar link
+                  </>
+                )}
               </SubmitButton>
               {error && <ErrorMsg>{error}</ErrorMsg>}
             </Form>
           )}
-
-          <FooterLink type="button" onClick={() => navigate(loginPath)}>
-            Voltar para o login
-          </FooterLink>
         </FormBox>
       </FormPanel>
     </Page>

@@ -2971,6 +2971,39 @@ var FooterLink = import_styled_components37.default.button`
     text-decoration: underline;
   }
 `;
+var ForgotLink = import_styled_components37.default.button`
+  align-self: flex-end;
+  margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.primary};
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+var BackLink = import_styled_components37.default.button`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  cursor: pointer;
+
+  &:hover {
+    color: ${({ theme: theme2 }) => theme2.colors.ink};
+  }
+`;
 var SuccessMsg = import_styled_components37.default.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
@@ -3043,6 +3076,7 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath }) {
             placeholder: "M\xEDnimo 6 caracteres"
           }
         ),
+        forgotPasswordPath && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ForgotLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" }),
         /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
           SubmitButton,
           {
@@ -3056,8 +3090,7 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath }) {
           }
         ),
         error && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ErrorMsg, { children: error })
-      ] }),
-      forgotPasswordPath && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FooterLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" })
+      ] })
     ] }) })
   ] });
 }
@@ -3196,6 +3229,7 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
 var import_zod6 = require("@hookform/resolvers/zod");
 var import_react_hook_form8 = require("react-hook-form");
 var import_react_router_dom6 = require("react-router-dom");
+var import_lucide_react11 = require("lucide-react");
 
 // src/pages/ChangePasswordPage/validators/schema.ts
 var import_zod5 = require("zod");
@@ -3249,7 +3283,10 @@ function ChangePasswordPage() {
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Actions, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : "Salvar nova senha" })
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(import_jsx_runtime31.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react11.Save, { size: 16 }),
+        "Salvar nova senha"
+      ] }) })
     ] }),
     toast
   ] });
@@ -3259,6 +3296,7 @@ function ChangePasswordPage() {
 var import_zod8 = require("@hookform/resolvers/zod");
 var import_react_hook_form9 = require("react-hook-form");
 var import_react_router_dom7 = require("react-router-dom");
+var import_lucide_react12 = require("lucide-react");
 
 // src/pages/ForgotPasswordPage/hooks/useForgotPassword.ts
 var import_react15 = require("react");
@@ -3307,6 +3345,10 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
       brand.quote && /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(BrandQuote, { children: brand.quote })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(FormBox, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_lucide_react12.ArrowLeft, { size: 16 }),
+        "Voltar para o login"
+      ] }),
       /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(FormHeader, { children: [
         /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormTitle, { children: "Esqueci minha senha" }),
         /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
@@ -3332,12 +3374,14 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
             type: "submit",
             disabled: submitting,
             style: { marginTop: 8 },
-            children: submitting ? "Enviando..." : "Enviar link"
+            children: submitting ? "Enviando..." : /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(import_jsx_runtime32.Fragment, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_lucide_react12.Send, { size: 16 }),
+              "Enviar link"
+            ] })
           }
         ),
         error && /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(ErrorMsg, { children: error })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
+      ] })
     ] }) })
   ] });
 }
@@ -3347,6 +3391,7 @@ var import_react16 = require("react");
 var import_zod9 = require("@hookform/resolvers/zod");
 var import_react_hook_form10 = require("react-hook-form");
 var import_react_router_dom8 = require("react-router-dom");
+var import_lucide_react13 = require("lucide-react");
 var import_jsx_runtime33 = require("react/jsx-runtime");
 function ResetPasswordPage({ brand, loginPath }) {
   const { user, loading, updatePassword, logout } = useAuthCtx();
@@ -3424,7 +3469,10 @@ function ResetPasswordPage({ brand, loginPath }) {
             type: "submit",
             disabled: isSubmitting,
             style: { marginTop: 8 },
-            children: isSubmitting ? "Salvando..." : "Salvar nova senha"
+            children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_lucide_react13.Save, { size: 16 }),
+              "Salvar nova senha"
+            ] })
           }
         )
       ] })

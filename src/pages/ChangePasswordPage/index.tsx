@@ -2,6 +2,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+// Libs
+import { Save } from 'lucide-react';
 // Components
 import { Button } from '../../components/Button';
 import { TextInput } from '../../components/Inputs/TextInput';
@@ -59,7 +61,14 @@ export function ChangePasswordPage() {
           {text.actions.cancel}
         </Button>
         <Button variant="primary" size="md" onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>
-          {isSubmitting ? 'Salvando...' : 'Salvar nova senha'}
+          {isSubmitting ? (
+            'Salvando...'
+          ) : (
+            <>
+              <Save size={16} />
+              Salvar nova senha
+            </>
+          )}
         </Button>
       </Actions>
       {toast}
