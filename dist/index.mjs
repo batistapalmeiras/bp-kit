@@ -2925,7 +2925,7 @@ var loginSchema = z.object({
 
 // src/pages/LoginPage/index.tsx
 import { jsx as jsx29, jsxs as jsxs21 } from "react/jsx-runtime";
-function LoginPage({ brand, resolveRoute, forgotPasswordPath }) {
+function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
   const navigate = useNavigate3();
   const { control, handleSubmit } = useForm({
@@ -2982,7 +2982,8 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath }) {
           }
         ),
         error && /* @__PURE__ */ jsx29(ErrorMsg, { children: error })
-      ] })
+      ] }),
+      footerSlot
     ] }) })
   ] });
 }

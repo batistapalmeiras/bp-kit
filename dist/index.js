@@ -3033,7 +3033,7 @@ var loginSchema = import_zod.z.object({
 
 // src/pages/LoginPage/index.tsx
 var import_jsx_runtime29 = require("react/jsx-runtime");
-function LoginPage({ brand, resolveRoute, forgotPasswordPath }) {
+function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
   const navigate = (0, import_react_router_dom4.useNavigate)();
   const { control, handleSubmit } = (0, import_react_hook_form6.useForm)({
@@ -3090,7 +3090,8 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath }) {
           }
         ),
         error && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ErrorMsg, { children: error })
-      ] })
+      ] }),
+      footerSlot
     ] }) })
   ] });
 }

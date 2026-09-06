@@ -392,8 +392,9 @@ interface LoginPageProps {
     brand: LoginPageBrand;
     resolveRoute: (role: string) => string;
     forgotPasswordPath?: string;
+    footerSlot?: ReactNode;
 }
-declare function LoginPage({ brand, resolveRoute, forgotPasswordPath }: LoginPageProps): react.JSX.Element;
+declare function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }: LoginPageProps): react.JSX.Element;
 
 interface ProfilePageProps {
     /** Display label for the user's role (e.g. "Administrador"). Each app defines its own role vocabulary. */

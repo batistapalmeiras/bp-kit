@@ -1,4 +1,5 @@
 // React
+import { ReactNode } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -39,9 +40,10 @@ export interface LoginPageProps {
   brand: LoginPageBrand;
   resolveRoute: (role: string) => string;
   forgotPasswordPath?: string;
+  footerSlot?: ReactNode;
 }
 
-export function LoginPage({ brand, resolveRoute, forgotPasswordPath }: LoginPageProps) {
+export function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }: LoginPageProps) {
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
   const navigate = useNavigate();
   const { control, handleSubmit } = useForm<LoginFormValues>({
@@ -102,6 +104,7 @@ export function LoginPage({ brand, resolveRoute, forgotPasswordPath }: LoginPage
             </SubmitButton>
             {error && <ErrorMsg>{error}</ErrorMsg>}
           </Form>
+          {footerSlot}
         </FormBox>
       </FormPanel>
     </Page>
