@@ -57,6 +57,10 @@ export type { LoginPageBrand, LoginPageProps } from './pages/LoginPage';
 export { ProfilePage } from './pages/ProfilePage';
 export type { ProfilePageProps } from './pages/ProfilePage';
 export { ChangePasswordPage } from './pages/ChangePasswordPage';
+export { ForgotPasswordPage } from './pages/ForgotPasswordPage';
+export type { ForgotPasswordPageProps } from './pages/ForgotPasswordPage';
+export { ResetPasswordPage } from './pages/ResetPasswordPage';
+export type { ResetPasswordPageProps } from './pages/ResetPasswordPage';
 
 // Hooks
 export { useMediaQuery } from './hooks/useMediaQuery';

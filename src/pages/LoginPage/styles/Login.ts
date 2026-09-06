@@ -175,6 +175,36 @@ export const SubmitButton = styled(Button)`
   }
 `;
 
+// Pure navigation, not an action — no icon, quiet text link under the form.
+export const FooterLink = styled.button`
+  display: block;
+  width: 100%;
+  text-align: center;
+  border: none;
+  background: none;
+  padding: ${({ theme }) => theme.spacing.xs} 0;
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  color: ${({ theme }) => theme.colors.primary};
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+export const SuccessMsg = styled.p`
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  color: ${({ theme }) => theme.colors.ink};
+  background: ${({ theme }) => theme.colors.surfaceSoft};
+  border: 1px solid ${({ theme }) => theme.colors.hairline};
+  border-radius: ${({ theme }) => theme.rounded.sm};
+  padding: ${({ theme }) => `${theme.spacing.md} ${theme.spacing.md}`};
+  text-align: center;
+  line-height: 1.5;
+`;
+
 export const ErrorMsg = styled.p`
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
   color: ${({ theme }) => theme.colors.primaryErrorText};

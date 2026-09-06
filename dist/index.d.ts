@@ -391,8 +391,9 @@ interface LoginPageBrand {
 interface LoginPageProps {
     brand: LoginPageBrand;
     resolveRoute: (role: string) => string;
+    forgotPasswordPath?: string;
 }
-declare function LoginPage({ brand, resolveRoute }: LoginPageProps): react.JSX.Element;
+declare function LoginPage({ brand, resolveRoute, forgotPasswordPath }: LoginPageProps): react.JSX.Element;
 
 interface ProfilePageProps {
     /** Display label for the user's role (e.g. "Administrador"). Each app defines its own role vocabulary. */
@@ -405,6 +406,19 @@ interface ProfilePageProps {
 declare function ProfilePage({ roleLabel, changePasswordPath, onLogout }: ProfilePageProps): react.JSX.Element;
 
 declare function ChangePasswordPage(): react.JSX.Element;
+
+interface ForgotPasswordPageProps {
+    brand: LoginPageBrand;
+    loginPath: string;
+    resetPasswordPath: string;
+}
+declare function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }: ForgotPasswordPageProps): react.JSX.Element;
+
+interface ResetPasswordPageProps {
+    brand: LoginPageBrand;
+    loginPath: string;
+}
+declare function ResetPasswordPage({ brand, loginPath }: ResetPasswordPageProps): react.JSX.Element;
 
 declare function useMediaQuery(query: string): boolean;
 
@@ -430,6 +444,7 @@ interface AuthContextValue {
     logout: () => Promise<void>;
     updateProfile: (name: string, email: string) => Promise<string | null>;
     updatePassword: (newPassword: string) => Promise<string | null>;
+    requestPasswordReset: (email: string, redirectTo: string) => Promise<string | null>;
 }
 declare const AuthContext: react.Context<AuthContextValue | null>;
 declare function AuthProvider({ client, children }: {
@@ -674,4 +689,4 @@ declare function formatCPF(value: string): string;
 declare function formatCNPJ(value: string): string;
 declare function formatCpfCnpj(value: string): string;
 
-export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DangerLink, DatePicker, type DatePickerProps, Empty, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, Textarea, type TextareaProps, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DangerLink, DatePicker, type DatePickerProps, Empty, ForgotPasswordPage, type ForgotPasswordPageProps, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, ResetPasswordPage, type ResetPasswordPageProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, Textarea, type TextareaProps, type Theme, Toast, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };

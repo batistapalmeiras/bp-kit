@@ -156,9 +156,15 @@ export function useAuth(client: SupabaseClient): AuthContextValue {
     return null;
   }, [client]);
 
+  const requestPasswordReset = useCallback(async (email: string, redirectTo: string): Promise<string | null> => {
+    const { error: resetError } = await client.auth.resetPasswordForEmail(email, { redirectTo });
+    if (resetError) return 'Erro ao enviar o link de recuperação.';
+    return null;
+  }, [client]);
+
   return useMemo(
-    () => ({ user, userEmail, loading, error, login, logout, updateProfile, updatePassword }),
-    [user, userEmail, loading, error, login, logout, updateProfile, updatePassword],
+    () => ({ user, userEmail, loading, error, login, logout, updateProfile, updatePassword, requestPasswordReset }),
+    [user, userEmail, loading, error, login, logout, updateProfile, updatePassword, requestPasswordReset],
   );
 }
 

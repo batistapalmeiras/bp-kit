@@ -1,6 +1,7 @@
 // React
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 // Components
 import { TextInput } from '../../components/Inputs/TextInput';
 // Local
@@ -14,6 +15,7 @@ import {
   BrandSub,
   BrandText,
   ErrorMsg,
+  FooterLink,
   Form,
   FormBox,
   FormHeader,
@@ -36,10 +38,12 @@ export interface LoginPageBrand {
 export interface LoginPageProps {
   brand: LoginPageBrand;
   resolveRoute: (role: string) => string;
+  forgotPasswordPath?: string;
 }
 
-export function LoginPage({ brand, resolveRoute }: LoginPageProps) {
+export function LoginPage({ brand, resolveRoute, forgotPasswordPath }: LoginPageProps) {
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
+  const navigate = useNavigate();
   const { control, handleSubmit } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
@@ -93,6 +97,11 @@ export function LoginPage({ brand, resolveRoute }: LoginPageProps) {
             </SubmitButton>
             {error && <ErrorMsg>{error}</ErrorMsg>}
           </Form>
+          {forgotPasswordPath && (
+            <FooterLink type="button" onClick={() => navigate(forgotPasswordPath)}>
+              Esqueci minha senha
+            </FooterLink>
+          )}
         </FormBox>
       </FormPanel>
     </Page>
