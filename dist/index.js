@@ -42,7 +42,6 @@ __export(src_exports, {
   Chip: () => Chip,
   ChipBar: () => ChipBar,
   ControlledBase: () => ControlledBase,
-  DangerLink: () => DangerLink,
   DatePicker: () => DatePicker,
   Empty: () => Empty,
   ForgotPasswordPage: () => ForgotPasswordPage,
@@ -52,6 +51,7 @@ __export(src_exports, {
   ImageUpload: () => ImageUpload,
   InfoBox: () => InfoBox,
   InputField: () => InputField,
+  LinkButton: () => LinkButton,
   LoginPage: () => LoginPage,
   Modal: () => Modal,
   ModalActions: () => ModalActions,
@@ -243,58 +243,34 @@ var Card = import_styled_components4.default.div`
   `}
 `;
 
-// src/components/DangerLink/styles.ts
-var import_styled_components5 = __toESM(require("styled-components"));
-var DangerLink = import_styled_components5.default.button`
-  display: block;
-  width: 100%;
-  text-align: center;
-  border: 1px solid ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
-  background: none;
-  padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  font-weight: 600;
-  color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    background: ${({ theme: theme2 }) => theme2.colors.primaryErrorText}0d;
-    border-color: ${({ theme: theme2 }) => theme2.colors.primaryErrorTextHover};
-    color: ${({ theme: theme2 }) => theme2.colors.primaryErrorTextHover};
-  }
-`;
-
 // src/components/Button/index.tsx
 var import_react = require("react");
 
 // src/components/Button/styles/Button.ts
-var import_styled_components7 = __toESM(require("styled-components"));
+var import_styled_components6 = __toESM(require("styled-components"));
 
 // src/components/_shared/buttonBase.ts
-var import_styled_components6 = require("styled-components");
+var import_styled_components5 = require("styled-components");
 var sizeStyles = {
-  xs: import_styled_components6.css`
+  xs: import_styled_components5.css`
     height: 32px;
     padding: 0 ${({ theme: theme2 }) => theme2.spacing.sm};
     font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
     font-weight: 600;
   `,
-  sm: import_styled_components6.css`
+  sm: import_styled_components5.css`
     height: 36px;
     padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
     font-size: ${({ theme: theme2 }) => theme2.typography.buttonSm.fontSize};
     font-weight: ${({ theme: theme2 }) => theme2.typography.buttonSm.fontWeight};
   `,
-  md: import_styled_components6.css`
+  md: import_styled_components5.css`
     height: 44px;
     padding: 0 ${({ theme: theme2 }) => theme2.spacing.lg};
     font-size: ${({ theme: theme2 }) => theme2.typography.buttonMd.fontSize};
     font-weight: ${({ theme: theme2 }) => theme2.typography.buttonMd.fontWeight};
   `,
-  lg: import_styled_components6.css`
+  lg: import_styled_components5.css`
     height: 52px;
     padding: 0 ${({ theme: theme2 }) => theme2.spacing.xl};
     font-size: ${({ theme: theme2 }) => theme2.typography.buttonMd.fontSize};
@@ -302,7 +278,7 @@ var sizeStyles = {
   `
 };
 var variantStyles = {
-  primary: import_styled_components6.css`
+  primary: import_styled_components5.css`
     background: ${({ theme: theme2 }) => theme2.colors.primary};
     color: ${({ theme: theme2 }) => theme2.colors.onPrimary};
     border: none;
@@ -310,7 +286,7 @@ var variantStyles = {
     &:hover:not(:disabled) { background: ${({ theme: theme2 }) => theme2.colors.primaryActive}; }
     &:disabled { background: ${({ theme: theme2 }) => theme2.colors.primaryDisabled}; cursor: not-allowed; }
   `,
-  secondary: import_styled_components6.css`
+  secondary: import_styled_components5.css`
     background: ${({ theme: theme2 }) => theme2.colors.canvas};
     color: ${({ theme: theme2 }) => theme2.colors.ink};
     border: 1px solid ${({ theme: theme2 }) => theme2.colors.borderStrong};
@@ -318,7 +294,7 @@ var variantStyles = {
     &:hover:not(:disabled) { background: ${({ theme: theme2 }) => theme2.colors.surfaceSoft}; }
     &:disabled { color: ${({ theme: theme2 }) => theme2.colors.mutedSoft}; border-color: ${({ theme: theme2 }) => theme2.colors.hairline}; cursor: not-allowed; }
   `,
-  danger: import_styled_components6.css`
+  danger: import_styled_components5.css`
     background: ${({ theme: theme2 }) => theme2.colors.canvas};
     color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
     border: 1px solid ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
@@ -327,7 +303,7 @@ var variantStyles = {
     &:disabled { opacity: 0.5; cursor: not-allowed; }
   `
 };
-var buttonBaseCss = import_styled_components6.css`
+var buttonBaseCss = import_styled_components5.css`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -347,7 +323,7 @@ var buttonBaseCss = import_styled_components6.css`
 `;
 
 // src/components/Button/styles/Button.ts
-var StyledButton = import_styled_components7.default.button`
+var StyledButton = import_styled_components6.default.button`
   ${buttonBaseCss}
   ${({ $size }) => sizeStyles[$size]}
   ${({ $variant }) => variantStyles[$variant]}
@@ -360,14 +336,14 @@ var Button = (0, import_react.forwardRef)(function Button2({ variant = "primary"
 });
 
 // src/components/Chip/styles/Chip.ts
-var import_styled_components8 = __toESM(require("styled-components"));
-var ChipBar = import_styled_components8.default.div`
+var import_styled_components7 = __toESM(require("styled-components"));
+var ChipBar = import_styled_components7.default.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
   padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
 `;
-var Chip = import_styled_components8.default.button`
+var Chip = import_styled_components7.default.button`
   display: inline-flex;
   align-items: center;
   height: 28px;
@@ -389,20 +365,20 @@ var Chip = import_styled_components8.default.button`
 `;
 
 // src/components/Typography/styles/Typography.ts
-var import_styled_components9 = __toESM(require("styled-components"));
+var import_styled_components8 = __toESM(require("styled-components"));
 var styleMap = {
-  h1: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.displayXl.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayXl.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayXl.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
-  h2: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.displayMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
-  h3: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displaySm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
-  h4: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.titleMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.titleMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.titleMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
-  h5: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.titleSm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.titleSm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.titleSm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
-  h6: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize}; font-weight: 600; line-height: ${({ theme: theme2 }) => theme2.typography.bodySm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
-  p: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.bodyMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.body};`,
-  span: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.bodyMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.body};`,
-  label: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.caption.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.caption.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.muted}; text-transform: uppercase; letter-spacing: 0.5px;`,
-  caption: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.captionSm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.captionSm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.muted};`,
-  error: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.bodySm.fontWeight}; color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};`,
-  micro: import_styled_components9.css`font-size: ${({ theme: theme2 }) => theme2.typography.microLabel.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.microLabel.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.microLabel.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.muted}; text-transform: uppercase; letter-spacing: 0.5px;`
+  h1: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.displayXl.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayXl.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayXl.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  h2: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.displayMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  h3: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displaySm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  h4: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.titleMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.titleMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.titleMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  h5: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.titleSm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.titleSm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.titleSm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  h6: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize}; font-weight: 600; line-height: ${({ theme: theme2 }) => theme2.typography.bodySm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  p: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.bodyMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.body};`,
+  span: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.bodyMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.body};`,
+  label: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.caption.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.caption.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.muted}; text-transform: uppercase; letter-spacing: 0.5px;`,
+  caption: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.captionSm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.captionSm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.muted};`,
+  error: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.bodySm.fontWeight}; color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};`,
+  micro: import_styled_components8.css`font-size: ${({ theme: theme2 }) => theme2.typography.microLabel.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.microLabel.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.microLabel.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.muted}; text-transform: uppercase; letter-spacing: 0.5px;`
 };
 var defaultTagMap = {
   h1: "h1",
@@ -418,7 +394,7 @@ var defaultTagMap = {
   error: "p",
   micro: "p"
 };
-var StyledText = import_styled_components9.default.p`
+var StyledText = import_styled_components8.default.p`
   ${({ $type }) => styleMap[$type]}
 `;
 
@@ -430,8 +406,8 @@ function Typography({ type, as, children, ...rest }) {
 }
 
 // src/components/Empty/styles/Empty.ts
-var import_styled_components10 = __toESM(require("styled-components"));
-var Wrapper = import_styled_components10.default.div`
+var import_styled_components9 = __toESM(require("styled-components"));
+var Wrapper = import_styled_components9.default.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -451,8 +427,8 @@ function Empty({ title, description }) {
 }
 
 // src/components/Form/index.ts
-var import_styled_components11 = __toESM(require("styled-components"));
-var Form = import_styled_components11.default.form`
+var import_styled_components10 = __toESM(require("styled-components"));
+var Form = import_styled_components10.default.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
@@ -462,9 +438,9 @@ var Form = import_styled_components11.default.form`
 var import_react2 = require("react");
 
 // src/components/IconButton/styles/IconButton.ts
-var import_styled_components12 = __toESM(require("styled-components"));
+var import_styled_components11 = __toESM(require("styled-components"));
 var iconBoxSize = { xs: 14, sm: 16, md: 18, lg: 20 };
-var IconWrap = import_styled_components12.default.span`
+var IconWrap = import_styled_components11.default.span`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -475,11 +451,11 @@ var IconWrap = import_styled_components12.default.span`
 
   svg { display: block; width: 100%; height: 100%; }
 `;
-var StyledButton2 = import_styled_components12.default.button`
+var StyledButton2 = import_styled_components11.default.button`
   ${buttonBaseCss}
   ${({ $size }) => sizeStyles[$size]}
   ${({ $variant }) => variantStyles[$variant]}
-  ${({ $iconOnly }) => $iconOnly && import_styled_components12.css`padding: 0; aspect-ratio: 1 / 1;`}
+  ${({ $iconOnly }) => $iconOnly && import_styled_components11.css`padding: 0; aspect-ratio: 1 / 1;`}
 `;
 
 // src/components/IconButton/index.tsx
@@ -498,8 +474,8 @@ var IconButton = (0, import_react2.forwardRef)(function IconButton2({ icon, icon
 var import_lucide_react = require("lucide-react");
 
 // src/components/InfoBox/styles/InfoBox.ts
-var import_styled_components13 = __toESM(require("styled-components"));
-var Box = import_styled_components13.default.div`
+var import_styled_components12 = __toESM(require("styled-components"));
+var Box = import_styled_components12.default.div`
   display: flex;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
   padding: ${({ theme: theme2 }) => theme2.spacing.md};
@@ -526,6 +502,46 @@ function InfoBox({ variant = "info", children, style }) {
     /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { children })
   ] });
 }
+
+// src/components/LinkButton/index.tsx
+var import_react3 = require("react");
+
+// src/components/LinkButton/styles/LinkButton.ts
+var import_styled_components13 = __toESM(require("styled-components"));
+var StyledLinkButton = import_styled_components13.default.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  width: 100%;
+  border: none;
+  background: none;
+  padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  font-weight: 600;
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    color: ${({ theme: theme2 }) => theme2.colors.ink};
+  }
+
+  &:disabled {
+    color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
+    cursor: not-allowed;
+  }
+`;
+
+// src/components/LinkButton/index.tsx
+var import_jsx_runtime8 = require("react/jsx-runtime");
+var LinkButton = (0, import_react3.forwardRef)(function LinkButton2({ icon, type = "button", children, ...rest }, ref) {
+  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(StyledLinkButton, { ref, type, ...rest, children: [
+    icon,
+    children
+  ] });
+});
 
 // src/components/Inputs/BaseInput/index.tsx
 var import_react_hook_form = require("react-hook-form");
@@ -582,12 +598,12 @@ var InputField = import_styled_components14.default.input`
 `;
 
 // src/components/Inputs/BaseInput/index.tsx
-var import_jsx_runtime8 = require("react/jsx-runtime");
+var import_jsx_runtime9 = require("react/jsx-runtime");
 function BaseInput({ label, wrapperStyle, error, children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Wrapper2, { style: wrapperStyle, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Label, { children: label }),
+  return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(Wrapper2, { style: wrapperStyle, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Label, { children: label }),
     children,
-    error && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(ErrorText, { children: error })
+    error && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(ErrorText, { children: error })
   ] });
 }
 function ControlledBase({
@@ -597,21 +613,21 @@ function ControlledBase({
   wrapperStyle,
   children
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
     import_react_hook_form.Controller,
     {
       control,
       name,
       render: ({ field, fieldState }) => {
         var _a, _b;
-        return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: children(field, (_b = fieldState.error) == null ? void 0 : _b.message) });
+        return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: children(field, (_b = fieldState.error) == null ? void 0 : _b.message) });
       }
     }
   );
 }
 
 // src/components/Inputs/Checkbox/index.tsx
-var import_react3 = require("react");
+var import_react4 = require("react");
 var import_lucide_react2 = require("lucide-react");
 
 // src/components/Inputs/Checkbox/styles/Checkbox.ts
@@ -689,17 +705,17 @@ var Wrapper3 = import_styled_components15.default.label`
 `;
 
 // src/components/Inputs/Checkbox/index.tsx
-var import_jsx_runtime9 = require("react/jsx-runtime");
-var Checkbox = (0, import_react3.forwardRef)(function Checkbox2({ label, ...rest }, ref) {
-  return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(Wrapper3, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(HiddenInput, { ref, type: "checkbox", ...rest }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Box2, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_lucide_react2.Check, {}) }),
+var import_jsx_runtime10 = require("react/jsx-runtime");
+var Checkbox = (0, import_react4.forwardRef)(function Checkbox2({ label, ...rest }, ref) {
+  return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Wrapper3, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(HiddenInput, { ref, type: "checkbox", ...rest }),
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Box2, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_lucide_react2.Check, {}) }),
     label
   ] });
 });
 
 // src/components/Inputs/DatePicker/index.tsx
-var import_react4 = require("react");
+var import_react5 = require("react");
 var import_react_hook_form2 = require("react-hook-form");
 var import_lucide_react3 = require("lucide-react");
 
@@ -830,7 +846,7 @@ var DayCell = import_styled_components17.default.button`
 `;
 
 // src/components/Inputs/DatePicker/index.tsx
-var import_jsx_runtime10 = require("react/jsx-runtime");
+var import_jsx_runtime11 = require("react/jsx-runtime");
 var WEEKDAY_LABELS = ["dom", "seg", "ter", "qua", "qui", "sex", "s\xE1b"];
 var FULL_MONTH_LABELS = [
   "janeiro",
@@ -884,19 +900,19 @@ function DatePicker({
 }) {
   var _a, _b;
   const { field, fieldState } = (0, import_react_hook_form2.useController)({ control, name });
-  const [open, setOpen] = (0, import_react4.useState)(false);
+  const [open, setOpen] = (0, import_react5.useState)(false);
   const selectedDate = parseDateValue(field.value);
-  const [viewDate, setViewDate] = (0, import_react4.useState)(() => {
+  const [viewDate, setViewDate] = (0, import_react5.useState)(() => {
     var _a2;
     return (_a2 = selectedDate != null ? selectedDate : initialMonth) != null ? _a2 : /* @__PURE__ */ new Date();
   });
-  const ref = (0, import_react4.useRef)(null);
-  (0, import_react4.useEffect)(() => {
+  const ref = (0, import_react5.useRef)(null);
+  (0, import_react5.useEffect)(() => {
     if (!selectedDate && initialMonth) {
       setViewDate(initialMonth);
     }
   }, [initialMonth]);
-  (0, import_react4.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     };
@@ -912,24 +928,24 @@ function DatePicker({
     field.onChange(toDateKey(date));
     setOpen(false);
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Wrapper4, { ref, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Trigger, { type: "button", $open: open, onClick: () => setOpen((v) => !v), children: [
-      (_b = formatDateValue(field.value)) != null ? _b : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Placeholder, { children: placeholder }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_lucide_react3.Calendar, { size: 18 })
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Wrapper4, { ref, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Trigger, { type: "button", $open: open, onClick: () => setOpen((v) => !v), children: [
+      (_b = formatDateValue(field.value)) != null ? _b : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Placeholder, { children: placeholder }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react3.Calendar, { size: 18 })
     ] }),
-    open && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Panel, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(PanelHeader, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(NavButton, { type: "button", onClick: () => changeMonth(-1), "aria-label": "M\xEAs anterior", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_lucide_react3.ChevronLeft, { size: 18 }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(HeaderLabel, { children: [
+    open && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Panel, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(PanelHeader, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(NavButton, { type: "button", onClick: () => changeMonth(-1), "aria-label": "M\xEAs anterior", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react3.ChevronLeft, { size: 18 }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(HeaderLabel, { children: [
           FULL_MONTH_LABELS[viewDate.getMonth()],
           " de ",
           viewDate.getFullYear()
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(NavButton, { type: "button", onClick: () => changeMonth(1), "aria-label": "Pr\xF3ximo m\xEAs", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_lucide_react3.ChevronRight, { size: 18 }) })
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(NavButton, { type: "button", onClick: () => changeMonth(1), "aria-label": "Pr\xF3ximo m\xEAs", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react3.ChevronRight, { size: 18 }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(WeekdayRow, { children: WEEKDAY_LABELS.map((w) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(WeekdayLabel, { children: w }, w)) }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(DayGrid, { children: cells.map(
-        (date, i) => date ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(WeekdayRow, { children: WEEKDAY_LABELS.map((w) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(WeekdayLabel, { children: w }, w)) }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(DayGrid, { children: cells.map(
+        (date, i) => date ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
           DayCell,
           {
             type: "button",
@@ -940,14 +956,14 @@ function DatePicker({
             children: date.getDate()
           },
           toDateKey(date)
-        ) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", {}, `empty-${i}`)
+        ) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", {}, `empty-${i}`)
       ) })
     ] })
   ] }) });
 }
 
 // src/components/Inputs/ImageUpload/index.tsx
-var import_react5 = require("react");
+var import_react6 = require("react");
 var import_lucide_react4 = require("lucide-react");
 
 // src/components/Inputs/ImageUpload/styles/ImageUpload.ts
@@ -1041,7 +1057,7 @@ var AddTile = import_styled_components18.default.button`
 `;
 
 // src/components/Inputs/ImageUpload/index.tsx
-var import_jsx_runtime11 = require("react/jsx-runtime");
+var import_jsx_runtime12 = require("react/jsx-runtime");
 function ImageUpload({
   label = "Imagens",
   value,
@@ -1052,8 +1068,8 @@ function ImageUpload({
   error,
   wrapperStyle
 }) {
-  const inputRef = (0, import_react5.useRef)(null);
-  const [dragOver, setDragOver] = (0, import_react5.useState)(false);
+  const inputRef = (0, import_react6.useRef)(null);
+  const [dragOver, setDragOver] = (0, import_react6.useState)(false);
   const hasImages = value.length > 0;
   const atLimit = maxFiles !== void 0 && value.length >= maxFiles;
   const openPicker = () => {
@@ -1073,7 +1089,7 @@ function ImageUpload({
     onChange([...value, ...items]);
   };
   const removeItem = (id) => onChange(value.filter((item) => item.id !== id));
-  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
     Dropzone,
     {
       $dragOver: dragOver,
@@ -1089,7 +1105,7 @@ function ImageUpload({
         if (!atLimit && e.dataTransfer.files.length > 0) addFiles(e.dataTransfer.files);
       },
       children: [
-        !hasImages && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+        !hasImages && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
           EmptyState,
           {
             role: "button",
@@ -1099,18 +1115,18 @@ function ImageUpload({
               if (e.key === "Enter" || e.key === " ") openPicker();
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react4.ImagePlus, { size: 22 }),
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(DropzoneText, { children: "Arraste imagens aqui ou clique para selecionar" }),
-              hint && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(DropzoneHint, { children: hint })
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_lucide_react4.ImagePlus, { size: 22 }),
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(DropzoneText, { children: "Arraste imagens aqui ou clique para selecionar" }),
+              hint && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(DropzoneHint, { children: hint })
             ]
           }
         ),
-        value.map((item) => /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Thumb, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ThumbImage, { src: item.url, alt: "" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(RemoveButton, { type: "button", onClick: () => removeItem(item.id), title: "Remover", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react4.X, { size: 12 }) })
+        value.map((item) => /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Thumb, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(ThumbImage, { src: item.url, alt: "" }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(RemoveButton, { type: "button", onClick: () => removeItem(item.id), title: "Remover", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_lucide_react4.X, { size: 12 }) })
         ] }, item.id)),
-        hasImages && !atLimit && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(AddTile, { type: "button", onClick: openPicker, title: "Adicionar imagem", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react4.Plus, { size: 18 }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+        hasImages && !atLimit && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(AddTile, { type: "button", onClick: openPicker, title: "Adicionar imagem", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_lucide_react4.Plus, { size: 18 }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
           HiddenInput2,
           {
             ref: inputRef,
@@ -1129,7 +1145,7 @@ function ImageUpload({
 }
 
 // src/components/Inputs/MonthPicker/index.tsx
-var import_react6 = require("react");
+var import_react7 = require("react");
 var import_react_hook_form3 = require("react-hook-form");
 var import_lucide_react5 = require("lucide-react");
 
@@ -1158,7 +1174,7 @@ var MonthCell = import_styled_components19.default.button`
 `;
 
 // src/components/Inputs/MonthPicker/index.tsx
-var import_jsx_runtime12 = require("react/jsx-runtime");
+var import_jsx_runtime13 = require("react/jsx-runtime");
 var MONTH_LABELS = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 var FULL_MONTH_LABELS2 = [
   "Janeiro",
@@ -1189,12 +1205,12 @@ function MonthPicker({
 }) {
   var _a, _b;
   const { field, fieldState } = (0, import_react_hook_form3.useController)({ control, name });
-  const [open, setOpen] = (0, import_react6.useState)(false);
-  const [viewYear, setViewYear] = (0, import_react6.useState)(
+  const [open, setOpen] = (0, import_react7.useState)(false);
+  const [viewYear, setViewYear] = (0, import_react7.useState)(
     () => field.value ? Number(String(field.value).split("-")[0]) : (/* @__PURE__ */ new Date()).getFullYear()
   );
-  const ref = (0, import_react6.useRef)(null);
-  (0, import_react6.useEffect)(() => {
+  const ref = (0, import_react7.useRef)(null);
+  (0, import_react7.useEffect)(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     };
@@ -1206,18 +1222,18 @@ function MonthPicker({
     field.onChange(`${viewYear}-${String(monthIndex + 1).padStart(2, "0")}`);
     setOpen(false);
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Wrapper4, { ref, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Trigger, { type: "button", $open: open, onClick: () => setOpen((v) => !v), children: [
-      (_b = formatMonthValue(field.value)) != null ? _b : /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Placeholder, { children: placeholder }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_lucide_react5.Calendar, { size: 18 })
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Wrapper4, { ref, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Trigger, { type: "button", $open: open, onClick: () => setOpen((v) => !v), children: [
+      (_b = formatMonthValue(field.value)) != null ? _b : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Placeholder, { children: placeholder }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_lucide_react5.Calendar, { size: 18 })
     ] }),
-    open && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Panel, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(PanelHeader, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(NavButton, { type: "button", onClick: () => setViewYear((y) => y - 1), "aria-label": "Ano anterior", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_lucide_react5.ChevronLeft, { size: 18 }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(HeaderLabel, { children: viewYear }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(NavButton, { type: "button", onClick: () => setViewYear((y) => y + 1), "aria-label": "Pr\xF3ximo ano", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_lucide_react5.ChevronRight, { size: 18 }) })
+    open && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Panel, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(PanelHeader, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(NavButton, { type: "button", onClick: () => setViewYear((y) => y - 1), "aria-label": "Ano anterior", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_lucide_react5.ChevronLeft, { size: 18 }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(HeaderLabel, { children: viewYear }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(NavButton, { type: "button", onClick: () => setViewYear((y) => y + 1), "aria-label": "Pr\xF3ximo ano", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_lucide_react5.ChevronRight, { size: 18 }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(MonthGrid, { children: MONTH_LABELS.map((monthLabel, i) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(MonthGrid, { children: MONTH_LABELS.map((monthLabel, i) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
         MonthCell,
         {
           type: "button",
@@ -1232,7 +1248,7 @@ function MonthPicker({
 }
 
 // src/components/Inputs/MultiSelect/index.tsx
-var import_react7 = require("react");
+var import_react8 = require("react");
 
 // src/components/Inputs/MultiSelect/styles/MultiSelect.ts
 var import_styled_components20 = __toESM(require("styled-components"));
@@ -1363,13 +1379,13 @@ var LimitHint = import_styled_components20.default.p`
 `;
 
 // src/components/Inputs/MultiSelect/index.tsx
-var import_jsx_runtime13 = require("react/jsx-runtime");
+var import_jsx_runtime14 = require("react/jsx-runtime");
 function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2026", disabled, max, error }) {
-  const [query, setQuery] = (0, import_react7.useState)("");
-  const [open, setOpen] = (0, import_react7.useState)(false);
-  const wrapRef = (0, import_react7.useRef)(null);
-  const inputRef = (0, import_react7.useRef)(null);
-  (0, import_react7.useEffect)(() => {
+  const [query, setQuery] = (0, import_react8.useState)("");
+  const [open, setOpen] = (0, import_react8.useState)(false);
+  const wrapRef = (0, import_react8.useRef)(null);
+  const inputRef = (0, import_react8.useRef)(null);
+  (0, import_react8.useEffect)(() => {
     if (!open) return;
     const onClickOutside = (e) => {
       if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
@@ -1398,11 +1414,11 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
     var _a;
     if (!disabled) (_a = inputRef.current) == null ? void 0 : _a.focus();
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(BaseInput, { label, error, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Wrap, { ref: wrapRef, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Field, { $focused: open, $disabled: disabled, onClick: focusField, children: [
-      value.map((v) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Chip2, { children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(BaseInput, { label, error, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Wrap, { ref: wrapRef, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Field, { $focused: open, $disabled: disabled, onClick: focusField, children: [
+      value.map((v) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Chip2, { children: [
         labelFor(v),
-        !disabled && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        !disabled && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
           RemoveChip,
           {
             type: "button",
@@ -1415,7 +1431,7 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
           }
         )
       ] }, v)),
-      !disabled && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+      !disabled && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
         SearchInput,
         {
           ref: inputRef,
@@ -1433,12 +1449,12 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
         }
       )
     ] }),
-    open && !disabled && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Dropdown, { role: "listbox", children: [
-      visibleOptions.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
+    open && !disabled && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Dropdown, { role: "listbox", children: [
+      visibleOptions.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
       visibleOptions.map((o) => {
         const checked = value.includes(o.value);
         const rowDisabled = !checked && atLimit;
-        return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(DropdownOption, { role: "option", "aria-selected": checked, $disabled: rowDisabled, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(DropdownOption, { role: "option", "aria-selected": checked, $disabled: rowDisabled, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
           Checkbox,
           {
             checked,
@@ -1449,7 +1465,7 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
         ) }, o.value);
       })
     ] }),
-    atLimit && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(LimitHint, { children: [
+    atLimit && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(LimitHint, { children: [
       "Limite de ",
       max,
       " selecionados atingido."
@@ -1547,12 +1563,12 @@ var GroupLabel = import_styled_components21.default.span`
 `;
 
 // src/components/Inputs/RadioGroup/index.tsx
-var import_jsx_runtime14 = require("react/jsx-runtime");
+var import_jsx_runtime15 = require("react/jsx-runtime");
 function RadioGroup({ name, options, value, onChange, label, disabled }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
-    label && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(GroupLabel, { children: label }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Group, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(OptionWrapper, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { children: [
+    label && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(GroupLabel, { children: label }),
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Group, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(OptionWrapper, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
         HiddenInput3,
         {
           type: "radio",
@@ -1563,7 +1579,7 @@ function RadioGroup({ name, options, value, onChange, label, disabled }) {
           onChange: () => onChange == null ? void 0 : onChange(option.value)
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Dot, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Dot, {}),
       option.label
     ] }, option.value)) })
   ] });
@@ -1599,9 +1615,9 @@ var SelectField = import_styled_components22.default.select`
 `;
 
 // src/components/Inputs/Select/index.tsx
-var import_jsx_runtime15 = require("react/jsx-runtime");
+var import_jsx_runtime16 = require("react/jsx-runtime");
 function RawSelect({ label, wrapperStyle, error, children, ...rest }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(SelectField, { ...rest, children }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SelectField, { ...rest, children }) });
 }
 function Select({
   label,
@@ -1612,11 +1628,11 @@ function Select({
 }) {
   var _a, _b;
   const { field, fieldState } = (0, import_react_hook_form4.useController)({ control, name });
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(SelectField, { value: (_b = field.value) != null ? _b : "", onChange: (e) => field.onChange(e.target.value), onBlur: field.onBlur, ref: field.ref, children }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SelectField, { value: (_b = field.value) != null ? _b : "", onChange: (e) => field.onChange(e.target.value), onBlur: field.onBlur, ref: field.ref, children }) });
 }
 
 // src/components/Inputs/Switch/index.tsx
-var import_react8 = require("react");
+var import_react9 = require("react");
 
 // src/components/Inputs/Switch/styles/Switch.ts
 var import_styled_components23 = __toESM(require("styled-components"));
@@ -1689,11 +1705,11 @@ var Wrapper5 = import_styled_components23.default.label`
 `;
 
 // src/components/Inputs/Switch/index.tsx
-var import_jsx_runtime16 = require("react/jsx-runtime");
-var Switch = (0, import_react8.forwardRef)(function Switch2({ label, ...rest }, ref) {
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Wrapper5, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(HiddenInput4, { ref, type: "checkbox", ...rest }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Track, {}),
+var import_jsx_runtime17 = require("react/jsx-runtime");
+var Switch = (0, import_react9.forwardRef)(function Switch2({ label, ...rest }, ref) {
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Wrapper5, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(HiddenInput4, { ref, type: "checkbox", ...rest }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Track, {}),
     label
   ] });
 });
@@ -1740,9 +1756,9 @@ var TextareaField = import_styled_components24.default.textarea`
 `;
 
 // src/components/Inputs/Textarea/index.tsx
-var import_jsx_runtime17 = require("react/jsx-runtime");
+var import_jsx_runtime18 = require("react/jsx-runtime");
 function RawTextarea({ label, wrapperStyle, error, ...rest }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(TextareaField, { ...rest }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TextareaField, { ...rest }) });
 }
 function Textarea({
   label,
@@ -1754,7 +1770,7 @@ function Textarea({
 }) {
   var _a, _b;
   const { field, fieldState } = (0, import_react_hook_form5.useController)({ control, name });
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
     TextareaField,
     {
       placeholder,
@@ -1768,7 +1784,7 @@ function Textarea({
 }
 
 // src/components/Inputs/TextInput/index.tsx
-var import_react9 = require("react");
+var import_react10 = require("react");
 var import_lucide_react6 = require("lucide-react");
 
 // src/utils/mask.ts
@@ -1841,15 +1857,15 @@ var EyeButton = import_styled_components25.default.button`
 `;
 
 // src/components/Inputs/TextInput/index.tsx
-var import_jsx_runtime18 = require("react/jsx-runtime");
+var import_jsx_runtime19 = require("react/jsx-runtime");
 function TextInput(props) {
   const { label, control, name, wrapperStyle, placeholder, currency, mask, ...rest } = props;
   const isPassword = rest.type === "password";
-  const [showPassword, setShowPassword] = (0, import_react9.useState)(false);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ControlledBase, { label, control, name, wrapperStyle, children: (field) => {
+  const [showPassword, setShowPassword] = (0, import_react10.useState)(false);
+  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(ControlledBase, { label, control, name, wrapperStyle, children: (field) => {
     var _a;
-    return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(InputWrapper, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(InputWrapper, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
         InputField,
         {
           ...rest,
@@ -1872,13 +1888,13 @@ function TextInput(props) {
           ref: field.ref
         }
       ),
-      isPassword && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(EyeButton, { type: "button", tabIndex: -1, onClick: () => setShowPassword((v) => !v), children: showPassword ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_lucide_react6.EyeOff, { size: 20 }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_lucide_react6.Eye, { size: 20 }) })
+      isPassword && /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(EyeButton, { type: "button", tabIndex: -1, onClick: () => setShowPassword((v) => !v), children: showPassword ? /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_lucide_react6.EyeOff, { size: 20 }) : /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_lucide_react6.Eye, { size: 20 }) })
     ] });
   } });
 }
 
 // src/components/Modal/index.tsx
-var import_react10 = require("react");
+var import_react11 = require("react");
 var import_lucide_react7 = require("lucide-react");
 
 // src/components/Modal/styles/Modal.ts
@@ -1976,16 +1992,16 @@ var ModalActions = import_styled_components26.default.div`
 `;
 
 // src/components/Modal/index.tsx
-var import_jsx_runtime19 = require("react/jsx-runtime");
+var import_jsx_runtime20 = require("react/jsx-runtime");
 function ModalTitle({ children, onClose }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(TitleRow, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(TitleText, { children }),
-    onClose && /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(CloseButton, { type: "button", onClick: onClose, "aria-label": "Fechar", children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_lucide_react7.X, { size: 18 }) })
+  return /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(TitleRow, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(TitleText, { children }),
+    onClose && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(CloseButton, { type: "button", onClick: onClose, "aria-label": "Fechar", children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(import_lucide_react7.X, { size: 18 }) })
   ] });
 }
 function Modal({ children, close, variant = "dialog" }) {
-  const boxRef = (0, import_react10.useRef)(null);
-  (0, import_react10.useEffect)(() => {
+  const boxRef = (0, import_react11.useRef)(null);
+  (0, import_react11.useEffect)(() => {
     var _a;
     (_a = boxRef.current) == null ? void 0 : _a.focus();
     const onKeyDown = (e) => {
@@ -1994,7 +2010,7 @@ function Modal({ children, close, variant = "dialog" }) {
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [close]);
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Overlay2, { $variant: variant, onClick: close, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(Overlay2, { $variant: variant, onClick: close, children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
     Box3,
     {
       ref: boxRef,
@@ -2038,12 +2054,12 @@ var PageButton = import_styled_components27.default.button`
 `;
 
 // src/components/Pagination/index.tsx
-var import_jsx_runtime20 = require("react/jsx-runtime");
+var import_jsx_runtime21 = require("react/jsx-runtime");
 function Pagination({ currentPage, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
-  return /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Wrapper6, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(PageButton, { type: "button", "aria-label": "P\xE1gina anterior", onClick: () => onPageChange(currentPage - 1), disabled: currentPage === 1, children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { "aria-hidden": "true", children: "\u2039" }) }),
-    Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(Wrapper6, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(PageButton, { type: "button", "aria-label": "P\xE1gina anterior", onClick: () => onPageChange(currentPage - 1), disabled: currentPage === 1, children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { "aria-hidden": "true", children: "\u2039" }) }),
+    Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
       PageButton,
       {
         type: "button",
@@ -2055,7 +2071,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
       },
       page
     )),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(PageButton, { type: "button", "aria-label": "Pr\xF3xima p\xE1gina", onClick: () => onPageChange(currentPage + 1), disabled: currentPage === totalPages, children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { "aria-hidden": "true", children: "\u203A" }) })
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(PageButton, { type: "button", "aria-label": "Pr\xF3xima p\xE1gina", onClick: () => onPageChange(currentPage + 1), disabled: currentPage === totalPages, children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { "aria-hidden": "true", children: "\u203A" }) })
   ] });
 }
 
@@ -2111,17 +2127,17 @@ var Subtitle = import_styled_components28.default.p`
 `;
 
 // src/components/PageHeader/index.tsx
-var import_jsx_runtime21 = require("react/jsx-runtime");
+var import_jsx_runtime22 = require("react/jsx-runtime");
 function PageHeader({ title, subtitle, back, action }) {
   const navigate = (0, import_react_router_dom2.useNavigate)();
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(Wrapper7, { children: [
-    back && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Back, { onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_lucide_react8.ArrowLeft, { size: 20 }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(Row, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(Titles, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Title, { children: title }),
-        subtitle && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Subtitle, { children: subtitle })
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(Wrapper7, { children: [
+    back && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(Back, { onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_lucide_react8.ArrowLeft, { size: 20 }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(Row, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(Titles, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(Title, { children: title }),
+        subtitle && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(Subtitle, { children: subtitle })
       ] }),
-      action && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { children: action })
+      action && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { children: action })
     ] })
   ] });
 }
@@ -2167,11 +2183,11 @@ var Field2 = import_styled_components29.default.input`
 `;
 
 // src/components/SearchInput/index.tsx
-var import_jsx_runtime22 = require("react/jsx-runtime");
+var import_jsx_runtime23 = require("react/jsx-runtime");
 function SearchInput2({ value, onChange, placeholder }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(Wrapper8, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_lucide_react9.Search, { size: 16 }),
-    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(Field2, { placeholder, value, onChange: (e) => onChange(e.target.value) })
+  return /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(Wrapper8, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_lucide_react9.Search, { size: 16 }),
+    /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(Field2, { placeholder, value, onChange: (e) => onChange(e.target.value) })
   ] });
 }
 
@@ -2219,7 +2235,7 @@ var Btn = import_styled_components30.default.button`
 `;
 
 // src/components/Inputs/SegmentedControl/index.tsx
-var import_jsx_runtime23 = require("react/jsx-runtime");
+var import_jsx_runtime24 = require("react/jsx-runtime");
 function SegmentedControl({
   value,
   onChange,
@@ -2227,9 +2243,9 @@ function SegmentedControl({
   label,
   tone = "ink"
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(Wrap2, { children: [
-    label && /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(Label2, { children: label }),
-    /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(Toggle, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(Wrap2, { children: [
+    label && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Label2, { children: label }),
+    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Toggle, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
       Btn,
       {
         type: "button",
@@ -2261,7 +2277,7 @@ var Skeleton = import_styled_components31.default.div`
 
 // src/components/StatusBadge/index.tsx
 var import_styled_components32 = __toESM(require("styled-components"));
-var import_jsx_runtime24 = require("react/jsx-runtime");
+var import_jsx_runtime25 = require("react/jsx-runtime");
 var StyledBadge = import_styled_components32.default.span`
   flex-shrink: 0;
   display: inline-flex;
@@ -2275,7 +2291,7 @@ var StyledBadge = import_styled_components32.default.span`
   ${({ $tone, theme: theme2 }) => $tone === "success" ? `background: ${theme2.colors.successSurface}; color: ${theme2.colors.success}; border: 1px solid ${theme2.colors.successBorder};` : `background: ${theme2.colors.warningSurface}; color: ${theme2.colors.warning}; border: 1px solid ${theme2.colors.warningBorder};`}
 `;
 function StatusBadge({ tone, children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(StyledBadge, { $tone: tone, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(StyledBadge, { $tone: tone, children });
 }
 
 // src/components/StatsGrid/styles/StatsGrid.ts
@@ -2426,7 +2442,7 @@ var ButtonRow = import_styled_components34.default.div`
 `;
 
 // src/components/SummaryCard/index.tsx
-var import_jsx_runtime25 = require("react/jsx-runtime");
+var import_jsx_runtime26 = require("react/jsx-runtime");
 function SummaryCard({
   label = "Resumo",
   items,
@@ -2442,24 +2458,24 @@ function SummaryCard({
   const hasSubtotals = items.some((item) => item.subtotal !== void 0);
   const itemsText = items.map((item) => `${item.qty}\xD7 ${item.name}`).join(", ");
   const isEmpty = items.length === 0;
-  return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Card2, { $bottomOffset: bottomOffset, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(Label3, { style: { marginBottom: 0 }, children: label }),
-    isEmpty ? /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(ItemDetail, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(ItemDetailName, { children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(Card2, { $bottomOffset: bottomOffset, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Label3, { style: { marginBottom: 0 }, children: label }),
+    isEmpty ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(ItemDetail, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(ItemDetailName, { children: [
         item.qty,
         "\xD7 ",
         item.name
       ] }),
-      item.subtotal !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(ItemDetailPrice, { children: formatCurrency(item.subtotal) })
-    ] }, item.name)) }) : /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Row2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(Items, { children: itemsText }),
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(Total, { children: formatCurrency(total) })
+      item.subtotal !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(ItemDetailPrice, { children: formatCurrency(item.subtotal) })
+    ] }, item.name)) }) : /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(Row2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Items, { children: itemsText }),
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Total, { children: formatCurrency(total) })
     ] }),
-    !isEmpty && hasSubtotals && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_jsx_runtime25.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(Divider, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(Row2, { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(Info2, { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(Total, { children: formatCurrency(total) }) }) })
+    !isEmpty && hasSubtotals && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(import_jsx_runtime26.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Divider, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Row2, { children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Info2, { children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Total, { children: formatCurrency(total) }) }) })
     ] }),
-    buttons && buttons.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(ButtonRow, { children: buttons.map((btn, idx) => /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
+    buttons && buttons.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(ButtonRow, { children: buttons.map((btn, idx) => /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
       Button,
       {
         variant: btn.variant || "primary",
@@ -2470,7 +2486,7 @@ function SummaryCard({
         children: btn.loading ? `${btn.text}...` : btn.text
       },
       idx
-    )) }) : onConfirm ? /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
+    )) }) : onConfirm ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
       Button,
       {
         variant: "primary",
@@ -2562,12 +2578,12 @@ var ToastEl = import_styled_components36.default.div`
 `;
 
 // src/components/Toast/hooks/useToast.tsx
-var import_react11 = require("react");
-var import_jsx_runtime26 = require("react/jsx-runtime");
+var import_react12 = require("react");
+var import_jsx_runtime27 = require("react/jsx-runtime");
 function useToast(duration = 2500) {
-  const [state, setState] = (0, import_react11.useState)(null);
-  const timerRef = (0, import_react11.useRef)(null);
-  const show = (0, import_react11.useCallback)(
+  const [state, setState] = (0, import_react12.useState)(null);
+  const timerRef = (0, import_react12.useRef)(null);
+  const show = (0, import_react12.useCallback)(
     (message) => {
       if (timerRef.current) clearTimeout(timerRef.current);
       setState({ message, leaving: false });
@@ -2578,14 +2594,14 @@ function useToast(duration = 2500) {
     },
     [duration]
   );
-  const toast = state ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Toast, { message: state.message, leaving: state.leaving }) : null;
+  const toast = state ? /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(Toast, { message: state.message, leaving: state.leaving }) : null;
   return { show, toast };
 }
 
 // src/components/Toast/index.tsx
-var import_jsx_runtime27 = require("react/jsx-runtime");
+var import_jsx_runtime28 = require("react/jsx-runtime");
 function Toast({ message, leaving }) {
-  return (0, import_react_dom2.createPortal)(/* @__PURE__ */ (0, import_jsx_runtime27.jsx)(ToastEl, { $leaving: leaving, children: message }), document.body);
+  return (0, import_react_dom2.createPortal)(/* @__PURE__ */ (0, import_jsx_runtime28.jsx)(ToastEl, { $leaving: leaving, children: message }), document.body);
 }
 
 // src/pages/LoginPage/index.tsx
@@ -2594,19 +2610,19 @@ var import_react_hook_form6 = require("react-hook-form");
 var import_react_router_dom4 = require("react-router-dom");
 
 // src/pages/LoginPage/hooks/useLogin.ts
-var import_react14 = require("react");
+var import_react15 = require("react");
 var import_react_router_dom3 = require("react-router-dom");
 
 // src/hooks/useAuth.ts
-var import_react13 = require("react");
+var import_react14 = require("react");
 
 // src/contexts/AuthContext.tsx
-var import_react12 = require("react");
-var import_jsx_runtime28 = require("react/jsx-runtime");
-var AuthContext = (0, import_react12.createContext)(null);
+var import_react13 = require("react");
+var import_jsx_runtime29 = require("react/jsx-runtime");
+var AuthContext = (0, import_react13.createContext)(null);
 function AuthProvider({ client, children }) {
   const authValue = useAuth(client);
-  return /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(AuthContext.Provider, { value: authValue, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(AuthContext.Provider, { value: authValue, children });
 }
 
 // src/text/actions.ts
@@ -2662,12 +2678,12 @@ async function fetchProfile(client, userId) {
   }
 }
 function useAuth(client) {
-  const [user, setUser] = (0, import_react13.useState)(null);
-  const [userEmail, setUserEmail] = (0, import_react13.useState)("");
-  const [loading, setLoading] = (0, import_react13.useState)(true);
-  const [error, setError] = (0, import_react13.useState)(null);
-  const [sessionUser, setSessionUser] = (0, import_react13.useState)(void 0);
-  (0, import_react13.useEffect)(() => {
+  const [user, setUser] = (0, import_react14.useState)(null);
+  const [userEmail, setUserEmail] = (0, import_react14.useState)("");
+  const [loading, setLoading] = (0, import_react14.useState)(true);
+  const [error, setError] = (0, import_react14.useState)(null);
+  const [sessionUser, setSessionUser] = (0, import_react14.useState)(void 0);
+  (0, import_react14.useEffect)(() => {
     const { data: listener } = client.auth.onAuthStateChange((_event, session) => {
       setSessionUser((prev) => {
         var _a;
@@ -2701,7 +2717,7 @@ function useAuth(client) {
       listener == null ? void 0 : listener.subscription.unsubscribe();
     };
   }, [client]);
-  (0, import_react13.useEffect)(() => {
+  (0, import_react14.useEffect)(() => {
     if (sessionUser === void 0) return;
     if (!sessionUser) {
       setUser(null);
@@ -2727,7 +2743,7 @@ function useAuth(client) {
       cancelled = true;
     };
   }, [client, sessionUser]);
-  const login = (0, import_react13.useCallback)(async (email, password) => {
+  const login = (0, import_react14.useCallback)(async (email, password) => {
     setError(null);
     const { error: signInError } = await client.auth.signInWithPassword({ email, password });
     if (signInError) {
@@ -2737,12 +2753,12 @@ function useAuth(client) {
     }
     return null;
   }, [client]);
-  const logout = (0, import_react13.useCallback)(async () => {
+  const logout = (0, import_react14.useCallback)(async () => {
     await client.auth.signOut();
     setUser(null);
     setUserEmail("");
   }, [client]);
-  const updateProfile = (0, import_react13.useCallback)(async (name, email) => {
+  const updateProfile = (0, import_react14.useCallback)(async (name, email) => {
     const { data: { user: authUser } } = await client.auth.getUser();
     if (!authUser) return "Usu\xE1rio n\xE3o autenticado.";
     const { error: profileError } = await client.from("profiles").update({ name: name.trim() }).eq("id", authUser.id);
@@ -2754,7 +2770,7 @@ function useAuth(client) {
     setUser((u) => u ? { ...u, name: name.trim() } : u);
     return null;
   }, [client, userEmail]);
-  const updatePassword = (0, import_react13.useCallback)(async (newPassword) => {
+  const updatePassword = (0, import_react14.useCallback)(async (newPassword) => {
     const { error: passwordError } = await client.auth.updateUser({ password: newPassword });
     if (passwordError) {
       if ("code" in passwordError && passwordError.code === "same_password") {
@@ -2764,29 +2780,29 @@ function useAuth(client) {
     }
     return null;
   }, [client]);
-  const requestPasswordReset = (0, import_react13.useCallback)(async (email, redirectTo) => {
+  const requestPasswordReset = (0, import_react14.useCallback)(async (email, redirectTo) => {
     const { error: resetError } = await client.auth.resetPasswordForEmail(email, { redirectTo });
     if (resetError) return "Erro ao enviar o link de recupera\xE7\xE3o.";
     return null;
   }, [client]);
-  return (0, import_react13.useMemo)(
+  return (0, import_react14.useMemo)(
     () => ({ user, userEmail, loading, error, login, logout, updateProfile, updatePassword, requestPasswordReset }),
     [user, userEmail, loading, error, login, logout, updateProfile, updatePassword, requestPasswordReset]
   );
 }
 function useAuthCtx() {
-  const ctx = (0, import_react13.useContext)(AuthContext);
+  const ctx = (0, import_react14.useContext)(AuthContext);
   if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
   return ctx;
 }
 
 // src/pages/LoginPage/hooks/useLogin.ts
 function useLogin(resolveRoute) {
-  const [error, setError] = (0, import_react14.useState)("");
-  const [submitting, setSubmitting] = (0, import_react14.useState)(false);
+  const [error, setError] = (0, import_react15.useState)("");
+  const [submitting, setSubmitting] = (0, import_react15.useState)(false);
   const { login, user } = useAuthCtx();
   const navigate = (0, import_react_router_dom3.useNavigate)();
-  (0, import_react14.useEffect)(() => {
+  (0, import_react15.useEffect)(() => {
     if (user) {
       navigate(resolveRoute(user.role), { replace: true });
     }
@@ -3040,7 +3056,7 @@ var loginSchema = import_zod.z.object({
 });
 
 // src/pages/LoginPage/index.tsx
-var import_jsx_runtime29 = require("react/jsx-runtime");
+var import_jsx_runtime30 = require("react/jsx-runtime");
 function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
   const navigate = (0, import_react_router_dom4.useNavigate)();
@@ -3048,22 +3064,22 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
     resolver: (0, import_zod2.zodResolver)(loginSchema),
     defaultValues: { email: "", password: "" }
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Page, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Brand2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(BrandText, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(BrandSub, { children: brand.sub })
+  return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Page, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Brand2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(BrandText, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(BrandSub, { children: brand.sub })
       ] }),
-      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(BrandQuote, { children: brand.quote })
+      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(FormBox, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(FormHeader, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FormTitle, { children: "Bem-vindo" }),
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(FormBox, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(FormHeader, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(FormTitle, { children: "Bem-vindo" }),
+        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Form2, { onSubmit: handleSubmit(handleLogin), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Form2, { onSubmit: handleSubmit(handleLogin), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
           TextInput,
           {
             label: text.fields.email,
@@ -3074,7 +3090,7 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
             placeholder: text.fields.emailPlaceholder
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
           TextInput,
           {
             label: "Senha",
@@ -3084,8 +3100,8 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
             placeholder: "M\xEDnimo 6 caracteres"
           }
         ),
-        forgotPasswordPath && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ForgotLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" }),
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
+        forgotPasswordPath && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(ForgotLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" }),
+        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
           SubmitButton,
           {
             variant: "primary",
@@ -3097,7 +3113,7 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
             children: submitting ? "Entrando..." : "Entrar"
           }
         ),
-        error && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ErrorMsg, { children: error })
+        error && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(ErrorMsg, { children: error })
       ] }),
       footerSlot
     ] }) })
@@ -3176,7 +3192,7 @@ var profileSchema = import_zod3.z.object({
 });
 
 // src/pages/ProfilePage/index.tsx
-var import_jsx_runtime30 = require("react/jsx-runtime");
+var import_jsx_runtime31 = require("react/jsx-runtime");
 function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
@@ -3194,17 +3210,17 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
     const err = await updateProfile(data.name, data.email);
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Wrap3, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(PageHeader, { title: "Meu perfil", back: true }),
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Identity, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
-      roleLabel && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(RoleLabel, { children: roleLabel })
+  return /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Wrap3, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(PageHeader, { title: "Meu perfil", back: true }),
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Identity, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
+      roleLabel && /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(RoleLabel, { children: roleLabel })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Section, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionDivider, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Section, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SectionDivider, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
         TextInput,
         {
           label: "E-mail de acesso",
@@ -3215,16 +3231,16 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_lucide_react10.Save, { size: 16 }),
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react10.Save, { size: 16 }),
       isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es"
     ] }) }),
-    changePasswordPath && /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_jsx_runtime30.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Section, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionTitle, { children: "Seguran\xE7a" }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
+    changePasswordPath && /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(import_jsx_runtime31.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Section, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SectionTitle, { children: "Seguran\xE7a" }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
     ] }),
-    onLogout && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(LogoutAction, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_lucide_react10.LogOut, { size: 16 }),
+    onLogout && /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(LogoutAction, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react10.LogOut, { size: 16 }),
       "Sair"
     ] }) }),
     toast
@@ -3247,7 +3263,7 @@ var passwordSchema = import_zod5.z.object({
 });
 
 // src/pages/ChangePasswordPage/index.tsx
-var import_jsx_runtime31 = require("react/jsx-runtime");
+var import_jsx_runtime32 = require("react/jsx-runtime");
 function ChangePasswordPage() {
   const { updatePassword } = useAuthCtx();
   const { show: showToast, toast } = useToast();
@@ -3270,11 +3286,11 @@ function ChangePasswordPage() {
     showToast("Senha atualizada com sucesso.");
     reset();
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Wrap3, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(PageHeader, { title: "Alterar senha", back: true }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Section, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Wrap3, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(PageHeader, { title: "Alterar senha", back: true }),
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Section, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
         TextInput,
         {
           label: "Confirmar nova senha",
@@ -3285,8 +3301,8 @@ function ChangePasswordPage() {
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(import_jsx_runtime31.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react11.Save, { size: 16 }),
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(import_jsx_runtime32.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_lucide_react11.Save, { size: 16 }),
       "Salvar nova senha"
     ] }) }) }),
     toast
@@ -3300,11 +3316,11 @@ var import_react_router_dom6 = require("react-router-dom");
 var import_lucide_react12 = require("lucide-react");
 
 // src/pages/ForgotPasswordPage/hooks/useForgotPassword.ts
-var import_react15 = require("react");
+var import_react16 = require("react");
 function useForgotPassword(resetPasswordPath) {
-  const [submitting, setSubmitting] = (0, import_react15.useState)(false);
-  const [sent, setSent] = (0, import_react15.useState)(false);
-  const [error, setError] = (0, import_react15.useState)("");
+  const [submitting, setSubmitting] = (0, import_react16.useState)(false);
+  const [sent, setSent] = (0, import_react16.useState)(false);
+  const [error, setError] = (0, import_react16.useState)("");
   const { requestPasswordReset } = useAuthCtx();
   const handleSubmit = async (data) => {
     setSubmitting(true);
@@ -3328,7 +3344,7 @@ var forgotPasswordSchema = import_zod7.z.object({
 });
 
 // src/pages/ForgotPasswordPage/index.tsx
-var import_jsx_runtime32 = require("react/jsx-runtime");
+var import_jsx_runtime33 = require("react/jsx-runtime");
 function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
   const { submitting, sent, error, handleSubmit: submit } = useForgotPassword(resetPasswordPath);
   const navigate = (0, import_react_router_dom6.useNavigate)();
@@ -3336,26 +3352,26 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
     resolver: (0, import_zod8.zodResolver)(forgotPasswordSchema),
     defaultValues: { email: "" }
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Page, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Brand2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(BrandText, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(BrandSub, { children: brand.sub })
+  return /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Page, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Brand2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(BrandText, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandSub, { children: brand.sub })
       ] }),
-      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(BrandQuote, { children: brand.quote })
+      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(FormBox, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_lucide_react12.ArrowLeft, { size: 16 }),
+    /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(FormBox, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_lucide_react12.ArrowLeft, { size: 16 }),
         "Voltar para o login"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(FormHeader, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormTitle, { children: "Esqueci minha senha" }),
-        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(FormHeader, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormTitle, { children: "Esqueci minha senha" }),
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
       ] }),
-      sent ? /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Form2, { onSubmit: handleSubmit(submit), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
+      sent ? /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Form2, { onSubmit: handleSubmit(submit), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
           TextInput,
           {
             label: "E-mail",
@@ -3366,7 +3382,7 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
             placeholder: "seu@email.com"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
           SubmitButton,
           {
             variant: "primary",
@@ -3375,29 +3391,29 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
             type: "submit",
             disabled: submitting,
             style: { marginTop: 8 },
-            children: submitting ? "Enviando..." : /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(import_jsx_runtime32.Fragment, { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_lucide_react12.Send, { size: 16 }),
+            children: submitting ? "Enviando..." : /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_lucide_react12.Send, { size: 16 }),
               "Enviar link"
             ] })
           }
         ),
-        error && /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(ErrorMsg, { children: error })
+        error && /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(ErrorMsg, { children: error })
       ] })
     ] }) })
   ] });
 }
 
 // src/pages/ResetPasswordPage/index.tsx
-var import_react16 = require("react");
+var import_react17 = require("react");
 var import_zod9 = require("@hookform/resolvers/zod");
 var import_react_hook_form10 = require("react-hook-form");
 var import_react_router_dom7 = require("react-router-dom");
 var import_lucide_react13 = require("lucide-react");
-var import_jsx_runtime33 = require("react/jsx-runtime");
+var import_jsx_runtime34 = require("react/jsx-runtime");
 function ResetPasswordPage({ brand, loginPath }) {
   const { user, loading, updatePassword, logout } = useAuthCtx();
   const navigate = (0, import_react_router_dom7.useNavigate)();
-  const [done, setDone] = (0, import_react16.useState)(false);
+  const [done, setDone] = (0, import_react17.useState)(false);
   const {
     control,
     handleSubmit,
@@ -3417,30 +3433,30 @@ function ResetPasswordPage({ brand, loginPath }) {
     setDone(true);
   };
   const invalidLink = !done && !loading && !user;
-  return /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Page, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Brand2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(BrandText, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandSub, { children: brand.sub })
+  return /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(Page, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(Brand2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(BrandText, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(BrandSub, { children: brand.sub })
       ] }),
-      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandQuote, { children: brand.quote })
+      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(FormBox, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(FormHeader, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormTitle, { children: "Nova senha" }),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
+    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(FormBox, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(FormHeader, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FormTitle, { children: "Nova senha" }),
+        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
       ] }),
-      done && /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
+      done && /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
+        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
       ] }),
-      invalidLink && /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
+      invalidLink && /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
+        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
       ] }),
-      !done && !invalidLink && /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Form2, { onSubmit: handleSubmit(onSubmit), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
+      !done && !invalidLink && /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(Form2, { onSubmit: handleSubmit(onSubmit), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
           TextInput,
           {
             label: "Nova senha",
@@ -3451,7 +3467,7 @@ function ResetPasswordPage({ brand, loginPath }) {
             placeholder: "M\xEDnimo 6 caracteres"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
           TextInput,
           {
             label: "Confirmar nova senha",
@@ -3461,7 +3477,7 @@ function ResetPasswordPage({ brand, loginPath }) {
             placeholder: "Repita a nova senha"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
           SubmitButton,
           {
             variant: "primary",
@@ -3470,8 +3486,8 @@ function ResetPasswordPage({ brand, loginPath }) {
             type: "submit",
             disabled: isSubmitting,
             style: { marginTop: 8 },
-            children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_lucide_react13.Save, { size: 16 }),
+            children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_lucide_react13.Save, { size: 16 }),
               "Salvar nova senha"
             ] })
           }
@@ -3482,10 +3498,10 @@ function ResetPasswordPage({ brand, loginPath }) {
 }
 
 // src/hooks/useMediaQuery.ts
-var import_react17 = require("react");
+var import_react18 = require("react");
 function useMediaQuery(query) {
-  const [matches, setMatches] = (0, import_react17.useState)(() => window.matchMedia(query).matches);
-  (0, import_react17.useEffect)(() => {
+  const [matches, setMatches] = (0, import_react18.useState)(() => window.matchMedia(query).matches);
+  (0, import_react18.useEffect)(() => {
     const mq = window.matchMedia(query);
     const handler = (e) => setMatches(e.matches);
     mq.addEventListener("change", handler);
@@ -3495,13 +3511,13 @@ function useMediaQuery(query) {
 }
 
 // src/hooks/useModal.ts
-var import_react18 = require("react");
+var import_react19 = require("react");
 var import_react_dom3 = require("react-dom");
 function useModal(variant = "dialog") {
-  const [content, setContent] = (0, import_react18.useState)(null);
+  const [content, setContent] = (0, import_react19.useState)(null);
   const open = (c) => setContent(c);
   const close = () => setContent(null);
-  const modal = content !== null ? (0, import_react_dom3.createPortal)((0, import_react18.createElement)(Modal, { close, variant, children: content }), document.body) : null;
+  const modal = content !== null ? (0, import_react_dom3.createPortal)((0, import_react19.createElement)(Modal, { close, variant, children: content }), document.body) : null;
   return { open, close, modal };
 }
 
@@ -3754,7 +3770,6 @@ var theme = {
   Chip,
   ChipBar,
   ControlledBase,
-  DangerLink,
   DatePicker,
   Empty,
   ForgotPasswordPage,
@@ -3764,6 +3779,7 @@ var theme = {
   ImageUpload,
   InfoBox,
   InputField,
+  LinkButton,
   LoginPage,
   Modal,
   ModalActions,

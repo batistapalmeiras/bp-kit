@@ -135,35 +135,11 @@ var Card = styled3.div`
   `}
 `;
 
-// src/components/DangerLink/styles.ts
-import styled4 from "styled-components";
-var DangerLink = styled4.button`
-  display: block;
-  width: 100%;
-  text-align: center;
-  border: 1px solid ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
-  background: none;
-  padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  font-weight: 600;
-  color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    background: ${({ theme: theme2 }) => theme2.colors.primaryErrorText}0d;
-    border-color: ${({ theme: theme2 }) => theme2.colors.primaryErrorTextHover};
-    color: ${({ theme: theme2 }) => theme2.colors.primaryErrorTextHover};
-  }
-`;
-
 // src/components/Button/index.tsx
 import { forwardRef } from "react";
 
 // src/components/Button/styles/Button.ts
-import styled5 from "styled-components";
+import styled4 from "styled-components";
 
 // src/components/_shared/buttonBase.ts
 import { css as css2 } from "styled-components";
@@ -239,7 +215,7 @@ var buttonBaseCss = css2`
 `;
 
 // src/components/Button/styles/Button.ts
-var StyledButton = styled5.button`
+var StyledButton = styled4.button`
   ${buttonBaseCss}
   ${({ $size }) => sizeStyles[$size]}
   ${({ $variant }) => variantStyles[$variant]}
@@ -252,14 +228,14 @@ var Button = forwardRef(function Button2({ variant = "primary", size = "md", ful
 });
 
 // src/components/Chip/styles/Chip.ts
-import styled6 from "styled-components";
-var ChipBar = styled6.div`
+import styled5 from "styled-components";
+var ChipBar = styled5.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
   padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
 `;
-var Chip = styled6.button`
+var Chip = styled5.button`
   display: inline-flex;
   align-items: center;
   height: 28px;
@@ -281,7 +257,7 @@ var Chip = styled6.button`
 `;
 
 // src/components/Typography/styles/Typography.ts
-import styled7, { css as css3 } from "styled-components";
+import styled6, { css as css3 } from "styled-components";
 var styleMap = {
   h1: css3`font-size: ${({ theme: theme2 }) => theme2.typography.displayXl.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayXl.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayXl.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
   h2: css3`font-size: ${({ theme: theme2 }) => theme2.typography.displayMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
@@ -310,7 +286,7 @@ var defaultTagMap = {
   error: "p",
   micro: "p"
 };
-var StyledText = styled7.p`
+var StyledText = styled6.p`
   ${({ $type }) => styleMap[$type]}
 `;
 
@@ -322,8 +298,8 @@ function Typography({ type, as, children, ...rest }) {
 }
 
 // src/components/Empty/styles/Empty.ts
-import styled8 from "styled-components";
-var Wrapper = styled8.div`
+import styled7 from "styled-components";
+var Wrapper = styled7.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -343,8 +319,8 @@ function Empty({ title, description }) {
 }
 
 // src/components/Form/index.ts
-import styled9 from "styled-components";
-var Form = styled9.form`
+import styled8 from "styled-components";
+var Form = styled8.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
@@ -354,9 +330,9 @@ var Form = styled9.form`
 import { forwardRef as forwardRef2 } from "react";
 
 // src/components/IconButton/styles/IconButton.ts
-import styled10, { css as css4 } from "styled-components";
+import styled9, { css as css4 } from "styled-components";
 var iconBoxSize = { xs: 14, sm: 16, md: 18, lg: 20 };
-var IconWrap = styled10.span`
+var IconWrap = styled9.span`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -367,7 +343,7 @@ var IconWrap = styled10.span`
 
   svg { display: block; width: 100%; height: 100%; }
 `;
-var StyledButton2 = styled10.button`
+var StyledButton2 = styled9.button`
   ${buttonBaseCss}
   ${({ $size }) => sizeStyles[$size]}
   ${({ $variant }) => variantStyles[$variant]}
@@ -390,8 +366,8 @@ var IconButton = forwardRef2(function IconButton2({ icon, iconPosition = "left",
 import { AlertTriangle, Info } from "lucide-react";
 
 // src/components/InfoBox/styles/InfoBox.ts
-import styled11 from "styled-components";
-var Box = styled11.div`
+import styled10 from "styled-components";
+var Box = styled10.div`
   display: flex;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
   padding: ${({ theme: theme2 }) => theme2.spacing.md};
@@ -418,6 +394,46 @@ function InfoBox({ variant = "info", children, style }) {
     /* @__PURE__ */ jsx7("div", { children })
   ] });
 }
+
+// src/components/LinkButton/index.tsx
+import { forwardRef as forwardRef3 } from "react";
+
+// src/components/LinkButton/styles/LinkButton.ts
+import styled11 from "styled-components";
+var StyledLinkButton = styled11.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  width: 100%;
+  border: none;
+  background: none;
+  padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  font-weight: 600;
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    color: ${({ theme: theme2 }) => theme2.colors.ink};
+  }
+
+  &:disabled {
+    color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
+    cursor: not-allowed;
+  }
+`;
+
+// src/components/LinkButton/index.tsx
+import { jsxs as jsxs6 } from "react/jsx-runtime";
+var LinkButton = forwardRef3(function LinkButton2({ icon, type = "button", children, ...rest }, ref) {
+  return /* @__PURE__ */ jsxs6(StyledLinkButton, { ref, type, ...rest, children: [
+    icon,
+    children
+  ] });
+});
 
 // src/components/Inputs/BaseInput/index.tsx
 import { Controller } from "react-hook-form";
@@ -474,9 +490,9 @@ var InputField = styled12.input`
 `;
 
 // src/components/Inputs/BaseInput/index.tsx
-import { jsx as jsx8, jsxs as jsxs6 } from "react/jsx-runtime";
+import { jsx as jsx8, jsxs as jsxs7 } from "react/jsx-runtime";
 function BaseInput({ label, wrapperStyle, error, children }) {
-  return /* @__PURE__ */ jsxs6(Wrapper2, { style: wrapperStyle, children: [
+  return /* @__PURE__ */ jsxs7(Wrapper2, { style: wrapperStyle, children: [
     /* @__PURE__ */ jsx8(Label, { children: label }),
     children,
     error && /* @__PURE__ */ jsx8(ErrorText, { children: error })
@@ -503,7 +519,7 @@ function ControlledBase({
 }
 
 // src/components/Inputs/Checkbox/index.tsx
-import { forwardRef as forwardRef3 } from "react";
+import { forwardRef as forwardRef4 } from "react";
 import { Check } from "lucide-react";
 
 // src/components/Inputs/Checkbox/styles/Checkbox.ts
@@ -581,9 +597,9 @@ var Wrapper3 = styled13.label`
 `;
 
 // src/components/Inputs/Checkbox/index.tsx
-import { jsx as jsx9, jsxs as jsxs7 } from "react/jsx-runtime";
-var Checkbox = forwardRef3(function Checkbox2({ label, ...rest }, ref) {
-  return /* @__PURE__ */ jsxs7(Wrapper3, { children: [
+import { jsx as jsx9, jsxs as jsxs8 } from "react/jsx-runtime";
+var Checkbox = forwardRef4(function Checkbox2({ label, ...rest }, ref) {
+  return /* @__PURE__ */ jsxs8(Wrapper3, { children: [
     /* @__PURE__ */ jsx9(HiddenInput, { ref, type: "checkbox", ...rest }),
     /* @__PURE__ */ jsx9(Box2, { children: /* @__PURE__ */ jsx9(Check, {}) }),
     label
@@ -722,7 +738,7 @@ var DayCell = styled15.button`
 `;
 
 // src/components/Inputs/DatePicker/index.tsx
-import { jsx as jsx10, jsxs as jsxs8 } from "react/jsx-runtime";
+import { jsx as jsx10, jsxs as jsxs9 } from "react/jsx-runtime";
 var WEEKDAY_LABELS = ["dom", "seg", "ter", "qua", "qui", "sex", "s\xE1b"];
 var FULL_MONTH_LABELS = [
   "janeiro",
@@ -804,15 +820,15 @@ function DatePicker({
     field.onChange(toDateKey(date));
     setOpen(false);
   };
-  return /* @__PURE__ */ jsx10(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ jsxs8(Wrapper4, { ref, children: [
-    /* @__PURE__ */ jsxs8(Trigger, { type: "button", $open: open, onClick: () => setOpen((v) => !v), children: [
+  return /* @__PURE__ */ jsx10(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ jsxs9(Wrapper4, { ref, children: [
+    /* @__PURE__ */ jsxs9(Trigger, { type: "button", $open: open, onClick: () => setOpen((v) => !v), children: [
       (_b = formatDateValue(field.value)) != null ? _b : /* @__PURE__ */ jsx10(Placeholder, { children: placeholder }),
       /* @__PURE__ */ jsx10(Calendar, { size: 18 })
     ] }),
-    open && /* @__PURE__ */ jsxs8(Panel, { children: [
-      /* @__PURE__ */ jsxs8(PanelHeader, { children: [
+    open && /* @__PURE__ */ jsxs9(Panel, { children: [
+      /* @__PURE__ */ jsxs9(PanelHeader, { children: [
         /* @__PURE__ */ jsx10(NavButton, { type: "button", onClick: () => changeMonth(-1), "aria-label": "M\xEAs anterior", children: /* @__PURE__ */ jsx10(ChevronLeft, { size: 18 }) }),
-        /* @__PURE__ */ jsxs8(HeaderLabel, { children: [
+        /* @__PURE__ */ jsxs9(HeaderLabel, { children: [
           FULL_MONTH_LABELS[viewDate.getMonth()],
           " de ",
           viewDate.getFullYear()
@@ -933,7 +949,7 @@ var AddTile = styled16.button`
 `;
 
 // src/components/Inputs/ImageUpload/index.tsx
-import { jsx as jsx11, jsxs as jsxs9 } from "react/jsx-runtime";
+import { jsx as jsx11, jsxs as jsxs10 } from "react/jsx-runtime";
 function ImageUpload({
   label = "Imagens",
   value,
@@ -965,7 +981,7 @@ function ImageUpload({
     onChange([...value, ...items]);
   };
   const removeItem = (id) => onChange(value.filter((item) => item.id !== id));
-  return /* @__PURE__ */ jsx11(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ jsxs9(
+  return /* @__PURE__ */ jsx11(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ jsxs10(
     Dropzone,
     {
       $dragOver: dragOver,
@@ -981,7 +997,7 @@ function ImageUpload({
         if (!atLimit && e.dataTransfer.files.length > 0) addFiles(e.dataTransfer.files);
       },
       children: [
-        !hasImages && /* @__PURE__ */ jsxs9(
+        !hasImages && /* @__PURE__ */ jsxs10(
           EmptyState,
           {
             role: "button",
@@ -997,7 +1013,7 @@ function ImageUpload({
             ]
           }
         ),
-        value.map((item) => /* @__PURE__ */ jsxs9(Thumb, { children: [
+        value.map((item) => /* @__PURE__ */ jsxs10(Thumb, { children: [
           /* @__PURE__ */ jsx11(ThumbImage, { src: item.url, alt: "" }),
           /* @__PURE__ */ jsx11(RemoveButton, { type: "button", onClick: () => removeItem(item.id), title: "Remover", children: /* @__PURE__ */ jsx11(X, { size: 12 }) })
         ] }, item.id)),
@@ -1050,7 +1066,7 @@ var MonthCell = styled17.button`
 `;
 
 // src/components/Inputs/MonthPicker/index.tsx
-import { jsx as jsx12, jsxs as jsxs10 } from "react/jsx-runtime";
+import { jsx as jsx12, jsxs as jsxs11 } from "react/jsx-runtime";
 var MONTH_LABELS = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 var FULL_MONTH_LABELS2 = [
   "Janeiro",
@@ -1098,13 +1114,13 @@ function MonthPicker({
     field.onChange(`${viewYear}-${String(monthIndex + 1).padStart(2, "0")}`);
     setOpen(false);
   };
-  return /* @__PURE__ */ jsx12(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ jsxs10(Wrapper4, { ref, children: [
-    /* @__PURE__ */ jsxs10(Trigger, { type: "button", $open: open, onClick: () => setOpen((v) => !v), children: [
+  return /* @__PURE__ */ jsx12(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ jsxs11(Wrapper4, { ref, children: [
+    /* @__PURE__ */ jsxs11(Trigger, { type: "button", $open: open, onClick: () => setOpen((v) => !v), children: [
       (_b = formatMonthValue(field.value)) != null ? _b : /* @__PURE__ */ jsx12(Placeholder, { children: placeholder }),
       /* @__PURE__ */ jsx12(Calendar2, { size: 18 })
     ] }),
-    open && /* @__PURE__ */ jsxs10(Panel, { children: [
-      /* @__PURE__ */ jsxs10(PanelHeader, { children: [
+    open && /* @__PURE__ */ jsxs11(Panel, { children: [
+      /* @__PURE__ */ jsxs11(PanelHeader, { children: [
         /* @__PURE__ */ jsx12(NavButton, { type: "button", onClick: () => setViewYear((y) => y - 1), "aria-label": "Ano anterior", children: /* @__PURE__ */ jsx12(ChevronLeft2, { size: 18 }) }),
         /* @__PURE__ */ jsx12(HeaderLabel, { children: viewYear }),
         /* @__PURE__ */ jsx12(NavButton, { type: "button", onClick: () => setViewYear((y) => y + 1), "aria-label": "Pr\xF3ximo ano", children: /* @__PURE__ */ jsx12(ChevronRight2, { size: 18 }) })
@@ -1255,7 +1271,7 @@ var LimitHint = styled18.p`
 `;
 
 // src/components/Inputs/MultiSelect/index.tsx
-import { jsx as jsx13, jsxs as jsxs11 } from "react/jsx-runtime";
+import { jsx as jsx13, jsxs as jsxs12 } from "react/jsx-runtime";
 function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2026", disabled, max, error }) {
   const [query, setQuery] = useState4("");
   const [open, setOpen] = useState4(false);
@@ -1290,9 +1306,9 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
     var _a;
     if (!disabled) (_a = inputRef.current) == null ? void 0 : _a.focus();
   };
-  return /* @__PURE__ */ jsx13(BaseInput, { label, error, children: /* @__PURE__ */ jsxs11(Wrap, { ref: wrapRef, children: [
-    /* @__PURE__ */ jsxs11(Field, { $focused: open, $disabled: disabled, onClick: focusField, children: [
-      value.map((v) => /* @__PURE__ */ jsxs11(Chip2, { children: [
+  return /* @__PURE__ */ jsx13(BaseInput, { label, error, children: /* @__PURE__ */ jsxs12(Wrap, { ref: wrapRef, children: [
+    /* @__PURE__ */ jsxs12(Field, { $focused: open, $disabled: disabled, onClick: focusField, children: [
+      value.map((v) => /* @__PURE__ */ jsxs12(Chip2, { children: [
         labelFor(v),
         !disabled && /* @__PURE__ */ jsx13(
           RemoveChip,
@@ -1325,7 +1341,7 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
         }
       )
     ] }),
-    open && !disabled && /* @__PURE__ */ jsxs11(Dropdown, { role: "listbox", children: [
+    open && !disabled && /* @__PURE__ */ jsxs12(Dropdown, { role: "listbox", children: [
       visibleOptions.length === 0 && /* @__PURE__ */ jsx13(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
       visibleOptions.map((o) => {
         const checked = value.includes(o.value);
@@ -1341,7 +1357,7 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
         ) }, o.value);
       })
     ] }),
-    atLimit && /* @__PURE__ */ jsxs11(LimitHint, { children: [
+    atLimit && /* @__PURE__ */ jsxs12(LimitHint, { children: [
       "Limite de ",
       max,
       " selecionados atingido."
@@ -1439,11 +1455,11 @@ var GroupLabel = styled19.span`
 `;
 
 // src/components/Inputs/RadioGroup/index.tsx
-import { jsx as jsx14, jsxs as jsxs12 } from "react/jsx-runtime";
+import { jsx as jsx14, jsxs as jsxs13 } from "react/jsx-runtime";
 function RadioGroup({ name, options, value, onChange, label, disabled }) {
-  return /* @__PURE__ */ jsxs12("div", { children: [
+  return /* @__PURE__ */ jsxs13("div", { children: [
     label && /* @__PURE__ */ jsx14(GroupLabel, { children: label }),
-    /* @__PURE__ */ jsx14(Group, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ jsxs12(OptionWrapper, { children: [
+    /* @__PURE__ */ jsx14(Group, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ jsxs13(OptionWrapper, { children: [
       /* @__PURE__ */ jsx14(
         HiddenInput3,
         {
@@ -1508,7 +1524,7 @@ function Select({
 }
 
 // src/components/Inputs/Switch/index.tsx
-import { forwardRef as forwardRef4 } from "react";
+import { forwardRef as forwardRef5 } from "react";
 
 // src/components/Inputs/Switch/styles/Switch.ts
 import styled21 from "styled-components";
@@ -1581,9 +1597,9 @@ var Wrapper5 = styled21.label`
 `;
 
 // src/components/Inputs/Switch/index.tsx
-import { jsx as jsx16, jsxs as jsxs13 } from "react/jsx-runtime";
-var Switch = forwardRef4(function Switch2({ label, ...rest }, ref) {
-  return /* @__PURE__ */ jsxs13(Wrapper5, { children: [
+import { jsx as jsx16, jsxs as jsxs14 } from "react/jsx-runtime";
+var Switch = forwardRef5(function Switch2({ label, ...rest }, ref) {
+  return /* @__PURE__ */ jsxs14(Wrapper5, { children: [
     /* @__PURE__ */ jsx16(HiddenInput4, { ref, type: "checkbox", ...rest }),
     /* @__PURE__ */ jsx16(Track, {}),
     label
@@ -1733,14 +1749,14 @@ var EyeButton = styled23.button`
 `;
 
 // src/components/Inputs/TextInput/index.tsx
-import { jsx as jsx18, jsxs as jsxs14 } from "react/jsx-runtime";
+import { jsx as jsx18, jsxs as jsxs15 } from "react/jsx-runtime";
 function TextInput(props) {
   const { label, control, name, wrapperStyle, placeholder, currency, mask, ...rest } = props;
   const isPassword = rest.type === "password";
   const [showPassword, setShowPassword] = useState5(false);
   return /* @__PURE__ */ jsx18(ControlledBase, { label, control, name, wrapperStyle, children: (field) => {
     var _a;
-    return /* @__PURE__ */ jsxs14(InputWrapper, { children: [
+    return /* @__PURE__ */ jsxs15(InputWrapper, { children: [
       /* @__PURE__ */ jsx18(
         InputField,
         {
@@ -1868,9 +1884,9 @@ var ModalActions = styled24.div`
 `;
 
 // src/components/Modal/index.tsx
-import { jsx as jsx19, jsxs as jsxs15 } from "react/jsx-runtime";
+import { jsx as jsx19, jsxs as jsxs16 } from "react/jsx-runtime";
 function ModalTitle({ children, onClose }) {
-  return /* @__PURE__ */ jsxs15(TitleRow, { children: [
+  return /* @__PURE__ */ jsxs16(TitleRow, { children: [
     /* @__PURE__ */ jsx19(TitleText, { children }),
     onClose && /* @__PURE__ */ jsx19(CloseButton, { type: "button", onClick: onClose, "aria-label": "Fechar", children: /* @__PURE__ */ jsx19(X2, { size: 18 }) })
   ] });
@@ -1930,10 +1946,10 @@ var PageButton = styled25.button`
 `;
 
 // src/components/Pagination/index.tsx
-import { jsx as jsx20, jsxs as jsxs16 } from "react/jsx-runtime";
+import { jsx as jsx20, jsxs as jsxs17 } from "react/jsx-runtime";
 function Pagination({ currentPage, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
-  return /* @__PURE__ */ jsxs16(Wrapper6, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
+  return /* @__PURE__ */ jsxs17(Wrapper6, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
     /* @__PURE__ */ jsx20(PageButton, { type: "button", "aria-label": "P\xE1gina anterior", onClick: () => onPageChange(currentPage - 1), disabled: currentPage === 1, children: /* @__PURE__ */ jsx20("span", { "aria-hidden": "true", children: "\u2039" }) }),
     Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => /* @__PURE__ */ jsx20(
       PageButton,
@@ -2003,13 +2019,13 @@ var Subtitle = styled26.p`
 `;
 
 // src/components/PageHeader/index.tsx
-import { jsx as jsx21, jsxs as jsxs17 } from "react/jsx-runtime";
+import { jsx as jsx21, jsxs as jsxs18 } from "react/jsx-runtime";
 function PageHeader({ title, subtitle, back, action }) {
   const navigate = useNavigate();
-  return /* @__PURE__ */ jsxs17(Wrapper7, { children: [
+  return /* @__PURE__ */ jsxs18(Wrapper7, { children: [
     back && /* @__PURE__ */ jsx21(Back, { onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ jsx21(ArrowLeft, { size: 20 }) }),
-    /* @__PURE__ */ jsxs17(Row, { children: [
-      /* @__PURE__ */ jsxs17(Titles, { children: [
+    /* @__PURE__ */ jsxs18(Row, { children: [
+      /* @__PURE__ */ jsxs18(Titles, { children: [
         /* @__PURE__ */ jsx21(Title, { children: title }),
         subtitle && /* @__PURE__ */ jsx21(Subtitle, { children: subtitle })
       ] }),
@@ -2059,9 +2075,9 @@ var Field2 = styled27.input`
 `;
 
 // src/components/SearchInput/index.tsx
-import { jsx as jsx22, jsxs as jsxs18 } from "react/jsx-runtime";
+import { jsx as jsx22, jsxs as jsxs19 } from "react/jsx-runtime";
 function SearchInput2({ value, onChange, placeholder }) {
-  return /* @__PURE__ */ jsxs18(Wrapper8, { children: [
+  return /* @__PURE__ */ jsxs19(Wrapper8, { children: [
     /* @__PURE__ */ jsx22(Search, { size: 16 }),
     /* @__PURE__ */ jsx22(Field2, { placeholder, value, onChange: (e) => onChange(e.target.value) })
   ] });
@@ -2111,7 +2127,7 @@ var Btn = styled28.button`
 `;
 
 // src/components/Inputs/SegmentedControl/index.tsx
-import { jsx as jsx23, jsxs as jsxs19 } from "react/jsx-runtime";
+import { jsx as jsx23, jsxs as jsxs20 } from "react/jsx-runtime";
 function SegmentedControl({
   value,
   onChange,
@@ -2119,7 +2135,7 @@ function SegmentedControl({
   label,
   tone = "ink"
 }) {
-  return /* @__PURE__ */ jsxs19(Wrap2, { children: [
+  return /* @__PURE__ */ jsxs20(Wrap2, { children: [
     label && /* @__PURE__ */ jsx23(Label2, { children: label }),
     /* @__PURE__ */ jsx23(Toggle, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ jsx23(
       Btn,
@@ -2318,7 +2334,7 @@ var ButtonRow = styled32.div`
 `;
 
 // src/components/SummaryCard/index.tsx
-import { Fragment as Fragment4, jsx as jsx25, jsxs as jsxs20 } from "react/jsx-runtime";
+import { Fragment as Fragment4, jsx as jsx25, jsxs as jsxs21 } from "react/jsx-runtime";
 function SummaryCard({
   label = "Resumo",
   items,
@@ -2334,20 +2350,20 @@ function SummaryCard({
   const hasSubtotals = items.some((item) => item.subtotal !== void 0);
   const itemsText = items.map((item) => `${item.qty}\xD7 ${item.name}`).join(", ");
   const isEmpty = items.length === 0;
-  return /* @__PURE__ */ jsxs20(Card2, { $bottomOffset: bottomOffset, children: [
+  return /* @__PURE__ */ jsxs21(Card2, { $bottomOffset: bottomOffset, children: [
     /* @__PURE__ */ jsx25(Label3, { style: { marginBottom: 0 }, children: label }),
-    isEmpty ? /* @__PURE__ */ jsx25(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ jsx25("div", { children: items.map((item) => /* @__PURE__ */ jsxs20(ItemDetail, { children: [
-      /* @__PURE__ */ jsxs20(ItemDetailName, { children: [
+    isEmpty ? /* @__PURE__ */ jsx25(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ jsx25("div", { children: items.map((item) => /* @__PURE__ */ jsxs21(ItemDetail, { children: [
+      /* @__PURE__ */ jsxs21(ItemDetailName, { children: [
         item.qty,
         "\xD7 ",
         item.name
       ] }),
       item.subtotal !== void 0 && /* @__PURE__ */ jsx25(ItemDetailPrice, { children: formatCurrency(item.subtotal) })
-    ] }, item.name)) }) : /* @__PURE__ */ jsxs20(Row2, { children: [
+    ] }, item.name)) }) : /* @__PURE__ */ jsxs21(Row2, { children: [
       /* @__PURE__ */ jsx25(Items, { children: itemsText }),
       /* @__PURE__ */ jsx25(Total, { children: formatCurrency(total) })
     ] }),
-    !isEmpty && hasSubtotals && /* @__PURE__ */ jsxs20(Fragment4, { children: [
+    !isEmpty && hasSubtotals && /* @__PURE__ */ jsxs21(Fragment4, { children: [
       /* @__PURE__ */ jsx25(Divider, {}),
       /* @__PURE__ */ jsx25(Row2, { children: /* @__PURE__ */ jsx25(Info2, { children: /* @__PURE__ */ jsx25(Total, { children: formatCurrency(total) }) }) })
     ] }),
@@ -2932,7 +2948,7 @@ var loginSchema = z.object({
 });
 
 // src/pages/LoginPage/index.tsx
-import { jsx as jsx29, jsxs as jsxs21 } from "react/jsx-runtime";
+import { jsx as jsx29, jsxs as jsxs22 } from "react/jsx-runtime";
 function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
   const navigate = useNavigate3();
@@ -2940,21 +2956,21 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" }
   });
-  return /* @__PURE__ */ jsxs21(Page, { children: [
-    /* @__PURE__ */ jsxs21(Brand2, { children: [
+  return /* @__PURE__ */ jsxs22(Page, { children: [
+    /* @__PURE__ */ jsxs22(Brand2, { children: [
       /* @__PURE__ */ jsx29(BrandMark, { children: /* @__PURE__ */ jsx29("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ jsxs21(BrandText, { children: [
+      /* @__PURE__ */ jsxs22(BrandText, { children: [
         /* @__PURE__ */ jsx29(BrandName2, { children: brand.name }),
         /* @__PURE__ */ jsx29(BrandSub, { children: brand.sub })
       ] }),
       brand.quote && /* @__PURE__ */ jsx29(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ jsx29(FormPanel, { children: /* @__PURE__ */ jsxs21(FormBox, { children: [
-      /* @__PURE__ */ jsxs21(FormHeader, { children: [
+    /* @__PURE__ */ jsx29(FormPanel, { children: /* @__PURE__ */ jsxs22(FormBox, { children: [
+      /* @__PURE__ */ jsxs22(FormHeader, { children: [
         /* @__PURE__ */ jsx29(FormTitle, { children: "Bem-vindo" }),
         /* @__PURE__ */ jsx29(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
       ] }),
-      /* @__PURE__ */ jsxs21(Form2, { onSubmit: handleSubmit(handleLogin), children: [
+      /* @__PURE__ */ jsxs22(Form2, { onSubmit: handleSubmit(handleLogin), children: [
         /* @__PURE__ */ jsx29(
           TextInput,
           {
@@ -3068,7 +3084,7 @@ var profileSchema = z2.object({
 });
 
 // src/pages/ProfilePage/index.tsx
-import { Fragment as Fragment5, jsx as jsx30, jsxs as jsxs22 } from "react/jsx-runtime";
+import { Fragment as Fragment5, jsx as jsx30, jsxs as jsxs23 } from "react/jsx-runtime";
 function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
@@ -3086,13 +3102,13 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
     const err = await updateProfile(data.name, data.email);
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
   };
-  return /* @__PURE__ */ jsxs22(Wrap3, { children: [
+  return /* @__PURE__ */ jsxs23(Wrap3, { children: [
     /* @__PURE__ */ jsx30(PageHeader, { title: "Meu perfil", back: true }),
-    /* @__PURE__ */ jsxs22(Identity, { children: [
+    /* @__PURE__ */ jsxs23(Identity, { children: [
       /* @__PURE__ */ jsx30(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
       roleLabel && /* @__PURE__ */ jsx30(RoleLabel, { children: roleLabel })
     ] }),
-    /* @__PURE__ */ jsxs22(Section, { children: [
+    /* @__PURE__ */ jsxs23(Section, { children: [
       /* @__PURE__ */ jsx30(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
       /* @__PURE__ */ jsx30(SectionDivider, {}),
       /* @__PURE__ */ jsx30(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
@@ -3107,15 +3123,15 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
         }
       )
     ] }),
-    /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsxs22(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
+    /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsxs23(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
       /* @__PURE__ */ jsx30(Save, { size: 16 }),
       isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es"
     ] }) }),
-    changePasswordPath && /* @__PURE__ */ jsxs22(Fragment5, { children: [
+    changePasswordPath && /* @__PURE__ */ jsxs23(Fragment5, { children: [
       /* @__PURE__ */ jsx30(Section, { children: /* @__PURE__ */ jsx30(SectionTitle, { children: "Seguran\xE7a" }) }),
       /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsx30(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
     ] }),
-    onLogout && /* @__PURE__ */ jsx30(LogoutAction, { children: /* @__PURE__ */ jsxs22(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
+    onLogout && /* @__PURE__ */ jsx30(LogoutAction, { children: /* @__PURE__ */ jsxs23(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
       /* @__PURE__ */ jsx30(LogOut, { size: 16 }),
       "Sair"
     ] }) }),
@@ -3139,7 +3155,7 @@ var passwordSchema = z3.object({
 });
 
 // src/pages/ChangePasswordPage/index.tsx
-import { Fragment as Fragment6, jsx as jsx31, jsxs as jsxs23 } from "react/jsx-runtime";
+import { Fragment as Fragment6, jsx as jsx31, jsxs as jsxs24 } from "react/jsx-runtime";
 function ChangePasswordPage() {
   const { updatePassword } = useAuthCtx();
   const { show: showToast, toast } = useToast();
@@ -3162,9 +3178,9 @@ function ChangePasswordPage() {
     showToast("Senha atualizada com sucesso.");
     reset();
   };
-  return /* @__PURE__ */ jsxs23(Wrap3, { children: [
+  return /* @__PURE__ */ jsxs24(Wrap3, { children: [
     /* @__PURE__ */ jsx31(PageHeader, { title: "Alterar senha", back: true }),
-    /* @__PURE__ */ jsxs23(Section, { children: [
+    /* @__PURE__ */ jsxs24(Section, { children: [
       /* @__PURE__ */ jsx31(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
       /* @__PURE__ */ jsx31(
         TextInput,
@@ -3177,7 +3193,7 @@ function ChangePasswordPage() {
         }
       )
     ] }),
-    /* @__PURE__ */ jsx31(Actions, { children: /* @__PURE__ */ jsx31(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs23(Fragment6, { children: [
+    /* @__PURE__ */ jsx31(Actions, { children: /* @__PURE__ */ jsx31(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs24(Fragment6, { children: [
       /* @__PURE__ */ jsx31(Save2, { size: 16 }),
       "Salvar nova senha"
     ] }) }) }),
@@ -3220,7 +3236,7 @@ var forgotPasswordSchema = z4.object({
 });
 
 // src/pages/ForgotPasswordPage/index.tsx
-import { Fragment as Fragment7, jsx as jsx32, jsxs as jsxs24 } from "react/jsx-runtime";
+import { Fragment as Fragment7, jsx as jsx32, jsxs as jsxs25 } from "react/jsx-runtime";
 function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
   const { submitting, sent, error, handleSubmit: submit } = useForgotPassword(resetPasswordPath);
   const navigate = useNavigate5();
@@ -3228,25 +3244,25 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
     resolver: zodResolver4(forgotPasswordSchema),
     defaultValues: { email: "" }
   });
-  return /* @__PURE__ */ jsxs24(Page, { children: [
-    /* @__PURE__ */ jsxs24(Brand2, { children: [
+  return /* @__PURE__ */ jsxs25(Page, { children: [
+    /* @__PURE__ */ jsxs25(Brand2, { children: [
       /* @__PURE__ */ jsx32(BrandMark, { children: /* @__PURE__ */ jsx32("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ jsxs24(BrandText, { children: [
+      /* @__PURE__ */ jsxs25(BrandText, { children: [
         /* @__PURE__ */ jsx32(BrandName2, { children: brand.name }),
         /* @__PURE__ */ jsx32(BrandSub, { children: brand.sub })
       ] }),
       brand.quote && /* @__PURE__ */ jsx32(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ jsx32(FormPanel, { children: /* @__PURE__ */ jsxs24(FormBox, { children: [
-      /* @__PURE__ */ jsxs24(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
+    /* @__PURE__ */ jsx32(FormPanel, { children: /* @__PURE__ */ jsxs25(FormBox, { children: [
+      /* @__PURE__ */ jsxs25(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
         /* @__PURE__ */ jsx32(ArrowLeft2, { size: 16 }),
         "Voltar para o login"
       ] }),
-      /* @__PURE__ */ jsxs24(FormHeader, { children: [
+      /* @__PURE__ */ jsxs25(FormHeader, { children: [
         /* @__PURE__ */ jsx32(FormTitle, { children: "Esqueci minha senha" }),
         /* @__PURE__ */ jsx32(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
       ] }),
-      sent ? /* @__PURE__ */ jsx32(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ jsxs24(Form2, { onSubmit: handleSubmit(submit), children: [
+      sent ? /* @__PURE__ */ jsx32(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ jsxs25(Form2, { onSubmit: handleSubmit(submit), children: [
         /* @__PURE__ */ jsx32(
           TextInput,
           {
@@ -3267,7 +3283,7 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
             type: "submit",
             disabled: submitting,
             style: { marginTop: 8 },
-            children: submitting ? "Enviando..." : /* @__PURE__ */ jsxs24(Fragment7, { children: [
+            children: submitting ? "Enviando..." : /* @__PURE__ */ jsxs25(Fragment7, { children: [
               /* @__PURE__ */ jsx32(Send, { size: 16 }),
               "Enviar link"
             ] })
@@ -3285,7 +3301,7 @@ import { zodResolver as zodResolver5 } from "@hookform/resolvers/zod";
 import { useForm as useForm5 } from "react-hook-form";
 import { useNavigate as useNavigate6 } from "react-router-dom";
 import { Save as Save3 } from "lucide-react";
-import { Fragment as Fragment8, jsx as jsx33, jsxs as jsxs25 } from "react/jsx-runtime";
+import { Fragment as Fragment8, jsx as jsx33, jsxs as jsxs26 } from "react/jsx-runtime";
 function ResetPasswordPage({ brand, loginPath }) {
   const { user, loading, updatePassword, logout } = useAuthCtx();
   const navigate = useNavigate6();
@@ -3309,29 +3325,29 @@ function ResetPasswordPage({ brand, loginPath }) {
     setDone(true);
   };
   const invalidLink = !done && !loading && !user;
-  return /* @__PURE__ */ jsxs25(Page, { children: [
-    /* @__PURE__ */ jsxs25(Brand2, { children: [
+  return /* @__PURE__ */ jsxs26(Page, { children: [
+    /* @__PURE__ */ jsxs26(Brand2, { children: [
       /* @__PURE__ */ jsx33(BrandMark, { children: /* @__PURE__ */ jsx33("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ jsxs25(BrandText, { children: [
+      /* @__PURE__ */ jsxs26(BrandText, { children: [
         /* @__PURE__ */ jsx33(BrandName2, { children: brand.name }),
         /* @__PURE__ */ jsx33(BrandSub, { children: brand.sub })
       ] }),
       brand.quote && /* @__PURE__ */ jsx33(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ jsx33(FormPanel, { children: /* @__PURE__ */ jsxs25(FormBox, { children: [
-      /* @__PURE__ */ jsxs25(FormHeader, { children: [
+    /* @__PURE__ */ jsx33(FormPanel, { children: /* @__PURE__ */ jsxs26(FormBox, { children: [
+      /* @__PURE__ */ jsxs26(FormHeader, { children: [
         /* @__PURE__ */ jsx33(FormTitle, { children: "Nova senha" }),
         /* @__PURE__ */ jsx33(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
       ] }),
-      done && /* @__PURE__ */ jsxs25(Fragment8, { children: [
+      done && /* @__PURE__ */ jsxs26(Fragment8, { children: [
         /* @__PURE__ */ jsx33(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
         /* @__PURE__ */ jsx33(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
       ] }),
-      invalidLink && /* @__PURE__ */ jsxs25(Fragment8, { children: [
+      invalidLink && /* @__PURE__ */ jsxs26(Fragment8, { children: [
         /* @__PURE__ */ jsx33(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
         /* @__PURE__ */ jsx33(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
       ] }),
-      !done && !invalidLink && /* @__PURE__ */ jsxs25(Form2, { onSubmit: handleSubmit(onSubmit), children: [
+      !done && !invalidLink && /* @__PURE__ */ jsxs26(Form2, { onSubmit: handleSubmit(onSubmit), children: [
         /* @__PURE__ */ jsx33(
           TextInput,
           {
@@ -3362,7 +3378,7 @@ function ResetPasswordPage({ brand, loginPath }) {
             type: "submit",
             disabled: isSubmitting,
             style: { marginTop: 8 },
-            children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs25(Fragment8, { children: [
+            children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs26(Fragment8, { children: [
               /* @__PURE__ */ jsx33(Save3, { size: 16 }),
               "Salvar nova senha"
             ] })
@@ -3645,7 +3661,6 @@ export {
   Chip,
   ChipBar,
   ControlledBase,
-  DangerLink,
   DatePicker,
   Empty,
   ForgotPasswordPage,
@@ -3655,6 +3670,7 @@ export {
   ImageUpload,
   InfoBox,
   InputField,
+  LinkButton,
   LoginPage,
   Modal,
   ModalActions,

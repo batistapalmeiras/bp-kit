@@ -1,7 +1,6 @@
 export { BottomSheet } from './components/BottomSheet';
 export { Brand } from './components/Brand';
 export { Card } from './components/Card';
-export { DangerLink } from './components/DangerLink';
 export { Button } from './components/Button';
 export type { ButtonProps } from './components/Button/types';
 export { Chip, ChipBar } from './components/Chip';
@@ -11,6 +10,8 @@ export { Form } from './components/Form';
 export { IconButton } from './components/IconButton';
 export type { IconButtonProps } from './components/IconButton/types';
 export { InfoBox } from './components/InfoBox';
+export { LinkButton } from './components/LinkButton';
+export type { LinkButtonProps } from './components/LinkButton/types';
 export { BaseInput, ControlledBase, InputField } from './components/Inputs/BaseInput';
 export type { BaseInputProps } from './components/Inputs/BaseInput/types';
 export { Checkbox } from './components/Inputs/Checkbox';
