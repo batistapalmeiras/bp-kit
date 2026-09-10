@@ -1962,9 +1962,13 @@ var CloseButton = import_styled_components26.default.button`
 `;
 var ModalActions = import_styled_components26.default.div`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
   gap: 8px;
   margin-top: 28px;
+
+  & > button {
+    width: 100%;
+  }
 `;
 
 // src/components/Modal/index.tsx
@@ -3143,13 +3147,13 @@ var SectionDivider = import_styled_components38.default.div`
 `;
 var Actions = import_styled_components38.default.div`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
   padding-top: ${({ theme: theme2 }) => theme2.spacing.lg};
   border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 
-  @media (max-width: 480px) {
-    button { flex: 1; }
+  & > button {
+    width: 100%;
   }
 `;
 var LogoutAction = import_styled_components38.default.div`

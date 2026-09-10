@@ -47,13 +47,13 @@ export const SectionDivider = styled.div`
 
 export const Actions = styled.div`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
   gap: ${({ theme }) => theme.spacing.sm};
   padding-top: ${({ theme }) => theme.spacing.lg};
   border-top: 1px solid ${({ theme }) => theme.colors.hairlineSoft};
 
-  @media (max-width: 480px) {
-    button { flex: 1; }
+  & > button {
+    width: 100%;
   }
 `;
 

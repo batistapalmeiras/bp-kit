@@ -96,7 +96,11 @@ export const CloseButton = styled.button`
 
 export const ModalActions = styled.div`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
   gap: 8px;
   margin-top: 28px;
+
+  & > button {
+    width: 100%;
+  }
 `;
