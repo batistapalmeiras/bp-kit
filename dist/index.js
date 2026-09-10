@@ -3215,13 +3215,10 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Actions, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_lucide_react10.Save, { size: 16 }),
-        isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es"
-      ] })
-    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_lucide_react10.Save, { size: 16 }),
+      isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es"
+    ] }) }),
     changePasswordPath && /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_jsx_runtime30.Fragment, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Section, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionTitle, { children: "Seguran\xE7a" }) }),
       /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
@@ -3237,7 +3234,6 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
 // src/pages/ChangePasswordPage/index.tsx
 var import_zod6 = require("@hookform/resolvers/zod");
 var import_react_hook_form8 = require("react-hook-form");
-var import_react_router_dom6 = require("react-router-dom");
 var import_lucide_react11 = require("lucide-react");
 
 // src/pages/ChangePasswordPage/validators/schema.ts
@@ -3254,7 +3250,6 @@ var passwordSchema = import_zod5.z.object({
 var import_jsx_runtime31 = require("react/jsx-runtime");
 function ChangePasswordPage() {
   const { updatePassword } = useAuthCtx();
-  const navigate = (0, import_react_router_dom6.useNavigate)();
   const { show: showToast, toast } = useToast();
   const {
     control,
@@ -3290,13 +3285,10 @@ function ChangePasswordPage() {
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Actions, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(import_jsx_runtime31.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react11.Save, { size: 16 }),
-        "Salvar nova senha"
-      ] }) })
-    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(import_jsx_runtime31.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react11.Save, { size: 16 }),
+      "Salvar nova senha"
+    ] }) }) }),
     toast
   ] });
 }
@@ -3304,7 +3296,7 @@ function ChangePasswordPage() {
 // src/pages/ForgotPasswordPage/index.tsx
 var import_zod8 = require("@hookform/resolvers/zod");
 var import_react_hook_form9 = require("react-hook-form");
-var import_react_router_dom7 = require("react-router-dom");
+var import_react_router_dom6 = require("react-router-dom");
 var import_lucide_react12 = require("lucide-react");
 
 // src/pages/ForgotPasswordPage/hooks/useForgotPassword.ts
@@ -3339,7 +3331,7 @@ var forgotPasswordSchema = import_zod7.z.object({
 var import_jsx_runtime32 = require("react/jsx-runtime");
 function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
   const { submitting, sent, error, handleSubmit: submit } = useForgotPassword(resetPasswordPath);
-  const navigate = (0, import_react_router_dom7.useNavigate)();
+  const navigate = (0, import_react_router_dom6.useNavigate)();
   const { control, handleSubmit } = (0, import_react_hook_form9.useForm)({
     resolver: (0, import_zod8.zodResolver)(forgotPasswordSchema),
     defaultValues: { email: "" }
@@ -3399,12 +3391,12 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
 var import_react16 = require("react");
 var import_zod9 = require("@hookform/resolvers/zod");
 var import_react_hook_form10 = require("react-hook-form");
-var import_react_router_dom8 = require("react-router-dom");
+var import_react_router_dom7 = require("react-router-dom");
 var import_lucide_react13 = require("lucide-react");
 var import_jsx_runtime33 = require("react/jsx-runtime");
 function ResetPasswordPage({ brand, loginPath }) {
   const { user, loading, updatePassword, logout } = useAuthCtx();
-  const navigate = (0, import_react_router_dom8.useNavigate)();
+  const navigate = (0, import_react_router_dom7.useNavigate)();
   const [done, setDone] = (0, import_react16.useState)(false);
   const {
     control,

@@ -66,9 +66,6 @@ export function ProfilePage({ roleLabel, changePasswordPath, onLogout }: Profile
       </Section>
 
       <Actions>
-        <Button variant="secondary" size="md" onClick={() => navigate(-1)}>
-          {text.actions.cancel}
-        </Button>
         <Button variant="primary" size="md" onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>
           <Save size={16} />
           {isSubmitting ? 'Salvando...' : 'Salvar alterações'}

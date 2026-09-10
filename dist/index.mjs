@@ -3107,13 +3107,10 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
         }
       )
     ] }),
-    /* @__PURE__ */ jsxs22(Actions, { children: [
-      /* @__PURE__ */ jsx30(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
-      /* @__PURE__ */ jsxs22(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
-        /* @__PURE__ */ jsx30(Save, { size: 16 }),
-        isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es"
-      ] })
-    ] }),
+    /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsxs22(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
+      /* @__PURE__ */ jsx30(Save, { size: 16 }),
+      isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es"
+    ] }) }),
     changePasswordPath && /* @__PURE__ */ jsxs22(Fragment5, { children: [
       /* @__PURE__ */ jsx30(Section, { children: /* @__PURE__ */ jsx30(SectionTitle, { children: "Seguran\xE7a" }) }),
       /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsx30(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
@@ -3129,7 +3126,6 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
 // src/pages/ChangePasswordPage/index.tsx
 import { zodResolver as zodResolver3 } from "@hookform/resolvers/zod";
 import { useForm as useForm3 } from "react-hook-form";
-import { useNavigate as useNavigate5 } from "react-router-dom";
 import { Save as Save2 } from "lucide-react";
 
 // src/pages/ChangePasswordPage/validators/schema.ts
@@ -3146,7 +3142,6 @@ var passwordSchema = z3.object({
 import { Fragment as Fragment6, jsx as jsx31, jsxs as jsxs23 } from "react/jsx-runtime";
 function ChangePasswordPage() {
   const { updatePassword } = useAuthCtx();
-  const navigate = useNavigate5();
   const { show: showToast, toast } = useToast();
   const {
     control,
@@ -3182,13 +3177,10 @@ function ChangePasswordPage() {
         }
       )
     ] }),
-    /* @__PURE__ */ jsxs23(Actions, { children: [
-      /* @__PURE__ */ jsx31(Button, { variant: "secondary", size: "md", onClick: () => navigate(-1), children: text.actions.cancel }),
-      /* @__PURE__ */ jsx31(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs23(Fragment6, { children: [
-        /* @__PURE__ */ jsx31(Save2, { size: 16 }),
-        "Salvar nova senha"
-      ] }) })
-    ] }),
+    /* @__PURE__ */ jsx31(Actions, { children: /* @__PURE__ */ jsx31(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs23(Fragment6, { children: [
+      /* @__PURE__ */ jsx31(Save2, { size: 16 }),
+      "Salvar nova senha"
+    ] }) }) }),
     toast
   ] });
 }
@@ -3196,7 +3188,7 @@ function ChangePasswordPage() {
 // src/pages/ForgotPasswordPage/index.tsx
 import { zodResolver as zodResolver4 } from "@hookform/resolvers/zod";
 import { useForm as useForm4 } from "react-hook-form";
-import { useNavigate as useNavigate6 } from "react-router-dom";
+import { useNavigate as useNavigate5 } from "react-router-dom";
 import { ArrowLeft as ArrowLeft2, Send } from "lucide-react";
 
 // src/pages/ForgotPasswordPage/hooks/useForgotPassword.ts
@@ -3231,7 +3223,7 @@ var forgotPasswordSchema = z4.object({
 import { Fragment as Fragment7, jsx as jsx32, jsxs as jsxs24 } from "react/jsx-runtime";
 function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
   const { submitting, sent, error, handleSubmit: submit } = useForgotPassword(resetPasswordPath);
-  const navigate = useNavigate6();
+  const navigate = useNavigate5();
   const { control, handleSubmit } = useForm4({
     resolver: zodResolver4(forgotPasswordSchema),
     defaultValues: { email: "" }
@@ -3291,12 +3283,12 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
 import { useState as useState10 } from "react";
 import { zodResolver as zodResolver5 } from "@hookform/resolvers/zod";
 import { useForm as useForm5 } from "react-hook-form";
-import { useNavigate as useNavigate7 } from "react-router-dom";
+import { useNavigate as useNavigate6 } from "react-router-dom";
 import { Save as Save3 } from "lucide-react";
 import { Fragment as Fragment8, jsx as jsx33, jsxs as jsxs25 } from "react/jsx-runtime";
 function ResetPasswordPage({ brand, loginPath }) {
   const { user, loading, updatePassword, logout } = useAuthCtx();
-  const navigate = useNavigate7();
+  const navigate = useNavigate6();
   const [done, setDone] = useState10(false);
   const {
     control,

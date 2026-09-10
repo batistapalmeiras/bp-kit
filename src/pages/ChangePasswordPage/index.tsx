@@ -1,7 +1,6 @@
 // React
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 // Libs
 import { Save } from 'lucide-react';
 // Components
@@ -11,13 +10,11 @@ import { PageHeader } from '../../components/PageHeader';
 import { useToast } from '../../components/Toast';
 // Local
 import { useAuthCtx } from '../../hooks/useAuth';
-import { text } from '../../text';
 import { Actions, Section, Wrap } from '../ProfilePage/styles';
 import { PasswordFormValues, passwordSchema } from './validators';
 
 export function ChangePasswordPage() {
   const { updatePassword } = useAuthCtx();
-  const navigate = useNavigate();
   const { show: showToast, toast } = useToast();
 
   const {
@@ -57,9 +54,6 @@ export function ChangePasswordPage() {
       </Section>
 
       <Actions>
-        <Button variant="secondary" size="md" onClick={() => navigate(-1)}>
-          {text.actions.cancel}
-        </Button>
         <Button variant="primary" size="md" onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>
           {isSubmitting ? (
             'Salvando...'
