@@ -249,16 +249,20 @@ var DangerLink = import_styled_components5.default.button`
   display: block;
   width: 100%;
   text-align: center;
-  border: none;
+  border: 1px solid ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
   background: none;
   padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  font-weight: 600;
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
   text-decoration: none;
   cursor: pointer;
 
   &:hover {
+    background: ${({ theme: theme2 }) => theme2.colors.primaryErrorText}0d;
+    border-color: ${({ theme: theme2 }) => theme2.colors.primaryErrorTextHover};
     color: ${({ theme: theme2 }) => theme2.colors.primaryErrorTextHover};
   }
 `;
