@@ -4,11 +4,11 @@ import { Search } from 'lucide-react';
 import { Field, Wrapper } from './styles';
 import { SearchInputProps } from './types';
 
-export function SearchInput({ value, onChange, placeholder }: SearchInputProps) {
+export function SearchInput({ value, onChange, placeholder, size = 'md' }: SearchInputProps) {
   return (
     <Wrapper>
       <Search size={16} />
-      <Field placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)} />
+      <Field $size={size} placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)} />
     </Wrapper>
   );
 }

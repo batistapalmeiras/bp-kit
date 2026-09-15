@@ -10,8 +10,13 @@ export interface SelectProps<T extends FieldValues, N extends FieldPath<T>> {
   wrapperStyle?: React.CSSProperties;
 }
 
-export interface RawSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  label: string;
+export type SelectSize = 'sm' | 'md';
+
+export interface RawSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
+  label?: string;
+  /** Matches Button's 'sm' (36px) height, for rows pairing a select with a
+   * compact button or SearchInput. Defaults to 'md' (56px), the original size. */
+  size?: SelectSize;
   wrapperStyle?: React.CSSProperties;
   error?: string;
 }

@@ -493,7 +493,7 @@ var InputField = styled12.input`
 import { jsx as jsx8, jsxs as jsxs7 } from "react/jsx-runtime";
 function BaseInput({ label, wrapperStyle, error, children }) {
   return /* @__PURE__ */ jsxs7(Wrapper2, { style: wrapperStyle, children: [
-    /* @__PURE__ */ jsx8(Label, { children: label }),
+    label && /* @__PURE__ */ jsx8(Label, { children: label }),
     children,
     error && /* @__PURE__ */ jsx8(ErrorText, { children: error })
   ] });
@@ -1481,15 +1481,26 @@ function RadioGroup({ name, options, value, onChange, label, disabled }) {
 import { useController as useController3 } from "react-hook-form";
 
 // src/components/Inputs/Select/styles/Select.ts
-import styled20 from "styled-components";
+import styled20, { css as css5 } from "styled-components";
+var sizeStyles2 = {
+  sm: css5`
+    height: 36px;
+    padding: 0 ${({ theme: theme2 }) => theme2.spacing.sm};
+    font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+    padding-right: ${({ theme: theme2 }) => theme2.spacing.lg};
+  `,
+  md: css5`
+    height: 56px;
+    padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
+    font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
+    padding-right: ${({ theme: theme2 }) => theme2.spacing.xl};
+  `
+};
 var SelectField = styled20.select`
-  height: 56px;
-  padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
   border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   outline: none;
   width: 100%;
@@ -1498,7 +1509,8 @@ var SelectField = styled20.select`
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23222222' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right ${({ theme: theme2 }) => theme2.spacing.md} center;
-  padding-right: ${({ theme: theme2 }) => theme2.spacing.xl};
+
+  ${({ $size }) => sizeStyles2[$size != null ? $size : "md"]}
 
   &:focus {
     border-width: 2px;
@@ -1508,8 +1520,8 @@ var SelectField = styled20.select`
 
 // src/components/Inputs/Select/index.tsx
 import { jsx as jsx15 } from "react/jsx-runtime";
-function RawSelect({ label, wrapperStyle, error, children, ...rest }) {
-  return /* @__PURE__ */ jsx15(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ jsx15(SelectField, { ...rest, children }) });
+function RawSelect({ label, size = "md", wrapperStyle, error, children, ...rest }) {
+  return /* @__PURE__ */ jsx15(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ jsx15(SelectField, { $size: size, ...rest, children }) });
 }
 function Select({
   label,
@@ -1790,7 +1802,7 @@ import { useEffect as useEffect4, useRef as useRef5 } from "react";
 import { X as X2 } from "lucide-react";
 
 // src/components/Modal/styles/Modal.ts
-import styled24, { css as css5 } from "styled-components";
+import styled24, { css as css6 } from "styled-components";
 var Overlay2 = styled24.div`
   position: fixed;
   inset: 0;
@@ -1830,7 +1842,7 @@ var Box3 = styled24.div`
      drawer, just noticeably wider — reaching further toward the middle of
      the screen instead of hugging the edge — for a form substantial enough
      that 440px feels cramped. */
-  ${({ $variant }) => ($variant === "drawer" || $variant === "drawer-wide") && css5`
+  ${({ $variant }) => ($variant === "drawer" || $variant === "drawer-wide") && css6`
         @media (min-width: 745px) {
           max-width: ${$variant === "drawer-wide" ? "min(90vw, 720px)" : "min(90vw, 440px)"};
           height: 100%;
@@ -2038,7 +2050,7 @@ function PageHeader({ title, subtitle, back, action }) {
 import { Search } from "lucide-react";
 
 // src/components/SearchInput/styles/SearchInput.ts
-import styled27 from "styled-components";
+import styled27, { css as css7 } from "styled-components";
 var Wrapper8 = styled27.div`
   position: relative;
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
@@ -2052,9 +2064,16 @@ var Wrapper8 = styled27.div`
     pointer-events: none;
   }
 `;
+var sizeStyles3 = {
+  sm: css7`
+    height: 36px;
+  `,
+  md: css7`
+    height: 40px;
+  `
+};
 var Field2 = styled27.input`
   width: 100%;
-  height: 40px;
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.base} 0 36px;
   border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
@@ -2064,6 +2083,8 @@ var Field2 = styled27.input`
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   outline: none;
   transition: border-color 0.15s;
+
+  ${({ $size }) => sizeStyles3[$size != null ? $size : "md"]}
 
   &::placeholder {
     color: ${({ theme: theme2 }) => theme2.colors.muted};
@@ -2076,10 +2097,10 @@ var Field2 = styled27.input`
 
 // src/components/SearchInput/index.tsx
 import { jsx as jsx22, jsxs as jsxs19 } from "react/jsx-runtime";
-function SearchInput2({ value, onChange, placeholder }) {
+function SearchInput2({ value, onChange, placeholder, size = "md" }) {
   return /* @__PURE__ */ jsxs19(Wrapper8, { children: [
     /* @__PURE__ */ jsx22(Search, { size: 16 }),
-    /* @__PURE__ */ jsx22(Field2, { placeholder, value, onChange: (e) => onChange(e.target.value) })
+    /* @__PURE__ */ jsx22(Field2, { $size: size, placeholder, value, onChange: (e) => onChange(e.target.value) })
   ] });
 }
 

@@ -6,10 +6,12 @@ import { BaseInput } from '../BaseInput';
 import { SelectField } from './styles';
 import { RawSelectProps, SelectProps } from './types';
 
-export function RawSelect({ label, wrapperStyle, error, children, ...rest }: RawSelectProps) {
+export function RawSelect({ label, size = 'md', wrapperStyle, error, children, ...rest }: RawSelectProps) {
   return (
     <BaseInput label={label} wrapperStyle={wrapperStyle} error={error}>
-      <SelectField {...rest}>{children}</SelectField>
+      <SelectField $size={size} {...rest}>
+        {children}
+      </SelectField>
     </BaseInput>
   );
 }

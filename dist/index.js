@@ -601,7 +601,7 @@ var InputField = import_styled_components14.default.input`
 var import_jsx_runtime9 = require("react/jsx-runtime");
 function BaseInput({ label, wrapperStyle, error, children }) {
   return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(Wrapper2, { style: wrapperStyle, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Label, { children: label }),
+    label && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Label, { children: label }),
     children,
     error && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(ErrorText, { children: error })
   ] });
@@ -1590,14 +1590,25 @@ var import_react_hook_form4 = require("react-hook-form");
 
 // src/components/Inputs/Select/styles/Select.ts
 var import_styled_components22 = __toESM(require("styled-components"));
+var sizeStyles2 = {
+  sm: import_styled_components22.css`
+    height: 36px;
+    padding: 0 ${({ theme: theme2 }) => theme2.spacing.sm};
+    font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+    padding-right: ${({ theme: theme2 }) => theme2.spacing.lg};
+  `,
+  md: import_styled_components22.css`
+    height: 56px;
+    padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
+    font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
+    padding-right: ${({ theme: theme2 }) => theme2.spacing.xl};
+  `
+};
 var SelectField = import_styled_components22.default.select`
-  height: 56px;
-  padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
   border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   outline: none;
   width: 100%;
@@ -1606,7 +1617,8 @@ var SelectField = import_styled_components22.default.select`
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23222222' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right ${({ theme: theme2 }) => theme2.spacing.md} center;
-  padding-right: ${({ theme: theme2 }) => theme2.spacing.xl};
+
+  ${({ $size }) => sizeStyles2[$size != null ? $size : "md"]}
 
   &:focus {
     border-width: 2px;
@@ -1616,8 +1628,8 @@ var SelectField = import_styled_components22.default.select`
 
 // src/components/Inputs/Select/index.tsx
 var import_jsx_runtime16 = require("react/jsx-runtime");
-function RawSelect({ label, wrapperStyle, error, children, ...rest }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SelectField, { ...rest, children }) });
+function RawSelect({ label, size = "md", wrapperStyle, error, children, ...rest }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SelectField, { $size: size, ...rest, children }) });
 }
 function Select({
   label,
@@ -2160,9 +2172,16 @@ var Wrapper8 = import_styled_components29.default.div`
     pointer-events: none;
   }
 `;
+var sizeStyles3 = {
+  sm: import_styled_components29.css`
+    height: 36px;
+  `,
+  md: import_styled_components29.css`
+    height: 40px;
+  `
+};
 var Field2 = import_styled_components29.default.input`
   width: 100%;
-  height: 40px;
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.base} 0 36px;
   border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
@@ -2172,6 +2191,8 @@ var Field2 = import_styled_components29.default.input`
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   outline: none;
   transition: border-color 0.15s;
+
+  ${({ $size }) => sizeStyles3[$size != null ? $size : "md"]}
 
   &::placeholder {
     color: ${({ theme: theme2 }) => theme2.colors.muted};
@@ -2184,10 +2205,10 @@ var Field2 = import_styled_components29.default.input`
 
 // src/components/SearchInput/index.tsx
 var import_jsx_runtime23 = require("react/jsx-runtime");
-function SearchInput2({ value, onChange, placeholder }) {
+function SearchInput2({ value, onChange, placeholder, size = "md" }) {
   return /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(Wrapper8, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_lucide_react9.Search, { size: 16 }),
-    /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(Field2, { placeholder, value, onChange: (e) => onChange(e.target.value) })
+    /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(Field2, { $size: size, placeholder, value, onChange: (e) => onChange(e.target.value) })
   ] });
 }
 

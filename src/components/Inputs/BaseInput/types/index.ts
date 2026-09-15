@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { Control, ControllerRenderProps, FieldPath, FieldValues } from 'react-hook-form';
 
 export interface BaseInputProps {
-  label: string;
+  label?: string;
   wrapperStyle?: React.CSSProperties;
   error?: string;
   children: ReactNode;

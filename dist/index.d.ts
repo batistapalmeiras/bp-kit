@@ -83,7 +83,7 @@ interface LinkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 declare const LinkButton: react.ForwardRefExoticComponent<LinkButtonProps & react.RefAttributes<HTMLButtonElement>>;
 
 interface BaseInputProps {
-    label: string;
+    label?: string;
     wrapperStyle?: React.CSSProperties;
     error?: string;
     children: ReactNode;
@@ -189,13 +189,17 @@ interface SelectProps<T extends FieldValues, N extends FieldPath<T>> {
     children: ReactNode;
     wrapperStyle?: React.CSSProperties;
 }
-interface RawSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-    label: string;
+type SelectSize = 'sm' | 'md';
+interface RawSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
+    label?: string;
+    /** Matches Button's 'sm' (36px) height, for rows pairing a select with a
+     * compact button or SearchInput. Defaults to 'md' (56px), the original size. */
+    size?: SelectSize;
     wrapperStyle?: React.CSSProperties;
     error?: string;
 }
 
-declare function RawSelect({ label, wrapperStyle, error, children, ...rest }: RawSelectProps): react.JSX.Element;
+declare function RawSelect({ label, size, wrapperStyle, error, children, ...rest }: RawSelectProps): react.JSX.Element;
 declare function Select<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, children, }: SelectProps<T, N>): react.JSX.Element;
 
 interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
@@ -269,13 +273,18 @@ interface Props {
 }
 declare function PageHeader({ title, subtitle, back, action }: Props): react__default.JSX.Element;
 
+type SearchInputSize = 'sm' | 'md';
 interface SearchInputProps {
     value: string;
     onChange: (value: string) => void;
     placeholder?: string;
+    /** Matches Button's 'sm' (36px) and RawSelect's 'sm' height, for rows
+     * pairing a search field with a compact button or select. Defaults to
+     * 'md' (40px), the original size. */
+    size?: SearchInputSize;
 }
 
-declare function SearchInput({ value, onChange, placeholder }: SearchInputProps): react.JSX.Element;
+declare function SearchInput({ value, onChange, placeholder, size }: SearchInputProps): react.JSX.Element;
 
 interface SegmentedControlOption<T extends string | number | boolean> {
     value: T;

@@ -9,7 +9,7 @@ export { InputField } from './styles';
 export function BaseInput({ label, wrapperStyle, error, children }: BaseInputProps) {
   return (
     <Wrapper style={wrapperStyle}>
-      <Label>{label}</Label>
+      {label && <Label>{label}</Label>}
       {children}
       {error && <ErrorText>{error}</ErrorText>}
     </Wrapper>
