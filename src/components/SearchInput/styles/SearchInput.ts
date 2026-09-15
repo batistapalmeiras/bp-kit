@@ -5,7 +5,6 @@ import { SearchInputSize } from '../types';
 
 export const Wrapper = styled.div`
   position: relative;
-  margin-bottom: ${({ theme }) => theme.spacing.md};
 
   svg {
     position: absolute;

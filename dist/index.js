@@ -2161,7 +2161,6 @@ var import_lucide_react9 = require("lucide-react");
 var import_styled_components29 = __toESM(require("styled-components"));
 var Wrapper8 = import_styled_components29.default.div`
   position: relative;
-  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
 
   svg {
     position: absolute;

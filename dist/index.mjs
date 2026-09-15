@@ -2053,7 +2053,6 @@ import { Search } from "lucide-react";
 import styled27, { css as css7 } from "styled-components";
 var Wrapper8 = styled27.div`
   position: relative;
-  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
 
   svg {
     position: absolute;
