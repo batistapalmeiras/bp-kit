@@ -22,9 +22,10 @@ export interface ProfilePageProps {
   changePasswordPath?: string;
   /** Sign the user out. Omit to hide the Sair action entirely. */
   onLogout?: () => void;
+  back?: boolean;
 }
 
-export function ProfilePage({ roleLabel, changePasswordPath, onLogout }: ProfilePageProps) {
+export function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }: ProfilePageProps) {
   const { user, userEmail, updateProfile } = useAuthCtx();
   const navigate = useNavigate();
   const { show: showToast, toast } = useToast();
@@ -45,7 +46,7 @@ export function ProfilePage({ roleLabel, changePasswordPath, onLogout }: Profile
 
   return (
     <Wrap>
-      <PageHeader title="Meu perfil" back />
+      <PageHeader title="Meu perfil" back={back} />
 
       <Identity>
         <Name>{user?.name ?? '—'}</Name>

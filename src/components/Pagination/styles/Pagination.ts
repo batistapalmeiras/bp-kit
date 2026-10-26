@@ -28,3 +28,11 @@ export const PageButton = styled.button<{ $active?: boolean }>`
 
   &:disabled { opacity: 0.35; cursor: not-allowed; }
 `;
+
+export const PageGap = styled.span`
+  width: 24px;
+  text-align: center;
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  color: ${({ theme }) => theme.colors.muted};
+`;

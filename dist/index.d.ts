@@ -270,8 +270,9 @@ interface Props {
     subtitle?: string;
     back?: boolean;
     action?: react__default.ReactNode;
+    actionAlign?: 'center' | 'end';
 }
-declare function PageHeader({ title, subtitle, back, action }: Props): react__default.JSX.Element;
+declare function PageHeader({ title, subtitle, back, action, actionAlign }: Props): react__default.JSX.Element;
 
 type SearchInputSize = 'sm' | 'md';
 interface SearchInputProps {
@@ -417,8 +418,9 @@ interface ProfilePageProps {
     changePasswordPath?: string;
     /** Sign the user out. Omit to hide the Sair action entirely. */
     onLogout?: () => void;
+    back?: boolean;
 }
-declare function ProfilePage({ roleLabel, changePasswordPath, onLogout }: ProfilePageProps): react.JSX.Element;
+declare function ProfilePage({ roleLabel, changePasswordPath, onLogout, back }: ProfilePageProps): react.JSX.Element;
 
 declare function ChangePasswordPage(): react.JSX.Element;
 

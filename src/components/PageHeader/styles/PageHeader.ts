@@ -23,9 +23,9 @@ export const Back = styled.button`
   &:hover { background: ${({ theme }) => theme.colors.surfaceStrong}; }
 `;
 
-export const Row = styled.div`
+export const Row = styled.div<{ $actionAlign: 'center' | 'end' }>`
   display: flex;
-  align-items: center;
+  align-items: ${({ $actionAlign }) => ($actionAlign === 'end' ? 'flex-end' : 'center')};
   justify-content: space-between;
   gap: ${({ theme }) => theme.spacing.base};
 `;

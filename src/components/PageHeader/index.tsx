@@ -11,9 +11,10 @@ interface Props {
   subtitle?: string;
   back?: boolean;
   action?: React.ReactNode;
+  actionAlign?: 'center' | 'end';
 }
 
-export function PageHeader({ title, subtitle, back, action }: Props) {
+export function PageHeader({ title, subtitle, back, action, actionAlign = 'center' }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -23,7 +24,7 @@ export function PageHeader({ title, subtitle, back, action }: Props) {
           <ArrowLeft size={20} />
         </Back>
       )}
-      <Row>
+      <Row $actionAlign={actionAlign}>
         <Titles>
           <Title>{title}</Title>
           {subtitle && <Subtitle>{subtitle}</Subtitle>}

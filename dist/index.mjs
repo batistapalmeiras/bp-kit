@@ -1928,6 +1928,23 @@ function Modal({ children, close, variant = "dialog" }) {
   ) });
 }
 
+// src/components/Pagination/pageItems.ts
+function getPageItems(currentPage, totalPages) {
+  const visible = /* @__PURE__ */ new Set([1, totalPages, currentPage - 1, currentPage, currentPage + 1]);
+  if (currentPage <= 3) [1, 2, 3].forEach((page) => visible.add(page));
+  if (currentPage >= totalPages - 2) [totalPages - 2, totalPages - 1, totalPages].forEach((page) => visible.add(page));
+  const pages = Array.from(visible).filter((page) => page >= 1 && page <= totalPages).sort((a, b) => a - b);
+  const items = [];
+  let previous = 0;
+  for (const page of pages) {
+    if (page - previous === 2) items.push(previous + 1);
+    else if (page - previous > 2) items.push("gap");
+    items.push(page);
+    previous = page;
+  }
+  return items;
+}
+
 // src/components/Pagination/styles/Pagination.ts
 import styled25 from "styled-components";
 var Wrapper6 = styled25.div`
@@ -1956,6 +1973,13 @@ var PageButton = styled25.button`
 
   &:disabled { opacity: 0.35; cursor: not-allowed; }
 `;
+var PageGap = styled25.span`
+  width: 24px;
+  text-align: center;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+`;
 
 // src/components/Pagination/index.tsx
 import { jsx as jsx20, jsxs as jsxs17 } from "react/jsx-runtime";
@@ -1963,18 +1987,20 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
   return /* @__PURE__ */ jsxs17(Wrapper6, { role: "navigation", "aria-label": "Pagina\xE7\xE3o", children: [
     /* @__PURE__ */ jsx20(PageButton, { type: "button", "aria-label": "P\xE1gina anterior", onClick: () => onPageChange(currentPage - 1), disabled: currentPage === 1, children: /* @__PURE__ */ jsx20("span", { "aria-hidden": "true", children: "\u2039" }) }),
-    Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => /* @__PURE__ */ jsx20(
-      PageButton,
-      {
-        type: "button",
-        $active: page === currentPage,
-        "aria-current": page === currentPage ? "page" : void 0,
-        "aria-label": `P\xE1gina ${page}`,
-        onClick: () => onPageChange(page),
-        children: page
-      },
-      page
-    )),
+    getPageItems(currentPage, totalPages).map(
+      (page, index) => page === "gap" ? /* @__PURE__ */ jsx20(PageGap, { "aria-hidden": "true", children: "\u2026" }, `gap-${index}`) : /* @__PURE__ */ jsx20(
+        PageButton,
+        {
+          type: "button",
+          $active: page === currentPage,
+          "aria-current": page === currentPage ? "page" : void 0,
+          "aria-label": `P\xE1gina ${page}`,
+          onClick: () => onPageChange(page),
+          children: page
+        },
+        page
+      )
+    ),
     /* @__PURE__ */ jsx20(PageButton, { type: "button", "aria-label": "Pr\xF3xima p\xE1gina", onClick: () => onPageChange(currentPage + 1), disabled: currentPage === totalPages, children: /* @__PURE__ */ jsx20("span", { "aria-hidden": "true", children: "\u203A" }) })
   ] });
 }
@@ -2007,7 +2033,7 @@ var Back = styled26.button`
 `;
 var Row = styled26.div`
   display: flex;
-  align-items: center;
+  align-items: ${({ $actionAlign }) => $actionAlign === "end" ? "flex-end" : "center"};
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.base};
 `;
@@ -2032,11 +2058,11 @@ var Subtitle = styled26.p`
 
 // src/components/PageHeader/index.tsx
 import { jsx as jsx21, jsxs as jsxs18 } from "react/jsx-runtime";
-function PageHeader({ title, subtitle, back, action }) {
+function PageHeader({ title, subtitle, back, action, actionAlign = "center" }) {
   const navigate = useNavigate();
   return /* @__PURE__ */ jsxs18(Wrapper7, { children: [
     back && /* @__PURE__ */ jsx21(Back, { onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ jsx21(ArrowLeft, { size: 20 }) }),
-    /* @__PURE__ */ jsxs18(Row, { children: [
+    /* @__PURE__ */ jsxs18(Row, { $actionAlign: actionAlign, children: [
       /* @__PURE__ */ jsxs18(Titles, { children: [
         /* @__PURE__ */ jsx21(Title, { children: title }),
         subtitle && /* @__PURE__ */ jsx21(Subtitle, { children: subtitle })
@@ -3105,7 +3131,7 @@ var profileSchema = z2.object({
 
 // src/pages/ProfilePage/index.tsx
 import { Fragment as Fragment5, jsx as jsx30, jsxs as jsxs23 } from "react/jsx-runtime";
-function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
+function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
   const navigate = useNavigate4();
@@ -3123,7 +3149,7 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout }) {
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
   };
   return /* @__PURE__ */ jsxs23(Wrap3, { children: [
-    /* @__PURE__ */ jsx30(PageHeader, { title: "Meu perfil", back: true }),
+    /* @__PURE__ */ jsx30(PageHeader, { title: "Meu perfil", back }),
     /* @__PURE__ */ jsxs23(Identity, { children: [
       /* @__PURE__ */ jsx30(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
       roleLabel && /* @__PURE__ */ jsx30(RoleLabel, { children: roleLabel })

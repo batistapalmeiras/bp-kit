@@ -1,5 +1,6 @@
 // Local
-import { PageButton, Wrapper } from './styles';
+import { getPageItems } from './pageItems';
+import { PageButton, PageGap, Wrapper } from './styles';
 
 interface PaginationProps {
   currentPage: number;
@@ -16,18 +17,24 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         <span aria-hidden="true">‹</span>
       </PageButton>
 
-      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-        <PageButton
-          key={page}
-          type="button"
-          $active={page === currentPage}
-          aria-current={page === currentPage ? 'page' : undefined}
-          aria-label={`Página ${page}`}
-          onClick={() => onPageChange(page)}
-        >
-          {page}
-        </PageButton>
-      ))}
+      {getPageItems(currentPage, totalPages).map((page, index) =>
+        page === 'gap' ? (
+          <PageGap key={`gap-${index}`} aria-hidden="true">
+            …
+          </PageGap>
+        ) : (
+          <PageButton
+            key={page}
+            type="button"
+            $active={page === currentPage}
+            aria-current={page === currentPage ? 'page' : undefined}
+            aria-label={`Página ${page}`}
+            onClick={() => onPageChange(page)}
+          >
+            {page}
+          </PageButton>
+        ),
+      )}
 
       <PageButton type="button" aria-label="Próxima página" onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages}>
         <span aria-hidden="true">›</span>
