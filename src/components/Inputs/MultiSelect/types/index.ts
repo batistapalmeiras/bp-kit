@@ -12,4 +12,5 @@ export interface MultiSelectProps {
   disabled?: boolean;
   max?: number;
   error?: string;
+  searchable?: boolean;
 }

@@ -1,15 +1,21 @@
 // React
 import { Controller, FieldPath, FieldValues } from 'react-hook-form';
 // Local
-import { ErrorText, Label, Wrapper } from './styles';
+import { ErrorText, Label, LabelAside, LabelRow, Wrapper } from './styles';
 import { BaseInputProps, ControlledBaseProps } from './types';
 
 export { InputField } from './styles';
 
-export function BaseInput({ label, wrapperStyle, error, children }: BaseInputProps) {
+export function BaseInput({ label, aside, wrapperStyle, error, children }: BaseInputProps) {
   return (
     <Wrapper style={wrapperStyle}>
-      {label && <Label>{label}</Label>}
+      {label && !aside && <Label>{label}</Label>}
+      {label && aside && (
+        <LabelRow>
+          <Label>{label}</Label>
+          <LabelAside>{aside}</LabelAside>
+        </LabelRow>
+      )}
       {children}
       {error && <ErrorText>{error}</ErrorText>}
     </Wrapper>

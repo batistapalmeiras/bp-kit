@@ -4,6 +4,7 @@ import { Control, ControllerRenderProps, FieldPath, FieldValues } from 'react-ho
 
 export interface BaseInputProps {
   label?: string;
+  aside?: ReactNode;
   wrapperStyle?: React.CSSProperties;
   error?: string;
   children: ReactNode;

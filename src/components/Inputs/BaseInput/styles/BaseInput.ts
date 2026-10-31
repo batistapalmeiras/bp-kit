@@ -14,6 +14,18 @@ export const Label = styled.label`
   color: ${({ theme }) => theme.colors.muted};
 `;
 
+export const LabelRow = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing.sm};
+`;
+
+export const LabelAside = styled.span`
+  font-size: ${({ theme }) => theme.typography.captionSm.fontSize};
+  color: ${({ theme }) => theme.colors.muted};
+`;
+
 export const ErrorText = styled.span`
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
   color: ${({ theme }) => theme.colors.primaryErrorText};

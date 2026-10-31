@@ -1,10 +1,24 @@
 // React
 import { useEffect, useRef, useState } from 'react';
+// Libs
+import { ChevronDown } from 'lucide-react';
 // Components
 import { BaseInput } from '../BaseInput';
 import { Checkbox } from '../Checkbox';
 // Local
-import { Chip, Dropdown, DropdownOption, EmptyOption, Field, LimitHint, RemoveChip, SearchInput, Wrap } from './styles';
+import {
+  Chip,
+  Dropdown,
+  DropdownOption,
+  EmptyOption,
+  Field,
+  LimitHint,
+  RemoveChip,
+  SearchInput,
+  ToggleButton,
+  TogglePlaceholder,
+  Wrap,
+} from './styles';
 import { MultiSelectProps } from './types';
 
 // One bordered field holds the chips and the search text together (MUI
@@ -12,7 +26,17 @@ import { MultiSelectProps } from './types';
 // search box. The dropdown lists every option with a checkbox showing what's
 // already picked, so toggling one on/off doesn't require it to disappear
 // from view first.
-export function MultiSelect({ label, options, value, onChange, placeholder = 'Buscar…', disabled, max, error }: MultiSelectProps) {
+export function MultiSelect({
+  label,
+  options,
+  value,
+  onChange,
+  placeholder = 'Buscar…',
+  disabled,
+  max,
+  error,
+  searchable = true,
+}: MultiSelectProps) {
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -27,15 +51,21 @@ export function MultiSelect({ label, options, value, onChange, placeholder = 'Bu
     return () => document.removeEventListener('mousedown', onClickOutside);
   }, [open]);
 
-  const atLimit = !!max && value.length >= max;
+  const single = max === 1;
+  const atLimit = !single && !!max && value.length >= max;
   const labelFor = (v: string) => options.find((o) => o.value === v)?.label ?? v;
 
-  const q = query.trim().toLowerCase();
+  const q = searchable ? query.trim().toLowerCase() : '';
   const visibleOptions = options.filter((o) => !q || o.label.toLowerCase().includes(q));
 
   const toggle = (v: string) => {
     if (value.includes(v)) {
       onChange(value.filter((x) => x !== v));
+      return;
+    }
+    if (single) {
+      onChange([v]);
+      setOpen(false);
       return;
     }
     if (atLimit) return;
@@ -46,13 +76,16 @@ export function MultiSelect({ label, options, value, onChange, placeholder = 'Bu
   const remove = (v: string) => onChange(value.filter((x) => x !== v));
 
   const focusField = () => {
-    if (!disabled) inputRef.current?.focus();
+    if (!disabled && searchable) inputRef.current?.focus();
   };
 
+  const selectedCount =
+    !single && value.length > 0 ? `${value.length} ${value.length === 1 ? 'selecionado' : 'selecionados'}` : undefined;
+
   return (
-    <BaseInput label={label} error={error}>
+    <BaseInput label={label} aside={selectedCount} error={error}>
       <Wrap ref={wrapRef}>
-        <Field $focused={open} $disabled={disabled} onClick={focusField}>
+        <Field $focused={open} $disabled={disabled} $invalid={!!error} onClick={focusField}>
           {value.map((v) => (
             <Chip key={v}>
               {labelFor(v)}
@@ -70,7 +103,7 @@ export function MultiSelect({ label, options, value, onChange, placeholder = 'Bu
               )}
             </Chip>
           ))}
-          {!disabled && (
+          {!disabled && searchable && (
             <SearchInput
               ref={inputRef}
               type="text"
@@ -86,16 +119,35 @@ export function MultiSelect({ label, options, value, onChange, placeholder = 'Bu
               }}
             />
           )}
+          {!disabled && !searchable && (
+            <ToggleButton
+              type="button"
+              aria-label={label}
+              aria-expanded={open}
+              aria-haspopup="listbox"
+              $open={open}
+              onClick={() => setOpen((o) => !o)}
+            >
+              <TogglePlaceholder>{value.length === 0 ? placeholder : ''}</TogglePlaceholder>
+              <ChevronDown size={20} />
+            </ToggleButton>
+          )}
         </Field>
 
         {open && !disabled && (
-          <Dropdown role="listbox">
+          <Dropdown role="listbox" aria-multiselectable={!single}>
             {visibleOptions.length === 0 && <EmptyOption>Nenhuma opção encontrada.</EmptyOption>}
             {visibleOptions.map((o) => {
               const checked = value.includes(o.value);
               const rowDisabled = !checked && atLimit;
               return (
-                <DropdownOption key={o.value} role="option" aria-selected={checked} $disabled={rowDisabled}>
+                <DropdownOption
+                  key={o.value}
+                  role="option"
+                  aria-selected={checked}
+                  $selected={checked}
+                  $disabled={rowDisabled}
+                >
                   <Checkbox
                     checked={checked}
                     disabled={rowDisabled}

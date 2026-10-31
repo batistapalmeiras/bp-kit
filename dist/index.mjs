@@ -451,6 +451,16 @@ var Label = styled12.label`
   line-height: ${({ theme: theme2 }) => theme2.typography.caption.lineHeight};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
+var LabelRow = styled12.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
+`;
+var LabelAside = styled12.span`
+  font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+`;
 var ErrorText = styled12.span`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
@@ -491,9 +501,13 @@ var InputField = styled12.input`
 
 // src/components/Inputs/BaseInput/index.tsx
 import { jsx as jsx8, jsxs as jsxs7 } from "react/jsx-runtime";
-function BaseInput({ label, wrapperStyle, error, children }) {
+function BaseInput({ label, aside, wrapperStyle, error, children }) {
   return /* @__PURE__ */ jsxs7(Wrapper2, { style: wrapperStyle, children: [
-    label && /* @__PURE__ */ jsx8(Label, { children: label }),
+    label && !aside && /* @__PURE__ */ jsx8(Label, { children: label }),
+    label && aside && /* @__PURE__ */ jsxs7(LabelRow, { children: [
+      /* @__PURE__ */ jsx8(Label, { children: label }),
+      /* @__PURE__ */ jsx8(LabelAside, { children: aside })
+    ] }),
     children,
     error && /* @__PURE__ */ jsx8(ErrorText, { children: error })
   ] });
@@ -1141,6 +1155,7 @@ function MonthPicker({
 
 // src/components/Inputs/MultiSelect/index.tsx
 import { useEffect as useEffect3, useRef as useRef4, useState as useState4 } from "react";
+import { ChevronDown } from "lucide-react";
 
 // src/components/Inputs/MultiSelect/styles/MultiSelect.ts
 import styled18 from "styled-components";
@@ -1170,6 +1185,10 @@ var Field = styled18.div`
       padding: calc(${theme2.spacing.xs} - 1px) calc(${theme2.spacing.md} - 1px);
     `}
 
+  ${({ $invalid, $focused, theme: theme2 }) => $invalid && !$focused && `
+      border-color: ${theme2.colors.primaryErrorText};
+    `}
+
   ${({ $disabled, theme: theme2 }) => $disabled && `
       background: ${theme2.colors.surfaceSoft};
       cursor: not-allowed;
@@ -1180,13 +1199,14 @@ var Chip2 = styled18.span`
   align-items: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
   height: 32px;
-  padding: 0 ${({ theme: theme2 }) => theme2.spacing.xs} 0 ${({ theme: theme2 }) => theme2.spacing.sm};
-  background: ${({ theme: theme2 }) => theme2.colors.surfaceSoft};
-  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  padding: 0 ${({ theme: theme2 }) => theme2.spacing.xs} 0 ${({ theme: theme2 }) => theme2.spacing.md};
+  background: ${({ theme: theme2 }) => theme2.colors.primarySoft};
+  border: none;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  font-weight: 600;
+  color: ${({ theme: theme2 }) => theme2.colors.luxe};
 `;
 var RemoveChip = styled18.button`
   display: grid;
@@ -1196,15 +1216,39 @@ var RemoveChip = styled18.button`
   border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
   background: none;
   border: none;
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  color: ${({ theme: theme2 }) => theme2.colors.luxe};
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1;
 
   &:hover {
-    background: ${({ theme: theme2 }) => theme2.colors.hairline};
-    color: ${({ theme: theme2 }) => theme2.colors.ink};
+    background: ${({ theme: theme2 }) => theme2.colors.primaryDisabled};
   }
+`;
+var ToggleButton = styled18.button`
+  flex: 1 1 80px;
+  min-width: 80px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: ${({ theme: theme2 }) => theme2.colors.body};
+  cursor: pointer;
+
+  svg {
+    flex-shrink: 0;
+    transition: transform 0.15s;
+    transform: rotate(${({ $open }) => $open ? "180deg" : "0deg"});
+  }
+`;
+var TogglePlaceholder = styled18.span`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
 `;
 var SearchInput = styled18.input`
   flex: 1 1 80px;
@@ -1236,6 +1280,7 @@ var Dropdown = styled18.div`
   border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
   box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
+  overflow-x: hidden;
   z-index: 20;
   padding: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
@@ -1243,12 +1288,21 @@ var DropdownOption = styled18.div`
   display: flex;
   align-items: center;
   width: 100%;
+  min-height: 44px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
-  padding: ${({ theme: theme2 }) => theme2.spacing.sm};
+  padding: 0 ${({ theme: theme2 }) => theme2.spacing.sm};
   cursor: pointer;
+  background: ${({ $selected, theme: theme2 }) => $selected ? theme2.colors.primarySoft : "transparent"};
+
+  & > label {
+    flex: 1;
+    min-height: 44px;
+    gap: ${({ theme: theme2 }) => theme2.spacing.md};
+    font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
+  }
 
   &:hover {
-    background: ${({ theme: theme2 }) => theme2.colors.surfaceSoft};
+    background: ${({ $selected, theme: theme2 }) => $selected ? theme2.colors.primarySoft : theme2.colors.surfaceSoft};
   }
 
   ${({ $disabled }) => $disabled && `
@@ -1272,7 +1326,17 @@ var LimitHint = styled18.p`
 
 // src/components/Inputs/MultiSelect/index.tsx
 import { jsx as jsx13, jsxs as jsxs12 } from "react/jsx-runtime";
-function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2026", disabled, max, error }) {
+function MultiSelect({
+  label,
+  options,
+  value,
+  onChange,
+  placeholder = "Buscar\u2026",
+  disabled,
+  max,
+  error,
+  searchable = true
+}) {
   const [query, setQuery] = useState4("");
   const [open, setOpen] = useState4(false);
   const wrapRef = useRef4(null);
@@ -1285,16 +1349,22 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, [open]);
-  const atLimit = !!max && value.length >= max;
+  const single = max === 1;
+  const atLimit = !single && !!max && value.length >= max;
   const labelFor = (v) => {
     var _a, _b;
     return (_b = (_a = options.find((o) => o.value === v)) == null ? void 0 : _a.label) != null ? _b : v;
   };
-  const q = query.trim().toLowerCase();
+  const q = searchable ? query.trim().toLowerCase() : "";
   const visibleOptions = options.filter((o) => !q || o.label.toLowerCase().includes(q));
   const toggle = (v) => {
     if (value.includes(v)) {
       onChange(value.filter((x) => x !== v));
+      return;
+    }
+    if (single) {
+      onChange([v]);
+      setOpen(false);
       return;
     }
     if (atLimit) return;
@@ -1304,10 +1374,11 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
   const remove = (v) => onChange(value.filter((x) => x !== v));
   const focusField = () => {
     var _a;
-    if (!disabled) (_a = inputRef.current) == null ? void 0 : _a.focus();
+    if (!disabled && searchable) (_a = inputRef.current) == null ? void 0 : _a.focus();
   };
-  return /* @__PURE__ */ jsx13(BaseInput, { label, error, children: /* @__PURE__ */ jsxs12(Wrap, { ref: wrapRef, children: [
-    /* @__PURE__ */ jsxs12(Field, { $focused: open, $disabled: disabled, onClick: focusField, children: [
+  const selectedCount = !single && value.length > 0 ? `${value.length} ${value.length === 1 ? "selecionado" : "selecionados"}` : void 0;
+  return /* @__PURE__ */ jsx13(BaseInput, { label, aside: selectedCount, error, children: /* @__PURE__ */ jsxs12(Wrap, { ref: wrapRef, children: [
+    /* @__PURE__ */ jsxs12(Field, { $focused: open, $disabled: disabled, $invalid: !!error, onClick: focusField, children: [
       value.map((v) => /* @__PURE__ */ jsxs12(Chip2, { children: [
         labelFor(v),
         !disabled && /* @__PURE__ */ jsx13(
@@ -1323,7 +1394,7 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
           }
         )
       ] }, v)),
-      !disabled && /* @__PURE__ */ jsx13(
+      !disabled && searchable && /* @__PURE__ */ jsx13(
         SearchInput,
         {
           ref: inputRef,
@@ -1339,22 +1410,47 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
             if (e.key === "Backspace" && query === "" && value.length > 0) remove(value[value.length - 1]);
           }
         }
+      ),
+      !disabled && !searchable && /* @__PURE__ */ jsxs12(
+        ToggleButton,
+        {
+          type: "button",
+          "aria-label": label,
+          "aria-expanded": open,
+          "aria-haspopup": "listbox",
+          $open: open,
+          onClick: () => setOpen((o) => !o),
+          children: [
+            /* @__PURE__ */ jsx13(TogglePlaceholder, { children: value.length === 0 ? placeholder : "" }),
+            /* @__PURE__ */ jsx13(ChevronDown, { size: 20 })
+          ]
+        }
       )
     ] }),
-    open && !disabled && /* @__PURE__ */ jsxs12(Dropdown, { role: "listbox", children: [
+    open && !disabled && /* @__PURE__ */ jsxs12(Dropdown, { role: "listbox", "aria-multiselectable": !single, children: [
       visibleOptions.length === 0 && /* @__PURE__ */ jsx13(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
       visibleOptions.map((o) => {
         const checked = value.includes(o.value);
         const rowDisabled = !checked && atLimit;
-        return /* @__PURE__ */ jsx13(DropdownOption, { role: "option", "aria-selected": checked, $disabled: rowDisabled, children: /* @__PURE__ */ jsx13(
-          Checkbox,
+        return /* @__PURE__ */ jsx13(
+          DropdownOption,
           {
-            checked,
-            disabled: rowDisabled,
-            onChange: () => toggle(o.value),
-            label: o.label
-          }
-        ) }, o.value);
+            role: "option",
+            "aria-selected": checked,
+            $selected: checked,
+            $disabled: rowDisabled,
+            children: /* @__PURE__ */ jsx13(
+              Checkbox,
+              {
+                checked,
+                disabled: rowDisabled,
+                onChange: () => toggle(o.value),
+                label: o.label
+              }
+            )
+          },
+          o.value
+        );
       })
     ] }),
     atLimit && /* @__PURE__ */ jsxs12(LimitHint, { children: [
@@ -2508,38 +2604,72 @@ var ToastEl = styled34.div`
   padding: ${({ theme: theme2 }) => `${theme2.spacing.sm} ${theme2.spacing.lg}`};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
   box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
-  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  pointer-events: ${({ $interactive }) => $interactive ? "auto" : "none"};
   z-index: 9999;
   white-space: nowrap;
   text-align: center;
   animation: ${({ $leaving }) => $leaving ? fadeOut : fadeUp} 0.25s ease forwards;
 `;
+var ToastAction = styled34.button`
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: ${({ theme: theme2 }) => theme2.colors.primary};
+  font: inherit;
+  cursor: pointer;
+`;
 
 // src/components/Toast/hooks/useToast.tsx
 import { useCallback, useRef as useRef6, useState as useState6 } from "react";
 import { jsx as jsx26 } from "react/jsx-runtime";
+var ACTION_DURATION = 6e3;
 function useToast(duration = 2500) {
   const [state, setState] = useState6(null);
   const timerRef = useRef6(null);
+  const hide = useCallback(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setState((s) => s ? { ...s, leaving: true } : null);
+    timerRef.current = setTimeout(() => setState(null), 300);
+  }, []);
   const show = useCallback(
-    (message) => {
+    (message, action) => {
       if (timerRef.current) clearTimeout(timerRef.current);
-      setState({ message, leaving: false });
-      timerRef.current = setTimeout(() => {
-        setState((s) => s ? { ...s, leaving: true } : null);
-        timerRef.current = setTimeout(() => setState(null), 300);
-      }, duration);
+      setState({ message, leaving: false, action });
+      timerRef.current = setTimeout(hide, action ? ACTION_DURATION : duration);
     },
-    [duration]
+    [duration, hide]
   );
-  const toast = state ? /* @__PURE__ */ jsx26(Toast, { message: state.message, leaving: state.leaving }) : null;
-  return { show, toast };
+  const toast = state ? /* @__PURE__ */ jsx26(
+    Toast,
+    {
+      message: state.message,
+      leaving: state.leaving,
+      action: state.action && {
+        label: state.action.label,
+        onClick: () => {
+          var _a;
+          hide();
+          (_a = state.action) == null ? void 0 : _a.onClick();
+        }
+      }
+    }
+  ) : null;
+  return { show, hide, toast };
 }
 
 // src/components/Toast/index.tsx
-import { jsx as jsx27 } from "react/jsx-runtime";
-function Toast({ message, leaving }) {
-  return createPortal2(/* @__PURE__ */ jsx27(ToastEl, { $leaving: leaving, children: message }), document.body);
+import { jsx as jsx27, jsxs as jsxs22 } from "react/jsx-runtime";
+function Toast({ message, leaving, action }) {
+  return createPortal2(
+    /* @__PURE__ */ jsxs22(ToastEl, { $leaving: leaving, $interactive: !!action, role: "status", children: [
+      message,
+      action && /* @__PURE__ */ jsx27(ToastAction, { type: "button", onClick: action.onClick, children: action.label })
+    ] }),
+    document.body
+  );
 }
 
 // src/pages/LoginPage/index.tsx
@@ -2994,7 +3124,7 @@ var loginSchema = z.object({
 });
 
 // src/pages/LoginPage/index.tsx
-import { jsx as jsx29, jsxs as jsxs22 } from "react/jsx-runtime";
+import { jsx as jsx29, jsxs as jsxs23 } from "react/jsx-runtime";
 function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
   const navigate = useNavigate3();
@@ -3002,21 +3132,21 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" }
   });
-  return /* @__PURE__ */ jsxs22(Page, { children: [
-    /* @__PURE__ */ jsxs22(Brand2, { children: [
+  return /* @__PURE__ */ jsxs23(Page, { children: [
+    /* @__PURE__ */ jsxs23(Brand2, { children: [
       /* @__PURE__ */ jsx29(BrandMark, { children: /* @__PURE__ */ jsx29("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ jsxs22(BrandText, { children: [
+      /* @__PURE__ */ jsxs23(BrandText, { children: [
         /* @__PURE__ */ jsx29(BrandName2, { children: brand.name }),
         /* @__PURE__ */ jsx29(BrandSub, { children: brand.sub })
       ] }),
       brand.quote && /* @__PURE__ */ jsx29(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ jsx29(FormPanel, { children: /* @__PURE__ */ jsxs22(FormBox, { children: [
-      /* @__PURE__ */ jsxs22(FormHeader, { children: [
+    /* @__PURE__ */ jsx29(FormPanel, { children: /* @__PURE__ */ jsxs23(FormBox, { children: [
+      /* @__PURE__ */ jsxs23(FormHeader, { children: [
         /* @__PURE__ */ jsx29(FormTitle, { children: "Bem-vindo" }),
         /* @__PURE__ */ jsx29(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
       ] }),
-      /* @__PURE__ */ jsxs22(Form2, { onSubmit: handleSubmit(handleLogin), children: [
+      /* @__PURE__ */ jsxs23(Form2, { onSubmit: handleSubmit(handleLogin), children: [
         /* @__PURE__ */ jsx29(
           TextInput,
           {
@@ -3130,7 +3260,7 @@ var profileSchema = z2.object({
 });
 
 // src/pages/ProfilePage/index.tsx
-import { Fragment as Fragment5, jsx as jsx30, jsxs as jsxs23 } from "react/jsx-runtime";
+import { Fragment as Fragment5, jsx as jsx30, jsxs as jsxs24 } from "react/jsx-runtime";
 function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
@@ -3148,13 +3278,13 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
     const err = await updateProfile(data.name, data.email);
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
   };
-  return /* @__PURE__ */ jsxs23(Wrap3, { children: [
+  return /* @__PURE__ */ jsxs24(Wrap3, { children: [
     /* @__PURE__ */ jsx30(PageHeader, { title: "Meu perfil", back }),
-    /* @__PURE__ */ jsxs23(Identity, { children: [
+    /* @__PURE__ */ jsxs24(Identity, { children: [
       /* @__PURE__ */ jsx30(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
       roleLabel && /* @__PURE__ */ jsx30(RoleLabel, { children: roleLabel })
     ] }),
-    /* @__PURE__ */ jsxs23(Section, { children: [
+    /* @__PURE__ */ jsxs24(Section, { children: [
       /* @__PURE__ */ jsx30(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
       /* @__PURE__ */ jsx30(SectionDivider, {}),
       /* @__PURE__ */ jsx30(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
@@ -3169,15 +3299,15 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
         }
       )
     ] }),
-    /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsxs23(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
+    /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsxs24(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
       /* @__PURE__ */ jsx30(Save, { size: 16 }),
       isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es"
     ] }) }),
-    changePasswordPath && /* @__PURE__ */ jsxs23(Fragment5, { children: [
+    changePasswordPath && /* @__PURE__ */ jsxs24(Fragment5, { children: [
       /* @__PURE__ */ jsx30(Section, { children: /* @__PURE__ */ jsx30(SectionTitle, { children: "Seguran\xE7a" }) }),
       /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsx30(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
     ] }),
-    onLogout && /* @__PURE__ */ jsx30(LogoutAction, { children: /* @__PURE__ */ jsxs23(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
+    onLogout && /* @__PURE__ */ jsx30(LogoutAction, { children: /* @__PURE__ */ jsxs24(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
       /* @__PURE__ */ jsx30(LogOut, { size: 16 }),
       "Sair"
     ] }) }),
@@ -3201,7 +3331,7 @@ var passwordSchema = z3.object({
 });
 
 // src/pages/ChangePasswordPage/index.tsx
-import { Fragment as Fragment6, jsx as jsx31, jsxs as jsxs24 } from "react/jsx-runtime";
+import { Fragment as Fragment6, jsx as jsx31, jsxs as jsxs25 } from "react/jsx-runtime";
 function ChangePasswordPage() {
   const { updatePassword } = useAuthCtx();
   const { show: showToast, toast } = useToast();
@@ -3224,9 +3354,9 @@ function ChangePasswordPage() {
     showToast("Senha atualizada com sucesso.");
     reset();
   };
-  return /* @__PURE__ */ jsxs24(Wrap3, { children: [
+  return /* @__PURE__ */ jsxs25(Wrap3, { children: [
     /* @__PURE__ */ jsx31(PageHeader, { title: "Alterar senha", back: true }),
-    /* @__PURE__ */ jsxs24(Section, { children: [
+    /* @__PURE__ */ jsxs25(Section, { children: [
       /* @__PURE__ */ jsx31(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
       /* @__PURE__ */ jsx31(
         TextInput,
@@ -3239,7 +3369,7 @@ function ChangePasswordPage() {
         }
       )
     ] }),
-    /* @__PURE__ */ jsx31(Actions, { children: /* @__PURE__ */ jsx31(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs24(Fragment6, { children: [
+    /* @__PURE__ */ jsx31(Actions, { children: /* @__PURE__ */ jsx31(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs25(Fragment6, { children: [
       /* @__PURE__ */ jsx31(Save2, { size: 16 }),
       "Salvar nova senha"
     ] }) }) }),
@@ -3282,7 +3412,7 @@ var forgotPasswordSchema = z4.object({
 });
 
 // src/pages/ForgotPasswordPage/index.tsx
-import { Fragment as Fragment7, jsx as jsx32, jsxs as jsxs25 } from "react/jsx-runtime";
+import { Fragment as Fragment7, jsx as jsx32, jsxs as jsxs26 } from "react/jsx-runtime";
 function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
   const { submitting, sent, error, handleSubmit: submit } = useForgotPassword(resetPasswordPath);
   const navigate = useNavigate5();
@@ -3290,25 +3420,25 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
     resolver: zodResolver4(forgotPasswordSchema),
     defaultValues: { email: "" }
   });
-  return /* @__PURE__ */ jsxs25(Page, { children: [
-    /* @__PURE__ */ jsxs25(Brand2, { children: [
+  return /* @__PURE__ */ jsxs26(Page, { children: [
+    /* @__PURE__ */ jsxs26(Brand2, { children: [
       /* @__PURE__ */ jsx32(BrandMark, { children: /* @__PURE__ */ jsx32("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ jsxs25(BrandText, { children: [
+      /* @__PURE__ */ jsxs26(BrandText, { children: [
         /* @__PURE__ */ jsx32(BrandName2, { children: brand.name }),
         /* @__PURE__ */ jsx32(BrandSub, { children: brand.sub })
       ] }),
       brand.quote && /* @__PURE__ */ jsx32(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ jsx32(FormPanel, { children: /* @__PURE__ */ jsxs25(FormBox, { children: [
-      /* @__PURE__ */ jsxs25(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
+    /* @__PURE__ */ jsx32(FormPanel, { children: /* @__PURE__ */ jsxs26(FormBox, { children: [
+      /* @__PURE__ */ jsxs26(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
         /* @__PURE__ */ jsx32(ArrowLeft2, { size: 16 }),
         "Voltar para o login"
       ] }),
-      /* @__PURE__ */ jsxs25(FormHeader, { children: [
+      /* @__PURE__ */ jsxs26(FormHeader, { children: [
         /* @__PURE__ */ jsx32(FormTitle, { children: "Esqueci minha senha" }),
         /* @__PURE__ */ jsx32(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
       ] }),
-      sent ? /* @__PURE__ */ jsx32(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ jsxs25(Form2, { onSubmit: handleSubmit(submit), children: [
+      sent ? /* @__PURE__ */ jsx32(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ jsxs26(Form2, { onSubmit: handleSubmit(submit), children: [
         /* @__PURE__ */ jsx32(
           TextInput,
           {
@@ -3329,7 +3459,7 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
             type: "submit",
             disabled: submitting,
             style: { marginTop: 8 },
-            children: submitting ? "Enviando..." : /* @__PURE__ */ jsxs25(Fragment7, { children: [
+            children: submitting ? "Enviando..." : /* @__PURE__ */ jsxs26(Fragment7, { children: [
               /* @__PURE__ */ jsx32(Send, { size: 16 }),
               "Enviar link"
             ] })
@@ -3347,7 +3477,7 @@ import { zodResolver as zodResolver5 } from "@hookform/resolvers/zod";
 import { useForm as useForm5 } from "react-hook-form";
 import { useNavigate as useNavigate6 } from "react-router-dom";
 import { Save as Save3 } from "lucide-react";
-import { Fragment as Fragment8, jsx as jsx33, jsxs as jsxs26 } from "react/jsx-runtime";
+import { Fragment as Fragment8, jsx as jsx33, jsxs as jsxs27 } from "react/jsx-runtime";
 function ResetPasswordPage({ brand, loginPath }) {
   const { user, loading, updatePassword, logout } = useAuthCtx();
   const navigate = useNavigate6();
@@ -3371,29 +3501,29 @@ function ResetPasswordPage({ brand, loginPath }) {
     setDone(true);
   };
   const invalidLink = !done && !loading && !user;
-  return /* @__PURE__ */ jsxs26(Page, { children: [
-    /* @__PURE__ */ jsxs26(Brand2, { children: [
+  return /* @__PURE__ */ jsxs27(Page, { children: [
+    /* @__PURE__ */ jsxs27(Brand2, { children: [
       /* @__PURE__ */ jsx33(BrandMark, { children: /* @__PURE__ */ jsx33("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ jsxs26(BrandText, { children: [
+      /* @__PURE__ */ jsxs27(BrandText, { children: [
         /* @__PURE__ */ jsx33(BrandName2, { children: brand.name }),
         /* @__PURE__ */ jsx33(BrandSub, { children: brand.sub })
       ] }),
       brand.quote && /* @__PURE__ */ jsx33(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ jsx33(FormPanel, { children: /* @__PURE__ */ jsxs26(FormBox, { children: [
-      /* @__PURE__ */ jsxs26(FormHeader, { children: [
+    /* @__PURE__ */ jsx33(FormPanel, { children: /* @__PURE__ */ jsxs27(FormBox, { children: [
+      /* @__PURE__ */ jsxs27(FormHeader, { children: [
         /* @__PURE__ */ jsx33(FormTitle, { children: "Nova senha" }),
         /* @__PURE__ */ jsx33(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
       ] }),
-      done && /* @__PURE__ */ jsxs26(Fragment8, { children: [
+      done && /* @__PURE__ */ jsxs27(Fragment8, { children: [
         /* @__PURE__ */ jsx33(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
         /* @__PURE__ */ jsx33(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
       ] }),
-      invalidLink && /* @__PURE__ */ jsxs26(Fragment8, { children: [
+      invalidLink && /* @__PURE__ */ jsxs27(Fragment8, { children: [
         /* @__PURE__ */ jsx33(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
         /* @__PURE__ */ jsx33(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
       ] }),
-      !done && !invalidLink && /* @__PURE__ */ jsxs26(Form2, { onSubmit: handleSubmit(onSubmit), children: [
+      !done && !invalidLink && /* @__PURE__ */ jsxs27(Form2, { onSubmit: handleSubmit(onSubmit), children: [
         /* @__PURE__ */ jsx33(
           TextInput,
           {
@@ -3424,7 +3554,7 @@ function ResetPasswordPage({ brand, loginPath }) {
             type: "submit",
             disabled: isSubmitting,
             style: { marginTop: 8 },
-            children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs26(Fragment8, { children: [
+            children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs27(Fragment8, { children: [
               /* @__PURE__ */ jsx33(Save3, { size: 16 }),
               "Salvar nova senha"
             ] })
@@ -3519,21 +3649,22 @@ var theme = {
     primary: "#78b9a4",
     primaryActive: "#5a9d88",
     primaryDisabled: "#c2dbd4",
+    primarySoft: "#E8F2EE",
     primaryErrorText: "#c13515",
     primaryErrorTextHover: "#b32505",
     luxe: "#2d6a58",
     plus: "#4a9e82",
-    ink: "#222222",
-    body: "#3f3f3f",
-    muted: "#6a6a6a",
-    mutedSoft: "#929292",
-    hairline: "#dddddd",
-    hairlineSoft: "#ebebeb",
-    borderStrong: "#c1c1c1",
+    ink: "#1C2421",
+    body: "#3D4643",
+    muted: "#5E6864",
+    mutedSoft: "#8A9590",
+    hairline: "#E3E7E5",
+    hairlineSoft: "#EEF1EF",
+    borderStrong: "#D5DBD8",
     canvas: "#ffffff",
-    surfaceSoft: "#f7f7f7",
+    surfaceSoft: "#F6F7F6",
     surfaceCard: "#ffffff",
-    surfaceStrong: "#f2f2f2",
+    surfaceStrong: "#F2F4F3",
     onPrimary: "#ffffff",
     onDark: "#ffffff",
     legalLink: "#428bff",
@@ -3552,7 +3683,7 @@ var theme = {
     danger: "#ef4444"
   },
   typography: {
-    fontFamily: "'Airbnb Cereal VF', Circular, -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif",
+    fontFamily: "Inter, -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif",
     displayXl: {
       fontSize: "28px",
       fontWeight: 700,
