@@ -8,7 +8,7 @@ export const Wrap = styled.div`
 // The whole bordered box (chips + search text share it) — reads as one
 // input, MUI-multi-select style, instead of loose chips floating above a
 // separate search field.
-export const Field = styled.div<{ $focused?: boolean; $disabled?: boolean }>`
+export const Field = styled.div<{ $focused?: boolean; $disabled?: boolean; $invalid?: boolean }>`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -33,6 +33,13 @@ export const Field = styled.div<{ $focused?: boolean; $disabled?: boolean }>`
       padding: calc(${theme.spacing.xs} - 1px) calc(${theme.spacing.md} - 1px);
     `}
 
+  ${({ $invalid, $focused, theme }) =>
+    $invalid &&
+    !$focused &&
+    `
+      border-color: ${theme.colors.primaryErrorText};
+    `}
+
   ${({ $disabled, theme }) =>
     $disabled &&
     `
@@ -46,13 +53,14 @@ export const Chip = styled.span`
   align-items: center;
   gap: ${({ theme }) => theme.spacing.xs};
   height: 32px;
-  padding: 0 ${({ theme }) => theme.spacing.xs} 0 ${({ theme }) => theme.spacing.sm};
-  background: ${({ theme }) => theme.colors.surfaceSoft};
-  border: 1px solid ${({ theme }) => theme.colors.hairline};
+  padding: 0 ${({ theme }) => theme.spacing.xs} 0 ${({ theme }) => theme.spacing.md};
+  background: ${({ theme }) => theme.colors.primarySoft};
+  border: none;
   border-radius: ${({ theme }) => theme.rounded.full};
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
-  color: ${({ theme }) => theme.colors.ink};
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.luxe};
 `;
 
 export const RemoveChip = styled.button`
@@ -63,15 +71,41 @@ export const RemoveChip = styled.button`
   border-radius: ${({ theme }) => theme.rounded.full};
   background: none;
   border: none;
-  color: ${({ theme }) => theme.colors.muted};
+  color: ${({ theme }) => theme.colors.luxe};
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.hairline};
-    color: ${({ theme }) => theme.colors.ink};
+    background: ${({ theme }) => theme.colors.primaryDisabled};
   }
+`;
+
+export const ToggleButton = styled.button<{ $open?: boolean }>`
+  flex: 1 1 80px;
+  min-width: 80px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: ${({ theme }) => theme.colors.body};
+  cursor: pointer;
+
+  svg {
+    flex-shrink: 0;
+    transition: transform 0.15s;
+    transform: rotate(${({ $open }) => ($open ? '180deg' : '0deg')});
+  }
+`;
+
+export const TogglePlaceholder = styled.span`
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.bodyMd.fontSize};
+  color: ${({ theme }) => theme.colors.mutedSoft};
 `;
 
 // Borderless — sits inline inside Field, which owns the actual input chrome.
@@ -106,22 +140,32 @@ export const Dropdown = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.hairline};
   border-radius: ${({ theme }) => theme.rounded.md};
   box-shadow: ${({ theme }) => theme.shadows.md};
+  overflow-x: hidden;
   z-index: 20;
   padding: ${({ theme }) => theme.spacing.xs};
 `;
 
 // A div, not a button — it wraps a Checkbox (itself a <label>), and
 // interactive-in-interactive nesting gets flaky with real buttons.
-export const DropdownOption = styled.div<{ $disabled?: boolean }>`
+export const DropdownOption = styled.div<{ $disabled?: boolean; $selected?: boolean }>`
   display: flex;
   align-items: center;
   width: 100%;
+  min-height: 44px;
   border-radius: ${({ theme }) => theme.rounded.sm};
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: 0 ${({ theme }) => theme.spacing.sm};
   cursor: pointer;
+  background: ${({ $selected, theme }) => ($selected ? theme.colors.primarySoft : 'transparent')};
+
+  & > label {
+    flex: 1;
+    min-height: 44px;
+    gap: ${({ theme }) => theme.spacing.md};
+    font-size: ${({ theme }) => theme.typography.bodyMd.fontSize};
+  }
 
   &:hover {
-    background: ${({ theme }) => theme.colors.surfaceSoft};
+    background: ${({ $selected, theme }) => ($selected ? theme.colors.primarySoft : theme.colors.surfaceSoft)};
   }
 
   ${({ $disabled }) =>

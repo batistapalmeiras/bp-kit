@@ -84,6 +84,7 @@ declare const LinkButton: react.ForwardRefExoticComponent<LinkButtonProps & reac
 
 interface BaseInputProps {
     label?: string;
+    aside?: ReactNode;
     wrapperStyle?: React.CSSProperties;
     error?: string;
     children: ReactNode;
@@ -98,7 +99,7 @@ interface ControlledBaseProps<T extends FieldValues, N extends FieldPath<T>> {
 
 declare const InputField: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<react.DetailedHTMLProps<react.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, never> & Partial<Pick<react.DetailedHTMLProps<react.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, never>>> & string;
 
-declare function BaseInput({ label, wrapperStyle, error, children }: BaseInputProps): react.JSX.Element;
+declare function BaseInput({ label, aside, wrapperStyle, error, children }: BaseInputProps): react.JSX.Element;
 declare function ControlledBase<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, children, }: ControlledBaseProps<T, N>): react.JSX.Element;
 
 interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
@@ -163,9 +164,10 @@ interface MultiSelectProps {
     disabled?: boolean;
     max?: number;
     error?: string;
+    searchable?: boolean;
 }
 
-declare function MultiSelect({ label, options, value, onChange, placeholder, disabled, max, error }: MultiSelectProps): react.JSX.Element;
+declare function MultiSelect({ label, options, value, onChange, placeholder, disabled, max, error, searchable, }: MultiSelectProps): react.JSX.Element;
 
 interface RadioGroupOption {
     value: string;
@@ -507,21 +509,22 @@ declare const theme: {
         readonly primary: "#78b9a4";
         readonly primaryActive: "#5a9d88";
         readonly primaryDisabled: "#c2dbd4";
+        readonly primarySoft: "#E8F2EE";
         readonly primaryErrorText: "#c13515";
         readonly primaryErrorTextHover: "#b32505";
         readonly luxe: "#2d6a58";
         readonly plus: "#4a9e82";
-        readonly ink: "#222222";
-        readonly body: "#3f3f3f";
-        readonly muted: "#6a6a6a";
-        readonly mutedSoft: "#929292";
-        readonly hairline: "#dddddd";
-        readonly hairlineSoft: "#ebebeb";
-        readonly borderStrong: "#c1c1c1";
+        readonly ink: "#1C2421";
+        readonly body: "#3D4643";
+        readonly muted: "#5E6864";
+        readonly mutedSoft: "#8A9590";
+        readonly hairline: "#E3E7E5";
+        readonly hairlineSoft: "#EEF1EF";
+        readonly borderStrong: "#D5DBD8";
         readonly canvas: "#ffffff";
-        readonly surfaceSoft: "#f7f7f7";
+        readonly surfaceSoft: "#F6F7F6";
         readonly surfaceCard: "#ffffff";
-        readonly surfaceStrong: "#f2f2f2";
+        readonly surfaceStrong: "#F2F4F3";
         readonly onPrimary: "#ffffff";
         readonly onDark: "#ffffff";
         readonly legalLink: "#428bff";
@@ -539,7 +542,7 @@ declare const theme: {
         readonly danger: "#ef4444";
     };
     readonly typography: {
-        readonly fontFamily: "'Airbnb Cereal VF', Circular, -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif";
+        readonly fontFamily: "Inter, -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif";
         readonly displayXl: {
             readonly fontSize: "28px";
             readonly fontWeight: 700;

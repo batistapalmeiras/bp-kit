@@ -451,6 +451,16 @@ var Label = styled12.label`
   line-height: ${({ theme: theme2 }) => theme2.typography.caption.lineHeight};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
+var LabelRow = styled12.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
+`;
+var LabelAside = styled12.span`
+  font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+`;
 var ErrorText = styled12.span`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
@@ -491,9 +501,13 @@ var InputField = styled12.input`
 
 // src/components/Inputs/BaseInput/index.tsx
 import { jsx as jsx8, jsxs as jsxs7 } from "react/jsx-runtime";
-function BaseInput({ label, wrapperStyle, error, children }) {
+function BaseInput({ label, aside, wrapperStyle, error, children }) {
   return /* @__PURE__ */ jsxs7(Wrapper2, { style: wrapperStyle, children: [
-    label && /* @__PURE__ */ jsx8(Label, { children: label }),
+    label && !aside && /* @__PURE__ */ jsx8(Label, { children: label }),
+    label && aside && /* @__PURE__ */ jsxs7(LabelRow, { children: [
+      /* @__PURE__ */ jsx8(Label, { children: label }),
+      /* @__PURE__ */ jsx8(LabelAside, { children: aside })
+    ] }),
     children,
     error && /* @__PURE__ */ jsx8(ErrorText, { children: error })
   ] });
@@ -1141,6 +1155,7 @@ function MonthPicker({
 
 // src/components/Inputs/MultiSelect/index.tsx
 import { useEffect as useEffect3, useRef as useRef4, useState as useState4 } from "react";
+import { ChevronDown } from "lucide-react";
 
 // src/components/Inputs/MultiSelect/styles/MultiSelect.ts
 import styled18 from "styled-components";
@@ -1170,6 +1185,10 @@ var Field = styled18.div`
       padding: calc(${theme2.spacing.xs} - 1px) calc(${theme2.spacing.md} - 1px);
     `}
 
+  ${({ $invalid, $focused, theme: theme2 }) => $invalid && !$focused && `
+      border-color: ${theme2.colors.primaryErrorText};
+    `}
+
   ${({ $disabled, theme: theme2 }) => $disabled && `
       background: ${theme2.colors.surfaceSoft};
       cursor: not-allowed;
@@ -1180,13 +1199,14 @@ var Chip2 = styled18.span`
   align-items: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
   height: 32px;
-  padding: 0 ${({ theme: theme2 }) => theme2.spacing.xs} 0 ${({ theme: theme2 }) => theme2.spacing.sm};
-  background: ${({ theme: theme2 }) => theme2.colors.surfaceSoft};
-  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  padding: 0 ${({ theme: theme2 }) => theme2.spacing.xs} 0 ${({ theme: theme2 }) => theme2.spacing.md};
+  background: ${({ theme: theme2 }) => theme2.colors.primarySoft};
+  border: none;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  font-weight: 600;
+  color: ${({ theme: theme2 }) => theme2.colors.luxe};
 `;
 var RemoveChip = styled18.button`
   display: grid;
@@ -1196,15 +1216,39 @@ var RemoveChip = styled18.button`
   border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
   background: none;
   border: none;
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
+  color: ${({ theme: theme2 }) => theme2.colors.luxe};
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1;
 
   &:hover {
-    background: ${({ theme: theme2 }) => theme2.colors.hairline};
-    color: ${({ theme: theme2 }) => theme2.colors.ink};
+    background: ${({ theme: theme2 }) => theme2.colors.primaryDisabled};
   }
+`;
+var ToggleButton = styled18.button`
+  flex: 1 1 80px;
+  min-width: 80px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: ${({ theme: theme2 }) => theme2.colors.body};
+  cursor: pointer;
+
+  svg {
+    flex-shrink: 0;
+    transition: transform 0.15s;
+    transform: rotate(${({ $open }) => $open ? "180deg" : "0deg"});
+  }
+`;
+var TogglePlaceholder = styled18.span`
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
 `;
 var SearchInput = styled18.input`
   flex: 1 1 80px;
@@ -1236,6 +1280,7 @@ var Dropdown = styled18.div`
   border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
   box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
+  overflow-x: hidden;
   z-index: 20;
   padding: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
@@ -1243,12 +1288,21 @@ var DropdownOption = styled18.div`
   display: flex;
   align-items: center;
   width: 100%;
+  min-height: 44px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
-  padding: ${({ theme: theme2 }) => theme2.spacing.sm};
+  padding: 0 ${({ theme: theme2 }) => theme2.spacing.sm};
   cursor: pointer;
+  background: ${({ $selected, theme: theme2 }) => $selected ? theme2.colors.primarySoft : "transparent"};
+
+  & > label {
+    flex: 1;
+    min-height: 44px;
+    gap: ${({ theme: theme2 }) => theme2.spacing.md};
+    font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
+  }
 
   &:hover {
-    background: ${({ theme: theme2 }) => theme2.colors.surfaceSoft};
+    background: ${({ $selected, theme: theme2 }) => $selected ? theme2.colors.primarySoft : theme2.colors.surfaceSoft};
   }
 
   ${({ $disabled }) => $disabled && `
@@ -1272,7 +1326,17 @@ var LimitHint = styled18.p`
 
 // src/components/Inputs/MultiSelect/index.tsx
 import { jsx as jsx13, jsxs as jsxs12 } from "react/jsx-runtime";
-function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2026", disabled, max, error }) {
+function MultiSelect({
+  label,
+  options,
+  value,
+  onChange,
+  placeholder = "Buscar\u2026",
+  disabled,
+  max,
+  error,
+  searchable = true
+}) {
   const [query, setQuery] = useState4("");
   const [open, setOpen] = useState4(false);
   const wrapRef = useRef4(null);
@@ -1285,16 +1349,22 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, [open]);
-  const atLimit = !!max && value.length >= max;
+  const single = max === 1;
+  const atLimit = !single && !!max && value.length >= max;
   const labelFor = (v) => {
     var _a, _b;
     return (_b = (_a = options.find((o) => o.value === v)) == null ? void 0 : _a.label) != null ? _b : v;
   };
-  const q = query.trim().toLowerCase();
+  const q = searchable ? query.trim().toLowerCase() : "";
   const visibleOptions = options.filter((o) => !q || o.label.toLowerCase().includes(q));
   const toggle = (v) => {
     if (value.includes(v)) {
       onChange(value.filter((x) => x !== v));
+      return;
+    }
+    if (single) {
+      onChange([v]);
+      setOpen(false);
       return;
     }
     if (atLimit) return;
@@ -1304,10 +1374,11 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
   const remove = (v) => onChange(value.filter((x) => x !== v));
   const focusField = () => {
     var _a;
-    if (!disabled) (_a = inputRef.current) == null ? void 0 : _a.focus();
+    if (!disabled && searchable) (_a = inputRef.current) == null ? void 0 : _a.focus();
   };
-  return /* @__PURE__ */ jsx13(BaseInput, { label, error, children: /* @__PURE__ */ jsxs12(Wrap, { ref: wrapRef, children: [
-    /* @__PURE__ */ jsxs12(Field, { $focused: open, $disabled: disabled, onClick: focusField, children: [
+  const selectedCount = !single && value.length > 0 ? `${value.length} ${value.length === 1 ? "selecionado" : "selecionados"}` : void 0;
+  return /* @__PURE__ */ jsx13(BaseInput, { label, aside: selectedCount, error, children: /* @__PURE__ */ jsxs12(Wrap, { ref: wrapRef, children: [
+    /* @__PURE__ */ jsxs12(Field, { $focused: open, $disabled: disabled, $invalid: !!error, onClick: focusField, children: [
       value.map((v) => /* @__PURE__ */ jsxs12(Chip2, { children: [
         labelFor(v),
         !disabled && /* @__PURE__ */ jsx13(
@@ -1323,7 +1394,7 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
           }
         )
       ] }, v)),
-      !disabled && /* @__PURE__ */ jsx13(
+      !disabled && searchable && /* @__PURE__ */ jsx13(
         SearchInput,
         {
           ref: inputRef,
@@ -1339,22 +1410,47 @@ function MultiSelect({ label, options, value, onChange, placeholder = "Buscar\u2
             if (e.key === "Backspace" && query === "" && value.length > 0) remove(value[value.length - 1]);
           }
         }
+      ),
+      !disabled && !searchable && /* @__PURE__ */ jsxs12(
+        ToggleButton,
+        {
+          type: "button",
+          "aria-label": label,
+          "aria-expanded": open,
+          "aria-haspopup": "listbox",
+          $open: open,
+          onClick: () => setOpen((o) => !o),
+          children: [
+            /* @__PURE__ */ jsx13(TogglePlaceholder, { children: value.length === 0 ? placeholder : "" }),
+            /* @__PURE__ */ jsx13(ChevronDown, { size: 20 })
+          ]
+        }
       )
     ] }),
-    open && !disabled && /* @__PURE__ */ jsxs12(Dropdown, { role: "listbox", children: [
+    open && !disabled && /* @__PURE__ */ jsxs12(Dropdown, { role: "listbox", "aria-multiselectable": !single, children: [
       visibleOptions.length === 0 && /* @__PURE__ */ jsx13(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
       visibleOptions.map((o) => {
         const checked = value.includes(o.value);
         const rowDisabled = !checked && atLimit;
-        return /* @__PURE__ */ jsx13(DropdownOption, { role: "option", "aria-selected": checked, $disabled: rowDisabled, children: /* @__PURE__ */ jsx13(
-          Checkbox,
+        return /* @__PURE__ */ jsx13(
+          DropdownOption,
           {
-            checked,
-            disabled: rowDisabled,
-            onChange: () => toggle(o.value),
-            label: o.label
-          }
-        ) }, o.value);
+            role: "option",
+            "aria-selected": checked,
+            $selected: checked,
+            $disabled: rowDisabled,
+            children: /* @__PURE__ */ jsx13(
+              Checkbox,
+              {
+                checked,
+                disabled: rowDisabled,
+                onChange: () => toggle(o.value),
+                label: o.label
+              }
+            )
+          },
+          o.value
+        );
       })
     ] }),
     atLimit && /* @__PURE__ */ jsxs12(LimitHint, { children: [
@@ -3519,21 +3615,22 @@ var theme = {
     primary: "#78b9a4",
     primaryActive: "#5a9d88",
     primaryDisabled: "#c2dbd4",
+    primarySoft: "#E8F2EE",
     primaryErrorText: "#c13515",
     primaryErrorTextHover: "#b32505",
     luxe: "#2d6a58",
     plus: "#4a9e82",
-    ink: "#222222",
-    body: "#3f3f3f",
-    muted: "#6a6a6a",
-    mutedSoft: "#929292",
-    hairline: "#dddddd",
-    hairlineSoft: "#ebebeb",
-    borderStrong: "#c1c1c1",
+    ink: "#1C2421",
+    body: "#3D4643",
+    muted: "#5E6864",
+    mutedSoft: "#8A9590",
+    hairline: "#E3E7E5",
+    hairlineSoft: "#EEF1EF",
+    borderStrong: "#D5DBD8",
     canvas: "#ffffff",
-    surfaceSoft: "#f7f7f7",
+    surfaceSoft: "#F6F7F6",
     surfaceCard: "#ffffff",
-    surfaceStrong: "#f2f2f2",
+    surfaceStrong: "#F2F4F3",
     onPrimary: "#ffffff",
     onDark: "#ffffff",
     legalLink: "#428bff",
@@ -3552,7 +3649,7 @@ var theme = {
     danger: "#ef4444"
   },
   typography: {
-    fontFamily: "'Airbnb Cereal VF', Circular, -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif",
+    fontFamily: "Inter, -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif",
     displayXl: {
       fontSize: "28px",
       fontWeight: 700,
