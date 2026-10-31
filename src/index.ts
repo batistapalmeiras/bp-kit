@@ -49,6 +49,7 @@ export { SummaryCard } from './components/SummaryCard';
 export type { SummaryCardProps, SummaryItem, SummaryCardButton } from './components/SummaryCard/types';
 export { Tab, TabBadge, TabBar } from './components/Tabs';
 export { Toast, useToast } from './components/Toast';
+export type { ToastActionConfig } from './components/Toast';
 export { Typography } from './components/Typography';
 export type { TypographyProps, TypographyType } from './components/Typography/types';
 

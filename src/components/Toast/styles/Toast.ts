@@ -8,7 +8,7 @@ const fadeOut = keyframes`
   to   { opacity: 0; transform: translateY(8px); }
 `;
 
-export const ToastEl = styled.div<{ $leaving: boolean }>`
+export const ToastEl = styled.div<{ $leaving: boolean; $interactive: boolean }>`
   position: fixed;
   bottom: 80px;
   left: 0;
@@ -23,9 +23,21 @@ export const ToastEl = styled.div<{ $leaving: boolean }>`
   padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.lg}`};
   border-radius: ${({ theme }) => theme.rounded.full};
   box-shadow: ${({ theme }) => theme.shadows.md};
-  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.md};
+  pointer-events: ${({ $interactive }) => ($interactive ? 'auto' : 'none')};
   z-index: 9999;
   white-space: nowrap;
   text-align: center;
   animation: ${({ $leaving }) => ($leaving ? fadeOut : fadeUp)} 0.25s ease forwards;
+`;
+
+export const ToastAction = styled.button`
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: ${({ theme }) => theme.colors.primary};
+  font: inherit;
+  cursor: pointer;
 `;

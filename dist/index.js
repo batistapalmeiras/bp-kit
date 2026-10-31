@@ -2712,38 +2712,72 @@ var ToastEl = import_styled_components36.default.div`
   padding: ${({ theme: theme2 }) => `${theme2.spacing.sm} ${theme2.spacing.lg}`};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
   box-shadow: ${({ theme: theme2 }) => theme2.shadows.md};
-  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  pointer-events: ${({ $interactive }) => $interactive ? "auto" : "none"};
   z-index: 9999;
   white-space: nowrap;
   text-align: center;
   animation: ${({ $leaving }) => $leaving ? fadeOut : fadeUp} 0.25s ease forwards;
 `;
+var ToastAction = import_styled_components36.default.button`
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: ${({ theme: theme2 }) => theme2.colors.primary};
+  font: inherit;
+  cursor: pointer;
+`;
 
 // src/components/Toast/hooks/useToast.tsx
 var import_react12 = require("react");
 var import_jsx_runtime27 = require("react/jsx-runtime");
+var ACTION_DURATION = 6e3;
 function useToast(duration = 2500) {
   const [state, setState] = (0, import_react12.useState)(null);
   const timerRef = (0, import_react12.useRef)(null);
+  const hide = (0, import_react12.useCallback)(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setState((s) => s ? { ...s, leaving: true } : null);
+    timerRef.current = setTimeout(() => setState(null), 300);
+  }, []);
   const show = (0, import_react12.useCallback)(
-    (message) => {
+    (message, action) => {
       if (timerRef.current) clearTimeout(timerRef.current);
-      setState({ message, leaving: false });
-      timerRef.current = setTimeout(() => {
-        setState((s) => s ? { ...s, leaving: true } : null);
-        timerRef.current = setTimeout(() => setState(null), 300);
-      }, duration);
+      setState({ message, leaving: false, action });
+      timerRef.current = setTimeout(hide, action ? ACTION_DURATION : duration);
     },
-    [duration]
+    [duration, hide]
   );
-  const toast = state ? /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(Toast, { message: state.message, leaving: state.leaving }) : null;
-  return { show, toast };
+  const toast = state ? /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+    Toast,
+    {
+      message: state.message,
+      leaving: state.leaving,
+      action: state.action && {
+        label: state.action.label,
+        onClick: () => {
+          var _a;
+          hide();
+          (_a = state.action) == null ? void 0 : _a.onClick();
+        }
+      }
+    }
+  ) : null;
+  return { show, hide, toast };
 }
 
 // src/components/Toast/index.tsx
 var import_jsx_runtime28 = require("react/jsx-runtime");
-function Toast({ message, leaving }) {
-  return (0, import_react_dom2.createPortal)(/* @__PURE__ */ (0, import_jsx_runtime28.jsx)(ToastEl, { $leaving: leaving, children: message }), document.body);
+function Toast({ message, leaving, action }) {
+  return (0, import_react_dom2.createPortal)(
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(ToastEl, { $leaving: leaving, $interactive: !!action, role: "status", children: [
+      message,
+      action && /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(ToastAction, { type: "button", onClick: action.onClick, children: action.label })
+    ] }),
+    document.body
+  );
 }
 
 // src/pages/LoginPage/index.tsx
