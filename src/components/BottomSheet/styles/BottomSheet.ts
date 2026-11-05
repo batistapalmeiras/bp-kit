@@ -19,6 +19,9 @@ export const Sheet = styled.div`
   z-index: 1001;
   background: ${({ theme }) => theme.colors.canvas};
   border-radius: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 92dvh;
   padding-bottom: env(safe-area-inset-bottom);
   animation: ${slideUp} 0.28s cubic-bezier(0.32, 0.72, 0, 1);
 `;
@@ -29,8 +32,13 @@ export const Handle = styled.div`
   border-radius: 2px;
   background: ${({ theme }) => theme.colors.hairline};
   margin: 12px auto 0;
+  flex-shrink: 0;
 `;
 
 export const Content = styled.div`
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 20px ${({ theme }) => theme.spacing.base} ${({ theme }) => theme.spacing.lg};
 `;

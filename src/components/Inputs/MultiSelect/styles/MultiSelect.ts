@@ -81,9 +81,9 @@ export const RemoveChip = styled.button`
   }
 `;
 
-export const ToggleButton = styled.button<{ $open?: boolean }>`
-  flex: 1 1 80px;
-  min-width: 80px;
+export const ToggleButton = styled.button<{ $open?: boolean; $compact?: boolean }>`
+  flex: ${({ $compact }) => ($compact ? '1 1 24px' : '1 1 80px')};
+  min-width: ${({ $compact }) => ($compact ? '24px' : '80px')};
   min-height: 40px;
   display: flex;
   align-items: center;
@@ -109,9 +109,9 @@ export const TogglePlaceholder = styled.span`
 `;
 
 // Borderless — sits inline inside Field, which owns the actual input chrome.
-export const SearchInput = styled.input`
-  flex: 1 1 80px;
-  min-width: 80px;
+export const SearchInput = styled.input<{ $compact?: boolean }>`
+  flex: ${({ $compact }) => ($compact ? '1 1 0' : '1 1 80px')};
+  min-width: ${({ $compact }) => ($compact ? '0' : '80px')};
   height: 32px;
   border: none;
   outline: none;
@@ -159,6 +159,7 @@ export const DropdownOption = styled.div<{ $disabled?: boolean; $selected?: bool
 
   & > label {
     flex: 1;
+    align-items: center;
     min-height: 44px;
     gap: ${({ theme }) => theme.spacing.md};
     font-size: ${({ theme }) => theme.typography.bodyMd.fontSize};

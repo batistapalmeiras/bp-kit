@@ -1,5 +1,7 @@
 // Libs
 import styled from 'styled-components';
+// Components
+import { ErrorText } from '../../BaseInput/styles';
 
 export const HiddenInput = styled.input`
   position: absolute;
@@ -59,12 +61,16 @@ export const Dot = styled.span`
   ${HiddenInput}:disabled + & {
     opacity: 0.5;
   }
+
+  ${HiddenInput}[aria-invalid='true'] + & {
+    border-color: ${({ theme }) => theme.colors.primaryErrorText};
+  }
 `;
 
-export const OptionWrapper = styled.label`
+export const OptionWrapper = styled.label<{ $described?: boolean }>`
   position: relative;
   display: inline-flex;
-  align-items: center;
+  align-items: ${({ $described }) => ($described ? 'flex-start' : 'center')};
   gap: ${({ theme }) => theme.spacing.xs};
   cursor: pointer;
   font-family: ${({ theme }) => theme.typography.fontFamily};
@@ -75,6 +81,22 @@ export const OptionWrapper = styled.label`
     cursor: not-allowed;
     color: ${({ theme }) => theme.colors.mutedSoft};
   }
+`;
+
+export const OptionText = styled.span`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+export const OptionTitle = styled.span`
+  font-weight: 600;
+`;
+
+export const OptionDescription = styled.span`
+  font-size: ${({ theme }) => theme.typography.caption.fontSize};
+  line-height: ${({ theme }) => theme.typography.caption.lineHeight};
+  color: ${({ theme }) => theme.colors.muted};
 `;
 
 export const Group = styled.div`
@@ -90,4 +112,9 @@ export const GroupLabel = styled.span`
   line-height: ${({ theme }) => theme.typography.caption.lineHeight};
   color: ${({ theme }) => theme.colors.muted};
   margin-bottom: ${({ theme }) => theme.spacing.xs};
+`;
+
+export const GroupError = styled(ErrorText)`
+  display: block;
+  margin-top: ${({ theme }) => theme.spacing.xs};
 `;

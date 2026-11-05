@@ -79,11 +79,10 @@ export function MultiSelect({
     if (!disabled && searchable) inputRef.current?.focus();
   };
 
-  const selectedCount =
-    !single && value.length > 0 ? `${value.length} ${value.length === 1 ? 'selecionado' : 'selecionados'}` : undefined;
+  const compact = value.length > 0 && !open;
 
   return (
-    <BaseInput label={label} aside={selectedCount} error={error}>
+    <BaseInput label={label} error={error}>
       <Wrap ref={wrapRef}>
         <Field $focused={open} $disabled={disabled} $invalid={!!error} onClick={focusField}>
           {value.map((v) => (
@@ -106,6 +105,7 @@ export function MultiSelect({
           {!disabled && searchable && (
             <SearchInput
               ref={inputRef}
+              $compact={compact}
               type="text"
               placeholder={value.length === 0 ? placeholder : ''}
               value={query}
@@ -126,6 +126,7 @@ export function MultiSelect({
               aria-expanded={open}
               aria-haspopup="listbox"
               $open={open}
+              $compact={compact}
               onClick={() => setOpen((o) => !o)}
             >
               <TogglePlaceholder>{value.length === 0 ? placeholder : ''}</TogglePlaceholder>

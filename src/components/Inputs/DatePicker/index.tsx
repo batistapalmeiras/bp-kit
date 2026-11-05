@@ -94,7 +94,7 @@ export function DatePicker<T extends FieldValues, N extends FieldPath<T>>({
   return (
     <BaseInput label={label} wrapperStyle={wrapperStyle} error={fieldState.error?.message}>
       <Wrapper ref={ref}>
-        <Trigger type="button" $open={open} onClick={() => setOpen((v) => !v)}>
+        <Trigger type="button" $open={open} aria-invalid={!!fieldState.error} onClick={() => setOpen((v) => !v)}>
           {formatDateValue(field.value) ?? <Placeholder>{placeholder}</Placeholder>}
           <Calendar size={18} />
         </Trigger>

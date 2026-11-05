@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 // Local
 import { fadeDown } from '../../../styles/animations';
+import { invalidField } from '../BaseInput/styles';
 
 export const Wrapper = styled.div`
   position: relative;
@@ -36,6 +37,8 @@ export const Trigger = styled.button<{ $open?: boolean }>`
     border-width: 2px;
     padding: 0 calc(${theme.spacing.md} - 1px);
   `}
+
+  ${invalidField}
 `;
 
 export const Placeholder = styled.span`

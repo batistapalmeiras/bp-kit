@@ -57,12 +57,17 @@ export const Box = styled.span`
   ${HiddenInput}:disabled + & {
     opacity: 0.5;
   }
+
+  ${HiddenInput}[aria-invalid='true']:not(:checked) + & {
+    border-color: ${({ theme }) => theme.colors.primaryErrorText};
+  }
 `;
 
 export const Wrapper = styled.label`
   position: relative;
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
+  line-height: 20px;
   gap: ${({ theme }) => theme.spacing.xs};
   cursor: pointer;
   font-family: ${({ theme }) => theme.typography.fontFamily};

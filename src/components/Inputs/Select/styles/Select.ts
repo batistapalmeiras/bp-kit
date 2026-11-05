@@ -1,5 +1,7 @@
 // Libs
 import styled, { css } from 'styled-components';
+// Components
+import { invalidField } from '../../BaseInput/styles';
 // Local
 import { SelectSize } from '../types';
 
@@ -41,4 +43,6 @@ export const SelectField = styled.select<{ $size?: SelectSize }>`
     border-width: 2px;
     border-color: ${({ theme }) => theme.colors.ink};
   }
+
+  ${invalidField}
 `;

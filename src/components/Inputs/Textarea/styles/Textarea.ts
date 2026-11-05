@@ -1,5 +1,7 @@
 // Libs
 import styled from 'styled-components';
+// Components
+import { invalidField } from '../../BaseInput/styles';
 
 export const TextareaField = styled.textarea`
   width: 100%;
@@ -35,4 +37,6 @@ export const TextareaField = styled.textarea`
     color: ${({ theme }) => theme.colors.mutedSoft};
     cursor: not-allowed;
   }
+
+  ${invalidField}
 `;

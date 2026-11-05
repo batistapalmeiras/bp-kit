@@ -9,7 +9,7 @@ import { RawTextareaProps, TextareaProps } from './types';
 export function RawTextarea({ label, wrapperStyle, error, ...rest }: RawTextareaProps) {
   return (
     <BaseInput label={label} wrapperStyle={wrapperStyle} error={error}>
-      <TextareaField {...rest} />
+      <TextareaField aria-invalid={!!error} {...rest} />
     </BaseInput>
   );
 }
@@ -29,6 +29,7 @@ export function Textarea<T extends FieldValues, N extends FieldPath<T>>({
       <TextareaField
         placeholder={placeholder}
         rows={rows}
+        aria-invalid={!!fieldState.error}
         value={field.value ?? ''}
         onChange={(e) => field.onChange(e.target.value)}
         onBlur={field.onBlur}

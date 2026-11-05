@@ -91,7 +91,9 @@ __export(src_exports, {
   formatCPF: () => formatCPF,
   formatCpfCnpj: () => formatCpfCnpj,
   formatCurrency: () => formatCurrency,
+  maskCEP: () => maskCEP,
   maskCurrencyInput: () => maskCurrencyInput,
+  maskDate: () => maskDate,
   maskPhone: () => maskPhone,
   parseCurrency: () => parseCurrency,
   parsePhone: () => parsePhone,
@@ -151,6 +153,9 @@ var Sheet = import_styled_components2.default.div`
   z-index: 1001;
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
   border-radius: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 92dvh;
   padding-bottom: env(safe-area-inset-bottom);
   animation: ${slideUp} 0.28s cubic-bezier(0.32, 0.72, 0, 1);
 `;
@@ -160,8 +165,13 @@ var Handle = import_styled_components2.default.div`
   border-radius: 2px;
   background: ${({ theme: theme2 }) => theme2.colors.hairline};
   margin: 12px auto 0;
+  flex-shrink: 0;
 `;
 var Content = import_styled_components2.default.div`
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 20px ${({ theme: theme2 }) => theme2.spacing.base} ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
 
@@ -573,6 +583,12 @@ var ErrorText = import_styled_components14.default.span`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
 `;
+var invalidField = import_styled_components14.css`
+  &[aria-invalid='true'],
+  &[aria-invalid='true']:hover:not(:focus):not(:disabled) {
+    border-color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
+  }
+`;
 var InputField = import_styled_components14.default.input`
   height: 56px;
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
@@ -605,6 +621,8 @@ var InputField = import_styled_components14.default.input`
     color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
     cursor: not-allowed;
   }
+
+  ${invalidField}
 `;
 
 // src/components/Inputs/BaseInput/index.tsx
@@ -701,11 +719,16 @@ var Box2 = import_styled_components15.default.span`
   ${HiddenInput}:disabled + & {
     opacity: 0.5;
   }
+
+  ${HiddenInput}[aria-invalid='true']:not(:checked) + & {
+    border-color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
+  }
 `;
 var Wrapper3 = import_styled_components15.default.label`
   position: relative;
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
+  line-height: 20px;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
   cursor: pointer;
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
@@ -765,6 +788,8 @@ var Trigger = import_styled_components16.default.button`
     border-width: 2px;
     padding: 0 calc(${theme2.spacing.md} - 1px);
   `}
+
+  ${invalidField}
 `;
 var Placeholder = import_styled_components16.default.span`
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
@@ -943,7 +968,7 @@ function DatePicker({
     setOpen(false);
   };
   return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Wrapper4, { ref, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Trigger, { type: "button", $open: open, onClick: () => setOpen((v) => !v), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Trigger, { type: "button", $open: open, "aria-invalid": !!fieldState.error, onClick: () => setOpen((v) => !v), children: [
       (_b = formatDateValue(field.value)) != null ? _b : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Placeholder, { children: placeholder }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react3.Calendar, { size: 18 })
     ] }),
@@ -1237,7 +1262,7 @@ function MonthPicker({
     setOpen(false);
   };
   return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Wrapper4, { ref, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Trigger, { type: "button", $open: open, onClick: () => setOpen((v) => !v), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Trigger, { type: "button", $open: open, "aria-invalid": !!fieldState.error, onClick: () => setOpen((v) => !v), children: [
       (_b = formatMonthValue(field.value)) != null ? _b : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Placeholder, { children: placeholder }),
       /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_lucide_react5.Calendar, { size: 18 })
     ] }),
@@ -1334,8 +1359,8 @@ var RemoveChip = import_styled_components20.default.button`
   }
 `;
 var ToggleButton = import_styled_components20.default.button`
-  flex: 1 1 80px;
-  min-width: 80px;
+  flex: ${({ $compact }) => $compact ? "1 1 24px" : "1 1 80px"};
+  min-width: ${({ $compact }) => $compact ? "24px" : "80px"};
   min-height: 40px;
   display: flex;
   align-items: center;
@@ -1359,8 +1384,8 @@ var TogglePlaceholder = import_styled_components20.default.span`
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
 `;
 var SearchInput = import_styled_components20.default.input`
-  flex: 1 1 80px;
-  min-width: 80px;
+  flex: ${({ $compact }) => $compact ? "1 1 0" : "1 1 80px"};
+  min-width: ${({ $compact }) => $compact ? "0" : "80px"};
   height: 32px;
   border: none;
   outline: none;
@@ -1404,6 +1429,7 @@ var DropdownOption = import_styled_components20.default.div`
 
   & > label {
     flex: 1;
+    align-items: center;
     min-height: 44px;
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
     font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
@@ -1484,8 +1510,8 @@ function MultiSelect({
     var _a;
     if (!disabled && searchable) (_a = inputRef.current) == null ? void 0 : _a.focus();
   };
-  const selectedCount = !single && value.length > 0 ? `${value.length} ${value.length === 1 ? "selecionado" : "selecionados"}` : void 0;
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(BaseInput, { label, aside: selectedCount, error, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Wrap, { ref: wrapRef, children: [
+  const compact = value.length > 0 && !open;
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(BaseInput, { label, error, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Wrap, { ref: wrapRef, children: [
     /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Field, { $focused: open, $disabled: disabled, $invalid: !!error, onClick: focusField, children: [
       value.map((v) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Chip2, { children: [
         labelFor(v),
@@ -1506,6 +1532,7 @@ function MultiSelect({
         SearchInput,
         {
           ref: inputRef,
+          $compact: compact,
           type: "text",
           placeholder: value.length === 0 ? placeholder : "",
           value: query,
@@ -1527,6 +1554,7 @@ function MultiSelect({
           "aria-expanded": open,
           "aria-haspopup": "listbox",
           $open: open,
+          $compact: compact,
           onClick: () => setOpen((o) => !o),
           children: [
             /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(TogglePlaceholder, { children: value.length === 0 ? placeholder : "" }),
@@ -1628,11 +1656,15 @@ var Dot = import_styled_components21.default.span`
   ${HiddenInput3}:disabled + & {
     opacity: 0.5;
   }
+
+  ${HiddenInput3}[aria-invalid='true'] + & {
+    border-color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
+  }
 `;
 var OptionWrapper = import_styled_components21.default.label`
   position: relative;
   display: inline-flex;
-  align-items: center;
+  align-items: ${({ $described }) => $described ? "flex-start" : "center"};
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
   cursor: pointer;
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
@@ -1643,6 +1675,19 @@ var OptionWrapper = import_styled_components21.default.label`
     cursor: not-allowed;
     color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
   }
+`;
+var OptionText = import_styled_components21.default.span`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+var OptionTitle = import_styled_components21.default.span`
+  font-weight: 600;
+`;
+var OptionDescription = import_styled_components21.default.span`
+  font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
+  line-height: ${({ theme: theme2 }) => theme2.typography.caption.lineHeight};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
 var Group = import_styled_components21.default.div`
   display: flex;
@@ -1657,13 +1702,17 @@ var GroupLabel = import_styled_components21.default.span`
   color: ${({ theme: theme2 }) => theme2.colors.muted};
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
+var GroupError = (0, import_styled_components21.default)(ErrorText)`
+  display: block;
+  margin-top: ${({ theme: theme2 }) => theme2.spacing.xs};
+`;
 
 // src/components/Inputs/RadioGroup/index.tsx
 var import_jsx_runtime15 = require("react/jsx-runtime");
-function RadioGroup({ name, options, value, onChange, label, disabled }) {
+function RadioGroup({ name, options, value, onChange, label, disabled, error }) {
   return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { children: [
     label && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(GroupLabel, { children: label }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Group, { role: "radiogroup", "aria-label": label, children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(OptionWrapper, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Group, { role: "radiogroup", "aria-label": label, "aria-invalid": !!error, children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(OptionWrapper, { $described: !!option.description, children: [
       /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
         HiddenInput3,
         {
@@ -1672,12 +1721,17 @@ function RadioGroup({ name, options, value, onChange, label, disabled }) {
           value: option.value,
           checked: value === option.value,
           disabled,
+          "aria-invalid": !!error,
           onChange: () => onChange == null ? void 0 : onChange(option.value)
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Dot, {}),
-      option.label
-    ] }, option.value)) })
+      option.description ? /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(OptionText, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(OptionTitle, { children: option.label }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(OptionDescription, { children: option.description })
+      ] }) : option.label
+    ] }, option.value)) }),
+    error && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(GroupError, { children: error })
   ] });
 }
 
@@ -1720,12 +1774,14 @@ var SelectField = import_styled_components22.default.select`
     border-width: 2px;
     border-color: ${({ theme: theme2 }) => theme2.colors.ink};
   }
+
+  ${invalidField}
 `;
 
 // src/components/Inputs/Select/index.tsx
 var import_jsx_runtime16 = require("react/jsx-runtime");
 function RawSelect({ label, size = "md", wrapperStyle, error, children, ...rest }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SelectField, { $size: size, ...rest, children }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SelectField, { $size: size, "aria-invalid": !!error, ...rest, children }) });
 }
 function Select({
   label,
@@ -1736,7 +1792,17 @@ function Select({
 }) {
   var _a, _b;
   const { field, fieldState } = (0, import_react_hook_form4.useController)({ control, name });
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SelectField, { value: (_b = field.value) != null ? _b : "", onChange: (e) => field.onChange(e.target.value), onBlur: field.onBlur, ref: field.ref, children }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+    SelectField,
+    {
+      "aria-invalid": !!fieldState.error,
+      value: (_b = field.value) != null ? _b : "",
+      onChange: (e) => field.onChange(e.target.value),
+      onBlur: field.onBlur,
+      ref: field.ref,
+      children
+    }
+  ) });
 }
 
 // src/components/Inputs/Switch/index.tsx
@@ -1861,12 +1927,14 @@ var TextareaField = import_styled_components24.default.textarea`
     color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
     cursor: not-allowed;
   }
+
+  ${invalidField}
 `;
 
 // src/components/Inputs/Textarea/index.tsx
 var import_jsx_runtime18 = require("react/jsx-runtime");
 function RawTextarea({ label, wrapperStyle, error, ...rest }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TextareaField, { ...rest }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(BaseInput, { label, wrapperStyle, error, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(TextareaField, { "aria-invalid": !!error, ...rest }) });
 }
 function Textarea({
   label,
@@ -1883,6 +1951,7 @@ function Textarea({
     {
       placeholder,
       rows,
+      "aria-invalid": !!fieldState.error,
       value: (_b = field.value) != null ? _b : "",
       onChange: (e) => field.onChange(e.target.value),
       onBlur: field.onBlur,
@@ -1922,7 +1991,7 @@ function maskPhone(value) {
   if (onlyNumbers.length === 0) return "";
   if (onlyNumbers.length <= 2) return `(${onlyNumbers}`;
   if (onlyNumbers.length <= 7) return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2)}`;
-  if (onlyNumbers.length <= 10) return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2, 7)}-${onlyNumbers.slice(7)}`;
+  if (onlyNumbers.length <= 10) return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2, 6)}-${onlyNumbers.slice(6)}`;
   return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2, 7)}-${onlyNumbers.slice(7, 11)}`;
 }
 function parsePhone(value) {
@@ -1931,6 +2000,16 @@ function parsePhone(value) {
 function formatCPF(value) {
   const digits = value.replace(/\D/g, "").slice(0, 11);
   return digits.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+}
+function maskCEP(value) {
+  const digits = value.replace(/\D/g, "").slice(0, 8);
+  return digits.length > 5 ? `${digits.slice(0, 5)}-${digits.slice(5)}` : digits;
+}
+function maskDate(value) {
+  const digits = value.replace(/\D/g, "").slice(0, 8);
+  if (digits.length > 4) return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+  if (digits.length > 2) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+  return digits;
 }
 function formatCNPJ(value) {
   const digits = value.replace(/\D/g, "").slice(0, 14);
@@ -1966,11 +2045,17 @@ var EyeButton = import_styled_components25.default.button`
 
 // src/components/Inputs/TextInput/index.tsx
 var import_jsx_runtime19 = require("react/jsx-runtime");
+var MASKS = {
+  phone: maskPhone,
+  cpf: formatCPF,
+  cep: maskCEP,
+  date: maskDate
+};
 function TextInput(props) {
   const { label, control, name, wrapperStyle, placeholder, currency, mask, ...rest } = props;
   const isPassword = rest.type === "password";
   const [showPassword, setShowPassword] = (0, import_react10.useState)(false);
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(ControlledBase, { label, control, name, wrapperStyle, children: (field) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(ControlledBase, { label, control, name, wrapperStyle, children: (field, error) => {
     var _a;
     return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(InputWrapper, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
@@ -1979,13 +2064,14 @@ function TextInput(props) {
           ...rest,
           type: isPassword ? showPassword ? "text" : "password" : rest.type,
           placeholder,
+          "aria-invalid": !!error,
           style: isPassword ? { paddingRight: 44 } : void 0,
           value: currency ? maskCurrencyInput(field.value != null && field.value !== "" ? Number(field.value).toFixed(2) : "") : (_a = field.value) != null ? _a : "",
           onChange: (e) => {
             if (currency) {
               field.onChange(parseCurrency(e.target.value));
-            } else if (mask === "phone") {
-              field.onChange(maskPhone(e.target.value));
+            } else if (mask) {
+              field.onChange(MASKS[mask](e.target.value));
             } else if (rest.type === "number") {
               field.onChange(e.target.valueAsNumber);
             } else {
@@ -3996,7 +4082,9 @@ var theme = {
   formatCPF,
   formatCpfCnpj,
   formatCurrency,
+  maskCEP,
   maskCurrencyInput,
+  maskDate,
   maskPhone,
   parseCurrency,
   parsePhone,

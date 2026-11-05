@@ -4,11 +4,18 @@ import { FieldPath, FieldValues } from 'react-hook-form';
 // Libs
 import { Eye, EyeOff } from 'lucide-react';
 // Components
-import { maskCurrencyInput, maskPhone, parseCurrency } from '../../../utils/mask';
+import { formatCPF, maskCEP, maskCurrencyInput, maskDate, maskPhone, parseCurrency } from '../../../utils/mask';
 import { ControlledBase, InputField } from '../BaseInput';
 // Local
 import { EyeButton, InputWrapper } from './styles';
-import { CurrencyFieldProps, TextFieldProps } from './types';
+import { CurrencyFieldProps, TextFieldProps, TextMask } from './types';
+
+const MASKS: Record<TextMask, (value: string) => string> = {
+  phone: maskPhone,
+  cpf: formatCPF,
+  cep: maskCEP,
+  date: maskDate,
+};
 
 type Props<T extends FieldValues, N extends FieldPath<T>> = TextFieldProps<T, N> | CurrencyFieldProps<T, N>;
 
@@ -21,12 +28,13 @@ export function TextInput<T extends FieldValues, N extends FieldPath<T>>(props: 
 
   return (
     <ControlledBase label={label} control={control} name={name} wrapperStyle={wrapperStyle}>
-      {(field) => (
+      {(field, error) => (
         <InputWrapper>
           <InputField
             {...rest}
             type={isPassword ? (showPassword ? 'text' : 'password') : rest.type}
             placeholder={placeholder}
+            aria-invalid={!!error}
             style={isPassword ? { paddingRight: 44 } : undefined}
             value={
               currency
@@ -36,8 +44,8 @@ export function TextInput<T extends FieldValues, N extends FieldPath<T>>(props: 
             onChange={(e) => {
               if (currency) {
                 field.onChange(parseCurrency(e.target.value));
-              } else if (mask === 'phone') {
-                field.onChange(maskPhone(e.target.value));
+              } else if (mask) {
+                field.onChange(MASKS[mask](e.target.value));
               } else if (rest.type === 'number') {
                 field.onChange(e.target.valueAsNumber);
               } else {

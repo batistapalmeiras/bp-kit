@@ -1,5 +1,5 @@
 // Libs
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -29,6 +29,13 @@ export const LabelAside = styled.span`
 export const ErrorText = styled.span`
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
   color: ${({ theme }) => theme.colors.primaryErrorText};
+`;
+
+export const invalidField = css`
+  &[aria-invalid='true'],
+  &[aria-invalid='true']:hover:not(:focus):not(:disabled) {
+    border-color: ${({ theme }) => theme.colors.primaryErrorText};
+  }
 `;
 
 export const InputField = styled.input`
@@ -63,4 +70,6 @@ export const InputField = styled.input`
     color: ${({ theme }) => theme.colors.mutedSoft};
     cursor: not-allowed;
   }
+
+  ${invalidField}
 `;

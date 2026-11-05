@@ -172,6 +172,7 @@ declare function MultiSelect({ label, options, value, onChange, placeholder, dis
 interface RadioGroupOption {
     value: string;
     label: string;
+    description?: string;
 }
 interface RadioGroupProps {
     name: string;
@@ -180,9 +181,10 @@ interface RadioGroupProps {
     onChange?: (value: string) => void;
     label?: string;
     disabled?: boolean;
+    error?: string;
 }
 
-declare function RadioGroup({ name, options, value, onChange, label, disabled }: RadioGroupProps): react.JSX.Element;
+declare function RadioGroup({ name, options, value, onChange, label, disabled, error }: RadioGroupProps): react.JSX.Element;
 
 interface SelectProps<T extends FieldValues, N extends FieldPath<T>> {
     label: string;
@@ -227,6 +229,7 @@ interface RawTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 declare function RawTextarea({ label, wrapperStyle, error, ...rest }: RawTextareaProps): react.JSX.Element;
 declare function Textarea<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, placeholder, rows, }: TextareaProps<T, N>): react.JSX.Element;
 
+type TextMask = 'phone' | 'cpf' | 'cep' | 'date';
 interface BaseFieldProps<T extends FieldValues, N extends FieldPath<T>> {
     label: string;
     control: Control<T>;
@@ -239,7 +242,7 @@ interface CurrencyFieldProps<T extends FieldValues, N extends FieldPath<T>> exte
 }
 interface TextFieldProps<T extends FieldValues, N extends FieldPath<T>> extends BaseFieldProps<T, N>, Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'name'> {
     currency?: false;
-    mask?: 'phone';
+    mask?: TextMask;
 }
 
 type Props$2<T extends FieldValues, N extends FieldPath<T>> = TextFieldProps<T, N> | CurrencyFieldProps<T, N>;
@@ -715,7 +718,9 @@ declare function maskCurrencyInput(value: string): string;
 declare function maskPhone(value: string): string;
 declare function parsePhone(value: string): string;
 declare function formatCPF(value: string): string;
+declare function maskCEP(value: string): string;
+declare function maskDate(value: string): string;
 declare function formatCNPJ(value: string): string;
 declare function formatCpfCnpj(value: string): string;
 
-export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, ForgotPasswordPage, type ForgotPasswordPageProps, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LinkButton, type LinkButtonProps, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, ResetPasswordPage, type ResetPasswordPageProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, Textarea, type TextareaProps, type Theme, Toast, type ToastActionConfig, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCurrencyInput, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, ForgotPasswordPage, type ForgotPasswordPageProps, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LinkButton, type LinkButtonProps, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, ResetPasswordPage, type ResetPasswordPageProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type TextMask, Textarea, type TextareaProps, type Theme, Toast, type ToastActionConfig, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCEP, maskCurrencyInput, maskDate, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };

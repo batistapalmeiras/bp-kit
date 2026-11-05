@@ -32,7 +32,7 @@ export type { SwitchProps } from './components/Inputs/Switch/types';
 export { RawTextarea, Textarea } from './components/Inputs/Textarea';
 export type { RawTextareaProps, TextareaProps } from './components/Inputs/Textarea/types';
 export { TextInput } from './components/Inputs/TextInput';
-export type { CurrencyFieldProps, TextFieldProps } from './components/Inputs/TextInput/types';
+export type { CurrencyFieldProps, TextFieldProps, TextMask } from './components/Inputs/TextInput/types';
 export { Modal, ModalActions, ModalTitle } from './components/Modal';
 export { Pagination } from './components/Pagination';
 export { PageHeader } from './components/PageHeader';
@@ -93,7 +93,9 @@ export {
   formatCPF,
   formatCpfCnpj,
   formatCurrency,
+  maskCEP,
   maskCurrencyInput,
+  maskDate,
   maskPhone,
   parseCurrency,
   parsePhone,

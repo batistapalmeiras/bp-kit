@@ -2,6 +2,8 @@
 import { InputHTMLAttributes } from 'react';
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 
+export type TextMask = 'phone' | 'cpf' | 'cep' | 'date';
+
 interface BaseFieldProps<T extends FieldValues, N extends FieldPath<T>> {
   label: string;
   control: Control<T>;
@@ -19,5 +21,5 @@ export interface TextFieldProps<T extends FieldValues, N extends FieldPath<T>>
   extends BaseFieldProps<T, N>,
     Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'name'> {
   currency?: false;
-  mask?: 'phone';
+  mask?: TextMask;
 }

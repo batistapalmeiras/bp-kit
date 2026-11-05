@@ -1,6 +1,7 @@
 export interface RadioGroupOption {
   value: string;
   label: string;
+  description?: string;
 }
 
 export interface RadioGroupProps {
@@ -10,4 +11,5 @@ export interface RadioGroupProps {
   onChange?: (value: string) => void;
   label?: string;
   disabled?: boolean;
+  error?: string;
 }

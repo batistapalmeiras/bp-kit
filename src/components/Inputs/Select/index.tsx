@@ -9,7 +9,7 @@ import { RawSelectProps, SelectProps } from './types';
 export function RawSelect({ label, size = 'md', wrapperStyle, error, children, ...rest }: RawSelectProps) {
   return (
     <BaseInput label={label} wrapperStyle={wrapperStyle} error={error}>
-      <SelectField $size={size} {...rest}>
+      <SelectField $size={size} aria-invalid={!!error} {...rest}>
         {children}
       </SelectField>
     </BaseInput>
@@ -27,7 +27,13 @@ export function Select<T extends FieldValues, N extends FieldPath<T>>({
 
   return (
     <BaseInput label={label} wrapperStyle={wrapperStyle} error={fieldState.error?.message}>
-      <SelectField value={field.value ?? ''} onChange={(e) => field.onChange(e.target.value)} onBlur={field.onBlur} ref={field.ref}>
+      <SelectField
+        aria-invalid={!!fieldState.error}
+        value={field.value ?? ''}
+        onChange={(e) => field.onChange(e.target.value)}
+        onBlur={field.onBlur}
+        ref={field.ref}
+      >
         {children}
       </SelectField>
     </BaseInput>
