@@ -1297,7 +1297,7 @@ var Wrap = import_styled_components20.default.div`
 `;
 var Field = import_styled_components20.default.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
   min-height: 56px;
@@ -1340,8 +1340,24 @@ var Chip2 = import_styled_components20.default.span`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   font-weight: 600;
   color: ${({ theme: theme2 }) => theme2.colors.luxe};
+  flex-shrink: 0;
+  max-width: 100%;
+`;
+var Chips = import_styled_components20.default.div`
+  display: flex;
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+`;
+var ChipLabel = import_styled_components20.default.span`
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 var RemoveChip = import_styled_components20.default.button`
+  flex-shrink: 0;
   display: grid;
   place-items: center;
   width: 20px;
@@ -1384,8 +1400,8 @@ var TogglePlaceholder = import_styled_components20.default.span`
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
 `;
 var SearchInput = import_styled_components20.default.input`
-  flex: ${({ $compact }) => $compact ? "1 1 0" : "1 1 80px"};
-  min-width: ${({ $compact }) => $compact ? "0" : "80px"};
+  flex: ${({ $compact }) => $compact ? "1 1 24px" : "1 1 80px"};
+  min-width: ${({ $compact }) => $compact ? "24px" : "80px"};
   height: 32px;
   border: none;
   outline: none;
@@ -1510,11 +1526,11 @@ function MultiSelect({
     var _a;
     if (!disabled && searchable) (_a = inputRef.current) == null ? void 0 : _a.focus();
   };
-  const compact = value.length > 0 && !open;
+  const compact = value.length > 0;
   return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(BaseInput, { label, error, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Wrap, { ref: wrapRef, children: [
     /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Field, { $focused: open, $disabled: disabled, $invalid: !!error, onClick: focusField, children: [
-      value.map((v) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Chip2, { children: [
-        labelFor(v),
+      value.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Chips, { children: value.map((v) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Chip2, { title: labelFor(v), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(ChipLabel, { children: labelFor(v) }),
         !disabled && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
           RemoveChip,
           {
@@ -1527,7 +1543,7 @@ function MultiSelect({
             children: "\xD7"
           }
         )
-      ] }, v)),
+      ] }, v)) }),
       !disabled && searchable && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
         SearchInput,
         {
@@ -1575,15 +1591,7 @@ function MultiSelect({
             "aria-selected": checked,
             $selected: checked,
             $disabled: rowDisabled,
-            children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-              Checkbox,
-              {
-                checked,
-                disabled: rowDisabled,
-                onChange: () => toggle(o.value),
-                label: o.label
-              }
-            )
+            children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Checkbox, { checked, disabled: rowDisabled, onChange: () => toggle(o.value), label: o.label })
           },
           o.value
         );

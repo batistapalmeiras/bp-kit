@@ -8,6 +8,8 @@ import { Checkbox } from '../Checkbox';
 // Local
 import {
   Chip,
+  ChipLabel,
+  Chips,
   Dropdown,
   DropdownOption,
   EmptyOption,
@@ -79,29 +81,33 @@ export function MultiSelect({
     if (!disabled && searchable) inputRef.current?.focus();
   };
 
-  const compact = value.length > 0 && !open;
+  const compact = value.length > 0;
 
   return (
     <BaseInput label={label} error={error}>
       <Wrap ref={wrapRef}>
         <Field $focused={open} $disabled={disabled} $invalid={!!error} onClick={focusField}>
-          {value.map((v) => (
-            <Chip key={v}>
-              {labelFor(v)}
-              {!disabled && (
-                <RemoveChip
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    remove(v);
-                  }}
-                  aria-label={`Remover ${labelFor(v)}`}
-                >
-                  ×
-                </RemoveChip>
-              )}
-            </Chip>
-          ))}
+          {value.length > 0 && (
+            <Chips>
+              {value.map((v) => (
+                <Chip key={v} title={labelFor(v)}>
+                  <ChipLabel>{labelFor(v)}</ChipLabel>
+                  {!disabled && (
+                    <RemoveChip
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        remove(v);
+                      }}
+                      aria-label={`Remover ${labelFor(v)}`}
+                    >
+                      ×
+                    </RemoveChip>
+                  )}
+                </Chip>
+              ))}
+            </Chips>
+          )}
           {!disabled && searchable && (
             <SearchInput
               ref={inputRef}
@@ -149,12 +155,7 @@ export function MultiSelect({
                   $selected={checked}
                   $disabled={rowDisabled}
                 >
-                  <Checkbox
-                    checked={checked}
-                    disabled={rowDisabled}
-                    onChange={() => toggle(o.value)}
-                    label={o.label}
-                  />
+                  <Checkbox checked={checked} disabled={rowDisabled} onChange={() => toggle(o.value)} label={o.label} />
                 </DropdownOption>
               );
             })}

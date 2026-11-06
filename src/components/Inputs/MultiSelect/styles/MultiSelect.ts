@@ -10,7 +10,7 @@ export const Wrap = styled.div`
 // separate search field.
 export const Field = styled.div<{ $focused?: boolean; $disabled?: boolean; $invalid?: boolean }>`
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.xs};
   min-height: 56px;
@@ -61,9 +61,27 @@ export const Chip = styled.span`
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
   font-weight: 600;
   color: ${({ theme }) => theme.colors.luxe};
+  flex-shrink: 0;
+  max-width: 100%;
+`;
+
+export const Chips = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing.xs};
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+`;
+
+export const ChipLabel = styled.span`
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const RemoveChip = styled.button`
+  flex-shrink: 0;
   display: grid;
   place-items: center;
   width: 20px;
@@ -110,8 +128,8 @@ export const TogglePlaceholder = styled.span`
 
 // Borderless — sits inline inside Field, which owns the actual input chrome.
 export const SearchInput = styled.input<{ $compact?: boolean }>`
-  flex: ${({ $compact }) => ($compact ? '1 1 0' : '1 1 80px')};
-  min-width: ${({ $compact }) => ($compact ? '0' : '80px')};
+  flex: ${({ $compact }) => ($compact ? '1 1 24px' : '1 1 80px')};
+  min-width: ${({ $compact }) => ($compact ? '24px' : '80px')};
   height: 32px;
   border: none;
   outline: none;
