@@ -74,7 +74,6 @@ __export(src_exports, {
   StatValue: () => StatValue,
   StatsGrid: () => StatsGrid,
   StatusBadge: () => StatusBadge,
-  SummaryCard: () => SummaryCard,
   Switch: () => Switch,
   Tab: () => Tab,
   TabBadge: () => TabBadge,
@@ -87,9 +86,7 @@ __export(src_exports, {
   fadeIn: () => fadeIn,
   fadeUp: () => fadeUp,
   fetchProfile: () => fetchProfile,
-  formatCNPJ: () => formatCNPJ,
   formatCPF: () => formatCPF,
-  formatCpfCnpj: () => formatCpfCnpj,
   formatCurrency: () => formatCurrency,
   maskCEP: () => maskCEP,
   maskCurrencyInput: () => maskCurrencyInput,
@@ -2019,14 +2016,6 @@ function maskDate(value) {
   if (digits.length > 2) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
   return digits;
 }
-function formatCNPJ(value) {
-  const digits = value.replace(/\D/g, "").slice(0, 14);
-  return digits.replace(/(\d{2})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1/$2").replace(/(\d{4})(\d{1,2})$/, "$1-$2");
-}
-function formatCpfCnpj(value) {
-  const digits = value.replace(/\D/g, "");
-  return digits.length > 11 ? formatCNPJ(value) : formatCPF(value);
-}
 
 // src/components/Inputs/TextInput/styles/TextInput.ts
 var import_styled_components25 = __toESM(require("styled-components"));
@@ -2571,180 +2560,15 @@ var StatValue = import_styled_components33.default.p`
   color: ${({ theme: theme2, $tone, $muted }) => $tone === "warning" ? theme2.colors.warning : $tone === "danger" ? "#c0002a" : $muted ? theme2.colors.muted : theme2.colors.ink};
 `;
 
-// src/components/SummaryCard/styles/SummaryCard.ts
-var import_styled_components34 = __toESM(require("styled-components"));
-var Card2 = import_styled_components34.default.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
-  background: ${({ theme: theme2 }) => theme2.colors.canvas};
-  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
-  box-shadow: ${({ theme: theme2 }) => theme2.shadows.sm};
-  padding: ${({ theme: theme2 }) => theme2.spacing.md} ${({ theme: theme2 }) => theme2.spacing.base};
-  margin-top: ${({ theme: theme2 }) => theme2.spacing.base};
-
-  @media (max-width: 744px) {
-    position: fixed;
-    bottom: ${({ $bottomOffset }) => $bottomOffset != null ? $bottomOffset : "80px"};
-    left: 0;
-    right: 0;
-    z-index: 90;
-    margin-top: 0;
-    border: none;
-    border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-    border-radius: 0;
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
-    padding-bottom: calc(${({ theme: theme2 }) => theme2.spacing.md} + env(safe-area-inset-bottom));
-    animation: ${fadeUp} 0.2s ease;
-  }
-`;
-var Label3 = import_styled_components34.default.p`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
-  font-weight: 600;
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 0;
-`;
-var Row2 = import_styled_components34.default.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme: theme2 }) => theme2.spacing.md};
-  width: 100%;
-`;
-var Info2 = import_styled_components34.default.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme: theme2 }) => theme2.spacing.md};
-  width: 100%;
-`;
-var Items = import_styled_components34.default.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  flex: 1;
-`;
-var EmptyMessage = (0, import_styled_components34.default)(Items)`
-  text-align: center;
-`;
-var Total = import_styled_components34.default.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
-  font-weight: 700;
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  text-align: right;
-  flex-shrink: 0;
-  min-width: fit-content;
-  margin-left: ${({ theme: theme2 }) => theme2.spacing.sm};
-`;
-var ItemDetail = import_styled_components34.default.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
-  padding: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
-`;
-var ItemDetailName = import_styled_components34.default.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  flex: 1;
-`;
-var ItemDetailPrice = import_styled_components34.default.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  white-space: nowrap;
-  flex-shrink: 0;
-  text-align: right;
-`;
-var Divider = import_styled_components34.default.hr`
-  border: none;
-  border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
-`;
-var ButtonRow = import_styled_components34.default.div`
-  display: flex;
-  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
-
-  button {
-    flex: 1;
-  }
-`;
-
-// src/components/SummaryCard/index.tsx
-var import_jsx_runtime26 = require("react/jsx-runtime");
-function SummaryCard({
-  label = "Resumo",
-  items,
-  total,
-  onConfirm,
-  confirmText = "Confirmar",
-  loading = false,
-  disabled = false,
-  buttons,
-  emptyMessage = "Nenhum item selecionado",
-  bottomOffset
-}) {
-  const hasSubtotals = items.some((item) => item.subtotal !== void 0);
-  const itemsText = items.map((item) => `${item.qty}\xD7 ${item.name}`).join(", ");
-  const isEmpty = items.length === 0;
-  return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(Card2, { $bottomOffset: bottomOffset, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Label3, { style: { marginBottom: 0 }, children: label }),
-    isEmpty ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(ItemDetail, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(ItemDetailName, { children: [
-        item.qty,
-        "\xD7 ",
-        item.name
-      ] }),
-      item.subtotal !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(ItemDetailPrice, { children: formatCurrency(item.subtotal) })
-    ] }, item.name)) }) : /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(Row2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Items, { children: itemsText }),
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Total, { children: formatCurrency(total) })
-    ] }),
-    !isEmpty && hasSubtotals && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(import_jsx_runtime26.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Divider, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Row2, { children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Info2, { children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Total, { children: formatCurrency(total) }) }) })
-    ] }),
-    buttons && buttons.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(ButtonRow, { children: buttons.map((btn, idx) => /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
-      Button,
-      {
-        variant: btn.variant || "primary",
-        size: "lg",
-        fullWidth: true,
-        onClick: btn.onClick,
-        disabled: btn.disabled || btn.loading,
-        children: btn.loading ? `${btn.text}...` : btn.text
-      },
-      idx
-    )) }) : onConfirm ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
-      Button,
-      {
-        variant: "primary",
-        size: "lg",
-        fullWidth: true,
-        onClick: onConfirm,
-        disabled: disabled || loading || isEmpty,
-        children: loading ? `${confirmText}...` : confirmText
-      }
-    ) : null
-  ] });
-}
-
 // src/components/Tabs/styles/Tabs.ts
-var import_styled_components35 = __toESM(require("styled-components"));
-var TabBar = import_styled_components35.default.div.attrs({ role: "tablist" })`
+var import_styled_components34 = __toESM(require("styled-components"));
+var TabBar = import_styled_components34.default.div.attrs({ role: "tablist" })`
   display: flex;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Tab = import_styled_components35.default.button.attrs(({ $active }) => ({
+var Tab = import_styled_components34.default.button.attrs(({ $active }) => ({
   type: "button",
   role: "tab",
   "aria-selected": $active
@@ -2767,7 +2591,7 @@ var Tab = import_styled_components35.default.button.attrs(({ $active }) => ({
 
   &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
 `;
-var TabBadge = import_styled_components35.default.span`
+var TabBadge = import_styled_components34.default.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2786,12 +2610,12 @@ var TabBadge = import_styled_components35.default.span`
 var import_react_dom2 = require("react-dom");
 
 // src/components/Toast/styles/Toast.ts
-var import_styled_components36 = __toESM(require("styled-components"));
-var fadeOut = import_styled_components36.keyframes`
+var import_styled_components35 = __toESM(require("styled-components"));
+var fadeOut = import_styled_components35.keyframes`
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(8px); }
 `;
-var ToastEl = import_styled_components36.default.div`
+var ToastEl = import_styled_components35.default.div`
   position: fixed;
   bottom: 80px;
   left: 0;
@@ -2815,7 +2639,7 @@ var ToastEl = import_styled_components36.default.div`
   text-align: center;
   animation: ${({ $leaving }) => $leaving ? fadeOut : fadeUp} 0.25s ease forwards;
 `;
-var ToastAction = import_styled_components36.default.button`
+var ToastAction = import_styled_components35.default.button`
   padding: 0;
   border: none;
   background: transparent;
@@ -2826,7 +2650,7 @@ var ToastAction = import_styled_components36.default.button`
 
 // src/components/Toast/hooks/useToast.tsx
 var import_react12 = require("react");
-var import_jsx_runtime27 = require("react/jsx-runtime");
+var import_jsx_runtime26 = require("react/jsx-runtime");
 var ACTION_DURATION = 6e3;
 function useToast(duration = 2500) {
   const [state, setState] = (0, import_react12.useState)(null);
@@ -2844,7 +2668,7 @@ function useToast(duration = 2500) {
     },
     [duration, hide]
   );
-  const toast = state ? /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+  const toast = state ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
     Toast,
     {
       message: state.message,
@@ -2863,12 +2687,12 @@ function useToast(duration = 2500) {
 }
 
 // src/components/Toast/index.tsx
-var import_jsx_runtime28 = require("react/jsx-runtime");
+var import_jsx_runtime27 = require("react/jsx-runtime");
 function Toast({ message, leaving, action }) {
   return (0, import_react_dom2.createPortal)(
-    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(ToastEl, { $leaving: leaving, $interactive: !!action, role: "status", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(ToastEl, { $leaving: leaving, $interactive: !!action, role: "status", children: [
       message,
-      action && /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(ToastAction, { type: "button", onClick: action.onClick, children: action.label })
+      action && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(ToastAction, { type: "button", onClick: action.onClick, children: action.label })
     ] }),
     document.body
   );
@@ -2888,11 +2712,11 @@ var import_react14 = require("react");
 
 // src/contexts/AuthContext.tsx
 var import_react13 = require("react");
-var import_jsx_runtime29 = require("react/jsx-runtime");
+var import_jsx_runtime28 = require("react/jsx-runtime");
 var AuthContext = (0, import_react13.createContext)(null);
 function AuthProvider({ client, children }) {
   const authValue = useAuth(client);
-  return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(AuthContext.Provider, { value: authValue, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(AuthContext.Provider, { value: authValue, children });
 }
 
 // src/text/actions.ts
@@ -3073,8 +2897,8 @@ function useLogin(resolveRoute) {
 }
 
 // src/pages/LoginPage/styles/Login.ts
-var import_styled_components37 = __toESM(require("styled-components"));
-var Page = import_styled_components37.default.div`
+var import_styled_components36 = __toESM(require("styled-components"));
+var Page = import_styled_components36.default.div`
   min-height: 100vh;
   display: flex;
 
@@ -3082,7 +2906,7 @@ var Page = import_styled_components37.default.div`
     flex-direction: column;
   }
 `;
-var Brand2 = import_styled_components37.default.div`
+var Brand2 = import_styled_components36.default.div`
   flex: 0 0 420px;
   background: ${({ theme: theme2 }) => theme2.colors.primary};
   display: flex;
@@ -3113,7 +2937,7 @@ var Brand2 = import_styled_components37.default.div`
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
   }
 `;
-var BrandMark = import_styled_components37.default.div`
+var BrandMark = import_styled_components36.default.div`
   width: 80px;
   height: 80px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
@@ -3139,13 +2963,13 @@ var BrandMark = import_styled_components37.default.div`
     img { width: 38px; height: 38px; }
   }
 `;
-var BrandText = import_styled_components37.default.div`
+var BrandText = import_styled_components36.default.div`
   text-align: center;
   color: #fff;
   position: relative;
   z-index: 1;
 `;
-var BrandName2 = import_styled_components37.default.h1`
+var BrandName2 = import_styled_components36.default.h1`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.625rem;
   font-weight: 700;
@@ -3157,13 +2981,13 @@ var BrandName2 = import_styled_components37.default.h1`
     font-size: 1.25rem;
   }
 `;
-var BrandSub = import_styled_components37.default.p`
+var BrandSub = import_styled_components36.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   opacity: 0.75;
   line-height: 1.4;
 `;
-var BrandQuote = import_styled_components37.default.blockquote`
+var BrandQuote = import_styled_components36.default.blockquote`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: rgba(255, 255, 255, 0.6);
@@ -3178,7 +3002,7 @@ var BrandQuote = import_styled_components37.default.blockquote`
     display: none;
   }
 `;
-var FormPanel = import_styled_components37.default.div`
+var FormPanel = import_styled_components36.default.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -3200,15 +3024,15 @@ var FormPanel = import_styled_components37.default.div`
     animation: ${slideUp} 0.35s ease;
   }
 `;
-var FormBox = import_styled_components37.default.div`
+var FormBox = import_styled_components36.default.div`
   width: 100%;
   max-width: 400px;
   animation: ${fadeUp} 0.35s ease;
 `;
-var FormHeader = import_styled_components37.default.div`
+var FormHeader = import_styled_components36.default.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var FormTitle = import_styled_components37.default.h2`
+var FormTitle = import_styled_components36.default.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.375rem;
   font-weight: 700;
@@ -3216,22 +3040,22 @@ var FormTitle = import_styled_components37.default.h2`
   letter-spacing: -0.3px;
   margin-bottom: 6px;
 `;
-var FormSubtitle = import_styled_components37.default.p`
+var FormSubtitle = import_styled_components36.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Form2 = import_styled_components37.default.form`
+var Form2 = import_styled_components36.default.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SubmitButton = (0, import_styled_components37.default)(Button)`
+var SubmitButton = (0, import_styled_components36.default)(Button)`
   @media (max-width: 768px) {
     border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
   }
 `;
-var FooterLink = import_styled_components37.default.button`
+var FooterLink = import_styled_components36.default.button`
   display: block;
   width: 100%;
   text-align: center;
@@ -3248,7 +3072,7 @@ var FooterLink = import_styled_components37.default.button`
     text-decoration: underline;
   }
 `;
-var ForgotLink = import_styled_components37.default.button`
+var ForgotLink = import_styled_components36.default.button`
   align-self: flex-end;
   margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
   border: none;
@@ -3264,7 +3088,7 @@ var ForgotLink = import_styled_components37.default.button`
     text-decoration: underline;
   }
 `;
-var BackLink = import_styled_components37.default.button`
+var BackLink = import_styled_components36.default.button`
   display: inline-flex;
   align-items: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
@@ -3281,7 +3105,7 @@ var BackLink = import_styled_components37.default.button`
     color: ${({ theme: theme2 }) => theme2.colors.ink};
   }
 `;
-var SuccessMsg = import_styled_components37.default.p`
+var SuccessMsg = import_styled_components36.default.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   background: ${({ theme: theme2 }) => theme2.colors.surfaceSoft};
@@ -3291,7 +3115,7 @@ var SuccessMsg = import_styled_components37.default.p`
   text-align: center;
   line-height: 1.5;
 `;
-var ErrorMsg = import_styled_components37.default.p`
+var ErrorMsg = import_styled_components36.default.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
   background: #fef2f2;
@@ -3309,7 +3133,7 @@ var loginSchema = import_zod.z.object({
 });
 
 // src/pages/LoginPage/index.tsx
-var import_jsx_runtime30 = require("react/jsx-runtime");
+var import_jsx_runtime29 = require("react/jsx-runtime");
 function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
   const navigate = (0, import_react_router_dom4.useNavigate)();
@@ -3317,22 +3141,22 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
     resolver: (0, import_zod2.zodResolver)(loginSchema),
     defaultValues: { email: "", password: "" }
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Page, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Brand2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(BrandText, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(BrandSub, { children: brand.sub })
+  return /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Page, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Brand2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(BrandText, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(BrandSub, { children: brand.sub })
       ] }),
-      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(BrandQuote, { children: brand.quote })
+      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(FormBox, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(FormHeader, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(FormTitle, { children: "Bem-vindo" }),
-        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
+    /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(FormBox, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(FormHeader, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FormTitle, { children: "Bem-vindo" }),
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Form2, { onSubmit: handleSubmit(handleLogin), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Form2, { onSubmit: handleSubmit(handleLogin), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
           TextInput,
           {
             label: text.fields.email,
@@ -3343,7 +3167,7 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
             placeholder: text.fields.emailPlaceholder
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
           TextInput,
           {
             label: "Senha",
@@ -3353,8 +3177,8 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
             placeholder: "M\xEDnimo 6 caracteres"
           }
         ),
-        forgotPasswordPath && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(ForgotLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" }),
-        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+        forgotPasswordPath && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ForgotLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" }),
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
           SubmitButton,
           {
             variant: "primary",
@@ -3366,7 +3190,7 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
             children: submitting ? "Entrando..." : "Entrar"
           }
         ),
-        error && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(ErrorMsg, { children: error })
+        error && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ErrorMsg, { children: error })
       ] }),
       footerSlot
     ] }) })
@@ -3380,15 +3204,15 @@ var import_react_router_dom5 = require("react-router-dom");
 var import_lucide_react11 = require("lucide-react");
 
 // src/pages/ProfilePage/styles/ProfilePage.ts
-var import_styled_components38 = __toESM(require("styled-components"));
-var Wrap3 = import_styled_components38.default.div`
+var import_styled_components37 = __toESM(require("styled-components"));
+var Wrap3 = import_styled_components37.default.div`
   max-width: 560px;
 `;
-var Identity = import_styled_components38.default.div`
+var Identity = import_styled_components37.default.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Name = import_styled_components38.default.h2`
+var Name = import_styled_components37.default.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -3396,18 +3220,18 @@ var Name = import_styled_components38.default.h2`
   line-height: 1.1;
   margin-bottom: 4px;
 `;
-var RoleLabel = import_styled_components38.default.p`
+var RoleLabel = import_styled_components37.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Section = import_styled_components38.default.div`
+var Section = import_styled_components37.default.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SectionTitle = import_styled_components38.default.p`
+var SectionTitle = import_styled_components37.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -3415,10 +3239,10 @@ var SectionTitle = import_styled_components38.default.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var SectionDivider = import_styled_components38.default.div`
+var SectionDivider = import_styled_components37.default.div`
   border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Actions = import_styled_components38.default.div`
+var Actions = import_styled_components37.default.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -3429,7 +3253,7 @@ var Actions = import_styled_components38.default.div`
     width: 100%;
   }
 `;
-var LogoutAction = import_styled_components38.default.div`
+var LogoutAction = import_styled_components37.default.div`
   margin-top: ${({ theme: theme2 }) => theme2.spacing.md};
 
   @media (min-width: ${({ theme: theme2 }) => theme2.breakpoints.mobile}) {
@@ -3445,7 +3269,7 @@ var profileSchema = import_zod3.z.object({
 });
 
 // src/pages/ProfilePage/index.tsx
-var import_jsx_runtime31 = require("react/jsx-runtime");
+var import_jsx_runtime30 = require("react/jsx-runtime");
 function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
@@ -3463,17 +3287,17 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
     const err = await updateProfile(data.name, data.email);
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Wrap3, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(PageHeader, { title: "Meu perfil", back }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Identity, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
-      roleLabel && /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(RoleLabel, { children: roleLabel })
+  return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Wrap3, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(PageHeader, { title: "Meu perfil", back }),
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Identity, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
+      roleLabel && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(RoleLabel, { children: roleLabel })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Section, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SectionDivider, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Section, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionDivider, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
         TextInput,
         {
           label: "E-mail de acesso",
@@ -3484,16 +3308,16 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react11.Save, { size: 16 }),
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_lucide_react11.Save, { size: 16 }),
       isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es"
     ] }) }),
-    changePasswordPath && /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(import_jsx_runtime31.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Section, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SectionTitle, { children: "Seguran\xE7a" }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
+    changePasswordPath && /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_jsx_runtime30.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Section, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionTitle, { children: "Seguran\xE7a" }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
     ] }),
-    onLogout && /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(LogoutAction, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react11.LogOut, { size: 16 }),
+    onLogout && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(LogoutAction, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_lucide_react11.LogOut, { size: 16 }),
       "Sair"
     ] }) }),
     toast
@@ -3516,7 +3340,7 @@ var passwordSchema = import_zod5.z.object({
 });
 
 // src/pages/ChangePasswordPage/index.tsx
-var import_jsx_runtime32 = require("react/jsx-runtime");
+var import_jsx_runtime31 = require("react/jsx-runtime");
 function ChangePasswordPage() {
   const { updatePassword } = useAuthCtx();
   const { show: showToast, toast } = useToast();
@@ -3539,11 +3363,11 @@ function ChangePasswordPage() {
     showToast("Senha atualizada com sucesso.");
     reset();
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Wrap3, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(PageHeader, { title: "Alterar senha", back: true }),
-    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Section, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Wrap3, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(PageHeader, { title: "Alterar senha", back: true }),
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Section, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
         TextInput,
         {
           label: "Confirmar nova senha",
@@ -3554,8 +3378,8 @@ function ChangePasswordPage() {
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(import_jsx_runtime32.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_lucide_react12.Save, { size: 16 }),
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(import_jsx_runtime31.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react12.Save, { size: 16 }),
       "Salvar nova senha"
     ] }) }) }),
     toast
@@ -3597,7 +3421,7 @@ var forgotPasswordSchema = import_zod7.z.object({
 });
 
 // src/pages/ForgotPasswordPage/index.tsx
-var import_jsx_runtime33 = require("react/jsx-runtime");
+var import_jsx_runtime32 = require("react/jsx-runtime");
 function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
   const { submitting, sent, error, handleSubmit: submit } = useForgotPassword(resetPasswordPath);
   const navigate = (0, import_react_router_dom6.useNavigate)();
@@ -3605,26 +3429,26 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
     resolver: (0, import_zod8.zodResolver)(forgotPasswordSchema),
     defaultValues: { email: "" }
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Page, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Brand2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(BrandText, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandSub, { children: brand.sub })
+  return /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Page, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Brand2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(BrandText, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(BrandSub, { children: brand.sub })
       ] }),
-      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandQuote, { children: brand.quote })
+      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(FormBox, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_lucide_react13.ArrowLeft, { size: 16 }),
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(FormBox, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_lucide_react13.ArrowLeft, { size: 16 }),
         "Voltar para o login"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(FormHeader, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormTitle, { children: "Esqueci minha senha" }),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(FormHeader, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormTitle, { children: "Esqueci minha senha" }),
+        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
       ] }),
-      sent ? /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Form2, { onSubmit: handleSubmit(submit), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
+      sent ? /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Form2, { onSubmit: handleSubmit(submit), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
           TextInput,
           {
             label: "E-mail",
@@ -3635,7 +3459,7 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
             placeholder: "seu@email.com"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
           SubmitButton,
           {
             variant: "primary",
@@ -3644,13 +3468,13 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
             type: "submit",
             disabled: submitting,
             style: { marginTop: 8 },
-            children: submitting ? "Enviando..." : /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_lucide_react13.Send, { size: 16 }),
+            children: submitting ? "Enviando..." : /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(import_jsx_runtime32.Fragment, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_lucide_react13.Send, { size: 16 }),
               "Enviar link"
             ] })
           }
         ),
-        error && /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(ErrorMsg, { children: error })
+        error && /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(ErrorMsg, { children: error })
       ] })
     ] }) })
   ] });
@@ -3662,7 +3486,7 @@ var import_zod9 = require("@hookform/resolvers/zod");
 var import_react_hook_form10 = require("react-hook-form");
 var import_react_router_dom7 = require("react-router-dom");
 var import_lucide_react14 = require("lucide-react");
-var import_jsx_runtime34 = require("react/jsx-runtime");
+var import_jsx_runtime33 = require("react/jsx-runtime");
 function ResetPasswordPage({ brand, loginPath }) {
   const { user, loading, updatePassword, logout } = useAuthCtx();
   const navigate = (0, import_react_router_dom7.useNavigate)();
@@ -3686,30 +3510,30 @@ function ResetPasswordPage({ brand, loginPath }) {
     setDone(true);
   };
   const invalidLink = !done && !loading && !user;
-  return /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(Page, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(Brand2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(BrandText, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(BrandSub, { children: brand.sub })
+  return /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Page, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Brand2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(BrandText, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandSub, { children: brand.sub })
       ] }),
-      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(BrandQuote, { children: brand.quote })
+      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(FormBox, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(FormHeader, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FormTitle, { children: "Nova senha" }),
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
+    /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(FormBox, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(FormHeader, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormTitle, { children: "Nova senha" }),
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
       ] }),
-      done && /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
+      done && /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
       ] }),
-      invalidLink && /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
+      invalidLink && /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
       ] }),
-      !done && !invalidLink && /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(Form2, { onSubmit: handleSubmit(onSubmit), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+      !done && !invalidLink && /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Form2, { onSubmit: handleSubmit(onSubmit), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
           TextInput,
           {
             label: "Nova senha",
@@ -3720,7 +3544,7 @@ function ResetPasswordPage({ brand, loginPath }) {
             placeholder: "M\xEDnimo 6 caracteres"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
           TextInput,
           {
             label: "Confirmar nova senha",
@@ -3730,7 +3554,7 @@ function ResetPasswordPage({ brand, loginPath }) {
             placeholder: "Repita a nova senha"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
           SubmitButton,
           {
             variant: "primary",
@@ -3739,8 +3563,8 @@ function ResetPasswordPage({ brand, loginPath }) {
             type: "submit",
             disabled: isSubmitting,
             style: { marginTop: 8 },
-            children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_lucide_react14.Save, { size: 16 }),
+            children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_lucide_react14.Save, { size: 16 }),
               "Salvar nova senha"
             ] })
           }
@@ -3775,11 +3599,11 @@ function useModal(variant = "dialog") {
 }
 
 // src/styles/styled.d.ts
-var import_styled_components39 = require("styled-components");
+var import_styled_components38 = require("styled-components");
 
 // src/styles/GlobalStyles.ts
-var import_styled_components40 = require("styled-components");
-var GlobalStyles = import_styled_components40.createGlobalStyle`
+var import_styled_components39 = require("styled-components");
+var GlobalStyles = import_styled_components39.createGlobalStyle`
   *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -4056,7 +3880,6 @@ var theme = {
   StatValue,
   StatsGrid,
   StatusBadge,
-  SummaryCard,
   Switch,
   Tab,
   TabBadge,
@@ -4069,9 +3892,7 @@ var theme = {
   fadeIn,
   fadeUp,
   fetchProfile,
-  formatCNPJ,
   formatCPF,
-  formatCpfCnpj,
   formatCurrency,
   maskCEP,
   maskCurrencyInput,

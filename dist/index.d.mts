@@ -342,34 +342,6 @@ declare const StatValue: styled_components_dist_types.IStyledComponentBase<"web"
     $muted?: boolean | undefined;
 }, never>>> & string;
 
-interface SummaryItem {
-    name: string;
-    qty: number;
-    subtotal?: number;
-}
-interface SummaryCardButton {
-    text: string;
-    onClick: () => void;
-    variant?: 'primary' | 'secondary';
-    disabled?: boolean;
-    loading?: boolean;
-}
-interface SummaryCardProps {
-    label?: string;
-    items: SummaryItem[];
-    total: number;
-    onConfirm?: () => void;
-    confirmText?: string;
-    loading?: boolean;
-    disabled?: boolean;
-    buttons?: SummaryCardButton[];
-    emptyMessage?: string;
-    /** Distância do rodapé quando fixo no mobile. Use '0' em páginas sem tab bar. Padrão: '80px'. */
-    bottomOffset?: string;
-}
-
-declare function SummaryCard({ label, items, total, onConfirm, confirmText, loading, disabled, buttons, emptyMessage, bottomOffset, }: SummaryCardProps): react.JSX.Element;
-
 declare const TabBar: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, keyof react.ClassAttributes<HTMLDivElement> | keyof react.HTMLAttributes<HTMLDivElement>> & react.ClassAttributes<HTMLDivElement> & react.HTMLAttributes<HTMLDivElement>, "role"> & Partial<Pick<styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, keyof react.ClassAttributes<HTMLDivElement> | keyof react.HTMLAttributes<HTMLDivElement>> & react.ClassAttributes<HTMLDivElement> & react.HTMLAttributes<HTMLDivElement>, "role">>> & string;
 declare const Tab: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<styled_components.FastOmit<styled_components.FastOmit<styled_components.FastOmit<react.DetailedHTMLProps<react.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, keyof react.ClassAttributes<HTMLButtonElement> | keyof react.ButtonHTMLAttributes<HTMLButtonElement>> & react.ClassAttributes<HTMLButtonElement> & react.ButtonHTMLAttributes<HTMLButtonElement>, "$active"> & {
     $active: boolean;
@@ -720,7 +692,5 @@ declare function parsePhone(value: string): string;
 declare function formatCPF(value: string): string;
 declare function maskCEP(value: string): string;
 declare function maskDate(value: string): string;
-declare function formatCNPJ(value: string): string;
-declare function formatCpfCnpj(value: string): string;
 
-export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, ForgotPasswordPage, type ForgotPasswordPageProps, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LinkButton, type LinkButtonProps, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, ResetPasswordPage, type ResetPasswordPageProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, SummaryCard, type SummaryCardButton, type SummaryCardProps, type SummaryItem, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type TextMask, Textarea, type TextareaProps, type Theme, Toast, type ToastActionConfig, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCNPJ, formatCPF, formatCpfCnpj, formatCurrency, maskCEP, maskCurrencyInput, maskDate, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, ForgotPasswordPage, type ForgotPasswordPageProps, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LinkButton, type LinkButtonProps, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, ResetPasswordPage, type ResetPasswordPageProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type TextMask, Textarea, type TextareaProps, type Theme, Toast, type ToastActionConfig, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCPF, formatCurrency, maskCEP, maskCurrencyInput, maskDate, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };

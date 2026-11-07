@@ -1909,14 +1909,6 @@ function maskDate(value) {
   if (digits.length > 2) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
   return digits;
 }
-function formatCNPJ(value) {
-  const digits = value.replace(/\D/g, "").slice(0, 14);
-  return digits.replace(/(\d{2})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1/$2").replace(/(\d{4})(\d{1,2})$/, "$1-$2");
-}
-function formatCpfCnpj(value) {
-  const digits = value.replace(/\D/g, "");
-  return digits.length > 11 ? formatCNPJ(value) : formatCPF(value);
-}
 
 // src/components/Inputs/TextInput/styles/TextInput.ts
 import styled23 from "styled-components";
@@ -2461,180 +2453,15 @@ var StatValue = styled31.p`
   color: ${({ theme: theme2, $tone, $muted }) => $tone === "warning" ? theme2.colors.warning : $tone === "danger" ? "#c0002a" : $muted ? theme2.colors.muted : theme2.colors.ink};
 `;
 
-// src/components/SummaryCard/styles/SummaryCard.ts
-import styled32 from "styled-components";
-var Card2 = styled32.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
-  background: ${({ theme: theme2 }) => theme2.colors.canvas};
-  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
-  box-shadow: ${({ theme: theme2 }) => theme2.shadows.sm};
-  padding: ${({ theme: theme2 }) => theme2.spacing.md} ${({ theme: theme2 }) => theme2.spacing.base};
-  margin-top: ${({ theme: theme2 }) => theme2.spacing.base};
-
-  @media (max-width: 744px) {
-    position: fixed;
-    bottom: ${({ $bottomOffset }) => $bottomOffset != null ? $bottomOffset : "80px"};
-    left: 0;
-    right: 0;
-    z-index: 90;
-    margin-top: 0;
-    border: none;
-    border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-    border-radius: 0;
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
-    padding-bottom: calc(${({ theme: theme2 }) => theme2.spacing.md} + env(safe-area-inset-bottom));
-    animation: ${fadeUp} 0.2s ease;
-  }
-`;
-var Label3 = styled32.p`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
-  font-weight: 600;
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 0;
-`;
-var Row2 = styled32.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme: theme2 }) => theme2.spacing.md};
-  width: 100%;
-`;
-var Info2 = styled32.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme: theme2 }) => theme2.spacing.md};
-  width: 100%;
-`;
-var Items = styled32.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  flex: 1;
-`;
-var EmptyMessage = styled32(Items)`
-  text-align: center;
-`;
-var Total = styled32.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
-  font-weight: 700;
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  text-align: right;
-  flex-shrink: 0;
-  min-width: fit-content;
-  margin-left: ${({ theme: theme2 }) => theme2.spacing.sm};
-`;
-var ItemDetail = styled32.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
-  padding: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
-`;
-var ItemDetailName = styled32.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  flex: 1;
-`;
-var ItemDetailPrice = styled32.span`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
-  white-space: nowrap;
-  flex-shrink: 0;
-  text-align: right;
-`;
-var Divider = styled32.hr`
-  border: none;
-  border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
-`;
-var ButtonRow = styled32.div`
-  display: flex;
-  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
-
-  button {
-    flex: 1;
-  }
-`;
-
-// src/components/SummaryCard/index.tsx
-import { Fragment as Fragment4, jsx as jsx25, jsxs as jsxs21 } from "react/jsx-runtime";
-function SummaryCard({
-  label = "Resumo",
-  items,
-  total,
-  onConfirm,
-  confirmText = "Confirmar",
-  loading = false,
-  disabled = false,
-  buttons,
-  emptyMessage = "Nenhum item selecionado",
-  bottomOffset
-}) {
-  const hasSubtotals = items.some((item) => item.subtotal !== void 0);
-  const itemsText = items.map((item) => `${item.qty}\xD7 ${item.name}`).join(", ");
-  const isEmpty = items.length === 0;
-  return /* @__PURE__ */ jsxs21(Card2, { $bottomOffset: bottomOffset, children: [
-    /* @__PURE__ */ jsx25(Label3, { style: { marginBottom: 0 }, children: label }),
-    isEmpty ? /* @__PURE__ */ jsx25(EmptyMessage, { children: emptyMessage }) : hasSubtotals ? /* @__PURE__ */ jsx25("div", { children: items.map((item) => /* @__PURE__ */ jsxs21(ItemDetail, { children: [
-      /* @__PURE__ */ jsxs21(ItemDetailName, { children: [
-        item.qty,
-        "\xD7 ",
-        item.name
-      ] }),
-      item.subtotal !== void 0 && /* @__PURE__ */ jsx25(ItemDetailPrice, { children: formatCurrency(item.subtotal) })
-    ] }, item.name)) }) : /* @__PURE__ */ jsxs21(Row2, { children: [
-      /* @__PURE__ */ jsx25(Items, { children: itemsText }),
-      /* @__PURE__ */ jsx25(Total, { children: formatCurrency(total) })
-    ] }),
-    !isEmpty && hasSubtotals && /* @__PURE__ */ jsxs21(Fragment4, { children: [
-      /* @__PURE__ */ jsx25(Divider, {}),
-      /* @__PURE__ */ jsx25(Row2, { children: /* @__PURE__ */ jsx25(Info2, { children: /* @__PURE__ */ jsx25(Total, { children: formatCurrency(total) }) }) })
-    ] }),
-    buttons && buttons.length > 0 ? /* @__PURE__ */ jsx25(ButtonRow, { children: buttons.map((btn, idx) => /* @__PURE__ */ jsx25(
-      Button,
-      {
-        variant: btn.variant || "primary",
-        size: "lg",
-        fullWidth: true,
-        onClick: btn.onClick,
-        disabled: btn.disabled || btn.loading,
-        children: btn.loading ? `${btn.text}...` : btn.text
-      },
-      idx
-    )) }) : onConfirm ? /* @__PURE__ */ jsx25(
-      Button,
-      {
-        variant: "primary",
-        size: "lg",
-        fullWidth: true,
-        onClick: onConfirm,
-        disabled: disabled || loading || isEmpty,
-        children: loading ? `${confirmText}...` : confirmText
-      }
-    ) : null
-  ] });
-}
-
 // src/components/Tabs/styles/Tabs.ts
-import styled33 from "styled-components";
-var TabBar = styled33.div.attrs({ role: "tablist" })`
+import styled32 from "styled-components";
+var TabBar = styled32.div.attrs({ role: "tablist" })`
   display: flex;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Tab = styled33.button.attrs(({ $active }) => ({
+var Tab = styled32.button.attrs(({ $active }) => ({
   type: "button",
   role: "tab",
   "aria-selected": $active
@@ -2657,7 +2484,7 @@ var Tab = styled33.button.attrs(({ $active }) => ({
 
   &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
 `;
-var TabBadge = styled33.span`
+var TabBadge = styled32.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2676,12 +2503,12 @@ var TabBadge = styled33.span`
 import { createPortal as createPortal2 } from "react-dom";
 
 // src/components/Toast/styles/Toast.ts
-import styled34, { keyframes as keyframes3 } from "styled-components";
+import styled33, { keyframes as keyframes3 } from "styled-components";
 var fadeOut = keyframes3`
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(8px); }
 `;
-var ToastEl = styled34.div`
+var ToastEl = styled33.div`
   position: fixed;
   bottom: 80px;
   left: 0;
@@ -2705,7 +2532,7 @@ var ToastEl = styled34.div`
   text-align: center;
   animation: ${({ $leaving }) => $leaving ? fadeOut : fadeUp} 0.25s ease forwards;
 `;
-var ToastAction = styled34.button`
+var ToastAction = styled33.button`
   padding: 0;
   border: none;
   background: transparent;
@@ -2716,7 +2543,7 @@ var ToastAction = styled34.button`
 
 // src/components/Toast/hooks/useToast.tsx
 import { useCallback, useRef as useRef6, useState as useState6 } from "react";
-import { jsx as jsx26 } from "react/jsx-runtime";
+import { jsx as jsx25 } from "react/jsx-runtime";
 var ACTION_DURATION = 6e3;
 function useToast(duration = 2500) {
   const [state, setState] = useState6(null);
@@ -2734,7 +2561,7 @@ function useToast(duration = 2500) {
     },
     [duration, hide]
   );
-  const toast = state ? /* @__PURE__ */ jsx26(
+  const toast = state ? /* @__PURE__ */ jsx25(
     Toast,
     {
       message: state.message,
@@ -2753,12 +2580,12 @@ function useToast(duration = 2500) {
 }
 
 // src/components/Toast/index.tsx
-import { jsx as jsx27, jsxs as jsxs22 } from "react/jsx-runtime";
+import { jsx as jsx26, jsxs as jsxs21 } from "react/jsx-runtime";
 function Toast({ message, leaving, action }) {
   return createPortal2(
-    /* @__PURE__ */ jsxs22(ToastEl, { $leaving: leaving, $interactive: !!action, role: "status", children: [
+    /* @__PURE__ */ jsxs21(ToastEl, { $leaving: leaving, $interactive: !!action, role: "status", children: [
       message,
-      action && /* @__PURE__ */ jsx27(ToastAction, { type: "button", onClick: action.onClick, children: action.label })
+      action && /* @__PURE__ */ jsx26(ToastAction, { type: "button", onClick: action.onClick, children: action.label })
     ] }),
     document.body
   );
@@ -2778,11 +2605,11 @@ import { useCallback as useCallback2, useContext, useEffect as useEffect5, useMe
 
 // src/contexts/AuthContext.tsx
 import { createContext } from "react";
-import { jsx as jsx28 } from "react/jsx-runtime";
+import { jsx as jsx27 } from "react/jsx-runtime";
 var AuthContext = createContext(null);
 function AuthProvider({ client, children }) {
   const authValue = useAuth(client);
-  return /* @__PURE__ */ jsx28(AuthContext.Provider, { value: authValue, children });
+  return /* @__PURE__ */ jsx27(AuthContext.Provider, { value: authValue, children });
 }
 
 // src/text/actions.ts
@@ -2963,8 +2790,8 @@ function useLogin(resolveRoute) {
 }
 
 // src/pages/LoginPage/styles/Login.ts
-import styled35 from "styled-components";
-var Page = styled35.div`
+import styled34 from "styled-components";
+var Page = styled34.div`
   min-height: 100vh;
   display: flex;
 
@@ -2972,7 +2799,7 @@ var Page = styled35.div`
     flex-direction: column;
   }
 `;
-var Brand2 = styled35.div`
+var Brand2 = styled34.div`
   flex: 0 0 420px;
   background: ${({ theme: theme2 }) => theme2.colors.primary};
   display: flex;
@@ -3003,7 +2830,7 @@ var Brand2 = styled35.div`
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
   }
 `;
-var BrandMark = styled35.div`
+var BrandMark = styled34.div`
   width: 80px;
   height: 80px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
@@ -3029,13 +2856,13 @@ var BrandMark = styled35.div`
     img { width: 38px; height: 38px; }
   }
 `;
-var BrandText = styled35.div`
+var BrandText = styled34.div`
   text-align: center;
   color: #fff;
   position: relative;
   z-index: 1;
 `;
-var BrandName2 = styled35.h1`
+var BrandName2 = styled34.h1`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.625rem;
   font-weight: 700;
@@ -3047,13 +2874,13 @@ var BrandName2 = styled35.h1`
     font-size: 1.25rem;
   }
 `;
-var BrandSub = styled35.p`
+var BrandSub = styled34.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   opacity: 0.75;
   line-height: 1.4;
 `;
-var BrandQuote = styled35.blockquote`
+var BrandQuote = styled34.blockquote`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: rgba(255, 255, 255, 0.6);
@@ -3068,7 +2895,7 @@ var BrandQuote = styled35.blockquote`
     display: none;
   }
 `;
-var FormPanel = styled35.div`
+var FormPanel = styled34.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -3090,15 +2917,15 @@ var FormPanel = styled35.div`
     animation: ${slideUp} 0.35s ease;
   }
 `;
-var FormBox = styled35.div`
+var FormBox = styled34.div`
   width: 100%;
   max-width: 400px;
   animation: ${fadeUp} 0.35s ease;
 `;
-var FormHeader = styled35.div`
+var FormHeader = styled34.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var FormTitle = styled35.h2`
+var FormTitle = styled34.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.375rem;
   font-weight: 700;
@@ -3106,22 +2933,22 @@ var FormTitle = styled35.h2`
   letter-spacing: -0.3px;
   margin-bottom: 6px;
 `;
-var FormSubtitle = styled35.p`
+var FormSubtitle = styled34.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Form2 = styled35.form`
+var Form2 = styled34.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SubmitButton = styled35(Button)`
+var SubmitButton = styled34(Button)`
   @media (max-width: 768px) {
     border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
   }
 `;
-var FooterLink = styled35.button`
+var FooterLink = styled34.button`
   display: block;
   width: 100%;
   text-align: center;
@@ -3138,7 +2965,7 @@ var FooterLink = styled35.button`
     text-decoration: underline;
   }
 `;
-var ForgotLink = styled35.button`
+var ForgotLink = styled34.button`
   align-self: flex-end;
   margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
   border: none;
@@ -3154,7 +2981,7 @@ var ForgotLink = styled35.button`
     text-decoration: underline;
   }
 `;
-var BackLink = styled35.button`
+var BackLink = styled34.button`
   display: inline-flex;
   align-items: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
@@ -3171,7 +2998,7 @@ var BackLink = styled35.button`
     color: ${({ theme: theme2 }) => theme2.colors.ink};
   }
 `;
-var SuccessMsg = styled35.p`
+var SuccessMsg = styled34.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   background: ${({ theme: theme2 }) => theme2.colors.surfaceSoft};
@@ -3181,7 +3008,7 @@ var SuccessMsg = styled35.p`
   text-align: center;
   line-height: 1.5;
 `;
-var ErrorMsg = styled35.p`
+var ErrorMsg = styled34.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
   background: #fef2f2;
@@ -3199,7 +3026,7 @@ var loginSchema = z.object({
 });
 
 // src/pages/LoginPage/index.tsx
-import { jsx as jsx29, jsxs as jsxs23 } from "react/jsx-runtime";
+import { jsx as jsx28, jsxs as jsxs22 } from "react/jsx-runtime";
 function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
   const navigate = useNavigate3();
@@ -3207,22 +3034,22 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" }
   });
-  return /* @__PURE__ */ jsxs23(Page, { children: [
-    /* @__PURE__ */ jsxs23(Brand2, { children: [
-      /* @__PURE__ */ jsx29(BrandMark, { children: /* @__PURE__ */ jsx29("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ jsxs23(BrandText, { children: [
-        /* @__PURE__ */ jsx29(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ jsx29(BrandSub, { children: brand.sub })
+  return /* @__PURE__ */ jsxs22(Page, { children: [
+    /* @__PURE__ */ jsxs22(Brand2, { children: [
+      /* @__PURE__ */ jsx28(BrandMark, { children: /* @__PURE__ */ jsx28("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ jsxs22(BrandText, { children: [
+        /* @__PURE__ */ jsx28(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ jsx28(BrandSub, { children: brand.sub })
       ] }),
-      brand.quote && /* @__PURE__ */ jsx29(BrandQuote, { children: brand.quote })
+      brand.quote && /* @__PURE__ */ jsx28(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ jsx29(FormPanel, { children: /* @__PURE__ */ jsxs23(FormBox, { children: [
-      /* @__PURE__ */ jsxs23(FormHeader, { children: [
-        /* @__PURE__ */ jsx29(FormTitle, { children: "Bem-vindo" }),
-        /* @__PURE__ */ jsx29(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
+    /* @__PURE__ */ jsx28(FormPanel, { children: /* @__PURE__ */ jsxs22(FormBox, { children: [
+      /* @__PURE__ */ jsxs22(FormHeader, { children: [
+        /* @__PURE__ */ jsx28(FormTitle, { children: "Bem-vindo" }),
+        /* @__PURE__ */ jsx28(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
       ] }),
-      /* @__PURE__ */ jsxs23(Form2, { onSubmit: handleSubmit(handleLogin), children: [
-        /* @__PURE__ */ jsx29(
+      /* @__PURE__ */ jsxs22(Form2, { onSubmit: handleSubmit(handleLogin), children: [
+        /* @__PURE__ */ jsx28(
           TextInput,
           {
             label: text.fields.email,
@@ -3233,7 +3060,7 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
             placeholder: text.fields.emailPlaceholder
           }
         ),
-        /* @__PURE__ */ jsx29(
+        /* @__PURE__ */ jsx28(
           TextInput,
           {
             label: "Senha",
@@ -3243,8 +3070,8 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
             placeholder: "M\xEDnimo 6 caracteres"
           }
         ),
-        forgotPasswordPath && /* @__PURE__ */ jsx29(ForgotLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" }),
-        /* @__PURE__ */ jsx29(
+        forgotPasswordPath && /* @__PURE__ */ jsx28(ForgotLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" }),
+        /* @__PURE__ */ jsx28(
           SubmitButton,
           {
             variant: "primary",
@@ -3256,7 +3083,7 @@ function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
             children: submitting ? "Entrando..." : "Entrar"
           }
         ),
-        error && /* @__PURE__ */ jsx29(ErrorMsg, { children: error })
+        error && /* @__PURE__ */ jsx28(ErrorMsg, { children: error })
       ] }),
       footerSlot
     ] }) })
@@ -3270,15 +3097,15 @@ import { useNavigate as useNavigate4 } from "react-router-dom";
 import { LogOut, Save } from "lucide-react";
 
 // src/pages/ProfilePage/styles/ProfilePage.ts
-import styled36 from "styled-components";
-var Wrap3 = styled36.div`
+import styled35 from "styled-components";
+var Wrap3 = styled35.div`
   max-width: 560px;
 `;
-var Identity = styled36.div`
+var Identity = styled35.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Name = styled36.h2`
+var Name = styled35.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -3286,18 +3113,18 @@ var Name = styled36.h2`
   line-height: 1.1;
   margin-bottom: 4px;
 `;
-var RoleLabel = styled36.p`
+var RoleLabel = styled35.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Section = styled36.div`
+var Section = styled35.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SectionTitle = styled36.p`
+var SectionTitle = styled35.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -3305,10 +3132,10 @@ var SectionTitle = styled36.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var SectionDivider = styled36.div`
+var SectionDivider = styled35.div`
   border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Actions = styled36.div`
+var Actions = styled35.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -3319,7 +3146,7 @@ var Actions = styled36.div`
     width: 100%;
   }
 `;
-var LogoutAction = styled36.div`
+var LogoutAction = styled35.div`
   margin-top: ${({ theme: theme2 }) => theme2.spacing.md};
 
   @media (min-width: ${({ theme: theme2 }) => theme2.breakpoints.mobile}) {
@@ -3335,7 +3162,7 @@ var profileSchema = z2.object({
 });
 
 // src/pages/ProfilePage/index.tsx
-import { Fragment as Fragment5, jsx as jsx30, jsxs as jsxs24 } from "react/jsx-runtime";
+import { Fragment as Fragment4, jsx as jsx29, jsxs as jsxs23 } from "react/jsx-runtime";
 function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
@@ -3353,17 +3180,17 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
     const err = await updateProfile(data.name, data.email);
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
   };
-  return /* @__PURE__ */ jsxs24(Wrap3, { children: [
-    /* @__PURE__ */ jsx30(PageHeader, { title: "Meu perfil", back }),
-    /* @__PURE__ */ jsxs24(Identity, { children: [
-      /* @__PURE__ */ jsx30(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
-      roleLabel && /* @__PURE__ */ jsx30(RoleLabel, { children: roleLabel })
+  return /* @__PURE__ */ jsxs23(Wrap3, { children: [
+    /* @__PURE__ */ jsx29(PageHeader, { title: "Meu perfil", back }),
+    /* @__PURE__ */ jsxs23(Identity, { children: [
+      /* @__PURE__ */ jsx29(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
+      roleLabel && /* @__PURE__ */ jsx29(RoleLabel, { children: roleLabel })
     ] }),
-    /* @__PURE__ */ jsxs24(Section, { children: [
-      /* @__PURE__ */ jsx30(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
-      /* @__PURE__ */ jsx30(SectionDivider, {}),
-      /* @__PURE__ */ jsx30(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
-      /* @__PURE__ */ jsx30(
+    /* @__PURE__ */ jsxs23(Section, { children: [
+      /* @__PURE__ */ jsx29(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
+      /* @__PURE__ */ jsx29(SectionDivider, {}),
+      /* @__PURE__ */ jsx29(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
+      /* @__PURE__ */ jsx29(
         TextInput,
         {
           label: "E-mail de acesso",
@@ -3374,16 +3201,16 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
         }
       )
     ] }),
-    /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsxs24(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
-      /* @__PURE__ */ jsx30(Save, { size: 16 }),
+    /* @__PURE__ */ jsx29(Actions, { children: /* @__PURE__ */ jsxs23(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
+      /* @__PURE__ */ jsx29(Save, { size: 16 }),
       isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es"
     ] }) }),
-    changePasswordPath && /* @__PURE__ */ jsxs24(Fragment5, { children: [
-      /* @__PURE__ */ jsx30(Section, { children: /* @__PURE__ */ jsx30(SectionTitle, { children: "Seguran\xE7a" }) }),
-      /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsx30(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
+    changePasswordPath && /* @__PURE__ */ jsxs23(Fragment4, { children: [
+      /* @__PURE__ */ jsx29(Section, { children: /* @__PURE__ */ jsx29(SectionTitle, { children: "Seguran\xE7a" }) }),
+      /* @__PURE__ */ jsx29(Actions, { children: /* @__PURE__ */ jsx29(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
     ] }),
-    onLogout && /* @__PURE__ */ jsx30(LogoutAction, { children: /* @__PURE__ */ jsxs24(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
-      /* @__PURE__ */ jsx30(LogOut, { size: 16 }),
+    onLogout && /* @__PURE__ */ jsx29(LogoutAction, { children: /* @__PURE__ */ jsxs23(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
+      /* @__PURE__ */ jsx29(LogOut, { size: 16 }),
       "Sair"
     ] }) }),
     toast
@@ -3406,7 +3233,7 @@ var passwordSchema = z3.object({
 });
 
 // src/pages/ChangePasswordPage/index.tsx
-import { Fragment as Fragment6, jsx as jsx31, jsxs as jsxs25 } from "react/jsx-runtime";
+import { Fragment as Fragment5, jsx as jsx30, jsxs as jsxs24 } from "react/jsx-runtime";
 function ChangePasswordPage() {
   const { updatePassword } = useAuthCtx();
   const { show: showToast, toast } = useToast();
@@ -3429,11 +3256,11 @@ function ChangePasswordPage() {
     showToast("Senha atualizada com sucesso.");
     reset();
   };
-  return /* @__PURE__ */ jsxs25(Wrap3, { children: [
-    /* @__PURE__ */ jsx31(PageHeader, { title: "Alterar senha", back: true }),
-    /* @__PURE__ */ jsxs25(Section, { children: [
-      /* @__PURE__ */ jsx31(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
-      /* @__PURE__ */ jsx31(
+  return /* @__PURE__ */ jsxs24(Wrap3, { children: [
+    /* @__PURE__ */ jsx30(PageHeader, { title: "Alterar senha", back: true }),
+    /* @__PURE__ */ jsxs24(Section, { children: [
+      /* @__PURE__ */ jsx30(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
+      /* @__PURE__ */ jsx30(
         TextInput,
         {
           label: "Confirmar nova senha",
@@ -3444,8 +3271,8 @@ function ChangePasswordPage() {
         }
       )
     ] }),
-    /* @__PURE__ */ jsx31(Actions, { children: /* @__PURE__ */ jsx31(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs25(Fragment6, { children: [
-      /* @__PURE__ */ jsx31(Save2, { size: 16 }),
+    /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsx30(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs24(Fragment5, { children: [
+      /* @__PURE__ */ jsx30(Save2, { size: 16 }),
       "Salvar nova senha"
     ] }) }) }),
     toast
@@ -3487,7 +3314,7 @@ var forgotPasswordSchema = z4.object({
 });
 
 // src/pages/ForgotPasswordPage/index.tsx
-import { Fragment as Fragment7, jsx as jsx32, jsxs as jsxs26 } from "react/jsx-runtime";
+import { Fragment as Fragment6, jsx as jsx31, jsxs as jsxs25 } from "react/jsx-runtime";
 function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
   const { submitting, sent, error, handleSubmit: submit } = useForgotPassword(resetPasswordPath);
   const navigate = useNavigate5();
@@ -3495,26 +3322,26 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
     resolver: zodResolver4(forgotPasswordSchema),
     defaultValues: { email: "" }
   });
-  return /* @__PURE__ */ jsxs26(Page, { children: [
-    /* @__PURE__ */ jsxs26(Brand2, { children: [
-      /* @__PURE__ */ jsx32(BrandMark, { children: /* @__PURE__ */ jsx32("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ jsxs26(BrandText, { children: [
-        /* @__PURE__ */ jsx32(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ jsx32(BrandSub, { children: brand.sub })
+  return /* @__PURE__ */ jsxs25(Page, { children: [
+    /* @__PURE__ */ jsxs25(Brand2, { children: [
+      /* @__PURE__ */ jsx31(BrandMark, { children: /* @__PURE__ */ jsx31("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ jsxs25(BrandText, { children: [
+        /* @__PURE__ */ jsx31(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ jsx31(BrandSub, { children: brand.sub })
       ] }),
-      brand.quote && /* @__PURE__ */ jsx32(BrandQuote, { children: brand.quote })
+      brand.quote && /* @__PURE__ */ jsx31(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ jsx32(FormPanel, { children: /* @__PURE__ */ jsxs26(FormBox, { children: [
-      /* @__PURE__ */ jsxs26(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
-        /* @__PURE__ */ jsx32(ArrowLeft2, { size: 16 }),
+    /* @__PURE__ */ jsx31(FormPanel, { children: /* @__PURE__ */ jsxs25(FormBox, { children: [
+      /* @__PURE__ */ jsxs25(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
+        /* @__PURE__ */ jsx31(ArrowLeft2, { size: 16 }),
         "Voltar para o login"
       ] }),
-      /* @__PURE__ */ jsxs26(FormHeader, { children: [
-        /* @__PURE__ */ jsx32(FormTitle, { children: "Esqueci minha senha" }),
-        /* @__PURE__ */ jsx32(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
+      /* @__PURE__ */ jsxs25(FormHeader, { children: [
+        /* @__PURE__ */ jsx31(FormTitle, { children: "Esqueci minha senha" }),
+        /* @__PURE__ */ jsx31(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
       ] }),
-      sent ? /* @__PURE__ */ jsx32(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ jsxs26(Form2, { onSubmit: handleSubmit(submit), children: [
-        /* @__PURE__ */ jsx32(
+      sent ? /* @__PURE__ */ jsx31(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ jsxs25(Form2, { onSubmit: handleSubmit(submit), children: [
+        /* @__PURE__ */ jsx31(
           TextInput,
           {
             label: "E-mail",
@@ -3525,7 +3352,7 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
             placeholder: "seu@email.com"
           }
         ),
-        /* @__PURE__ */ jsx32(
+        /* @__PURE__ */ jsx31(
           SubmitButton,
           {
             variant: "primary",
@@ -3534,13 +3361,13 @@ function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
             type: "submit",
             disabled: submitting,
             style: { marginTop: 8 },
-            children: submitting ? "Enviando..." : /* @__PURE__ */ jsxs26(Fragment7, { children: [
-              /* @__PURE__ */ jsx32(Send, { size: 16 }),
+            children: submitting ? "Enviando..." : /* @__PURE__ */ jsxs25(Fragment6, { children: [
+              /* @__PURE__ */ jsx31(Send, { size: 16 }),
               "Enviar link"
             ] })
           }
         ),
-        error && /* @__PURE__ */ jsx32(ErrorMsg, { children: error })
+        error && /* @__PURE__ */ jsx31(ErrorMsg, { children: error })
       ] })
     ] }) })
   ] });
@@ -3552,7 +3379,7 @@ import { zodResolver as zodResolver5 } from "@hookform/resolvers/zod";
 import { useForm as useForm5 } from "react-hook-form";
 import { useNavigate as useNavigate6 } from "react-router-dom";
 import { Save as Save3 } from "lucide-react";
-import { Fragment as Fragment8, jsx as jsx33, jsxs as jsxs27 } from "react/jsx-runtime";
+import { Fragment as Fragment7, jsx as jsx32, jsxs as jsxs26 } from "react/jsx-runtime";
 function ResetPasswordPage({ brand, loginPath }) {
   const { user, loading, updatePassword, logout } = useAuthCtx();
   const navigate = useNavigate6();
@@ -3576,30 +3403,30 @@ function ResetPasswordPage({ brand, loginPath }) {
     setDone(true);
   };
   const invalidLink = !done && !loading && !user;
-  return /* @__PURE__ */ jsxs27(Page, { children: [
-    /* @__PURE__ */ jsxs27(Brand2, { children: [
-      /* @__PURE__ */ jsx33(BrandMark, { children: /* @__PURE__ */ jsx33("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ jsxs27(BrandText, { children: [
-        /* @__PURE__ */ jsx33(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ jsx33(BrandSub, { children: brand.sub })
+  return /* @__PURE__ */ jsxs26(Page, { children: [
+    /* @__PURE__ */ jsxs26(Brand2, { children: [
+      /* @__PURE__ */ jsx32(BrandMark, { children: /* @__PURE__ */ jsx32("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ jsxs26(BrandText, { children: [
+        /* @__PURE__ */ jsx32(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ jsx32(BrandSub, { children: brand.sub })
       ] }),
-      brand.quote && /* @__PURE__ */ jsx33(BrandQuote, { children: brand.quote })
+      brand.quote && /* @__PURE__ */ jsx32(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ jsx33(FormPanel, { children: /* @__PURE__ */ jsxs27(FormBox, { children: [
-      /* @__PURE__ */ jsxs27(FormHeader, { children: [
-        /* @__PURE__ */ jsx33(FormTitle, { children: "Nova senha" }),
-        /* @__PURE__ */ jsx33(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
+    /* @__PURE__ */ jsx32(FormPanel, { children: /* @__PURE__ */ jsxs26(FormBox, { children: [
+      /* @__PURE__ */ jsxs26(FormHeader, { children: [
+        /* @__PURE__ */ jsx32(FormTitle, { children: "Nova senha" }),
+        /* @__PURE__ */ jsx32(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
       ] }),
-      done && /* @__PURE__ */ jsxs27(Fragment8, { children: [
-        /* @__PURE__ */ jsx33(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
-        /* @__PURE__ */ jsx33(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
+      done && /* @__PURE__ */ jsxs26(Fragment7, { children: [
+        /* @__PURE__ */ jsx32(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
+        /* @__PURE__ */ jsx32(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
       ] }),
-      invalidLink && /* @__PURE__ */ jsxs27(Fragment8, { children: [
-        /* @__PURE__ */ jsx33(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
-        /* @__PURE__ */ jsx33(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
+      invalidLink && /* @__PURE__ */ jsxs26(Fragment7, { children: [
+        /* @__PURE__ */ jsx32(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
+        /* @__PURE__ */ jsx32(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
       ] }),
-      !done && !invalidLink && /* @__PURE__ */ jsxs27(Form2, { onSubmit: handleSubmit(onSubmit), children: [
-        /* @__PURE__ */ jsx33(
+      !done && !invalidLink && /* @__PURE__ */ jsxs26(Form2, { onSubmit: handleSubmit(onSubmit), children: [
+        /* @__PURE__ */ jsx32(
           TextInput,
           {
             label: "Nova senha",
@@ -3610,7 +3437,7 @@ function ResetPasswordPage({ brand, loginPath }) {
             placeholder: "M\xEDnimo 6 caracteres"
           }
         ),
-        /* @__PURE__ */ jsx33(
+        /* @__PURE__ */ jsx32(
           TextInput,
           {
             label: "Confirmar nova senha",
@@ -3620,7 +3447,7 @@ function ResetPasswordPage({ brand, loginPath }) {
             placeholder: "Repita a nova senha"
           }
         ),
-        /* @__PURE__ */ jsx33(
+        /* @__PURE__ */ jsx32(
           SubmitButton,
           {
             variant: "primary",
@@ -3629,8 +3456,8 @@ function ResetPasswordPage({ brand, loginPath }) {
             type: "submit",
             disabled: isSubmitting,
             style: { marginTop: 8 },
-            children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs27(Fragment8, { children: [
-              /* @__PURE__ */ jsx33(Save3, { size: 16 }),
+            children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs26(Fragment7, { children: [
+              /* @__PURE__ */ jsx32(Save3, { size: 16 }),
               "Salvar nova senha"
             ] })
           }
@@ -3945,7 +3772,6 @@ export {
   StatValue,
   StatsGrid,
   StatusBadge,
-  SummaryCard,
   Switch,
   Tab,
   TabBadge,
@@ -3958,9 +3784,7 @@ export {
   fadeIn,
   fadeUp,
   fetchProfile,
-  formatCNPJ,
   formatCPF,
-  formatCpfCnpj,
   formatCurrency,
   maskCEP,
   maskCurrencyInput,

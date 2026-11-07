@@ -45,8 +45,6 @@ export { StatusBadge } from './components/StatusBadge';
 export type { StatusBadgeProps } from './components/StatusBadge';
 export { StatCard, StatLabel, StatsGrid, StatValue } from './components/StatsGrid';
 export type { StatTone } from './components/StatsGrid';
-export { SummaryCard } from './components/SummaryCard';
-export type { SummaryCardProps, SummaryItem, SummaryCardButton } from './components/SummaryCard/types';
 export { Tab, TabBadge, TabBar } from './components/Tabs';
 export { Toast, useToast } from './components/Toast';
 export type { ToastActionConfig } from './components/Toast';
@@ -89,9 +87,7 @@ export type { Theme } from './styles/theme';
 
 // Utils
 export {
-  formatCNPJ,
   formatCPF,
-  formatCpfCnpj,
   formatCurrency,
   maskCEP,
   maskCurrencyInput,
