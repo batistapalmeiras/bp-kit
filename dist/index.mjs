@@ -2774,7 +2774,7 @@ import { useEffect as useEffect6, useState as useState8 } from "react";
 import { useNavigate as useNavigate2 } from "react-router-dom";
 
 // src/hooks/useAuth.ts
-import { useCallback as useCallback2, useContext, useEffect as useEffect5, useMemo, useState as useState7 } from "react";
+import { useCallback as useCallback2, useContext, useEffect as useEffect5, useMemo, useRef as useRef7, useState as useState7 } from "react";
 
 // src/contexts/AuthContext.tsx
 import { createContext } from "react";
@@ -2843,8 +2843,11 @@ function useAuth(client) {
   const [loading, setLoading] = useState7(true);
   const [error, setError] = useState7(null);
   const [sessionUser, setSessionUser] = useState7(void 0);
+  const signingOut = useRef7(false);
   useEffect5(() => {
-    const { data: listener } = client.auth.onAuthStateChange((_event, session) => {
+    const { data: listener } = client.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" && !signingOut.current) setError("Sua sess\xE3o expirou. Entre novamente.");
+      signingOut.current = false;
       setSessionUser((prev) => {
         var _a;
         const next = (session == null ? void 0 : session.user) ? { id: session.user.id, email: (_a = session.user.email) != null ? _a : "" } : null;
@@ -2852,28 +2855,7 @@ function useAuth(client) {
         return next;
       });
     });
-    const refreshInterval = setInterval(async () => {
-      const { error: refreshError } = await client.auth.refreshSession();
-      if (refreshError) {
-        setError("Sua sess\xE3o expirou. Entre novamente.");
-        setUser(null);
-        setUserEmail("");
-      }
-    }, 15 * 60 * 1e3);
-    const handleVisibilityChange = async () => {
-      if (!document.hidden) {
-        const { error: refreshError } = await client.auth.refreshSession();
-        if (refreshError) {
-          setError("Sua sess\xE3o expirou. Entre novamente.");
-          setUser(null);
-          setUserEmail("");
-        }
-      }
-    };
-    document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => {
-      clearInterval(refreshInterval);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
       listener == null ? void 0 : listener.subscription.unsubscribe();
     };
   }, [client]);
@@ -2914,6 +2896,7 @@ function useAuth(client) {
     return null;
   }, [client]);
   const logout = useCallback2(async () => {
+    signingOut.current = true;
     await client.auth.signOut();
     setUser(null);
     setUserEmail("");

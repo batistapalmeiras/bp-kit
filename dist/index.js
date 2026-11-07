@@ -2953,8 +2953,11 @@ function useAuth(client) {
   const [loading, setLoading] = (0, import_react14.useState)(true);
   const [error, setError] = (0, import_react14.useState)(null);
   const [sessionUser, setSessionUser] = (0, import_react14.useState)(void 0);
+  const signingOut = (0, import_react14.useRef)(false);
   (0, import_react14.useEffect)(() => {
-    const { data: listener } = client.auth.onAuthStateChange((_event, session) => {
+    const { data: listener } = client.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" && !signingOut.current) setError("Sua sess\xE3o expirou. Entre novamente.");
+      signingOut.current = false;
       setSessionUser((prev) => {
         var _a;
         const next = (session == null ? void 0 : session.user) ? { id: session.user.id, email: (_a = session.user.email) != null ? _a : "" } : null;
@@ -2962,28 +2965,7 @@ function useAuth(client) {
         return next;
       });
     });
-    const refreshInterval = setInterval(async () => {
-      const { error: refreshError } = await client.auth.refreshSession();
-      if (refreshError) {
-        setError("Sua sess\xE3o expirou. Entre novamente.");
-        setUser(null);
-        setUserEmail("");
-      }
-    }, 15 * 60 * 1e3);
-    const handleVisibilityChange = async () => {
-      if (!document.hidden) {
-        const { error: refreshError } = await client.auth.refreshSession();
-        if (refreshError) {
-          setError("Sua sess\xE3o expirou. Entre novamente.");
-          setUser(null);
-          setUserEmail("");
-        }
-      }
-    };
-    document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => {
-      clearInterval(refreshInterval);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
       listener == null ? void 0 : listener.subscription.unsubscribe();
     };
   }, [client]);
@@ -3024,6 +3006,7 @@ function useAuth(client) {
     return null;
   }, [client]);
   const logout = (0, import_react14.useCallback)(async () => {
+    signingOut.current = true;
     await client.auth.signOut();
     setUser(null);
     setUserEmail("");

@@ -1,5 +1,5 @@
 // React
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 // Libs
 import type { SupabaseClient } from '@supabase/supabase-js';
 // Components
@@ -38,9 +38,12 @@ export function useAuth(client: SupabaseClient): AuthContextValue {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sessionUser, setSessionUser] = useState<SessionUser | null | undefined>(undefined);
+  const signingOut = useRef(false);
 
   useEffect(() => {
-    const { data: listener } = client.auth.onAuthStateChange((_event, session) => {
+    const { data: listener } = client.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT' && !signingOut.current) setError('Sua sessão expirou. Entre novamente.');
+      signingOut.current = false;
       setSessionUser((prev) => {
         const next = session?.user
           ? { id: session.user.id, email: session.user.email ?? '' }
@@ -50,31 +53,7 @@ export function useAuth(client: SupabaseClient): AuthContextValue {
       });
     });
 
-    const refreshInterval = setInterval(async () => {
-      const { error: refreshError } = await client.auth.refreshSession();
-      if (refreshError) {
-        setError('Sua sessão expirou. Entre novamente.');
-        setUser(null);
-        setUserEmail('');
-      }
-    }, 15 * 60 * 1000);
-
-    const handleVisibilityChange = async () => {
-      if (!document.hidden) {
-        const { error: refreshError } = await client.auth.refreshSession();
-        if (refreshError) {
-          setError('Sua sessão expirou. Entre novamente.');
-          setUser(null);
-          setUserEmail('');
-        }
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
     return () => {
-      clearInterval(refreshInterval);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
       listener?.subscription.unsubscribe();
     };
   }, [client]);
@@ -121,6 +100,7 @@ export function useAuth(client: SupabaseClient): AuthContextValue {
   }, [client]);
 
   const logout = useCallback(async () => {
+    signingOut.current = true;
     await client.auth.signOut();
     setUser(null);
     setUserEmail('');
