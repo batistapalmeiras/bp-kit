@@ -382,20 +382,25 @@ interface TypographyProps extends HTMLAttributes<HTMLElement> {
 
 declare function Typography({ type, as, children, ...rest }: TypographyProps): react.JSX.Element;
 
-interface LoginPageBrand {
+interface AuthBrand {
     icon: string;
     iconAlt: string;
     name: string;
     sub: string;
     quote?: string;
 }
-interface LoginPageProps {
-    brand: LoginPageBrand;
+interface AuthLayoutProps {
+    brand: AuthBrand;
+    children?: ReactNode;
+}
+declare function AuthLayout({ brand, children }: AuthLayoutProps): react.JSX.Element;
+
+interface LoginFormProps {
     resolveRoute: (role: string) => string;
     forgotPasswordPath?: string;
     footerSlot?: ReactNode;
 }
-declare function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }: LoginPageProps): react.JSX.Element;
+declare function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }: LoginFormProps): react.JSX.Element;
 
 interface ProfilePageProps {
     /** Display label for the user's role (e.g. "Administrador"). Each app defines its own role vocabulary. */
@@ -410,18 +415,16 @@ declare function ProfilePage({ roleLabel, changePasswordPath, onLogout, back }: 
 
 declare function ChangePasswordPage(): react.JSX.Element;
 
-interface ForgotPasswordPageProps {
-    brand: LoginPageBrand;
+interface ForgotPasswordFormProps {
     loginPath: string;
     resetPasswordPath: string;
 }
-declare function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }: ForgotPasswordPageProps): react.JSX.Element;
+declare function ForgotPasswordForm({ loginPath, resetPasswordPath }: ForgotPasswordFormProps): react.JSX.Element;
 
-interface ResetPasswordPageProps {
-    brand: LoginPageBrand;
+interface ResetPasswordFormProps {
     loginPath: string;
 }
-declare function ResetPasswordPage({ brand, loginPath }: ResetPasswordPageProps): react.JSX.Element;
+declare function ResetPasswordForm({ loginPath }: ResetPasswordFormProps): react.JSX.Element;
 
 declare function useMediaQuery(query: string): boolean;
 
@@ -693,4 +696,4 @@ declare function formatCPF(value: string): string;
 declare function maskCEP(value: string): string;
 declare function maskDate(value: string): string;
 
-export { AuthContext, type AuthContextValue, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, ForgotPasswordPage, type ForgotPasswordPageProps, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LinkButton, type LinkButtonProps, LoginPage, type LoginPageBrand, type LoginPageProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, ResetPasswordPage, type ResetPasswordPageProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type TextMask, Textarea, type TextareaProps, type Theme, Toast, type ToastActionConfig, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCPF, formatCurrency, maskCEP, maskCurrencyInput, maskDate, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+export { type AuthBrand, AuthContext, type AuthContextValue, AuthLayout, type AuthLayoutProps, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, ForgotPasswordForm, type ForgotPasswordFormProps, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LinkButton, type LinkButtonProps, LoginForm, type LoginFormProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, ResetPasswordForm, type ResetPasswordFormProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type TextMask, Textarea, type TextareaProps, type Theme, Toast, type ToastActionConfig, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCPF, formatCurrency, maskCEP, maskCurrencyInput, maskDate, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };

@@ -253,3 +253,37 @@ export const ErrorMsg = styled.p`
   padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
   text-align: center;
 `;
+
+export const EmailRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing.md};
+`;
+
+export const EmailText = styled.span`
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  color: ${({ theme }) => theme.colors.muted};
+`;
+
+export const ChangeButton = styled.button`
+  flex-shrink: 0;
+  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
+  border: 1px solid ${({ theme }) => theme.colors.hairline};
+  border-radius: ${({ theme }) => theme.rounded.full};
+  background: ${({ theme }) => theme.colors.canvas};
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.ink};
+  cursor: pointer;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+  }
+`;

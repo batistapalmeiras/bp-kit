@@ -52,15 +52,17 @@ export { Typography } from './components/Typography';
 export type { TypographyProps, TypographyType } from './components/Typography/types';
 
 // Pages
-export { LoginPage } from './pages/LoginPage';
-export type { LoginPageBrand, LoginPageProps } from './pages/LoginPage';
+export { AuthLayout } from './pages/AuthLayout';
+export type { AuthBrand, AuthLayoutProps } from './pages/AuthLayout';
+export { LoginForm } from './pages/LoginForm';
+export type { LoginFormProps } from './pages/LoginForm';
 export { ProfilePage } from './pages/ProfilePage';
 export type { ProfilePageProps } from './pages/ProfilePage';
 export { ChangePasswordPage } from './pages/ChangePasswordPage';
-export { ForgotPasswordPage } from './pages/ForgotPasswordPage';
-export type { ForgotPasswordPageProps } from './pages/ForgotPasswordPage';
-export { ResetPasswordPage } from './pages/ResetPasswordPage';
-export type { ResetPasswordPageProps } from './pages/ResetPasswordPage';
+export { ForgotPasswordForm } from './pages/ForgotPasswordForm';
+export type { ForgotPasswordFormProps } from './pages/ForgotPasswordForm';
+export { ResetPasswordForm } from './pages/ResetPasswordForm';
+export type { ResetPasswordFormProps } from './pages/ResetPasswordForm';
 
 // Hooks
 export { useMediaQuery } from './hooks/useMediaQuery';

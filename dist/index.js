@@ -31,6 +31,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var src_exports = {};
 __export(src_exports, {
   AuthContext: () => AuthContext,
+  AuthLayout: () => AuthLayout,
   AuthProvider: () => AuthProvider,
   BaseInput: () => BaseInput,
   BottomSheet: () => BottomSheet,
@@ -44,7 +45,7 @@ __export(src_exports, {
   ControlledBase: () => ControlledBase,
   DatePicker: () => DatePicker,
   Empty: () => Empty,
-  ForgotPasswordPage: () => ForgotPasswordPage,
+  ForgotPasswordForm: () => ForgotPasswordForm,
   Form: () => Form,
   GlobalStyles: () => GlobalStyles_default,
   IconButton: () => IconButton,
@@ -52,7 +53,7 @@ __export(src_exports, {
   InfoBox: () => InfoBox,
   InputField: () => InputField,
   LinkButton: () => LinkButton,
-  LoginPage: () => LoginPage,
+  LoginForm: () => LoginForm,
   Modal: () => Modal,
   ModalActions: () => ModalActions,
   ModalTitle: () => ModalTitle,
@@ -64,7 +65,7 @@ __export(src_exports, {
   RadioGroup: () => RadioGroup,
   RawSelect: () => RawSelect,
   RawTextarea: () => RawTextarea,
-  ResetPasswordPage: () => ResetPasswordPage,
+  ResetPasswordForm: () => ResetPasswordForm,
   SearchInput: () => SearchInput2,
   SegmentedControl: () => SegmentedControl,
   Select: () => Select,
@@ -2698,205 +2699,10 @@ function Toast({ message, leaving, action }) {
   );
 }
 
-// src/pages/LoginPage/index.tsx
-var import_zod2 = require("@hookform/resolvers/zod");
-var import_react_hook_form6 = require("react-hook-form");
-var import_react_router_dom4 = require("react-router-dom");
-
-// src/pages/LoginPage/hooks/useLogin.ts
-var import_react15 = require("react");
+// src/pages/AuthLayout/index.tsx
 var import_react_router_dom3 = require("react-router-dom");
 
-// src/hooks/useAuth.ts
-var import_react14 = require("react");
-
-// src/contexts/AuthContext.tsx
-var import_react13 = require("react");
-var import_jsx_runtime28 = require("react/jsx-runtime");
-var AuthContext = (0, import_react13.createContext)(null);
-function AuthProvider({ client, children }) {
-  const authValue = useAuth(client);
-  return /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(AuthContext.Provider, { value: authValue, children });
-}
-
-// src/text/actions.ts
-var actions = {
-  cancel: "Cancelar",
-  confirm: "Confirmar",
-  remove: "Remover",
-  actionsColumn: "A\xE7\xF5es"
-};
-
-// src/text/fields.ts
-var fields = {
-  name: "Nome",
-  fullName: "Nome completo",
-  email: "E-mail",
-  emailPlaceholder: "seu@email.com",
-  phone: "Telefone",
-  status: "Status",
-  password: "Senha"
-};
-
-// src/text/validation.ts
-var validation = {
-  required: (what) => `Informe ${what}`,
-  selectRequired: (what) => `Selecione ${what}`,
-  emailInvalid: "E-mail inv\xE1lido",
-  passwordMin: "A senha deve ter pelo menos 6 caracteres",
-  passwordMismatch: "As senhas n\xE3o coincidem",
-  passwordSameAsOld: "A nova senha deve ser diferente da senha atual"
-};
-
-// src/text/feedback.ts
-var feedback = {
-  loadError: "Erro ao carregar"
-};
-
-// src/text/index.ts
-var text = { actions, fields, validation, feedback };
-
-// src/hooks/useAuth.ts
-async function fetchProfile(client, userId) {
-  try {
-    const { data, error } = await client.from("profiles").select("id, name, role").eq("id", userId);
-    if (error) {
-      console.error("Erro ao buscar perfil:", error);
-      return null;
-    }
-    if (!data || data.length === 0) return null;
-    return { id: data[0].id, name: data[0].name, role: data[0].role };
-  } catch (err) {
-    console.error("Exce\xE7\xE3o ao buscar perfil:", err);
-    return null;
-  }
-}
-function useAuth(client) {
-  const [user, setUser] = (0, import_react14.useState)(null);
-  const [userEmail, setUserEmail] = (0, import_react14.useState)("");
-  const [loading, setLoading] = (0, import_react14.useState)(true);
-  const [error, setError] = (0, import_react14.useState)(null);
-  const [sessionUser, setSessionUser] = (0, import_react14.useState)(void 0);
-  const signingOut = (0, import_react14.useRef)(false);
-  (0, import_react14.useEffect)(() => {
-    const { data: listener } = client.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT" && !signingOut.current) setError("Sua sess\xE3o expirou. Entre novamente.");
-      signingOut.current = false;
-      setSessionUser((prev) => {
-        var _a;
-        const next = (session == null ? void 0 : session.user) ? { id: session.user.id, email: (_a = session.user.email) != null ? _a : "" } : null;
-        if (prev && next && prev.id === next.id && prev.email === next.email) return prev;
-        return next;
-      });
-    });
-    return () => {
-      listener == null ? void 0 : listener.subscription.unsubscribe();
-    };
-  }, [client]);
-  (0, import_react14.useEffect)(() => {
-    if (sessionUser === void 0) return;
-    if (!sessionUser) {
-      setUser(null);
-      setUserEmail("");
-      setLoading(false);
-      return;
-    }
-    let cancelled = false;
-    fetchProfile(client, sessionUser.id).then((profile) => {
-      if (cancelled) return;
-      if (profile) {
-        setUser(profile);
-        setUserEmail(sessionUser.email);
-        setError(null);
-      } else {
-        setUser(null);
-        setUserEmail("");
-        setError("Perfil do usu\xE1rio n\xE3o encontrado.");
-      }
-      setLoading(false);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [client, sessionUser]);
-  const login = (0, import_react14.useCallback)(async (email, password) => {
-    setError(null);
-    const { error: signInError } = await client.auth.signInWithPassword({ email, password });
-    if (signInError) {
-      const errorMsg = "E-mail ou senha incorretos.";
-      setError(errorMsg);
-      return errorMsg;
-    }
-    return null;
-  }, [client]);
-  const logout = (0, import_react14.useCallback)(async () => {
-    signingOut.current = true;
-    await client.auth.signOut();
-    setUser(null);
-    setUserEmail("");
-  }, [client]);
-  const updateProfile = (0, import_react14.useCallback)(async (name, email) => {
-    const { data: { user: authUser } } = await client.auth.getUser();
-    if (!authUser) return "Usu\xE1rio n\xE3o autenticado.";
-    const { error: profileError } = await client.from("profiles").update({ name: name.trim() }).eq("id", authUser.id);
-    if (profileError) return "Erro ao atualizar nome.";
-    if (email !== userEmail) {
-      const { error: emailError } = await client.auth.updateUser({ email });
-      if (emailError) return "Erro ao atualizar e-mail.";
-    }
-    setUser((u) => u ? { ...u, name: name.trim() } : u);
-    return null;
-  }, [client, userEmail]);
-  const updatePassword = (0, import_react14.useCallback)(async (newPassword) => {
-    const { error: passwordError } = await client.auth.updateUser({ password: newPassword });
-    if (passwordError) {
-      if ("code" in passwordError && passwordError.code === "same_password") {
-        return text.validation.passwordSameAsOld;
-      }
-      return "Erro ao atualizar senha.";
-    }
-    return null;
-  }, [client]);
-  const requestPasswordReset = (0, import_react14.useCallback)(async (email, redirectTo) => {
-    const { error: resetError } = await client.auth.resetPasswordForEmail(email, { redirectTo });
-    if (resetError) return "Erro ao enviar o link de recupera\xE7\xE3o.";
-    return null;
-  }, [client]);
-  return (0, import_react14.useMemo)(
-    () => ({ user, userEmail, loading, error, login, logout, updateProfile, updatePassword, requestPasswordReset }),
-    [user, userEmail, loading, error, login, logout, updateProfile, updatePassword, requestPasswordReset]
-  );
-}
-function useAuthCtx() {
-  const ctx = (0, import_react14.useContext)(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
-  return ctx;
-}
-
-// src/pages/LoginPage/hooks/useLogin.ts
-function useLogin(resolveRoute) {
-  const [error, setError] = (0, import_react15.useState)("");
-  const [submitting, setSubmitting] = (0, import_react15.useState)(false);
-  const { login, user } = useAuthCtx();
-  const navigate = (0, import_react_router_dom3.useNavigate)();
-  (0, import_react15.useEffect)(() => {
-    if (user) {
-      navigate(resolveRoute(user.role), { replace: true });
-    }
-  }, [user, navigate, resolveRoute]);
-  const handleLogin = async (data) => {
-    setSubmitting(true);
-    setError("");
-    const err = await login(data.email, data.password);
-    if (err) {
-      setError(err);
-      setSubmitting(false);
-    }
-  };
-  return { error, submitting, handleLogin };
-}
-
-// src/pages/LoginPage/styles/Login.ts
+// src/pages/LoginForm/styles/Login.ts
 var import_styled_components36 = __toESM(require("styled-components"));
 var Page = import_styled_components36.default.div`
   min-height: 100vh;
@@ -3124,83 +2930,394 @@ var ErrorMsg = import_styled_components36.default.p`
   padding: ${({ theme: theme2 }) => `${theme2.spacing.sm} ${theme2.spacing.md}`};
   text-align: center;
 `;
+var EmailRow = import_styled_components36.default.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+`;
+var EmailText = import_styled_components36.default.span`
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  color: ${({ theme: theme2 }) => theme2.colors.muted};
+`;
+var ChangeButton = import_styled_components36.default.button`
+  flex-shrink: 0;
+  padding: ${({ theme: theme2 }) => `${theme2.spacing.xs} ${theme2.spacing.md}`};
+  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  font-weight: 600;
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  cursor: pointer;
 
-// src/pages/LoginPage/validators/schema.ts
+  &:hover {
+    border-color: ${({ theme: theme2 }) => theme2.colors.primary};
+  }
+`;
+
+// src/pages/AuthLayout/index.tsx
+var import_jsx_runtime28 = require("react/jsx-runtime");
+function AuthLayout({ brand, children }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(Page, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(Brand2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(BrandText, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(BrandSub, { children: brand.sub })
+      ] }),
+      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(BrandQuote, { children: brand.quote })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(FormBox, { children: children != null ? children : /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(import_react_router_dom3.Outlet, {}) }) })
+  ] });
+}
+
+// src/pages/LoginForm/index.tsx
+var import_react16 = require("react");
+var import_zod2 = require("@hookform/resolvers/zod");
+var import_react_hook_form6 = require("react-hook-form");
+var import_react_router_dom5 = require("react-router-dom");
+
+// src/text/actions.ts
+var actions = {
+  cancel: "Cancelar",
+  confirm: "Confirmar",
+  remove: "Remover",
+  actionsColumn: "A\xE7\xF5es"
+};
+
+// src/text/fields.ts
+var fields = {
+  name: "Nome",
+  fullName: "Nome completo",
+  email: "E-mail",
+  emailPlaceholder: "seu@email.com",
+  phone: "Telefone",
+  status: "Status",
+  password: "Senha"
+};
+
+// src/text/validation.ts
+var validation = {
+  required: (what) => `Informe ${what}`,
+  selectRequired: (what) => `Selecione ${what}`,
+  emailInvalid: "E-mail inv\xE1lido",
+  passwordMin: "A senha deve ter pelo menos 6 caracteres",
+  passwordMismatch: "As senhas n\xE3o coincidem",
+  passwordSameAsOld: "A nova senha deve ser diferente da senha atual"
+};
+
+// src/text/feedback.ts
+var feedback = {
+  loadError: "Erro ao carregar"
+};
+
+// src/text/index.ts
+var text = { actions, fields, validation, feedback };
+
+// src/pages/LoginForm/hooks/useLogin.ts
+var import_react15 = require("react");
+var import_react_router_dom4 = require("react-router-dom");
+
+// src/hooks/useAuth.ts
+var import_react14 = require("react");
+
+// src/contexts/AuthContext.tsx
+var import_react13 = require("react");
+var import_jsx_runtime29 = require("react/jsx-runtime");
+var AuthContext = (0, import_react13.createContext)(null);
+function AuthProvider({ client, children }) {
+  const authValue = useAuth(client);
+  return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(AuthContext.Provider, { value: authValue, children });
+}
+
+// src/hooks/useAuth.ts
+async function fetchProfile(client, userId) {
+  try {
+    const { data, error } = await client.from("profiles").select("id, name, role").eq("id", userId);
+    if (error) {
+      console.error("Erro ao buscar perfil:", error);
+      return null;
+    }
+    if (!data || data.length === 0) return null;
+    return { id: data[0].id, name: data[0].name, role: data[0].role };
+  } catch (err) {
+    console.error("Exce\xE7\xE3o ao buscar perfil:", err);
+    return null;
+  }
+}
+function useAuth(client) {
+  const [user, setUser] = (0, import_react14.useState)(null);
+  const [userEmail, setUserEmail] = (0, import_react14.useState)("");
+  const [loading, setLoading] = (0, import_react14.useState)(true);
+  const [error, setError] = (0, import_react14.useState)(null);
+  const [sessionUser, setSessionUser] = (0, import_react14.useState)(void 0);
+  const signingOut = (0, import_react14.useRef)(false);
+  (0, import_react14.useEffect)(() => {
+    const { data: listener } = client.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" && !signingOut.current) setError("Sua sess\xE3o expirou. Entre novamente.");
+      signingOut.current = false;
+      setSessionUser((prev) => {
+        var _a;
+        const next = (session == null ? void 0 : session.user) ? { id: session.user.id, email: (_a = session.user.email) != null ? _a : "" } : null;
+        if (prev && next && prev.id === next.id && prev.email === next.email) return prev;
+        return next;
+      });
+    });
+    return () => {
+      listener == null ? void 0 : listener.subscription.unsubscribe();
+    };
+  }, [client]);
+  (0, import_react14.useEffect)(() => {
+    if (sessionUser === void 0) return;
+    if (!sessionUser) {
+      setUser(null);
+      setUserEmail("");
+      setLoading(false);
+      return;
+    }
+    let cancelled = false;
+    fetchProfile(client, sessionUser.id).then((profile) => {
+      if (cancelled) return;
+      if (profile) {
+        setUser(profile);
+        setUserEmail(sessionUser.email);
+        setError(null);
+      } else {
+        setUser(null);
+        setUserEmail("");
+        setError("Perfil do usu\xE1rio n\xE3o encontrado.");
+      }
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [client, sessionUser]);
+  const login = (0, import_react14.useCallback)(async (email, password) => {
+    setError(null);
+    const { error: signInError } = await client.auth.signInWithPassword({ email, password });
+    if (signInError) {
+      const errorMsg = "E-mail ou senha incorretos.";
+      setError(errorMsg);
+      return errorMsg;
+    }
+    return null;
+  }, [client]);
+  const logout = (0, import_react14.useCallback)(async () => {
+    signingOut.current = true;
+    await client.auth.signOut();
+    setUser(null);
+    setUserEmail("");
+  }, [client]);
+  const updateProfile = (0, import_react14.useCallback)(async (name, email) => {
+    const { data: { user: authUser } } = await client.auth.getUser();
+    if (!authUser) return "Usu\xE1rio n\xE3o autenticado.";
+    const { error: profileError } = await client.from("profiles").update({ name: name.trim() }).eq("id", authUser.id);
+    if (profileError) return "Erro ao atualizar nome.";
+    if (email !== userEmail) {
+      const { error: emailError } = await client.auth.updateUser({ email });
+      if (emailError) return "Erro ao atualizar e-mail.";
+    }
+    setUser((u) => u ? { ...u, name: name.trim() } : u);
+    return null;
+  }, [client, userEmail]);
+  const updatePassword = (0, import_react14.useCallback)(async (newPassword) => {
+    const { error: passwordError } = await client.auth.updateUser({ password: newPassword });
+    if (passwordError) {
+      if ("code" in passwordError && passwordError.code === "same_password") {
+        return text.validation.passwordSameAsOld;
+      }
+      return "Erro ao atualizar senha.";
+    }
+    return null;
+  }, [client]);
+  const requestPasswordReset = (0, import_react14.useCallback)(async (email, redirectTo) => {
+    const { error: resetError } = await client.auth.resetPasswordForEmail(email, { redirectTo });
+    if (resetError) return "Erro ao enviar o link de recupera\xE7\xE3o.";
+    return null;
+  }, [client]);
+  return (0, import_react14.useMemo)(
+    () => ({ user, userEmail, loading, error, login, logout, updateProfile, updatePassword, requestPasswordReset }),
+    [user, userEmail, loading, error, login, logout, updateProfile, updatePassword, requestPasswordReset]
+  );
+}
+function useAuthCtx() {
+  const ctx = (0, import_react14.useContext)(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
+  return ctx;
+}
+
+// src/pages/LoginForm/rememberedLogin.ts
+var STORAGE_KEY = "bp-kit:remembered-login";
+function loadRememberedLogin() {
+  var _a;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed.email ? { email: parsed.email, firstName: (_a = parsed.firstName) != null ? _a : "" } : null;
+  } catch (e) {
+    return null;
+  }
+}
+function saveRememberedLogin(login) {
+  try {
+    if (login) localStorage.setItem(STORAGE_KEY, JSON.stringify(login));
+    else localStorage.removeItem(STORAGE_KEY);
+  } catch (e) {
+    return;
+  }
+}
+function firstNameOf(name) {
+  var _a;
+  return (_a = name == null ? void 0 : name.trim().split(/\s+/)[0]) != null ? _a : "";
+}
+
+// src/pages/LoginForm/hooks/useLogin.ts
+function useLogin(resolveRoute) {
+  const [error, setError] = (0, import_react15.useState)("");
+  const [submitting, setSubmitting] = (0, import_react15.useState)(false);
+  const { login, user } = useAuthCtx();
+  const navigate = (0, import_react_router_dom4.useNavigate)();
+  const pending = (0, import_react15.useRef)(null);
+  (0, import_react15.useEffect)(() => {
+    if (!user) return;
+    if (pending.current) {
+      const { email, remember } = pending.current;
+      saveRememberedLogin(remember ? { email, firstName: firstNameOf(user.name) } : null);
+      pending.current = null;
+    }
+    navigate(resolveRoute(user.role), { replace: true });
+  }, [user, navigate, resolveRoute]);
+  const handleLogin = async (data, remember) => {
+    setSubmitting(true);
+    setError("");
+    pending.current = { email: data.email, remember };
+    const err = await login(data.email, data.password);
+    if (err) {
+      pending.current = null;
+      setError(err);
+      setSubmitting(false);
+    }
+  };
+  return { error, submitting, handleLogin };
+}
+
+// src/pages/LoginForm/validators/schema.ts
 var import_zod = require("zod");
 var loginSchema = import_zod.z.object({
   email: import_zod.z.string().email("E-mail inv\xE1lido"),
   password: import_zod.z.string().min(1, "Senha obrigat\xF3ria")
 });
 
-// src/pages/LoginPage/index.tsx
-var import_jsx_runtime29 = require("react/jsx-runtime");
-function LoginPage({ brand, resolveRoute, forgotPasswordPath, footerSlot }) {
+// src/pages/LoginForm/index.tsx
+var import_jsx_runtime30 = require("react/jsx-runtime");
+function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }) {
+  var _a;
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
-  const navigate = (0, import_react_router_dom4.useNavigate)();
-  const { control, handleSubmit } = (0, import_react_hook_form6.useForm)({
+  const navigate = (0, import_react_router_dom5.useNavigate)();
+  const [remembered, setRemembered] = (0, import_react16.useState)(loadRememberedLogin);
+  const [step, setStep] = (0, import_react16.useState)(remembered ? "confirm" : "email");
+  const [remember, setRemember] = (0, import_react16.useState)(true);
+  const { control, handleSubmit, trigger, getValues, setValue } = (0, import_react_hook_form6.useForm)({
     resolver: (0, import_zod2.zodResolver)(loginSchema),
-    defaultValues: { email: "", password: "" }
+    defaultValues: { email: (_a = remembered == null ? void 0 : remembered.email) != null ? _a : "", password: "" }
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Page, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Brand2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(BrandText, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(BrandSub, { children: brand.sub })
+  const greeting = (remembered == null ? void 0 : remembered.firstName) ? `Ol\xE1, ${remembered.firstName}` : "Digite sua senha";
+  const continueToPassword = async () => {
+    if (await trigger("email")) setStep("password");
+  };
+  const changeEmail = () => {
+    saveRememberedLogin(null);
+    setRemembered(null);
+    setValue("email", "");
+    setValue("password", "");
+    setStep("email");
+  };
+  const submit = handleSubmit((values) => handleLogin(values, remember));
+  if (step === "email") {
+    return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_jsx_runtime30.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(FormHeader, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(FormTitle, { children: "Bem-vindo" }),
+        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(FormSubtitle, { children: "Informe seu e-mail para continuar" })
       ] }),
-      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(BrandQuote, { children: brand.quote })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(FormBox, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(FormHeader, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FormTitle, { children: "Bem-vindo" }),
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FormSubtitle, { children: "Entre com suas credenciais para continuar" })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Form2, { onSubmit: handleSubmit(handleLogin), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-          TextInput,
-          {
-            label: text.fields.email,
-            control,
-            name: "email",
-            type: "email",
-            autoFocus: true,
-            placeholder: text.fields.emailPlaceholder
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-          TextInput,
-          {
-            label: "Senha",
-            control,
-            name: "password",
-            type: "password",
-            placeholder: "M\xEDnimo 6 caracteres"
-          }
-        ),
-        forgotPasswordPath && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ForgotLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" }),
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-          SubmitButton,
-          {
-            variant: "primary",
-            size: "lg",
-            fullWidth: true,
-            type: "submit",
-            disabled: submitting,
-            style: { marginTop: 8 },
-            children: submitting ? "Entrando..." : "Entrar"
-          }
-        ),
-        error && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ErrorMsg, { children: error })
-      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(
+        Form2,
+        {
+          onSubmit: (event) => {
+            event.preventDefault();
+            continueToPassword();
+          },
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+              TextInput,
+              {
+                label: text.fields.email,
+                control,
+                name: "email",
+                type: "email",
+                autoComplete: "username",
+                autoFocus: true,
+                placeholder: text.fields.emailPlaceholder
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Checkbox, { label: "Lembrar de mim", checked: remember, onChange: (event) => setRemember(event.target.checked) }),
+            /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", children: "Continuar" })
+          ]
+        }
+      ),
       footerSlot
-    ] }) })
+    ] });
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_jsx_runtime30.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(FormHeader, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(FormTitle, { children: greeting }),
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(EmailRow, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(EmailText, { children: getValues("email") }),
+        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(ChangeButton, { type: "button", onClick: changeEmail, children: "Alterar" })
+      ] })
+    ] }),
+    step === "confirm" ? /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+      Form2,
+      {
+        onSubmit: (event) => {
+          event.preventDefault();
+          setStep("password");
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", children: "Continuar" })
+      }
+    ) : /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Form2, { onSubmit: submit, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+        TextInput,
+        {
+          label: "Senha",
+          control,
+          name: "password",
+          type: "password",
+          autoComplete: "current-password",
+          autoFocus: true,
+          placeholder: "Sua senha"
+        }
+      ),
+      forgotPasswordPath && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(ForgotLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" }),
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", disabled: submitting, children: submitting ? "Entrando..." : "Entrar" }),
+      error && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(ErrorMsg, { children: error })
+    ] }),
+    footerSlot
   ] });
 }
 
 // src/pages/ProfilePage/index.tsx
 var import_zod4 = require("@hookform/resolvers/zod");
 var import_react_hook_form7 = require("react-hook-form");
-var import_react_router_dom5 = require("react-router-dom");
+var import_react_router_dom6 = require("react-router-dom");
 var import_lucide_react11 = require("lucide-react");
 
 // src/pages/ProfilePage/styles/ProfilePage.ts
@@ -3269,11 +3386,11 @@ var profileSchema = import_zod3.z.object({
 });
 
 // src/pages/ProfilePage/index.tsx
-var import_jsx_runtime30 = require("react/jsx-runtime");
+var import_jsx_runtime31 = require("react/jsx-runtime");
 function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
-  const navigate = (0, import_react_router_dom5.useNavigate)();
+  const navigate = (0, import_react_router_dom6.useNavigate)();
   const { show: showToast, toast } = useToast();
   const {
     control,
@@ -3287,17 +3404,17 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
     const err = await updateProfile(data.name, data.email);
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Wrap3, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(PageHeader, { title: "Meu perfil", back }),
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Identity, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
-      roleLabel && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(RoleLabel, { children: roleLabel })
+  return /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Wrap3, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(PageHeader, { title: "Meu perfil", back }),
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Identity, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
+      roleLabel && /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(RoleLabel, { children: roleLabel })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Section, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionDivider, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Section, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SectionDivider, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
         TextInput,
         {
           label: "E-mail de acesso",
@@ -3308,16 +3425,16 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_lucide_react11.Save, { size: 16 }),
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react11.Save, { size: 16 }),
       isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es"
     ] }) }),
-    changePasswordPath && /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_jsx_runtime30.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Section, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionTitle, { children: "Seguran\xE7a" }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
+    changePasswordPath && /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(import_jsx_runtime31.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Section, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SectionTitle, { children: "Seguran\xE7a" }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
     ] }),
-    onLogout && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(LogoutAction, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_lucide_react11.LogOut, { size: 16 }),
+    onLogout && /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(LogoutAction, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react11.LogOut, { size: 16 }),
       "Sair"
     ] }) }),
     toast
@@ -3340,7 +3457,7 @@ var passwordSchema = import_zod5.z.object({
 });
 
 // src/pages/ChangePasswordPage/index.tsx
-var import_jsx_runtime31 = require("react/jsx-runtime");
+var import_jsx_runtime32 = require("react/jsx-runtime");
 function ChangePasswordPage() {
   const { updatePassword } = useAuthCtx();
   const { show: showToast, toast } = useToast();
@@ -3363,11 +3480,11 @@ function ChangePasswordPage() {
     showToast("Senha atualizada com sucesso.");
     reset();
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Wrap3, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(PageHeader, { title: "Alterar senha", back: true }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Section, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Wrap3, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(PageHeader, { title: "Alterar senha", back: true }),
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Section, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
         TextInput,
         {
           label: "Confirmar nova senha",
@@ -3378,26 +3495,26 @@ function ChangePasswordPage() {
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(import_jsx_runtime31.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react12.Save, { size: 16 }),
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(import_jsx_runtime32.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_lucide_react12.Save, { size: 16 }),
       "Salvar nova senha"
     ] }) }) }),
     toast
   ] });
 }
 
-// src/pages/ForgotPasswordPage/index.tsx
+// src/pages/ForgotPasswordForm/index.tsx
 var import_zod8 = require("@hookform/resolvers/zod");
 var import_react_hook_form9 = require("react-hook-form");
-var import_react_router_dom6 = require("react-router-dom");
+var import_react_router_dom7 = require("react-router-dom");
 var import_lucide_react13 = require("lucide-react");
 
-// src/pages/ForgotPasswordPage/hooks/useForgotPassword.ts
-var import_react16 = require("react");
+// src/pages/ForgotPasswordForm/hooks/useForgotPassword.ts
+var import_react17 = require("react");
 function useForgotPassword(resetPasswordPath) {
-  const [submitting, setSubmitting] = (0, import_react16.useState)(false);
-  const [sent, setSent] = (0, import_react16.useState)(false);
-  const [error, setError] = (0, import_react16.useState)("");
+  const [submitting, setSubmitting] = (0, import_react17.useState)(false);
+  const [sent, setSent] = (0, import_react17.useState)(false);
+  const [error, setError] = (0, import_react17.useState)("");
   const { requestPasswordReset } = useAuthCtx();
   const handleSubmit = async (data) => {
     setSubmitting(true);
@@ -3414,83 +3531,63 @@ function useForgotPassword(resetPasswordPath) {
   return { submitting, sent, error, handleSubmit };
 }
 
-// src/pages/ForgotPasswordPage/validators/schema.ts
+// src/pages/ForgotPasswordForm/validators/schema.ts
 var import_zod7 = require("zod");
 var forgotPasswordSchema = import_zod7.z.object({
   email: import_zod7.z.string().email(text.validation.emailInvalid)
 });
 
-// src/pages/ForgotPasswordPage/index.tsx
-var import_jsx_runtime32 = require("react/jsx-runtime");
-function ForgotPasswordPage({ brand, loginPath, resetPasswordPath }) {
+// src/pages/ForgotPasswordForm/index.tsx
+var import_jsx_runtime33 = require("react/jsx-runtime");
+function ForgotPasswordForm({ loginPath, resetPasswordPath }) {
   const { submitting, sent, error, handleSubmit: submit } = useForgotPassword(resetPasswordPath);
-  const navigate = (0, import_react_router_dom6.useNavigate)();
+  const navigate = (0, import_react_router_dom7.useNavigate)();
   const { control, handleSubmit } = (0, import_react_hook_form9.useForm)({
     resolver: (0, import_zod8.zodResolver)(forgotPasswordSchema),
     defaultValues: { email: "" }
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Page, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Brand2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(BrandText, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(BrandSub, { children: brand.sub })
-      ] }),
-      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(BrandQuote, { children: brand.quote })
+  return /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_lucide_react13.ArrowLeft, { size: 16 }),
+      "Voltar para o login"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(FormBox, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_lucide_react13.ArrowLeft, { size: 16 }),
-        "Voltar para o login"
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(FormHeader, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormTitle, { children: "Esqueci minha senha" }),
-        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
-      ] }),
-      sent ? /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Form2, { onSubmit: handleSubmit(submit), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
-          TextInput,
-          {
-            label: "E-mail",
-            control,
-            name: "email",
-            type: "email",
-            autoFocus: true,
-            placeholder: "seu@email.com"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
-          SubmitButton,
-          {
-            variant: "primary",
-            size: "lg",
-            fullWidth: true,
-            type: "submit",
-            disabled: submitting,
-            style: { marginTop: 8 },
-            children: submitting ? "Enviando..." : /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(import_jsx_runtime32.Fragment, { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_lucide_react13.Send, { size: 16 }),
-              "Enviar link"
-            ] })
-          }
-        ),
-        error && /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(ErrorMsg, { children: error })
-      ] })
-    ] }) })
+    /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(FormHeader, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormTitle, { children: "Esqueci minha senha" }),
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
+    ] }),
+    sent ? /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Form2, { onSubmit: handleSubmit(submit), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(TextInput, { label: "E-mail", control, name: "email", type: "email", autoFocus: true, placeholder: "seu@email.com" }),
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
+        SubmitButton,
+        {
+          variant: "primary",
+          size: "lg",
+          fullWidth: true,
+          type: "submit",
+          disabled: submitting,
+          style: { marginTop: 8 },
+          children: submitting ? "Enviando..." : /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_lucide_react13.Send, { size: 16 }),
+            "Enviar link"
+          ] })
+        }
+      ),
+      error && /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(ErrorMsg, { children: error })
+    ] })
   ] });
 }
 
-// src/pages/ResetPasswordPage/index.tsx
-var import_react17 = require("react");
+// src/pages/ResetPasswordForm/index.tsx
+var import_react18 = require("react");
 var import_zod9 = require("@hookform/resolvers/zod");
 var import_react_hook_form10 = require("react-hook-form");
-var import_react_router_dom7 = require("react-router-dom");
+var import_react_router_dom8 = require("react-router-dom");
 var import_lucide_react14 = require("lucide-react");
-var import_jsx_runtime33 = require("react/jsx-runtime");
-function ResetPasswordPage({ brand, loginPath }) {
+var import_jsx_runtime34 = require("react/jsx-runtime");
+function ResetPasswordForm({ loginPath }) {
   const { user, loading, updatePassword, logout } = useAuthCtx();
-  const navigate = (0, import_react_router_dom7.useNavigate)();
-  const [done, setDone] = (0, import_react17.useState)(false);
+  const navigate = (0, import_react_router_dom8.useNavigate)();
+  const [done, setDone] = (0, import_react18.useState)(false);
   const {
     control,
     handleSubmit,
@@ -3510,75 +3607,65 @@ function ResetPasswordPage({ brand, loginPath }) {
     setDone(true);
   };
   const invalidLink = !done && !loading && !user;
-  return /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Page, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Brand2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(BrandText, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandSub, { children: brand.sub })
-      ] }),
-      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(BrandQuote, { children: brand.quote })
+  return /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(FormHeader, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FormTitle, { children: "Nova senha" }),
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(FormBox, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(FormHeader, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormTitle, { children: "Nova senha" }),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
-      ] }),
-      done && /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
-      ] }),
-      invalidLink && /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
-      ] }),
-      !done && !invalidLink && /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Form2, { onSubmit: handleSubmit(onSubmit), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
-          TextInput,
-          {
-            label: "Nova senha",
-            control,
-            name: "password",
-            type: "password",
-            autoFocus: true,
-            placeholder: "M\xEDnimo 6 caracteres"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
-          TextInput,
-          {
-            label: "Confirmar nova senha",
-            control,
-            name: "confirmPassword",
-            type: "password",
-            placeholder: "Repita a nova senha"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
-          SubmitButton,
-          {
-            variant: "primary",
-            size: "lg",
-            fullWidth: true,
-            type: "submit",
-            disabled: isSubmitting,
-            style: { marginTop: 8 },
-            children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_lucide_react14.Save, { size: 16 }),
-              "Salvar nova senha"
-            ] })
-          }
-        )
-      ] })
-    ] }) })
+    done && /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
+    ] }),
+    invalidLink && /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
+    ] }),
+    !done && !invalidLink && /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(Form2, { onSubmit: handleSubmit(onSubmit), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+        TextInput,
+        {
+          label: "Nova senha",
+          control,
+          name: "password",
+          type: "password",
+          autoFocus: true,
+          placeholder: "M\xEDnimo 6 caracteres"
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+        TextInput,
+        {
+          label: "Confirmar nova senha",
+          control,
+          name: "confirmPassword",
+          type: "password",
+          placeholder: "Repita a nova senha"
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+        SubmitButton,
+        {
+          variant: "primary",
+          size: "lg",
+          fullWidth: true,
+          type: "submit",
+          disabled: isSubmitting,
+          style: { marginTop: 8 },
+          children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_lucide_react14.Save, { size: 16 }),
+            "Salvar nova senha"
+          ] })
+        }
+      )
+    ] })
   ] });
 }
 
 // src/hooks/useMediaQuery.ts
-var import_react18 = require("react");
+var import_react19 = require("react");
 function useMediaQuery(query) {
-  const [matches, setMatches] = (0, import_react18.useState)(() => window.matchMedia(query).matches);
-  (0, import_react18.useEffect)(() => {
+  const [matches, setMatches] = (0, import_react19.useState)(() => window.matchMedia(query).matches);
+  (0, import_react19.useEffect)(() => {
     const mq = window.matchMedia(query);
     const handler = (e) => setMatches(e.matches);
     mq.addEventListener("change", handler);
@@ -3588,13 +3675,13 @@ function useMediaQuery(query) {
 }
 
 // src/hooks/useModal.ts
-var import_react19 = require("react");
+var import_react20 = require("react");
 var import_react_dom3 = require("react-dom");
 function useModal(variant = "dialog") {
-  const [content, setContent] = (0, import_react19.useState)(null);
+  const [content, setContent] = (0, import_react20.useState)(null);
   const open = (c) => setContent(c);
   const close = () => setContent(null);
-  const modal = content !== null ? (0, import_react_dom3.createPortal)((0, import_react19.createElement)(Modal, { close, variant, children: content }), document.body) : null;
+  const modal = content !== null ? (0, import_react_dom3.createPortal)((0, import_react20.createElement)(Modal, { close, variant, children: content }), document.body) : null;
   return { open, close, modal };
 }
 
@@ -3837,6 +3924,7 @@ var theme = {
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   AuthContext,
+  AuthLayout,
   AuthProvider,
   BaseInput,
   BottomSheet,
@@ -3850,7 +3938,7 @@ var theme = {
   ControlledBase,
   DatePicker,
   Empty,
-  ForgotPasswordPage,
+  ForgotPasswordForm,
   Form,
   GlobalStyles,
   IconButton,
@@ -3858,7 +3946,7 @@ var theme = {
   InfoBox,
   InputField,
   LinkButton,
-  LoginPage,
+  LoginForm,
   Modal,
   ModalActions,
   ModalTitle,
@@ -3870,7 +3958,7 @@ var theme = {
   RadioGroup,
   RawSelect,
   RawTextarea,
-  ResetPasswordPage,
+  ResetPasswordForm,
   SearchInput,
   SegmentedControl,
   Select,
