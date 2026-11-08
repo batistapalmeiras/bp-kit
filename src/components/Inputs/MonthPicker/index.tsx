@@ -7,20 +7,15 @@ import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { BaseInput } from '../BaseInput';
 import { HeaderLabel, NavButton, Panel, PanelHeader, Placeholder, Trigger, Wrapper } from '../_shared/PickerElements';
 // Local
-import { MonthCell, MonthGrid } from './styles/MonthPicker';
+import { capitalize, MONTH_NAMES, MONTH_SHORT_NAMES } from '../../../utils/dates';
+import { ChoiceCell, ChoiceGrid } from '../_shared/ChoiceGrid';
 import { MonthPickerProps } from './types';
-
-const MONTH_LABELS = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-const FULL_MONTH_LABELS = [
-  'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
-];
 
 function formatMonthValue(value?: string): string | null {
   if (!value) return null;
   const [year, month] = value.split('-').map(Number);
   if (!year || !month) return null;
-  return `${FULL_MONTH_LABELS[month - 1]} de ${year}`;
+  return `${capitalize(MONTH_NAMES[month - 1])} de ${year}`;
 }
 
 export function MonthPicker<T extends FieldValues, N extends FieldPath<T>>({
@@ -45,9 +40,7 @@ export function MonthPicker<T extends FieldValues, N extends FieldPath<T>>({
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const [selectedYear, selectedMonth] = field.value
-    ? String(field.value).split('-').map(Number)
-    : [null, null];
+  const [selectedYear, selectedMonth] = field.value ? String(field.value).split('-').map(Number) : [null, null];
 
   const selectMonth = (monthIndex: number) => {
     field.onChange(`${viewYear}-${String(monthIndex + 1).padStart(2, '0')}`);
@@ -74,18 +67,18 @@ export function MonthPicker<T extends FieldValues, N extends FieldPath<T>>({
               </NavButton>
             </PanelHeader>
 
-            <MonthGrid>
-              {MONTH_LABELS.map((monthLabel, i) => (
-                <MonthCell
+            <ChoiceGrid>
+              {MONTH_SHORT_NAMES.map((monthLabel, i) => (
+                <ChoiceCell
                   key={monthLabel}
                   type="button"
                   $selected={selectedYear === viewYear && selectedMonth === i + 1}
                   onClick={() => selectMonth(i)}
                 >
                   {monthLabel}
-                </MonthCell>
+                </ChoiceCell>
               ))}
-            </MonthGrid>
+            </ChoiceGrid>
           </Panel>
         )}
       </Wrapper>

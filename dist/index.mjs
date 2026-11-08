@@ -646,12 +646,71 @@ import { useEffect, useRef, useState } from "react";
 import { useController } from "react-hook-form";
 import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 
-// src/components/Inputs/_shared/PickerElements.ts
+// src/utils/dates.ts
+var MONTH_NAMES = [
+  "janeiro",
+  "fevereiro",
+  "mar\xE7o",
+  "abril",
+  "maio",
+  "junho",
+  "julho",
+  "agosto",
+  "setembro",
+  "outubro",
+  "novembro",
+  "dezembro"
+];
+var MONTH_SHORT_NAMES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+var capitalize = (value) => value.charAt(0).toUpperCase() + value.slice(1);
+function toDateKey(date) {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+function parseDateKey(value) {
+  if (!value) return null;
+  const [year, month, day] = value.split("-").map(Number);
+  if (!year || !month || !day) return null;
+  return new Date(year, month - 1, day);
+}
+
+// src/components/Inputs/_shared/ChoiceGrid.ts
 import styled14 from "styled-components";
-var Wrapper4 = styled14.div`
+var ChoiceGrid = styled14.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+`;
+var ChoiceCell = styled14.button`
+  padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
+  border: none;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primary : "transparent"};
+  color: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.onPrimary : theme2.colors.ink};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  font-weight: ${({ $selected }) => $selected ? 600 : 400};
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) {
+    background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primaryActive : theme2.colors.surfaceStrong};
+  }
+
+  &:disabled {
+    color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
+    cursor: not-allowed;
+  }
+`;
+
+// src/components/Inputs/_shared/PickerElements.ts
+import styled15 from "styled-components";
+var Wrapper4 = styled15.div`
   position: relative;
 `;
-var Trigger = styled14.button`
+var Trigger = styled15.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -681,10 +740,10 @@ var Trigger = styled14.button`
 
   ${invalidField}
 `;
-var Placeholder = styled14.span`
+var Placeholder = styled15.span`
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
 `;
-var Panel = styled14.div`
+var Panel = styled15.div`
   position: absolute;
   top: calc(100% + ${({ theme: theme2 }) => theme2.spacing.xs});
   left: 0;
@@ -697,19 +756,19 @@ var Panel = styled14.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.base};
   animation: ${fadeDown} 0.15s ease-out;
 `;
-var PanelHeader = styled14.div`
+var PanelHeader = styled15.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.base};
 `;
-var HeaderLabel = styled14.span`
+var HeaderLabel = styled15.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.titleSm.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.titleSm.fontWeight};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
 `;
-var NavButton = styled14.button`
+var NavButton = styled15.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -727,13 +786,13 @@ var NavButton = styled14.button`
 `;
 
 // src/components/Inputs/DatePicker/styles/DatePicker.ts
-import styled15 from "styled-components";
-var WeekdayRow = styled15.div`
+import styled16 from "styled-components";
+var WeekdayRow = styled16.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var WeekdayLabel = styled15.span`
+var WeekdayLabel = styled16.span`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -742,12 +801,12 @@ var WeekdayLabel = styled15.span`
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
 `;
-var DayGrid = styled15.div`
+var DayGrid = styled16.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 2px;
 `;
-var DayCell = styled15.button`
+var DayCell = styled16.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -773,51 +832,40 @@ var DayCell = styled15.button`
     cursor: not-allowed;
   }
 `;
+var HeaderButton = styled16.button`
+  padding: ${({ theme: theme2 }) => theme2.spacing.xs} ${({ theme: theme2 }) => theme2.spacing.sm};
+  border: none;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  background: transparent;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.titleSm.fontSize};
+  font-weight: ${({ theme: theme2 }) => theme2.typography.titleSm.fontWeight};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong};
+  }
+`;
 
 // src/components/Inputs/DatePicker/index.tsx
 import { jsx as jsx10, jsxs as jsxs9 } from "react/jsx-runtime";
 var WEEKDAY_LABELS = ["dom", "seg", "ter", "qua", "qui", "sex", "s\xE1b"];
-var FULL_MONTH_LABELS = [
-  "janeiro",
-  "fevereiro",
-  "mar\xE7o",
-  "abril",
-  "maio",
-  "junho",
-  "julho",
-  "agosto",
-  "setembro",
-  "outubro",
-  "novembro",
-  "dezembro"
-];
-function parseDateValue(value) {
-  if (!value) return null;
-  const [y, m, d] = value.split("-").map(Number);
-  if (!y || !m || !d) return null;
-  return new Date(y, m - 1, d);
-}
+var YEARS_PER_PAGE = 12;
 function formatDateValue(value) {
-  const date = parseDateValue(value);
+  const date = parseDateKey(value);
   if (!date) return null;
-  return `${date.getDate()} de ${FULL_MONTH_LABELS[date.getMonth()]} de ${date.getFullYear()}`;
-}
-function toDateKey(date) {
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, "0");
-  const dd = String(date.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
+  return `${date.getDate()} de ${MONTH_NAMES[date.getMonth()]} de ${date.getFullYear()}`;
 }
 function buildMonthGrid(year, month) {
-  const firstDay = new Date(year, month, 1);
-  const startOffset = firstDay.getDay();
+  const startOffset = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const cells = [];
-  for (let i = 0; i < startOffset; i++) cells.push(null);
-  for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
+  const cells = Array.from({ length: startOffset }, () => null);
+  for (let day = 1; day <= daysInMonth; day++) cells.push(new Date(year, month, day));
   while (cells.length % 7 !== 0) cells.push(null);
   return cells;
 }
+var firstYearOfPage = (year) => year - year % YEARS_PER_PAGE;
 function DatePicker({
   label,
   control,
@@ -830,51 +878,70 @@ function DatePicker({
   var _a, _b;
   const { field, fieldState } = useController({ control, name });
   const [open, setOpen] = useState(false);
-  const selectedDate = parseDateValue(field.value);
+  const [view, setView] = useState("days");
+  const selectedDate = parseDateKey(field.value);
   const [viewDate, setViewDate] = useState(() => {
     var _a2;
     return (_a2 = selectedDate != null ? selectedDate : initialMonth) != null ? _a2 : /* @__PURE__ */ new Date();
   });
+  const [pageStart, setPageStart] = useState(() => firstYearOfPage(viewDate.getFullYear()));
+  const [lastInitialMonth, setLastInitialMonth] = useState(initialMonth);
   const ref = useRef(null);
+  if (initialMonth !== lastInitialMonth) {
+    setLastInitialMonth(initialMonth);
+    if (!selectedDate && initialMonth) setViewDate(initialMonth);
+  }
   useEffect(() => {
-    if (!selectedDate && initialMonth) {
-      setViewDate(initialMonth);
-    }
-  }, [initialMonth]);
-  useEffect(() => {
-    const handler = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    const handler = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) setOpen(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
-  const today = /* @__PURE__ */ new Date();
-  const todayKey = toDateKey(today);
+  const viewYear = viewDate.getFullYear();
+  const viewMonth = viewDate.getMonth();
+  const todayKey = toDateKey(/* @__PURE__ */ new Date());
   const selectedKey = selectedDate ? toDateKey(selectedDate) : null;
-  const cells = buildMonthGrid(viewDate.getFullYear(), viewDate.getMonth());
-  const changeMonth = (delta) => setViewDate((d) => new Date(d.getFullYear(), d.getMonth() + delta, 1));
+  const toggle = () => {
+    setView("days");
+    setOpen((current) => !current);
+  };
+  const changeMonth = (delta) => setViewDate(new Date(viewYear, viewMonth + delta, 1));
+  const openYears = () => {
+    setPageStart(firstYearOfPage(viewYear));
+    setView("years");
+  };
+  const chooseYear = (year) => {
+    setViewDate(new Date(year, viewMonth, 1));
+    setView("months");
+  };
+  const chooseMonth = (month) => {
+    setViewDate(new Date(viewYear, month, 1));
+    setView("days");
+  };
   const selectDay = (date) => {
     field.onChange(toDateKey(date));
     setOpen(false);
   };
+  const years = Array.from({ length: YEARS_PER_PAGE }, (_, index) => pageStart + index);
   return /* @__PURE__ */ jsx10(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ jsxs9(Wrapper4, { ref, children: [
-    /* @__PURE__ */ jsxs9(Trigger, { type: "button", $open: open, "aria-invalid": !!fieldState.error, onClick: () => setOpen((v) => !v), children: [
+    /* @__PURE__ */ jsxs9(Trigger, { type: "button", $open: open, "aria-invalid": !!fieldState.error, onClick: toggle, children: [
       (_b = formatDateValue(field.value)) != null ? _b : /* @__PURE__ */ jsx10(Placeholder, { children: placeholder }),
       /* @__PURE__ */ jsx10(Calendar, { size: 18 })
     ] }),
-    open && /* @__PURE__ */ jsxs9(Panel, { children: [
+    open && view === "days" && /* @__PURE__ */ jsxs9(Panel, { children: [
       /* @__PURE__ */ jsxs9(PanelHeader, { children: [
         /* @__PURE__ */ jsx10(NavButton, { type: "button", onClick: () => changeMonth(-1), "aria-label": "M\xEAs anterior", children: /* @__PURE__ */ jsx10(ChevronLeft, { size: 18 }) }),
-        /* @__PURE__ */ jsxs9(HeaderLabel, { children: [
-          FULL_MONTH_LABELS[viewDate.getMonth()],
+        /* @__PURE__ */ jsxs9(HeaderButton, { type: "button", onClick: openYears, "aria-label": "Escolher m\xEAs e ano", children: [
+          MONTH_NAMES[viewMonth],
           " de ",
-          viewDate.getFullYear()
+          viewYear
         ] }),
         /* @__PURE__ */ jsx10(NavButton, { type: "button", onClick: () => changeMonth(1), "aria-label": "Pr\xF3ximo m\xEAs", children: /* @__PURE__ */ jsx10(ChevronRight, { size: 18 }) })
       ] }),
-      /* @__PURE__ */ jsx10(WeekdayRow, { children: WEEKDAY_LABELS.map((w) => /* @__PURE__ */ jsx10(WeekdayLabel, { children: w }, w)) }),
-      /* @__PURE__ */ jsx10(DayGrid, { children: cells.map(
-        (date, i) => date ? /* @__PURE__ */ jsx10(
+      /* @__PURE__ */ jsx10(WeekdayRow, { children: WEEKDAY_LABELS.map((weekday) => /* @__PURE__ */ jsx10(WeekdayLabel, { children: weekday }, weekday)) }),
+      /* @__PURE__ */ jsx10(DayGrid, { children: buildMonthGrid(viewYear, viewMonth).map(
+        (date, index) => date ? /* @__PURE__ */ jsx10(
           DayCell,
           {
             type: "button",
@@ -885,8 +952,78 @@ function DatePicker({
             children: date.getDate()
           },
           toDateKey(date)
-        ) : /* @__PURE__ */ jsx10("span", {}, `empty-${i}`)
+        ) : /* @__PURE__ */ jsx10("span", {}, `empty-${index}`)
       ) })
+    ] }),
+    open && view === "months" && /* @__PURE__ */ jsxs9(Panel, { children: [
+      /* @__PURE__ */ jsxs9(PanelHeader, { children: [
+        /* @__PURE__ */ jsx10(
+          NavButton,
+          {
+            type: "button",
+            onClick: () => setViewDate(new Date(viewYear - 1, viewMonth, 1)),
+            "aria-label": "Ano anterior",
+            children: /* @__PURE__ */ jsx10(ChevronLeft, { size: 18 })
+          }
+        ),
+        /* @__PURE__ */ jsx10(HeaderButton, { type: "button", onClick: openYears, "aria-label": "Escolher ano", children: viewYear }),
+        /* @__PURE__ */ jsx10(
+          NavButton,
+          {
+            type: "button",
+            onClick: () => setViewDate(new Date(viewYear + 1, viewMonth, 1)),
+            "aria-label": "Pr\xF3ximo ano",
+            children: /* @__PURE__ */ jsx10(ChevronRight, { size: 18 })
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsx10(ChoiceGrid, { children: MONTH_SHORT_NAMES.map((monthLabel, month) => /* @__PURE__ */ jsx10(
+        ChoiceCell,
+        {
+          type: "button",
+          $selected: (selectedDate == null ? void 0 : selectedDate.getFullYear()) === viewYear && selectedDate.getMonth() === month,
+          onClick: () => chooseMonth(month),
+          children: monthLabel
+        },
+        monthLabel
+      )) })
+    ] }),
+    open && view === "years" && /* @__PURE__ */ jsxs9(Panel, { children: [
+      /* @__PURE__ */ jsxs9(PanelHeader, { children: [
+        /* @__PURE__ */ jsx10(
+          NavButton,
+          {
+            type: "button",
+            onClick: () => setPageStart((start) => start - YEARS_PER_PAGE),
+            "aria-label": "Anos anteriores",
+            children: /* @__PURE__ */ jsx10(ChevronLeft, { size: 18 })
+          }
+        ),
+        /* @__PURE__ */ jsxs9(HeaderLabel, { children: [
+          years[0],
+          " \u2013 ",
+          years[years.length - 1]
+        ] }),
+        /* @__PURE__ */ jsx10(
+          NavButton,
+          {
+            type: "button",
+            onClick: () => setPageStart((start) => start + YEARS_PER_PAGE),
+            "aria-label": "Pr\xF3ximos anos",
+            children: /* @__PURE__ */ jsx10(ChevronRight, { size: 18 })
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsx10(ChoiceGrid, { children: years.map((year) => /* @__PURE__ */ jsx10(
+        ChoiceCell,
+        {
+          type: "button",
+          $selected: (selectedDate == null ? void 0 : selectedDate.getFullYear()) === year,
+          onClick: () => chooseYear(year),
+          children: year
+        },
+        year
+      )) })
     ] })
   ] }) });
 }
@@ -896,8 +1033,8 @@ import { useRef as useRef2, useState as useState2 } from "react";
 import { ImagePlus, Plus, X } from "lucide-react";
 
 // src/components/Inputs/ImageUpload/styles/ImageUpload.ts
-import styled16 from "styled-components";
-var Dropzone = styled16.div`
+import styled17 from "styled-components";
+var Dropzone = styled17.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -909,7 +1046,7 @@ var Dropzone = styled16.div`
   background: ${({ theme: theme2, $dragOver }) => $dragOver ? theme2.colors.surfaceSoft : theme2.colors.canvas};
   transition: border-color 0.15s, background 0.15s;
 `;
-var EmptyState = styled16.div`
+var EmptyState = styled17.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -919,33 +1056,33 @@ var EmptyState = styled16.div`
   text-align: center;
   cursor: pointer;
 `;
-var DropzoneText = styled16.p`
+var DropzoneText = styled17.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
 `;
-var DropzoneHint = styled16.p`
+var DropzoneHint = styled17.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
 `;
-var HiddenInput2 = styled16.input`
+var HiddenInput2 = styled17.input`
   display: none;
 `;
-var Thumb = styled16.div`
+var Thumb = styled17.div`
   position: relative;
   width: 72px;
   height: 72px;
   flex-shrink: 0;
 `;
-var ThumbImage = styled16.img`
+var ThumbImage = styled17.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
   border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
 `;
-var RemoveButton = styled16.button`
+var RemoveButton = styled17.button`
   position: absolute;
   top: -6px;
   right: -6px;
@@ -965,7 +1102,7 @@ var RemoveButton = styled16.button`
     background: ${({ theme: theme2 }) => theme2.colors.body};
   }
 `;
-var AddTile = styled16.button`
+var AddTile = styled17.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1077,53 +1214,12 @@ function ImageUpload({
 import { useEffect as useEffect2, useRef as useRef3, useState as useState3 } from "react";
 import { useController as useController2 } from "react-hook-form";
 import { Calendar as Calendar2, ChevronLeft as ChevronLeft2, ChevronRight as ChevronRight2 } from "lucide-react";
-
-// src/components/Inputs/MonthPicker/styles/MonthPicker.ts
-import styled17 from "styled-components";
-var MonthGrid = styled17.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-`;
-var MonthCell = styled17.button`
-  padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
-  border: none;
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
-  background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primary : "transparent"};
-  color: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.onPrimary : theme2.colors.ink};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  font-weight: ${({ $selected }) => $selected ? 600 : 400};
-  cursor: pointer;
-  transition: background 0.15s;
-
-  &:hover {
-    background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primaryActive : theme2.colors.surfaceStrong};
-  }
-`;
-
-// src/components/Inputs/MonthPicker/index.tsx
 import { jsx as jsx12, jsxs as jsxs11 } from "react/jsx-runtime";
-var MONTH_LABELS = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-var FULL_MONTH_LABELS2 = [
-  "Janeiro",
-  "Fevereiro",
-  "Mar\xE7o",
-  "Abril",
-  "Maio",
-  "Junho",
-  "Julho",
-  "Agosto",
-  "Setembro",
-  "Outubro",
-  "Novembro",
-  "Dezembro"
-];
 function formatMonthValue(value) {
   if (!value) return null;
   const [year, month] = value.split("-").map(Number);
   if (!year || !month) return null;
-  return `${FULL_MONTH_LABELS2[month - 1]} de ${year}`;
+  return `${capitalize(MONTH_NAMES[month - 1])} de ${year}`;
 }
 function MonthPicker({
   label,
@@ -1162,8 +1258,8 @@ function MonthPicker({
         /* @__PURE__ */ jsx12(HeaderLabel, { children: viewYear }),
         /* @__PURE__ */ jsx12(NavButton, { type: "button", onClick: () => setViewYear((y) => y + 1), "aria-label": "Pr\xF3ximo ano", children: /* @__PURE__ */ jsx12(ChevronRight2, { size: 18 }) })
       ] }),
-      /* @__PURE__ */ jsx12(MonthGrid, { children: MONTH_LABELS.map((monthLabel, i) => /* @__PURE__ */ jsx12(
-        MonthCell,
+      /* @__PURE__ */ jsx12(ChoiceGrid, { children: MONTH_SHORT_NAMES.map((monthLabel, i) => /* @__PURE__ */ jsx12(
+        ChoiceCell,
         {
           type: "button",
           $selected: selectedYear === viewYear && selectedMonth === i + 1,
@@ -2407,28 +2503,9 @@ var Skeleton = styled29.div`
   animation: ${pulse} 1.4s ease-in-out infinite;
 `;
 
-// src/components/StatusBadge/index.tsx
-import styled30 from "styled-components";
-import { jsx as jsx24 } from "react/jsx-runtime";
-var StyledBadge = styled30.span`
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.badge.fontSize};
-  font-weight: 600;
-
-  ${({ $tone, theme: theme2 }) => $tone === "success" ? `background: ${theme2.colors.successSurface}; color: ${theme2.colors.success}; border: 1px solid ${theme2.colors.successBorder};` : `background: ${theme2.colors.warningSurface}; color: ${theme2.colors.warning}; border: 1px solid ${theme2.colors.warningBorder};`}
-`;
-function StatusBadge({ tone, children }) {
-  return /* @__PURE__ */ jsx24(StyledBadge, { $tone: tone, children });
-}
-
 // src/components/StatsGrid/styles/StatsGrid.ts
-import styled31 from "styled-components";
-var StatsGrid = styled31.div`
+import styled30 from "styled-components";
+var StatsGrid = styled30.div`
   display: grid;
   grid-template-columns: repeat(${({ $columns }) => $columns != null ? $columns : 4}, 1fr);
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
@@ -2442,7 +2519,7 @@ var StatsGrid = styled31.div`
     grid-template-columns: 1fr;
   }
 `;
-var StatCard = styled31.div`
+var StatCard = styled30.div`
   min-width: 0;
   background: ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningSurface : $tone === "danger" ? "#fff0f3" : theme2.colors.canvas};
   border: 1px solid ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningBorder : $tone === "danger" ? "#ffd1da" : theme2.colors.hairline};
@@ -2450,7 +2527,7 @@ var StatCard = styled31.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.base};
   box-shadow: ${({ theme: theme2 }) => theme2.shadows.sm};
 `;
-var StatLabel = styled31.p`
+var StatLabel = styled30.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
@@ -2459,7 +2536,7 @@ var StatLabel = styled31.p`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-var StatValue = styled31.p`
+var StatValue = styled30.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -2468,14 +2545,14 @@ var StatValue = styled31.p`
 `;
 
 // src/components/Tabs/styles/Tabs.ts
-import styled32 from "styled-components";
-var TabBar = styled32.div.attrs({ role: "tablist" })`
+import styled31 from "styled-components";
+var TabBar = styled31.div.attrs({ role: "tablist" })`
   display: flex;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Tab = styled32.button.attrs(({ $active }) => ({
+var Tab = styled31.button.attrs(({ $active }) => ({
   type: "button",
   role: "tab",
   "aria-selected": $active
@@ -2498,7 +2575,7 @@ var Tab = styled32.button.attrs(({ $active }) => ({
 
   &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
 `;
-var TabBadge = styled32.span`
+var TabBadge = styled31.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2517,12 +2594,12 @@ var TabBadge = styled32.span`
 import { createPortal as createPortal2 } from "react-dom";
 
 // src/components/Toast/styles/Toast.ts
-import styled33, { keyframes as keyframes3 } from "styled-components";
+import styled32, { keyframes as keyframes3 } from "styled-components";
 var fadeOut = keyframes3`
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(8px); }
 `;
-var ToastEl = styled33.div`
+var ToastEl = styled32.div`
   position: fixed;
   bottom: 80px;
   left: 0;
@@ -2546,7 +2623,7 @@ var ToastEl = styled33.div`
   text-align: center;
   animation: ${({ $leaving }) => $leaving ? fadeOut : fadeUp} 0.25s ease forwards;
 `;
-var ToastAction = styled33.button`
+var ToastAction = styled32.button`
   padding: 0;
   border: none;
   background: transparent;
@@ -2557,7 +2634,7 @@ var ToastAction = styled33.button`
 
 // src/components/Toast/hooks/useToast.tsx
 import { useCallback, useRef as useRef6, useState as useState6 } from "react";
-import { jsx as jsx25 } from "react/jsx-runtime";
+import { jsx as jsx24 } from "react/jsx-runtime";
 var ACTION_DURATION = 6e3;
 function useToast(duration = 2500) {
   const [state, setState] = useState6(null);
@@ -2575,7 +2652,7 @@ function useToast(duration = 2500) {
     },
     [duration, hide]
   );
-  const toast = state ? /* @__PURE__ */ jsx25(
+  const toast = state ? /* @__PURE__ */ jsx24(
     Toast,
     {
       message: state.message,
@@ -2594,12 +2671,12 @@ function useToast(duration = 2500) {
 }
 
 // src/components/Toast/index.tsx
-import { jsx as jsx26, jsxs as jsxs21 } from "react/jsx-runtime";
+import { jsx as jsx25, jsxs as jsxs21 } from "react/jsx-runtime";
 function Toast({ message, leaving, action }) {
   return createPortal2(
     /* @__PURE__ */ jsxs21(ToastEl, { $leaving: leaving, $interactive: !!action, role: "status", children: [
       message,
-      action && /* @__PURE__ */ jsx26(ToastAction, { type: "button", onClick: action.onClick, children: action.label })
+      action && /* @__PURE__ */ jsx25(ToastAction, { type: "button", onClick: action.onClick, children: action.label })
     ] }),
     document.body
   );
@@ -2609,8 +2686,8 @@ function Toast({ message, leaving, action }) {
 import { Outlet } from "react-router-dom";
 
 // src/pages/LoginForm/styles/Login.ts
-import styled34 from "styled-components";
-var Page = styled34.div`
+import styled33 from "styled-components";
+var Page = styled33.div`
   min-height: 100vh;
   display: flex;
 
@@ -2618,7 +2695,7 @@ var Page = styled34.div`
     flex-direction: column;
   }
 `;
-var Brand2 = styled34.div`
+var Brand2 = styled33.div`
   flex: 0 0 420px;
   background: ${({ theme: theme2 }) => theme2.colors.primary};
   display: flex;
@@ -2649,7 +2726,7 @@ var Brand2 = styled34.div`
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
   }
 `;
-var BrandMark = styled34.div`
+var BrandMark = styled33.div`
   width: 80px;
   height: 80px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
@@ -2675,13 +2752,13 @@ var BrandMark = styled34.div`
     img { width: 38px; height: 38px; }
   }
 `;
-var BrandText = styled34.div`
+var BrandText = styled33.div`
   text-align: center;
   color: #fff;
   position: relative;
   z-index: 1;
 `;
-var BrandName2 = styled34.h1`
+var BrandName2 = styled33.h1`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.625rem;
   font-weight: 700;
@@ -2693,13 +2770,13 @@ var BrandName2 = styled34.h1`
     font-size: 1.25rem;
   }
 `;
-var BrandSub = styled34.p`
+var BrandSub = styled33.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   opacity: 0.75;
   line-height: 1.4;
 `;
-var BrandQuote = styled34.blockquote`
+var BrandQuote = styled33.blockquote`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: rgba(255, 255, 255, 0.6);
@@ -2714,7 +2791,7 @@ var BrandQuote = styled34.blockquote`
     display: none;
   }
 `;
-var FormPanel = styled34.div`
+var FormPanel = styled33.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -2736,15 +2813,15 @@ var FormPanel = styled34.div`
     animation: ${slideUp} 0.35s ease;
   }
 `;
-var FormBox = styled34.div`
+var FormBox = styled33.div`
   width: 100%;
   max-width: 400px;
   animation: ${fadeUp} 0.35s ease;
 `;
-var FormHeader = styled34.div`
+var FormHeader = styled33.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var FormTitle = styled34.h2`
+var FormTitle = styled33.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.375rem;
   font-weight: 700;
@@ -2752,22 +2829,22 @@ var FormTitle = styled34.h2`
   letter-spacing: -0.3px;
   margin-bottom: 6px;
 `;
-var FormSubtitle = styled34.p`
+var FormSubtitle = styled33.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Form2 = styled34.form`
+var Form2 = styled33.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SubmitButton = styled34(Button)`
+var SubmitButton = styled33(Button)`
   @media (max-width: 768px) {
     border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
   }
 `;
-var FooterLink = styled34.button`
+var FooterLink = styled33.button`
   display: block;
   width: 100%;
   text-align: center;
@@ -2784,7 +2861,7 @@ var FooterLink = styled34.button`
     text-decoration: underline;
   }
 `;
-var ForgotLink = styled34.button`
+var ForgotLink = styled33.button`
   align-self: flex-end;
   margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
   border: none;
@@ -2800,7 +2877,7 @@ var ForgotLink = styled34.button`
     text-decoration: underline;
   }
 `;
-var BackLink = styled34.button`
+var BackLink = styled33.button`
   display: inline-flex;
   align-items: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
@@ -2817,7 +2894,7 @@ var BackLink = styled34.button`
     color: ${({ theme: theme2 }) => theme2.colors.ink};
   }
 `;
-var SuccessMsg = styled34.p`
+var SuccessMsg = styled33.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   background: ${({ theme: theme2 }) => theme2.colors.surfaceSoft};
@@ -2827,7 +2904,7 @@ var SuccessMsg = styled34.p`
   text-align: center;
   line-height: 1.5;
 `;
-var ErrorMsg = styled34.p`
+var ErrorMsg = styled33.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
   background: #fef2f2;
@@ -2836,13 +2913,13 @@ var ErrorMsg = styled34.p`
   padding: ${({ theme: theme2 }) => `${theme2.spacing.sm} ${theme2.spacing.md}`};
   text-align: center;
 `;
-var EmailRow = styled34.div`
+var EmailRow = styled33.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var EmailText = styled34.span`
+var EmailText = styled33.span`
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2851,7 +2928,7 @@ var EmailText = styled34.span`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var ChangeButton = styled34.button`
+var ChangeButton = styled33.button`
   flex-shrink: 0;
   padding: ${({ theme: theme2 }) => `${theme2.spacing.xs} ${theme2.spacing.md}`};
   border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
@@ -2869,18 +2946,18 @@ var ChangeButton = styled34.button`
 `;
 
 // src/pages/AuthLayout/index.tsx
-import { jsx as jsx27, jsxs as jsxs22 } from "react/jsx-runtime";
+import { jsx as jsx26, jsxs as jsxs22 } from "react/jsx-runtime";
 function AuthLayout({ brand, children }) {
   return /* @__PURE__ */ jsxs22(Page, { children: [
     /* @__PURE__ */ jsxs22(Brand2, { children: [
-      /* @__PURE__ */ jsx27(BrandMark, { children: /* @__PURE__ */ jsx27("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ jsx26(BrandMark, { children: /* @__PURE__ */ jsx26("img", { src: brand.icon, alt: brand.iconAlt }) }),
       /* @__PURE__ */ jsxs22(BrandText, { children: [
-        /* @__PURE__ */ jsx27(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ jsx27(BrandSub, { children: brand.sub })
+        /* @__PURE__ */ jsx26(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ jsx26(BrandSub, { children: brand.sub })
       ] }),
-      brand.quote && /* @__PURE__ */ jsx27(BrandQuote, { children: brand.quote })
+      brand.quote && /* @__PURE__ */ jsx26(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ jsx27(FormPanel, { children: /* @__PURE__ */ jsx27(FormBox, { children: children != null ? children : /* @__PURE__ */ jsx27(Outlet, {}) }) })
+    /* @__PURE__ */ jsx26(FormPanel, { children: /* @__PURE__ */ jsx26(FormBox, { children: children != null ? children : /* @__PURE__ */ jsx26(Outlet, {}) }) })
   ] });
 }
 
@@ -2938,11 +3015,11 @@ import { useCallback as useCallback2, useContext, useEffect as useEffect5, useMe
 
 // src/contexts/AuthContext.tsx
 import { createContext } from "react";
-import { jsx as jsx28 } from "react/jsx-runtime";
+import { jsx as jsx27 } from "react/jsx-runtime";
 var AuthContext = createContext(null);
 function AuthProvider({ client, children }) {
   const authValue = useAuth(client);
-  return /* @__PURE__ */ jsx28(AuthContext.Provider, { value: authValue, children });
+  return /* @__PURE__ */ jsx27(AuthContext.Provider, { value: authValue, children });
 }
 
 // src/hooks/useAuth.ts
@@ -3126,7 +3203,7 @@ var loginSchema = z.object({
 });
 
 // src/pages/LoginForm/index.tsx
-import { Fragment as Fragment4, jsx as jsx29, jsxs as jsxs23 } from "react/jsx-runtime";
+import { Fragment as Fragment4, jsx as jsx28, jsxs as jsxs23 } from "react/jsx-runtime";
 function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }) {
   var _a;
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
@@ -3153,8 +3230,8 @@ function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }) {
   if (step === "email") {
     return /* @__PURE__ */ jsxs23(Fragment4, { children: [
       /* @__PURE__ */ jsxs23(FormHeader, { children: [
-        /* @__PURE__ */ jsx29(FormTitle, { children: "Bem-vindo" }),
-        /* @__PURE__ */ jsx29(FormSubtitle, { children: "Informe seu e-mail para continuar" })
+        /* @__PURE__ */ jsx28(FormTitle, { children: "Bem-vindo" }),
+        /* @__PURE__ */ jsx28(FormSubtitle, { children: "Informe seu e-mail para continuar" })
       ] }),
       /* @__PURE__ */ jsxs23(
         Form2,
@@ -3164,7 +3241,7 @@ function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }) {
             continueToPassword();
           },
           children: [
-            /* @__PURE__ */ jsx29(
+            /* @__PURE__ */ jsx28(
               TextInput,
               {
                 label: text.fields.email,
@@ -3176,8 +3253,8 @@ function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }) {
                 placeholder: text.fields.emailPlaceholder
               }
             ),
-            /* @__PURE__ */ jsx29(Checkbox, { label: "Lembrar de mim", checked: remember, onChange: (event) => setRemember(event.target.checked) }),
-            /* @__PURE__ */ jsx29(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", children: "Continuar" })
+            /* @__PURE__ */ jsx28(Checkbox, { label: "Lembrar de mim", checked: remember, onChange: (event) => setRemember(event.target.checked) }),
+            /* @__PURE__ */ jsx28(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", children: "Continuar" })
           ]
         }
       ),
@@ -3186,23 +3263,23 @@ function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }) {
   }
   return /* @__PURE__ */ jsxs23(Fragment4, { children: [
     /* @__PURE__ */ jsxs23(FormHeader, { children: [
-      /* @__PURE__ */ jsx29(FormTitle, { children: greeting }),
+      /* @__PURE__ */ jsx28(FormTitle, { children: greeting }),
       /* @__PURE__ */ jsxs23(EmailRow, { children: [
-        /* @__PURE__ */ jsx29(EmailText, { children: getValues("email") }),
-        /* @__PURE__ */ jsx29(ChangeButton, { type: "button", onClick: changeEmail, children: "Alterar" })
+        /* @__PURE__ */ jsx28(EmailText, { children: getValues("email") }),
+        /* @__PURE__ */ jsx28(ChangeButton, { type: "button", onClick: changeEmail, children: "Alterar" })
       ] })
     ] }),
-    step === "confirm" ? /* @__PURE__ */ jsx29(
+    step === "confirm" ? /* @__PURE__ */ jsx28(
       Form2,
       {
         onSubmit: (event) => {
           event.preventDefault();
           setStep("password");
         },
-        children: /* @__PURE__ */ jsx29(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", children: "Continuar" })
+        children: /* @__PURE__ */ jsx28(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", children: "Continuar" })
       }
     ) : /* @__PURE__ */ jsxs23(Form2, { onSubmit: submit, children: [
-      /* @__PURE__ */ jsx29(
+      /* @__PURE__ */ jsx28(
         TextInput,
         {
           label: "Senha",
@@ -3214,9 +3291,9 @@ function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }) {
           placeholder: "Sua senha"
         }
       ),
-      forgotPasswordPath && /* @__PURE__ */ jsx29(ForgotLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" }),
-      /* @__PURE__ */ jsx29(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", disabled: submitting, children: submitting ? "Entrando..." : "Entrar" }),
-      error && /* @__PURE__ */ jsx29(ErrorMsg, { children: error })
+      forgotPasswordPath && /* @__PURE__ */ jsx28(ForgotLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" }),
+      /* @__PURE__ */ jsx28(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", disabled: submitting, children: submitting ? "Entrando..." : "Entrar" }),
+      error && /* @__PURE__ */ jsx28(ErrorMsg, { children: error })
     ] }),
     footerSlot
   ] });
@@ -3229,15 +3306,15 @@ import { useNavigate as useNavigate4 } from "react-router-dom";
 import { LogOut, Save } from "lucide-react";
 
 // src/pages/ProfilePage/styles/ProfilePage.ts
-import styled35 from "styled-components";
-var Wrap3 = styled35.div`
+import styled34 from "styled-components";
+var Wrap3 = styled34.div`
   max-width: 560px;
 `;
-var Identity = styled35.div`
+var Identity = styled34.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Name = styled35.h2`
+var Name = styled34.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -3245,18 +3322,18 @@ var Name = styled35.h2`
   line-height: 1.1;
   margin-bottom: 4px;
 `;
-var RoleLabel = styled35.p`
+var RoleLabel = styled34.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Section = styled35.div`
+var Section = styled34.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SectionTitle = styled35.p`
+var SectionTitle = styled34.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -3264,10 +3341,10 @@ var SectionTitle = styled35.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var SectionDivider = styled35.div`
+var SectionDivider = styled34.div`
   border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Actions = styled35.div`
+var Actions = styled34.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -3278,7 +3355,7 @@ var Actions = styled35.div`
     width: 100%;
   }
 `;
-var LogoutAction = styled35.div`
+var LogoutAction = styled34.div`
   margin-top: ${({ theme: theme2 }) => theme2.spacing.md};
 
   @media (min-width: ${({ theme: theme2 }) => theme2.breakpoints.mobile}) {
@@ -3294,7 +3371,7 @@ var profileSchema = z2.object({
 });
 
 // src/pages/ProfilePage/index.tsx
-import { Fragment as Fragment5, jsx as jsx30, jsxs as jsxs24 } from "react/jsx-runtime";
+import { Fragment as Fragment5, jsx as jsx29, jsxs as jsxs24 } from "react/jsx-runtime";
 function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
@@ -3313,16 +3390,16 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
   };
   return /* @__PURE__ */ jsxs24(Wrap3, { children: [
-    /* @__PURE__ */ jsx30(PageHeader, { title: "Meu perfil", back }),
+    /* @__PURE__ */ jsx29(PageHeader, { title: "Meu perfil", back }),
     /* @__PURE__ */ jsxs24(Identity, { children: [
-      /* @__PURE__ */ jsx30(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
-      roleLabel && /* @__PURE__ */ jsx30(RoleLabel, { children: roleLabel })
+      /* @__PURE__ */ jsx29(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
+      roleLabel && /* @__PURE__ */ jsx29(RoleLabel, { children: roleLabel })
     ] }),
     /* @__PURE__ */ jsxs24(Section, { children: [
-      /* @__PURE__ */ jsx30(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
-      /* @__PURE__ */ jsx30(SectionDivider, {}),
-      /* @__PURE__ */ jsx30(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
-      /* @__PURE__ */ jsx30(
+      /* @__PURE__ */ jsx29(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
+      /* @__PURE__ */ jsx29(SectionDivider, {}),
+      /* @__PURE__ */ jsx29(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
+      /* @__PURE__ */ jsx29(
         TextInput,
         {
           label: "E-mail de acesso",
@@ -3333,16 +3410,16 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
         }
       )
     ] }),
-    /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsxs24(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
-      /* @__PURE__ */ jsx30(Save, { size: 16 }),
+    /* @__PURE__ */ jsx29(Actions, { children: /* @__PURE__ */ jsxs24(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
+      /* @__PURE__ */ jsx29(Save, { size: 16 }),
       isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es"
     ] }) }),
     changePasswordPath && /* @__PURE__ */ jsxs24(Fragment5, { children: [
-      /* @__PURE__ */ jsx30(Section, { children: /* @__PURE__ */ jsx30(SectionTitle, { children: "Seguran\xE7a" }) }),
-      /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsx30(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
+      /* @__PURE__ */ jsx29(Section, { children: /* @__PURE__ */ jsx29(SectionTitle, { children: "Seguran\xE7a" }) }),
+      /* @__PURE__ */ jsx29(Actions, { children: /* @__PURE__ */ jsx29(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
     ] }),
-    onLogout && /* @__PURE__ */ jsx30(LogoutAction, { children: /* @__PURE__ */ jsxs24(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
-      /* @__PURE__ */ jsx30(LogOut, { size: 16 }),
+    onLogout && /* @__PURE__ */ jsx29(LogoutAction, { children: /* @__PURE__ */ jsxs24(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
+      /* @__PURE__ */ jsx29(LogOut, { size: 16 }),
       "Sair"
     ] }) }),
     toast
@@ -3365,7 +3442,7 @@ var passwordSchema = z3.object({
 });
 
 // src/pages/ChangePasswordPage/index.tsx
-import { Fragment as Fragment6, jsx as jsx31, jsxs as jsxs25 } from "react/jsx-runtime";
+import { Fragment as Fragment6, jsx as jsx30, jsxs as jsxs25 } from "react/jsx-runtime";
 function ChangePasswordPage() {
   const { updatePassword } = useAuthCtx();
   const { show: showToast, toast } = useToast();
@@ -3389,10 +3466,10 @@ function ChangePasswordPage() {
     reset();
   };
   return /* @__PURE__ */ jsxs25(Wrap3, { children: [
-    /* @__PURE__ */ jsx31(PageHeader, { title: "Alterar senha", back: true }),
+    /* @__PURE__ */ jsx30(PageHeader, { title: "Alterar senha", back: true }),
     /* @__PURE__ */ jsxs25(Section, { children: [
-      /* @__PURE__ */ jsx31(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
-      /* @__PURE__ */ jsx31(
+      /* @__PURE__ */ jsx30(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
+      /* @__PURE__ */ jsx30(
         TextInput,
         {
           label: "Confirmar nova senha",
@@ -3403,8 +3480,8 @@ function ChangePasswordPage() {
         }
       )
     ] }),
-    /* @__PURE__ */ jsx31(Actions, { children: /* @__PURE__ */ jsx31(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs25(Fragment6, { children: [
-      /* @__PURE__ */ jsx31(Save2, { size: 16 }),
+    /* @__PURE__ */ jsx30(Actions, { children: /* @__PURE__ */ jsx30(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs25(Fragment6, { children: [
+      /* @__PURE__ */ jsx30(Save2, { size: 16 }),
       "Salvar nova senha"
     ] }) }) }),
     toast
@@ -3446,7 +3523,7 @@ var forgotPasswordSchema = z4.object({
 });
 
 // src/pages/ForgotPasswordForm/index.tsx
-import { Fragment as Fragment7, jsx as jsx32, jsxs as jsxs26 } from "react/jsx-runtime";
+import { Fragment as Fragment7, jsx as jsx31, jsxs as jsxs26 } from "react/jsx-runtime";
 function ForgotPasswordForm({ loginPath, resetPasswordPath }) {
   const { submitting, sent, error, handleSubmit: submit } = useForgotPassword(resetPasswordPath);
   const navigate = useNavigate5();
@@ -3456,16 +3533,16 @@ function ForgotPasswordForm({ loginPath, resetPasswordPath }) {
   });
   return /* @__PURE__ */ jsxs26(Fragment7, { children: [
     /* @__PURE__ */ jsxs26(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
-      /* @__PURE__ */ jsx32(ArrowLeft2, { size: 16 }),
+      /* @__PURE__ */ jsx31(ArrowLeft2, { size: 16 }),
       "Voltar para o login"
     ] }),
     /* @__PURE__ */ jsxs26(FormHeader, { children: [
-      /* @__PURE__ */ jsx32(FormTitle, { children: "Esqueci minha senha" }),
-      /* @__PURE__ */ jsx32(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
+      /* @__PURE__ */ jsx31(FormTitle, { children: "Esqueci minha senha" }),
+      /* @__PURE__ */ jsx31(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
     ] }),
-    sent ? /* @__PURE__ */ jsx32(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ jsxs26(Form2, { onSubmit: handleSubmit(submit), children: [
-      /* @__PURE__ */ jsx32(TextInput, { label: "E-mail", control, name: "email", type: "email", autoFocus: true, placeholder: "seu@email.com" }),
-      /* @__PURE__ */ jsx32(
+    sent ? /* @__PURE__ */ jsx31(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ jsxs26(Form2, { onSubmit: handleSubmit(submit), children: [
+      /* @__PURE__ */ jsx31(TextInput, { label: "E-mail", control, name: "email", type: "email", autoFocus: true, placeholder: "seu@email.com" }),
+      /* @__PURE__ */ jsx31(
         SubmitButton,
         {
           variant: "primary",
@@ -3475,12 +3552,12 @@ function ForgotPasswordForm({ loginPath, resetPasswordPath }) {
           disabled: submitting,
           style: { marginTop: 8 },
           children: submitting ? "Enviando..." : /* @__PURE__ */ jsxs26(Fragment7, { children: [
-            /* @__PURE__ */ jsx32(Send, { size: 16 }),
+            /* @__PURE__ */ jsx31(Send, { size: 16 }),
             "Enviar link"
           ] })
         }
       ),
-      error && /* @__PURE__ */ jsx32(ErrorMsg, { children: error })
+      error && /* @__PURE__ */ jsx31(ErrorMsg, { children: error })
     ] })
   ] });
 }
@@ -3491,7 +3568,7 @@ import { zodResolver as zodResolver5 } from "@hookform/resolvers/zod";
 import { useForm as useForm5 } from "react-hook-form";
 import { useNavigate as useNavigate6 } from "react-router-dom";
 import { Save as Save3 } from "lucide-react";
-import { Fragment as Fragment8, jsx as jsx33, jsxs as jsxs27 } from "react/jsx-runtime";
+import { Fragment as Fragment8, jsx as jsx32, jsxs as jsxs27 } from "react/jsx-runtime";
 function ResetPasswordForm({ loginPath }) {
   const { user, loading, updatePassword, logout } = useAuthCtx();
   const navigate = useNavigate6();
@@ -3517,19 +3594,19 @@ function ResetPasswordForm({ loginPath }) {
   const invalidLink = !done && !loading && !user;
   return /* @__PURE__ */ jsxs27(Fragment8, { children: [
     /* @__PURE__ */ jsxs27(FormHeader, { children: [
-      /* @__PURE__ */ jsx33(FormTitle, { children: "Nova senha" }),
-      /* @__PURE__ */ jsx33(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
+      /* @__PURE__ */ jsx32(FormTitle, { children: "Nova senha" }),
+      /* @__PURE__ */ jsx32(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
     ] }),
     done && /* @__PURE__ */ jsxs27(Fragment8, { children: [
-      /* @__PURE__ */ jsx33(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
-      /* @__PURE__ */ jsx33(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
+      /* @__PURE__ */ jsx32(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
+      /* @__PURE__ */ jsx32(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
     ] }),
     invalidLink && /* @__PURE__ */ jsxs27(Fragment8, { children: [
-      /* @__PURE__ */ jsx33(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
-      /* @__PURE__ */ jsx33(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
+      /* @__PURE__ */ jsx32(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
+      /* @__PURE__ */ jsx32(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
     ] }),
     !done && !invalidLink && /* @__PURE__ */ jsxs27(Form2, { onSubmit: handleSubmit(onSubmit), children: [
-      /* @__PURE__ */ jsx33(
+      /* @__PURE__ */ jsx32(
         TextInput,
         {
           label: "Nova senha",
@@ -3540,7 +3617,7 @@ function ResetPasswordForm({ loginPath }) {
           placeholder: "M\xEDnimo 6 caracteres"
         }
       ),
-      /* @__PURE__ */ jsx33(
+      /* @__PURE__ */ jsx32(
         TextInput,
         {
           label: "Confirmar nova senha",
@@ -3550,7 +3627,7 @@ function ResetPasswordForm({ loginPath }) {
           placeholder: "Repita a nova senha"
         }
       ),
-      /* @__PURE__ */ jsx33(
+      /* @__PURE__ */ jsx32(
         SubmitButton,
         {
           variant: "primary",
@@ -3560,7 +3637,7 @@ function ResetPasswordForm({ loginPath }) {
           disabled: isSubmitting,
           style: { marginTop: 8 },
           children: isSubmitting ? "Salvando..." : /* @__PURE__ */ jsxs27(Fragment8, { children: [
-            /* @__PURE__ */ jsx33(Save3, { size: 16 }),
+            /* @__PURE__ */ jsx32(Save3, { size: 16 }),
             "Salvar nova senha"
           ] })
         }
@@ -3874,7 +3951,6 @@ export {
   StatLabel,
   StatValue,
   StatsGrid,
-  StatusBadge,
   Switch,
   Tab,
   TabBadge,
@@ -3898,9 +3974,11 @@ export {
   maskPhone,
   onlyDigits,
   parseCurrency,
+  parseDateKey,
   slideUp,
   text,
   theme,
+  toDateKey,
   useAuth,
   useAuthCtx,
   useMediaQuery,

@@ -115,9 +115,6 @@ interface DatePickerProps<T extends FieldValues, N extends FieldPath<T>> {
     wrapperStyle?: React.CSSProperties;
     placeholder?: string;
     isDateDisabled?: (date: Date) => boolean;
-    /** Month to open the calendar on when there's no value yet (defaults to
-     * today's month) — e.g. the earliest allowed date, so the picker doesn't
-     * land on a month that's entirely disabled by isDateDisabled. */
     initialMonth?: Date;
 }
 
@@ -314,13 +311,6 @@ declare const Skeleton: styled_components_dist_types.IStyledComponentBase<"web",
     $h?: string | undefined;
     $w?: string | undefined;
 }, never>>> & string;
-
-type StatusTone = 'success' | 'warning';
-interface StatusBadgeProps {
-    tone: StatusTone;
-    children: React.ReactNode;
-}
-declare function StatusBadge({ tone, children }: StatusBadgeProps): react.JSX.Element;
 
 type StatTone = 'warning' | 'danger';
 declare const StatsGrid: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, "$columns"> & {
@@ -701,4 +691,7 @@ declare function isValidCpf(value: string): boolean;
 declare function maskCEP(value: string): string;
 declare function maskDate(value: string): string;
 
-export { type AuthBrand, AuthContext, type AuthContextValue, AuthLayout, type AuthLayoutProps, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, ForgotPasswordForm, type ForgotPasswordFormProps, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LinkButton, type LinkButtonProps, LoginForm, type LoginFormProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, ResetPasswordForm, type ResetPasswordFormProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type TextMask, Textarea, type TextareaProps, type Theme, Toast, type ToastActionConfig, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCPF, formatCurrency, isCompletePhone, isSamePhone, isValidCpf, maskCEP, maskCurrencyInput, maskDate, maskPhone, onlyDigits, parseCurrency, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+declare function toDateKey(date: Date): string;
+declare function parseDateKey(value?: string): Date | null;
+
+export { type AuthBrand, AuthContext, type AuthContextValue, AuthLayout, type AuthLayoutProps, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, ForgotPasswordForm, type ForgotPasswordFormProps, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LinkButton, type LinkButtonProps, LoginForm, type LoginFormProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, ResetPasswordForm, type ResetPasswordFormProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type TextMask, Textarea, type TextareaProps, type Theme, Toast, type ToastActionConfig, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCPF, formatCurrency, isCompletePhone, isSamePhone, isValidCpf, maskCEP, maskCurrencyInput, maskDate, maskPhone, onlyDigits, parseCurrency, parseDateKey, slideUp, text, theme, toDateKey, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };

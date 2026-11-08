@@ -74,7 +74,6 @@ __export(src_exports, {
   StatLabel: () => StatLabel,
   StatValue: () => StatValue,
   StatsGrid: () => StatsGrid,
-  StatusBadge: () => StatusBadge,
   Switch: () => Switch,
   Tab: () => Tab,
   TabBadge: () => TabBadge,
@@ -98,9 +97,11 @@ __export(src_exports, {
   maskPhone: () => maskPhone,
   onlyDigits: () => onlyDigits,
   parseCurrency: () => parseCurrency,
+  parseDateKey: () => parseDateKey,
   slideUp: () => slideUp,
   text: () => text,
   theme: () => theme,
+  toDateKey: () => toDateKey,
   useAuth: () => useAuth,
   useAuthCtx: () => useAuthCtx,
   useMediaQuery: () => useMediaQuery,
@@ -757,12 +758,71 @@ var import_react5 = require("react");
 var import_react_hook_form2 = require("react-hook-form");
 var import_lucide_react3 = require("lucide-react");
 
-// src/components/Inputs/_shared/PickerElements.ts
+// src/utils/dates.ts
+var MONTH_NAMES = [
+  "janeiro",
+  "fevereiro",
+  "mar\xE7o",
+  "abril",
+  "maio",
+  "junho",
+  "julho",
+  "agosto",
+  "setembro",
+  "outubro",
+  "novembro",
+  "dezembro"
+];
+var MONTH_SHORT_NAMES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+var capitalize = (value) => value.charAt(0).toUpperCase() + value.slice(1);
+function toDateKey(date) {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+function parseDateKey(value) {
+  if (!value) return null;
+  const [year, month, day] = value.split("-").map(Number);
+  if (!year || !month || !day) return null;
+  return new Date(year, month - 1, day);
+}
+
+// src/components/Inputs/_shared/ChoiceGrid.ts
 var import_styled_components16 = __toESM(require("styled-components"));
-var Wrapper4 = import_styled_components16.default.div`
+var ChoiceGrid = import_styled_components16.default.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
+`;
+var ChoiceCell = import_styled_components16.default.button`
+  padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
+  border: none;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primary : "transparent"};
+  color: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.onPrimary : theme2.colors.ink};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
+  font-weight: ${({ $selected }) => $selected ? 600 : 400};
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) {
+    background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primaryActive : theme2.colors.surfaceStrong};
+  }
+
+  &:disabled {
+    color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
+    cursor: not-allowed;
+  }
+`;
+
+// src/components/Inputs/_shared/PickerElements.ts
+var import_styled_components17 = __toESM(require("styled-components"));
+var Wrapper4 = import_styled_components17.default.div`
   position: relative;
 `;
-var Trigger = import_styled_components16.default.button`
+var Trigger = import_styled_components17.default.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -792,10 +852,10 @@ var Trigger = import_styled_components16.default.button`
 
   ${invalidField}
 `;
-var Placeholder = import_styled_components16.default.span`
+var Placeholder = import_styled_components17.default.span`
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
 `;
-var Panel = import_styled_components16.default.div`
+var Panel = import_styled_components17.default.div`
   position: absolute;
   top: calc(100% + ${({ theme: theme2 }) => theme2.spacing.xs});
   left: 0;
@@ -808,19 +868,19 @@ var Panel = import_styled_components16.default.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.base};
   animation: ${fadeDown} 0.15s ease-out;
 `;
-var PanelHeader = import_styled_components16.default.div`
+var PanelHeader = import_styled_components17.default.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.base};
 `;
-var HeaderLabel = import_styled_components16.default.span`
+var HeaderLabel = import_styled_components17.default.span`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.titleSm.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.titleSm.fontWeight};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
 `;
-var NavButton = import_styled_components16.default.button`
+var NavButton = import_styled_components17.default.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -838,13 +898,13 @@ var NavButton = import_styled_components16.default.button`
 `;
 
 // src/components/Inputs/DatePicker/styles/DatePicker.ts
-var import_styled_components17 = __toESM(require("styled-components"));
-var WeekdayRow = import_styled_components17.default.div`
+var import_styled_components18 = __toESM(require("styled-components"));
+var WeekdayRow = import_styled_components18.default.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var WeekdayLabel = import_styled_components17.default.span`
+var WeekdayLabel = import_styled_components18.default.span`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -853,12 +913,12 @@ var WeekdayLabel = import_styled_components17.default.span`
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
 `;
-var DayGrid = import_styled_components17.default.div`
+var DayGrid = import_styled_components18.default.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 2px;
 `;
-var DayCell = import_styled_components17.default.button`
+var DayCell = import_styled_components18.default.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -884,51 +944,40 @@ var DayCell = import_styled_components17.default.button`
     cursor: not-allowed;
   }
 `;
+var HeaderButton = import_styled_components18.default.button`
+  padding: ${({ theme: theme2 }) => theme2.spacing.xs} ${({ theme: theme2 }) => theme2.spacing.sm};
+  border: none;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  background: transparent;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+  font-size: ${({ theme: theme2 }) => theme2.typography.titleSm.fontSize};
+  font-weight: ${({ theme: theme2 }) => theme2.typography.titleSm.fontWeight};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong};
+  }
+`;
 
 // src/components/Inputs/DatePicker/index.tsx
 var import_jsx_runtime11 = require("react/jsx-runtime");
 var WEEKDAY_LABELS = ["dom", "seg", "ter", "qua", "qui", "sex", "s\xE1b"];
-var FULL_MONTH_LABELS = [
-  "janeiro",
-  "fevereiro",
-  "mar\xE7o",
-  "abril",
-  "maio",
-  "junho",
-  "julho",
-  "agosto",
-  "setembro",
-  "outubro",
-  "novembro",
-  "dezembro"
-];
-function parseDateValue(value) {
-  if (!value) return null;
-  const [y, m, d] = value.split("-").map(Number);
-  if (!y || !m || !d) return null;
-  return new Date(y, m - 1, d);
-}
+var YEARS_PER_PAGE = 12;
 function formatDateValue(value) {
-  const date = parseDateValue(value);
+  const date = parseDateKey(value);
   if (!date) return null;
-  return `${date.getDate()} de ${FULL_MONTH_LABELS[date.getMonth()]} de ${date.getFullYear()}`;
-}
-function toDateKey(date) {
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, "0");
-  const dd = String(date.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
+  return `${date.getDate()} de ${MONTH_NAMES[date.getMonth()]} de ${date.getFullYear()}`;
 }
 function buildMonthGrid(year, month) {
-  const firstDay = new Date(year, month, 1);
-  const startOffset = firstDay.getDay();
+  const startOffset = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const cells = [];
-  for (let i = 0; i < startOffset; i++) cells.push(null);
-  for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
+  const cells = Array.from({ length: startOffset }, () => null);
+  for (let day = 1; day <= daysInMonth; day++) cells.push(new Date(year, month, day));
   while (cells.length % 7 !== 0) cells.push(null);
   return cells;
 }
+var firstYearOfPage = (year) => year - year % YEARS_PER_PAGE;
 function DatePicker({
   label,
   control,
@@ -941,51 +990,70 @@ function DatePicker({
   var _a, _b;
   const { field, fieldState } = (0, import_react_hook_form2.useController)({ control, name });
   const [open, setOpen] = (0, import_react5.useState)(false);
-  const selectedDate = parseDateValue(field.value);
+  const [view, setView] = (0, import_react5.useState)("days");
+  const selectedDate = parseDateKey(field.value);
   const [viewDate, setViewDate] = (0, import_react5.useState)(() => {
     var _a2;
     return (_a2 = selectedDate != null ? selectedDate : initialMonth) != null ? _a2 : /* @__PURE__ */ new Date();
   });
+  const [pageStart, setPageStart] = (0, import_react5.useState)(() => firstYearOfPage(viewDate.getFullYear()));
+  const [lastInitialMonth, setLastInitialMonth] = (0, import_react5.useState)(initialMonth);
   const ref = (0, import_react5.useRef)(null);
+  if (initialMonth !== lastInitialMonth) {
+    setLastInitialMonth(initialMonth);
+    if (!selectedDate && initialMonth) setViewDate(initialMonth);
+  }
   (0, import_react5.useEffect)(() => {
-    if (!selectedDate && initialMonth) {
-      setViewDate(initialMonth);
-    }
-  }, [initialMonth]);
-  (0, import_react5.useEffect)(() => {
-    const handler = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    const handler = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) setOpen(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
-  const today = /* @__PURE__ */ new Date();
-  const todayKey = toDateKey(today);
+  const viewYear = viewDate.getFullYear();
+  const viewMonth = viewDate.getMonth();
+  const todayKey = toDateKey(/* @__PURE__ */ new Date());
   const selectedKey = selectedDate ? toDateKey(selectedDate) : null;
-  const cells = buildMonthGrid(viewDate.getFullYear(), viewDate.getMonth());
-  const changeMonth = (delta) => setViewDate((d) => new Date(d.getFullYear(), d.getMonth() + delta, 1));
+  const toggle = () => {
+    setView("days");
+    setOpen((current) => !current);
+  };
+  const changeMonth = (delta) => setViewDate(new Date(viewYear, viewMonth + delta, 1));
+  const openYears = () => {
+    setPageStart(firstYearOfPage(viewYear));
+    setView("years");
+  };
+  const chooseYear = (year) => {
+    setViewDate(new Date(year, viewMonth, 1));
+    setView("months");
+  };
+  const chooseMonth = (month) => {
+    setViewDate(new Date(viewYear, month, 1));
+    setView("days");
+  };
   const selectDay = (date) => {
     field.onChange(toDateKey(date));
     setOpen(false);
   };
+  const years = Array.from({ length: YEARS_PER_PAGE }, (_, index) => pageStart + index);
   return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(BaseInput, { label, wrapperStyle, error: (_a = fieldState.error) == null ? void 0 : _a.message, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Wrapper4, { ref, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Trigger, { type: "button", $open: open, "aria-invalid": !!fieldState.error, onClick: () => setOpen((v) => !v), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Trigger, { type: "button", $open: open, "aria-invalid": !!fieldState.error, onClick: toggle, children: [
       (_b = formatDateValue(field.value)) != null ? _b : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Placeholder, { children: placeholder }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react3.Calendar, { size: 18 })
     ] }),
-    open && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Panel, { children: [
+    open && view === "days" && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Panel, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(PanelHeader, { children: [
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(NavButton, { type: "button", onClick: () => changeMonth(-1), "aria-label": "M\xEAs anterior", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react3.ChevronLeft, { size: 18 }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(HeaderLabel, { children: [
-          FULL_MONTH_LABELS[viewDate.getMonth()],
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(HeaderButton, { type: "button", onClick: openYears, "aria-label": "Escolher m\xEAs e ano", children: [
+          MONTH_NAMES[viewMonth],
           " de ",
-          viewDate.getFullYear()
+          viewYear
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(NavButton, { type: "button", onClick: () => changeMonth(1), "aria-label": "Pr\xF3ximo m\xEAs", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react3.ChevronRight, { size: 18 }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(WeekdayRow, { children: WEEKDAY_LABELS.map((w) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(WeekdayLabel, { children: w }, w)) }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(DayGrid, { children: cells.map(
-        (date, i) => date ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(WeekdayRow, { children: WEEKDAY_LABELS.map((weekday) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(WeekdayLabel, { children: weekday }, weekday)) }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(DayGrid, { children: buildMonthGrid(viewYear, viewMonth).map(
+        (date, index) => date ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
           DayCell,
           {
             type: "button",
@@ -996,8 +1064,78 @@ function DatePicker({
             children: date.getDate()
           },
           toDateKey(date)
-        ) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", {}, `empty-${i}`)
+        ) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", {}, `empty-${index}`)
       ) })
+    ] }),
+    open && view === "months" && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Panel, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(PanelHeader, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+          NavButton,
+          {
+            type: "button",
+            onClick: () => setViewDate(new Date(viewYear - 1, viewMonth, 1)),
+            "aria-label": "Ano anterior",
+            children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react3.ChevronLeft, { size: 18 })
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(HeaderButton, { type: "button", onClick: openYears, "aria-label": "Escolher ano", children: viewYear }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+          NavButton,
+          {
+            type: "button",
+            onClick: () => setViewDate(new Date(viewYear + 1, viewMonth, 1)),
+            "aria-label": "Pr\xF3ximo ano",
+            children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react3.ChevronRight, { size: 18 })
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ChoiceGrid, { children: MONTH_SHORT_NAMES.map((monthLabel, month) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+        ChoiceCell,
+        {
+          type: "button",
+          $selected: (selectedDate == null ? void 0 : selectedDate.getFullYear()) === viewYear && selectedDate.getMonth() === month,
+          onClick: () => chooseMonth(month),
+          children: monthLabel
+        },
+        monthLabel
+      )) })
+    ] }),
+    open && view === "years" && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Panel, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(PanelHeader, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+          NavButton,
+          {
+            type: "button",
+            onClick: () => setPageStart((start) => start - YEARS_PER_PAGE),
+            "aria-label": "Anos anteriores",
+            children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react3.ChevronLeft, { size: 18 })
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(HeaderLabel, { children: [
+          years[0],
+          " \u2013 ",
+          years[years.length - 1]
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+          NavButton,
+          {
+            type: "button",
+            onClick: () => setPageStart((start) => start + YEARS_PER_PAGE),
+            "aria-label": "Pr\xF3ximos anos",
+            children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react3.ChevronRight, { size: 18 })
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ChoiceGrid, { children: years.map((year) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+        ChoiceCell,
+        {
+          type: "button",
+          $selected: (selectedDate == null ? void 0 : selectedDate.getFullYear()) === year,
+          onClick: () => chooseYear(year),
+          children: year
+        },
+        year
+      )) })
     ] })
   ] }) });
 }
@@ -1007,8 +1145,8 @@ var import_react6 = require("react");
 var import_lucide_react4 = require("lucide-react");
 
 // src/components/Inputs/ImageUpload/styles/ImageUpload.ts
-var import_styled_components18 = __toESM(require("styled-components"));
-var Dropzone = import_styled_components18.default.div`
+var import_styled_components19 = __toESM(require("styled-components"));
+var Dropzone = import_styled_components19.default.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1020,7 +1158,7 @@ var Dropzone = import_styled_components18.default.div`
   background: ${({ theme: theme2, $dragOver }) => $dragOver ? theme2.colors.surfaceSoft : theme2.colors.canvas};
   transition: border-color 0.15s, background 0.15s;
 `;
-var EmptyState = import_styled_components18.default.div`
+var EmptyState = import_styled_components19.default.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1030,33 +1168,33 @@ var EmptyState = import_styled_components18.default.div`
   text-align: center;
   cursor: pointer;
 `;
-var DropzoneText = import_styled_components18.default.p`
+var DropzoneText = import_styled_components19.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
 `;
-var DropzoneHint = import_styled_components18.default.p`
+var DropzoneHint = import_styled_components19.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
 `;
-var HiddenInput2 = import_styled_components18.default.input`
+var HiddenInput2 = import_styled_components19.default.input`
   display: none;
 `;
-var Thumb = import_styled_components18.default.div`
+var Thumb = import_styled_components19.default.div`
   position: relative;
   width: 72px;
   height: 72px;
   flex-shrink: 0;
 `;
-var ThumbImage = import_styled_components18.default.img`
+var ThumbImage = import_styled_components19.default.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
   border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
 `;
-var RemoveButton = import_styled_components18.default.button`
+var RemoveButton = import_styled_components19.default.button`
   position: absolute;
   top: -6px;
   right: -6px;
@@ -1076,7 +1214,7 @@ var RemoveButton = import_styled_components18.default.button`
     background: ${({ theme: theme2 }) => theme2.colors.body};
   }
 `;
-var AddTile = import_styled_components18.default.button`
+var AddTile = import_styled_components19.default.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1188,53 +1326,12 @@ function ImageUpload({
 var import_react7 = require("react");
 var import_react_hook_form3 = require("react-hook-form");
 var import_lucide_react5 = require("lucide-react");
-
-// src/components/Inputs/MonthPicker/styles/MonthPicker.ts
-var import_styled_components19 = __toESM(require("styled-components"));
-var MonthGrid = import_styled_components19.default.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-`;
-var MonthCell = import_styled_components19.default.button`
-  padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
-  border: none;
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
-  background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primary : "transparent"};
-  color: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.onPrimary : theme2.colors.ink};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  font-weight: ${({ $selected }) => $selected ? 600 : 400};
-  cursor: pointer;
-  transition: background 0.15s;
-
-  &:hover {
-    background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primaryActive : theme2.colors.surfaceStrong};
-  }
-`;
-
-// src/components/Inputs/MonthPicker/index.tsx
 var import_jsx_runtime13 = require("react/jsx-runtime");
-var MONTH_LABELS = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-var FULL_MONTH_LABELS2 = [
-  "Janeiro",
-  "Fevereiro",
-  "Mar\xE7o",
-  "Abril",
-  "Maio",
-  "Junho",
-  "Julho",
-  "Agosto",
-  "Setembro",
-  "Outubro",
-  "Novembro",
-  "Dezembro"
-];
 function formatMonthValue(value) {
   if (!value) return null;
   const [year, month] = value.split("-").map(Number);
   if (!year || !month) return null;
-  return `${FULL_MONTH_LABELS2[month - 1]} de ${year}`;
+  return `${capitalize(MONTH_NAMES[month - 1])} de ${year}`;
 }
 function MonthPicker({
   label,
@@ -1273,8 +1370,8 @@ function MonthPicker({
         /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(HeaderLabel, { children: viewYear }),
         /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(NavButton, { type: "button", onClick: () => setViewYear((y) => y + 1), "aria-label": "Pr\xF3ximo ano", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_lucide_react5.ChevronRight, { size: 18 }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(MonthGrid, { children: MONTH_LABELS.map((monthLabel, i) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
-        MonthCell,
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ChoiceGrid, { children: MONTH_SHORT_NAMES.map((monthLabel, i) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        ChoiceCell,
         {
           type: "button",
           $selected: selectedYear === viewYear && selectedMonth === i + 1,
@@ -2518,28 +2615,9 @@ var Skeleton = import_styled_components31.default.div`
   animation: ${pulse} 1.4s ease-in-out infinite;
 `;
 
-// src/components/StatusBadge/index.tsx
-var import_styled_components32 = __toESM(require("styled-components"));
-var import_jsx_runtime25 = require("react/jsx-runtime");
-var StyledBadge = import_styled_components32.default.span`
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.badge.fontSize};
-  font-weight: 600;
-
-  ${({ $tone, theme: theme2 }) => $tone === "success" ? `background: ${theme2.colors.successSurface}; color: ${theme2.colors.success}; border: 1px solid ${theme2.colors.successBorder};` : `background: ${theme2.colors.warningSurface}; color: ${theme2.colors.warning}; border: 1px solid ${theme2.colors.warningBorder};`}
-`;
-function StatusBadge({ tone, children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(StyledBadge, { $tone: tone, children });
-}
-
 // src/components/StatsGrid/styles/StatsGrid.ts
-var import_styled_components33 = __toESM(require("styled-components"));
-var StatsGrid = import_styled_components33.default.div`
+var import_styled_components32 = __toESM(require("styled-components"));
+var StatsGrid = import_styled_components32.default.div`
   display: grid;
   grid-template-columns: repeat(${({ $columns }) => $columns != null ? $columns : 4}, 1fr);
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
@@ -2553,7 +2631,7 @@ var StatsGrid = import_styled_components33.default.div`
     grid-template-columns: 1fr;
   }
 `;
-var StatCard = import_styled_components33.default.div`
+var StatCard = import_styled_components32.default.div`
   min-width: 0;
   background: ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningSurface : $tone === "danger" ? "#fff0f3" : theme2.colors.canvas};
   border: 1px solid ${({ theme: theme2, $tone }) => $tone === "warning" ? theme2.colors.warningBorder : $tone === "danger" ? "#ffd1da" : theme2.colors.hairline};
@@ -2561,7 +2639,7 @@ var StatCard = import_styled_components33.default.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.base};
   box-shadow: ${({ theme: theme2 }) => theme2.shadows.sm};
 `;
-var StatLabel = import_styled_components33.default.p`
+var StatLabel = import_styled_components32.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
@@ -2570,7 +2648,7 @@ var StatLabel = import_styled_components33.default.p`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-var StatValue = import_styled_components33.default.p`
+var StatValue = import_styled_components32.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -2579,14 +2657,14 @@ var StatValue = import_styled_components33.default.p`
 `;
 
 // src/components/Tabs/styles/Tabs.ts
-var import_styled_components34 = __toESM(require("styled-components"));
-var TabBar = import_styled_components34.default.div.attrs({ role: "tablist" })`
+var import_styled_components33 = __toESM(require("styled-components"));
+var TabBar = import_styled_components33.default.div.attrs({ role: "tablist" })`
   display: flex;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
-var Tab = import_styled_components34.default.button.attrs(({ $active }) => ({
+var Tab = import_styled_components33.default.button.attrs(({ $active }) => ({
   type: "button",
   role: "tab",
   "aria-selected": $active
@@ -2609,7 +2687,7 @@ var Tab = import_styled_components34.default.button.attrs(({ $active }) => ({
 
   &:hover { color: ${({ theme: theme2 }) => theme2.colors.ink}; }
 `;
-var TabBadge = import_styled_components34.default.span`
+var TabBadge = import_styled_components33.default.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2628,12 +2706,12 @@ var TabBadge = import_styled_components34.default.span`
 var import_react_dom2 = require("react-dom");
 
 // src/components/Toast/styles/Toast.ts
-var import_styled_components35 = __toESM(require("styled-components"));
-var fadeOut = import_styled_components35.keyframes`
+var import_styled_components34 = __toESM(require("styled-components"));
+var fadeOut = import_styled_components34.keyframes`
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(8px); }
 `;
-var ToastEl = import_styled_components35.default.div`
+var ToastEl = import_styled_components34.default.div`
   position: fixed;
   bottom: 80px;
   left: 0;
@@ -2657,7 +2735,7 @@ var ToastEl = import_styled_components35.default.div`
   text-align: center;
   animation: ${({ $leaving }) => $leaving ? fadeOut : fadeUp} 0.25s ease forwards;
 `;
-var ToastAction = import_styled_components35.default.button`
+var ToastAction = import_styled_components34.default.button`
   padding: 0;
   border: none;
   background: transparent;
@@ -2668,7 +2746,7 @@ var ToastAction = import_styled_components35.default.button`
 
 // src/components/Toast/hooks/useToast.tsx
 var import_react12 = require("react");
-var import_jsx_runtime26 = require("react/jsx-runtime");
+var import_jsx_runtime25 = require("react/jsx-runtime");
 var ACTION_DURATION = 6e3;
 function useToast(duration = 2500) {
   const [state, setState] = (0, import_react12.useState)(null);
@@ -2686,7 +2764,7 @@ function useToast(duration = 2500) {
     },
     [duration, hide]
   );
-  const toast = state ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+  const toast = state ? /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
     Toast,
     {
       message: state.message,
@@ -2705,12 +2783,12 @@ function useToast(duration = 2500) {
 }
 
 // src/components/Toast/index.tsx
-var import_jsx_runtime27 = require("react/jsx-runtime");
+var import_jsx_runtime26 = require("react/jsx-runtime");
 function Toast({ message, leaving, action }) {
   return (0, import_react_dom2.createPortal)(
-    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(ToastEl, { $leaving: leaving, $interactive: !!action, role: "status", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(ToastEl, { $leaving: leaving, $interactive: !!action, role: "status", children: [
       message,
-      action && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(ToastAction, { type: "button", onClick: action.onClick, children: action.label })
+      action && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(ToastAction, { type: "button", onClick: action.onClick, children: action.label })
     ] }),
     document.body
   );
@@ -2720,8 +2798,8 @@ function Toast({ message, leaving, action }) {
 var import_react_router_dom3 = require("react-router-dom");
 
 // src/pages/LoginForm/styles/Login.ts
-var import_styled_components36 = __toESM(require("styled-components"));
-var Page = import_styled_components36.default.div`
+var import_styled_components35 = __toESM(require("styled-components"));
+var Page = import_styled_components35.default.div`
   min-height: 100vh;
   display: flex;
 
@@ -2729,7 +2807,7 @@ var Page = import_styled_components36.default.div`
     flex-direction: column;
   }
 `;
-var Brand2 = import_styled_components36.default.div`
+var Brand2 = import_styled_components35.default.div`
   flex: 0 0 420px;
   background: ${({ theme: theme2 }) => theme2.colors.primary};
   display: flex;
@@ -2760,7 +2838,7 @@ var Brand2 = import_styled_components36.default.div`
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
   }
 `;
-var BrandMark = import_styled_components36.default.div`
+var BrandMark = import_styled_components35.default.div`
   width: 80px;
   height: 80px;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
@@ -2786,13 +2864,13 @@ var BrandMark = import_styled_components36.default.div`
     img { width: 38px; height: 38px; }
   }
 `;
-var BrandText = import_styled_components36.default.div`
+var BrandText = import_styled_components35.default.div`
   text-align: center;
   color: #fff;
   position: relative;
   z-index: 1;
 `;
-var BrandName2 = import_styled_components36.default.h1`
+var BrandName2 = import_styled_components35.default.h1`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.625rem;
   font-weight: 700;
@@ -2804,13 +2882,13 @@ var BrandName2 = import_styled_components36.default.h1`
     font-size: 1.25rem;
   }
 `;
-var BrandSub = import_styled_components36.default.p`
+var BrandSub = import_styled_components35.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   opacity: 0.75;
   line-height: 1.4;
 `;
-var BrandQuote = import_styled_components36.default.blockquote`
+var BrandQuote = import_styled_components35.default.blockquote`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: rgba(255, 255, 255, 0.6);
@@ -2825,7 +2903,7 @@ var BrandQuote = import_styled_components36.default.blockquote`
     display: none;
   }
 `;
-var FormPanel = import_styled_components36.default.div`
+var FormPanel = import_styled_components35.default.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -2847,15 +2925,15 @@ var FormPanel = import_styled_components36.default.div`
     animation: ${slideUp} 0.35s ease;
   }
 `;
-var FormBox = import_styled_components36.default.div`
+var FormBox = import_styled_components35.default.div`
   width: 100%;
   max-width: 400px;
   animation: ${fadeUp} 0.35s ease;
 `;
-var FormHeader = import_styled_components36.default.div`
+var FormHeader = import_styled_components35.default.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
 `;
-var FormTitle = import_styled_components36.default.h2`
+var FormTitle = import_styled_components35.default.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.375rem;
   font-weight: 700;
@@ -2863,22 +2941,22 @@ var FormTitle = import_styled_components36.default.h2`
   letter-spacing: -0.3px;
   margin-bottom: 6px;
 `;
-var FormSubtitle = import_styled_components36.default.p`
+var FormSubtitle = import_styled_components35.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Form2 = import_styled_components36.default.form`
+var Form2 = import_styled_components35.default.form`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SubmitButton = (0, import_styled_components36.default)(Button)`
+var SubmitButton = (0, import_styled_components35.default)(Button)`
   @media (max-width: 768px) {
     border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
   }
 `;
-var FooterLink = import_styled_components36.default.button`
+var FooterLink = import_styled_components35.default.button`
   display: block;
   width: 100%;
   text-align: center;
@@ -2895,7 +2973,7 @@ var FooterLink = import_styled_components36.default.button`
     text-decoration: underline;
   }
 `;
-var ForgotLink = import_styled_components36.default.button`
+var ForgotLink = import_styled_components35.default.button`
   align-self: flex-end;
   margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0;
   border: none;
@@ -2911,7 +2989,7 @@ var ForgotLink = import_styled_components36.default.button`
     text-decoration: underline;
   }
 `;
-var BackLink = import_styled_components36.default.button`
+var BackLink = import_styled_components35.default.button`
   display: inline-flex;
   align-items: center;
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
@@ -2928,7 +3006,7 @@ var BackLink = import_styled_components36.default.button`
     color: ${({ theme: theme2 }) => theme2.colors.ink};
   }
 `;
-var SuccessMsg = import_styled_components36.default.p`
+var SuccessMsg = import_styled_components35.default.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   background: ${({ theme: theme2 }) => theme2.colors.surfaceSoft};
@@ -2938,7 +3016,7 @@ var SuccessMsg = import_styled_components36.default.p`
   text-align: center;
   line-height: 1.5;
 `;
-var ErrorMsg = import_styled_components36.default.p`
+var ErrorMsg = import_styled_components35.default.p`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.primaryErrorText};
   background: #fef2f2;
@@ -2947,13 +3025,13 @@ var ErrorMsg = import_styled_components36.default.p`
   padding: ${({ theme: theme2 }) => `${theme2.spacing.sm} ${theme2.spacing.md}`};
   text-align: center;
 `;
-var EmailRow = import_styled_components36.default.div`
+var EmailRow = import_styled_components35.default.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var EmailText = import_styled_components36.default.span`
+var EmailText = import_styled_components35.default.span`
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2962,7 +3040,7 @@ var EmailText = import_styled_components36.default.span`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var ChangeButton = import_styled_components36.default.button`
+var ChangeButton = import_styled_components35.default.button`
   flex-shrink: 0;
   padding: ${({ theme: theme2 }) => `${theme2.spacing.xs} ${theme2.spacing.md}`};
   border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
@@ -2980,18 +3058,18 @@ var ChangeButton = import_styled_components36.default.button`
 `;
 
 // src/pages/AuthLayout/index.tsx
-var import_jsx_runtime28 = require("react/jsx-runtime");
+var import_jsx_runtime27 = require("react/jsx-runtime");
 function AuthLayout({ brand, children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(Page, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(Brand2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(BrandText, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(BrandSub, { children: brand.sub })
+  return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(Page, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(Brand2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(BrandText, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(BrandName2, { children: brand.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(BrandSub, { children: brand.sub })
       ] }),
-      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(BrandQuote, { children: brand.quote })
+      brand.quote && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(BrandQuote, { children: brand.quote })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(FormBox, { children: children != null ? children : /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(import_react_router_dom3.Outlet, {}) }) })
+    /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(FormBox, { children: children != null ? children : /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_router_dom3.Outlet, {}) }) })
   ] });
 }
 
@@ -3049,11 +3127,11 @@ var import_react14 = require("react");
 
 // src/contexts/AuthContext.tsx
 var import_react13 = require("react");
-var import_jsx_runtime29 = require("react/jsx-runtime");
+var import_jsx_runtime28 = require("react/jsx-runtime");
 var AuthContext = (0, import_react13.createContext)(null);
 function AuthProvider({ client, children }) {
   const authValue = useAuth(client);
-  return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(AuthContext.Provider, { value: authValue, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(AuthContext.Provider, { value: authValue, children });
 }
 
 // src/hooks/useAuth.ts
@@ -3237,7 +3315,7 @@ var loginSchema = import_zod.z.object({
 });
 
 // src/pages/LoginForm/index.tsx
-var import_jsx_runtime30 = require("react/jsx-runtime");
+var import_jsx_runtime29 = require("react/jsx-runtime");
 function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }) {
   var _a;
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
@@ -3262,12 +3340,12 @@ function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }) {
   };
   const submit = handleSubmit((values) => handleLogin(values, remember));
   if (step === "email") {
-    return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_jsx_runtime30.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(FormHeader, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(FormTitle, { children: "Bem-vindo" }),
-        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(FormSubtitle, { children: "Informe seu e-mail para continuar" })
+    return /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(import_jsx_runtime29.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(FormHeader, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FormTitle, { children: "Bem-vindo" }),
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FormSubtitle, { children: "Informe seu e-mail para continuar" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(
         Form2,
         {
           onSubmit: (event) => {
@@ -3275,7 +3353,7 @@ function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }) {
             continueToPassword();
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
               TextInput,
               {
                 label: text.fields.email,
@@ -3287,33 +3365,33 @@ function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }) {
                 placeholder: text.fields.emailPlaceholder
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Checkbox, { label: "Lembrar de mim", checked: remember, onChange: (event) => setRemember(event.target.checked) }),
-            /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", children: "Continuar" })
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Checkbox, { label: "Lembrar de mim", checked: remember, onChange: (event) => setRemember(event.target.checked) }),
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", children: "Continuar" })
           ]
         }
       ),
       footerSlot
     ] });
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_jsx_runtime30.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(FormHeader, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(FormTitle, { children: greeting }),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(EmailRow, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(EmailText, { children: getValues("email") }),
-        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(ChangeButton, { type: "button", onClick: changeEmail, children: "Alterar" })
+  return /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(import_jsx_runtime29.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(FormHeader, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FormTitle, { children: greeting }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(EmailRow, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(EmailText, { children: getValues("email") }),
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ChangeButton, { type: "button", onClick: changeEmail, children: "Alterar" })
       ] })
     ] }),
-    step === "confirm" ? /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+    step === "confirm" ? /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
       Form2,
       {
         onSubmit: (event) => {
           event.preventDefault();
           setStep("password");
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", children: "Continuar" })
+        children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", children: "Continuar" })
       }
-    ) : /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Form2, { onSubmit: submit, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+    ) : /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Form2, { onSubmit: submit, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
         TextInput,
         {
           label: "Senha",
@@ -3325,9 +3403,9 @@ function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }) {
           placeholder: "Sua senha"
         }
       ),
-      forgotPasswordPath && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(ForgotLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" }),
-      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", disabled: submitting, children: submitting ? "Entrando..." : "Entrar" }),
-      error && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(ErrorMsg, { children: error })
+      forgotPasswordPath && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ForgotLink, { type: "button", onClick: () => navigate(forgotPasswordPath), children: "Esqueci minha senha" }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(SubmitButton, { variant: "primary", size: "lg", fullWidth: true, type: "submit", disabled: submitting, children: submitting ? "Entrando..." : "Entrar" }),
+      error && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ErrorMsg, { children: error })
     ] }),
     footerSlot
   ] });
@@ -3340,15 +3418,15 @@ var import_react_router_dom6 = require("react-router-dom");
 var import_lucide_react11 = require("lucide-react");
 
 // src/pages/ProfilePage/styles/ProfilePage.ts
-var import_styled_components37 = __toESM(require("styled-components"));
-var Wrap3 = import_styled_components37.default.div`
+var import_styled_components36 = __toESM(require("styled-components"));
+var Wrap3 = import_styled_components36.default.div`
   max-width: 560px;
 `;
-var Identity = import_styled_components37.default.div`
+var Identity = import_styled_components36.default.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Name = import_styled_components37.default.h2`
+var Name = import_styled_components36.default.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -3356,18 +3434,18 @@ var Name = import_styled_components37.default.h2`
   line-height: 1.1;
   margin-bottom: 4px;
 `;
-var RoleLabel = import_styled_components37.default.p`
+var RoleLabel = import_styled_components36.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
 `;
-var Section = import_styled_components37.default.div`
+var Section = import_styled_components36.default.div`
   padding: ${({ theme: theme2 }) => theme2.spacing.lg} 0;
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.md};
 `;
-var SectionTitle = import_styled_components37.default.p`
+var SectionTitle = import_styled_components36.default.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
   font-weight: 600;
@@ -3375,10 +3453,10 @@ var SectionTitle = import_styled_components37.default.p`
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
-var SectionDivider = import_styled_components37.default.div`
+var SectionDivider = import_styled_components36.default.div`
   border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairlineSoft};
 `;
-var Actions = import_styled_components37.default.div`
+var Actions = import_styled_components36.default.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -3389,7 +3467,7 @@ var Actions = import_styled_components37.default.div`
     width: 100%;
   }
 `;
-var LogoutAction = import_styled_components37.default.div`
+var LogoutAction = import_styled_components36.default.div`
   margin-top: ${({ theme: theme2 }) => theme2.spacing.md};
 
   @media (min-width: ${({ theme: theme2 }) => theme2.breakpoints.mobile}) {
@@ -3405,7 +3483,7 @@ var profileSchema = import_zod3.z.object({
 });
 
 // src/pages/ProfilePage/index.tsx
-var import_jsx_runtime31 = require("react/jsx-runtime");
+var import_jsx_runtime30 = require("react/jsx-runtime");
 function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
   var _a, _b;
   const { user, userEmail, updateProfile } = useAuthCtx();
@@ -3423,17 +3501,17 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
     const err = await updateProfile(data.name, data.email);
     showToast(err != null ? err : "Perfil atualizado com sucesso.");
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Wrap3, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(PageHeader, { title: "Meu perfil", back }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Identity, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
-      roleLabel && /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(RoleLabel, { children: roleLabel })
+  return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Wrap3, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(PageHeader, { title: "Meu perfil", back }),
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Identity, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Name, { children: (_b = user == null ? void 0 : user.name) != null ? _b : "\u2014" }),
+      roleLabel && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(RoleLabel, { children: roleLabel })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Section, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SectionDivider, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Section, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionTitle, { children: "Informa\xE7\xF5es pessoais" }),
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionDivider, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(TextInput, { label: text.fields.fullName, control, name: "name", placeholder: "Nome e sobrenome" }),
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
         TextInput,
         {
           label: "E-mail de acesso",
@@ -3444,16 +3522,16 @@ function ProfilePage({ roleLabel, changePasswordPath, onLogout, back = true }) {
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react11.Save, { size: 16 }),
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_lucide_react11.Save, { size: 16 }),
       isSubmitting ? "Salvando..." : "Salvar altera\xE7\xF5es"
     ] }) }),
-    changePasswordPath && /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(import_jsx_runtime31.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Section, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SectionTitle, { children: "Seguran\xE7a" }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
+    changePasswordPath && /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_jsx_runtime30.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Section, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SectionTitle, { children: "Seguran\xE7a" }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Button, { variant: "secondary", size: "md", onClick: () => navigate(changePasswordPath), children: "Alterar senha" }) })
     ] }),
-    onLogout && /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(LogoutAction, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react11.LogOut, { size: 16 }),
+    onLogout && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(LogoutAction, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Button, { variant: "danger", size: "md", onClick: onLogout, fullWidth: true, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_lucide_react11.LogOut, { size: 16 }),
       "Sair"
     ] }) }),
     toast
@@ -3476,7 +3554,7 @@ var passwordSchema = import_zod5.z.object({
 });
 
 // src/pages/ChangePasswordPage/index.tsx
-var import_jsx_runtime32 = require("react/jsx-runtime");
+var import_jsx_runtime31 = require("react/jsx-runtime");
 function ChangePasswordPage() {
   const { updatePassword } = useAuthCtx();
   const { show: showToast, toast } = useToast();
@@ -3499,11 +3577,11 @@ function ChangePasswordPage() {
     showToast("Senha atualizada com sucesso.");
     reset();
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Wrap3, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(PageHeader, { title: "Alterar senha", back: true }),
-    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Section, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Wrap3, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(PageHeader, { title: "Alterar senha", back: true }),
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(Section, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
         TextInput,
         {
           label: "Confirmar nova senha",
@@ -3514,8 +3592,8 @@ function ChangePasswordPage() {
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(import_jsx_runtime32.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_lucide_react12.Save, { size: 16 }),
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Actions, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Button, { variant: "primary", size: "md", onClick: handleSubmit(onSubmit), disabled: isSubmitting, children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(import_jsx_runtime31.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_lucide_react12.Save, { size: 16 }),
       "Salvar nova senha"
     ] }) }) }),
     toast
@@ -3557,7 +3635,7 @@ var forgotPasswordSchema = import_zod7.z.object({
 });
 
 // src/pages/ForgotPasswordForm/index.tsx
-var import_jsx_runtime33 = require("react/jsx-runtime");
+var import_jsx_runtime32 = require("react/jsx-runtime");
 function ForgotPasswordForm({ loginPath, resetPasswordPath }) {
   const { submitting, sent, error, handleSubmit: submit } = useForgotPassword(resetPasswordPath);
   const navigate = (0, import_react_router_dom7.useNavigate)();
@@ -3565,18 +3643,18 @@ function ForgotPasswordForm({ loginPath, resetPasswordPath }) {
     resolver: (0, import_zod8.zodResolver)(forgotPasswordSchema),
     defaultValues: { email: "" }
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_lucide_react13.ArrowLeft, { size: 16 }),
+  return /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(import_jsx_runtime32.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(BackLink, { type: "button", onClick: () => navigate(loginPath), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_lucide_react13.ArrowLeft, { size: 16 }),
       "Voltar para o login"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(FormHeader, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormTitle, { children: "Esqueci minha senha" }),
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(FormHeader, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormTitle, { children: "Esqueci minha senha" }),
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormSubtitle, { children: "Informe seu e-mail e enviaremos um link para redefinir sua senha" })
     ] }),
-    sent ? /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Form2, { onSubmit: handleSubmit(submit), children: [
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(TextInput, { label: "E-mail", control, name: "email", type: "email", autoFocus: true, placeholder: "seu@email.com" }),
-      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
+    sent ? /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(SuccessMsg, { children: "Se esse e-mail estiver cadastrado, voc\xEA vai receber um link para redefinir sua senha em instantes." }) : /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(Form2, { onSubmit: handleSubmit(submit), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(TextInput, { label: "E-mail", control, name: "email", type: "email", autoFocus: true, placeholder: "seu@email.com" }),
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
         SubmitButton,
         {
           variant: "primary",
@@ -3585,13 +3663,13 @@ function ForgotPasswordForm({ loginPath, resetPasswordPath }) {
           type: "submit",
           disabled: submitting,
           style: { marginTop: 8 },
-          children: submitting ? "Enviando..." : /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_lucide_react13.Send, { size: 16 }),
+          children: submitting ? "Enviando..." : /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(import_jsx_runtime32.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_lucide_react13.Send, { size: 16 }),
             "Enviar link"
           ] })
         }
       ),
-      error && /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(ErrorMsg, { children: error })
+      error && /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(ErrorMsg, { children: error })
     ] })
   ] });
 }
@@ -3602,7 +3680,7 @@ var import_zod9 = require("@hookform/resolvers/zod");
 var import_react_hook_form10 = require("react-hook-form");
 var import_react_router_dom8 = require("react-router-dom");
 var import_lucide_react14 = require("lucide-react");
-var import_jsx_runtime34 = require("react/jsx-runtime");
+var import_jsx_runtime33 = require("react/jsx-runtime");
 function ResetPasswordForm({ loginPath }) {
   const { user, loading, updatePassword, logout } = useAuthCtx();
   const navigate = (0, import_react_router_dom8.useNavigate)();
@@ -3626,21 +3704,21 @@ function ResetPasswordForm({ loginPath }) {
     setDone(true);
   };
   const invalidLink = !done && !loading && !user;
-  return /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(FormHeader, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FormTitle, { children: "Nova senha" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
+  return /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(FormHeader, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormTitle, { children: "Nova senha" }),
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FormSubtitle, { children: "Defina uma nova senha para sua conta" })
     ] }),
-    done && /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
+    done && /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(SuccessMsg, { children: "Senha atualizada com sucesso. Entre novamente com a nova senha." }),
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Ir para o login" })
     ] }),
-    invalidLink && /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
+    invalidLink && /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(ErrorMsg, { children: "Este link \xE9 inv\xE1lido ou expirou. Solicite um novo link de recupera\xE7\xE3o." }),
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(FooterLink, { type: "button", onClick: () => navigate(loginPath), children: "Voltar para o login" })
     ] }),
-    !done && !invalidLink && /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(Form2, { onSubmit: handleSubmit(onSubmit), children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+    !done && !invalidLink && /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Form2, { onSubmit: handleSubmit(onSubmit), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
         TextInput,
         {
           label: "Nova senha",
@@ -3651,7 +3729,7 @@ function ResetPasswordForm({ loginPath }) {
           placeholder: "M\xEDnimo 6 caracteres"
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
         TextInput,
         {
           label: "Confirmar nova senha",
@@ -3661,7 +3739,7 @@ function ResetPasswordForm({ loginPath }) {
           placeholder: "Repita a nova senha"
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
         SubmitButton,
         {
           variant: "primary",
@@ -3670,8 +3748,8 @@ function ResetPasswordForm({ loginPath }) {
           type: "submit",
           disabled: isSubmitting,
           style: { marginTop: 8 },
-          children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_lucide_react14.Save, { size: 16 }),
+          children: isSubmitting ? "Salvando..." : /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(import_jsx_runtime33.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_lucide_react14.Save, { size: 16 }),
             "Salvar nova senha"
           ] })
         }
@@ -3705,11 +3783,11 @@ function useModal(variant = "dialog") {
 }
 
 // src/styles/styled.d.ts
-var import_styled_components38 = require("styled-components");
+var import_styled_components37 = require("styled-components");
 
 // src/styles/GlobalStyles.ts
-var import_styled_components39 = require("styled-components");
-var GlobalStyles = import_styled_components39.createGlobalStyle`
+var import_styled_components38 = require("styled-components");
+var GlobalStyles = import_styled_components38.createGlobalStyle`
   *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -3986,7 +4064,6 @@ var theme = {
   StatLabel,
   StatValue,
   StatsGrid,
-  StatusBadge,
   Switch,
   Tab,
   TabBadge,
@@ -4010,9 +4087,11 @@ var theme = {
   maskPhone,
   onlyDigits,
   parseCurrency,
+  parseDateKey,
   slideUp,
   text,
   theme,
+  toDateKey,
   useAuth,
   useAuthCtx,
   useMediaQuery,

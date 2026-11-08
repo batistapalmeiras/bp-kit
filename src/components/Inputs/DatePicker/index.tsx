@@ -5,47 +5,34 @@ import { FieldPath, FieldValues, useController } from 'react-hook-form';
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 // Components
 import { BaseInput } from '../BaseInput';
+import { MONTH_NAMES, MONTH_SHORT_NAMES, parseDateKey, toDateKey } from '../../../utils/dates';
+import { ChoiceCell, ChoiceGrid } from '../_shared/ChoiceGrid';
 import { HeaderLabel, NavButton, Panel, PanelHeader, Placeholder, Trigger, Wrapper } from '../_shared/PickerElements';
 // Local
-import { DayCell, DayGrid, WeekdayLabel, WeekdayRow } from './styles/DatePicker';
+import { DayCell, DayGrid, HeaderButton, WeekdayLabel, WeekdayRow } from './styles/DatePicker';
 import { DatePickerProps } from './types';
 
-const WEEKDAY_LABELS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
-const FULL_MONTH_LABELS = [
-  'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
-  'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro',
-];
+type View = 'days' | 'months' | 'years';
 
-function parseDateValue(value?: string): Date | null {
-  if (!value) return null;
-  const [y, m, d] = value.split('-').map(Number);
-  if (!y || !m || !d) return null;
-  return new Date(y, m - 1, d);
-}
+const WEEKDAY_LABELS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+const YEARS_PER_PAGE = 12;
 
 function formatDateValue(value?: string): string | null {
-  const date = parseDateValue(value);
+  const date = parseDateKey(value);
   if (!date) return null;
-  return `${date.getDate()} de ${FULL_MONTH_LABELS[date.getMonth()]} de ${date.getFullYear()}`;
-}
-
-function toDateKey(date: Date): string {
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, '0');
-  const dd = String(date.getDate()).padStart(2, '0');
-  return `${yyyy}-${mm}-${dd}`;
+  return `${date.getDate()} de ${MONTH_NAMES[date.getMonth()]} de ${date.getFullYear()}`;
 }
 
 function buildMonthGrid(year: number, month: number): (Date | null)[] {
-  const firstDay = new Date(year, month, 1);
-  const startOffset = firstDay.getDay();
+  const startOffset = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const cells: (Date | null)[] = [];
-  for (let i = 0; i < startOffset; i++) cells.push(null);
-  for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
+  const cells: (Date | null)[] = Array.from({ length: startOffset }, () => null);
+  for (let day = 1; day <= daysInMonth; day++) cells.push(new Date(year, month, day));
   while (cells.length % 7 !== 0) cells.push(null);
   return cells;
 }
+
+const firstYearOfPage = (year: number) => year - (year % YEARS_PER_PAGE);
 
 export function DatePicker<T extends FieldValues, N extends FieldPath<T>>({
   label,
@@ -58,69 +45,90 @@ export function DatePicker<T extends FieldValues, N extends FieldPath<T>>({
 }: DatePickerProps<T, N>) {
   const { field, fieldState } = useController({ control, name });
   const [open, setOpen] = useState(false);
-  const selectedDate = parseDateValue(field.value);
+  const [view, setView] = useState<View>('days');
+  const selectedDate = parseDateKey(field.value);
   const [viewDate, setViewDate] = useState(() => selectedDate ?? initialMonth ?? new Date());
+  const [pageStart, setPageStart] = useState(() => firstYearOfPage(viewDate.getFullYear()));
+  const [lastInitialMonth, setLastInitialMonth] = useState(initialMonth);
   const ref = useRef<HTMLDivElement>(null);
 
-  // If the initial month arrives after mount (e.g. it depends on data fetched
-  // by the parent) and the field is still empty, jump the calendar to it once.
-  useEffect(() => {
-    if (!selectedDate && initialMonth) {
-      setViewDate(initialMonth);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialMonth]);
+  if (initialMonth !== lastInitialMonth) {
+    setLastInitialMonth(initialMonth);
+    if (!selectedDate && initialMonth) setViewDate(initialMonth);
+  }
 
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    const handler = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) setOpen(false);
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const today = new Date();
-  const todayKey = toDateKey(today);
+  const viewYear = viewDate.getFullYear();
+  const viewMonth = viewDate.getMonth();
+  const todayKey = toDateKey(new Date());
   const selectedKey = selectedDate ? toDateKey(selectedDate) : null;
-  const cells = buildMonthGrid(viewDate.getFullYear(), viewDate.getMonth());
 
-  const changeMonth = (delta: number) => setViewDate((d) => new Date(d.getFullYear(), d.getMonth() + delta, 1));
+  const toggle = () => {
+    setView('days');
+    setOpen((current) => !current);
+  };
+
+  const changeMonth = (delta: number) => setViewDate(new Date(viewYear, viewMonth + delta, 1));
+
+  const openYears = () => {
+    setPageStart(firstYearOfPage(viewYear));
+    setView('years');
+  };
+
+  const chooseYear = (year: number) => {
+    setViewDate(new Date(year, viewMonth, 1));
+    setView('months');
+  };
+
+  const chooseMonth = (month: number) => {
+    setViewDate(new Date(viewYear, month, 1));
+    setView('days');
+  };
 
   const selectDay = (date: Date) => {
     field.onChange(toDateKey(date));
     setOpen(false);
   };
 
+  const years = Array.from({ length: YEARS_PER_PAGE }, (_, index) => pageStart + index);
+
   return (
     <BaseInput label={label} wrapperStyle={wrapperStyle} error={fieldState.error?.message}>
       <Wrapper ref={ref}>
-        <Trigger type="button" $open={open} aria-invalid={!!fieldState.error} onClick={() => setOpen((v) => !v)}>
+        <Trigger type="button" $open={open} aria-invalid={!!fieldState.error} onClick={toggle}>
           {formatDateValue(field.value) ?? <Placeholder>{placeholder}</Placeholder>}
           <Calendar size={18} />
         </Trigger>
 
-        {open && (
+        {open && view === 'days' && (
           <Panel>
             <PanelHeader>
               <NavButton type="button" onClick={() => changeMonth(-1)} aria-label="Mês anterior">
                 <ChevronLeft size={18} />
               </NavButton>
-              <HeaderLabel>
-                {FULL_MONTH_LABELS[viewDate.getMonth()]} de {viewDate.getFullYear()}
-              </HeaderLabel>
+              <HeaderButton type="button" onClick={openYears} aria-label="Escolher mês e ano">
+                {MONTH_NAMES[viewMonth]} de {viewYear}
+              </HeaderButton>
               <NavButton type="button" onClick={() => changeMonth(1)} aria-label="Próximo mês">
                 <ChevronRight size={18} />
               </NavButton>
             </PanelHeader>
 
             <WeekdayRow>
-              {WEEKDAY_LABELS.map((w) => (
-                <WeekdayLabel key={w}>{w}</WeekdayLabel>
+              {WEEKDAY_LABELS.map((weekday) => (
+                <WeekdayLabel key={weekday}>{weekday}</WeekdayLabel>
               ))}
             </WeekdayRow>
 
             <DayGrid>
-              {cells.map((date, i) =>
+              {buildMonthGrid(viewYear, viewMonth).map((date, index) =>
                 date ? (
                   <DayCell
                     key={toDateKey(date)}
@@ -133,10 +141,82 @@ export function DatePicker<T extends FieldValues, N extends FieldPath<T>>({
                     {date.getDate()}
                   </DayCell>
                 ) : (
-                  <span key={`empty-${i}`} />
+                  <span key={`empty-${index}`} />
                 ),
               )}
             </DayGrid>
+          </Panel>
+        )}
+
+        {open && view === 'months' && (
+          <Panel>
+            <PanelHeader>
+              <NavButton
+                type="button"
+                onClick={() => setViewDate(new Date(viewYear - 1, viewMonth, 1))}
+                aria-label="Ano anterior"
+              >
+                <ChevronLeft size={18} />
+              </NavButton>
+              <HeaderButton type="button" onClick={openYears} aria-label="Escolher ano">
+                {viewYear}
+              </HeaderButton>
+              <NavButton
+                type="button"
+                onClick={() => setViewDate(new Date(viewYear + 1, viewMonth, 1))}
+                aria-label="Próximo ano"
+              >
+                <ChevronRight size={18} />
+              </NavButton>
+            </PanelHeader>
+            <ChoiceGrid>
+              {MONTH_SHORT_NAMES.map((monthLabel, month) => (
+                <ChoiceCell
+                  key={monthLabel}
+                  type="button"
+                  $selected={selectedDate?.getFullYear() === viewYear && selectedDate.getMonth() === month}
+                  onClick={() => chooseMonth(month)}
+                >
+                  {monthLabel}
+                </ChoiceCell>
+              ))}
+            </ChoiceGrid>
+          </Panel>
+        )}
+
+        {open && view === 'years' && (
+          <Panel>
+            <PanelHeader>
+              <NavButton
+                type="button"
+                onClick={() => setPageStart((start) => start - YEARS_PER_PAGE)}
+                aria-label="Anos anteriores"
+              >
+                <ChevronLeft size={18} />
+              </NavButton>
+              <HeaderLabel>
+                {years[0]} – {years[years.length - 1]}
+              </HeaderLabel>
+              <NavButton
+                type="button"
+                onClick={() => setPageStart((start) => start + YEARS_PER_PAGE)}
+                aria-label="Próximos anos"
+              >
+                <ChevronRight size={18} />
+              </NavButton>
+            </PanelHeader>
+            <ChoiceGrid>
+              {years.map((year) => (
+                <ChoiceCell
+                  key={year}
+                  type="button"
+                  $selected={selectedDate?.getFullYear() === year}
+                  onClick={() => chooseYear(year)}
+                >
+                  {year}
+                </ChoiceCell>
+              ))}
+            </ChoiceGrid>
           </Panel>
         )}
       </Wrapper>

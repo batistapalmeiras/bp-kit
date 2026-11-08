@@ -41,8 +41,6 @@ export type { SearchInputProps } from './components/SearchInput/types';
 export { SegmentedControl } from './components/Inputs/SegmentedControl';
 export type { SegmentedControlOption, SegmentedControlTone } from './components/Inputs/SegmentedControl/types';
 export { Skeleton } from './components/Skeleton';
-export { StatusBadge } from './components/StatusBadge';
-export type { StatusBadgeProps } from './components/StatusBadge';
 export { StatCard, StatLabel, StatsGrid, StatValue } from './components/StatsGrid';
 export type { StatTone } from './components/StatsGrid';
 export { Tab, TabBadge, TabBar } from './components/Tabs';
@@ -101,3 +99,4 @@ export {
   onlyDigits,
   parseCurrency,
 } from './utils/masks';
+export { parseDateKey, toDateKey } from './utils/dates';

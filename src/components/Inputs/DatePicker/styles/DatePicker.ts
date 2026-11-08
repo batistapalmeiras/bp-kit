@@ -49,3 +49,19 @@ export const DayCell = styled.button<{ $selected?: boolean; $today?: boolean }>`
     cursor: not-allowed;
   }
 `;
+
+export const HeaderButton = styled.button`
+  padding: ${({ theme }) => theme.spacing.xs} ${({ theme }) => theme.spacing.sm};
+  border: none;
+  border-radius: ${({ theme }) => theme.rounded.sm};
+  background: transparent;
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.titleSm.fontSize};
+  font-weight: ${({ theme }) => theme.typography.titleSm.fontWeight};
+  color: ${({ theme }) => theme.colors.ink};
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.surfaceStrong};
+  }
+`;
