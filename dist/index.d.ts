@@ -482,6 +482,8 @@ declare const text: {
         required: (what: string) => string;
         selectRequired: (what: string) => string;
         emailInvalid: string;
+        phoneIncomplete: string;
+        cpfInvalid: string;
         passwordMin: string;
         passwordMismatch: string;
         passwordSameAsOld: string;
@@ -687,13 +689,16 @@ declare const fadeUp: styled_components_dist_models_Keyframes.default;
 declare const fadeDown: styled_components_dist_models_Keyframes.default;
 declare const slideUp: styled_components_dist_models_Keyframes.default;
 
+declare function onlyDigits(value: string): string;
 declare function formatCurrency(value: number | string): string;
 declare function parseCurrency(value: string): number;
 declare function maskCurrencyInput(value: string): string;
 declare function maskPhone(value: string): string;
-declare function parsePhone(value: string): string;
+declare function isCompletePhone(value: string): boolean;
+declare function isSamePhone(a: string, b: string): boolean;
 declare function formatCPF(value: string): string;
+declare function isValidCpf(value: string): boolean;
 declare function maskCEP(value: string): string;
 declare function maskDate(value: string): string;
 
-export { type AuthBrand, AuthContext, type AuthContextValue, AuthLayout, type AuthLayoutProps, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, ForgotPasswordForm, type ForgotPasswordFormProps, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LinkButton, type LinkButtonProps, LoginForm, type LoginFormProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, ResetPasswordForm, type ResetPasswordFormProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type TextMask, Textarea, type TextareaProps, type Theme, Toast, type ToastActionConfig, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCPF, formatCurrency, maskCEP, maskCurrencyInput, maskDate, maskPhone, parseCurrency, parsePhone, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+export { type AuthBrand, AuthContext, type AuthContextValue, AuthLayout, type AuthLayoutProps, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, ForgotPasswordForm, type ForgotPasswordFormProps, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LinkButton, type LinkButtonProps, LoginForm, type LoginFormProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, ResetPasswordForm, type ResetPasswordFormProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, StatusBadge, type StatusBadgeProps, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type TextMask, Textarea, type TextareaProps, type Theme, Toast, type ToastActionConfig, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCPF, formatCurrency, isCompletePhone, isSamePhone, isValidCpf, maskCEP, maskCurrencyInput, maskDate, maskPhone, onlyDigits, parseCurrency, slideUp, text, theme, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };

@@ -91,10 +91,13 @@ export type { Theme } from './styles/theme';
 export {
   formatCPF,
   formatCurrency,
+  isCompletePhone,
+  isSamePhone,
+  isValidCpf,
   maskCEP,
   maskCurrencyInput,
   maskDate,
   maskPhone,
+  onlyDigits,
   parseCurrency,
-  parsePhone,
-} from './utils/mask';
+} from './utils/masks';

@@ -1862,7 +1862,10 @@ function Textarea({
 import { useState as useState5 } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
-// src/utils/mask.ts
+// src/utils/masks.ts
+function onlyDigits(value) {
+  return value.replace(/\D/g, "");
+}
 function formatCurrency(value) {
   const num = typeof value === "string" ? parseFloat(value) : value;
   if (isNaN(num)) return "0,00";
@@ -1874,37 +1877,48 @@ function formatCurrency(value) {
   }).format(num);
 }
 function parseCurrency(value) {
-  const onlyNumbers = value.replace(/\D/g, "");
-  if (!onlyNumbers) return 0;
-  return parseInt(onlyNumbers, 10) / 100;
+  const digits = onlyDigits(value);
+  return digits ? parseInt(digits, 10) / 100 : 0;
 }
 function maskCurrencyInput(value) {
-  const onlyNumbers = value.replace(/\D/g, "");
-  if (!onlyNumbers) return "";
-  const num = parseInt(onlyNumbers, 10) / 100;
-  return formatCurrency(num).replace("R$ ", "");
+  const digits = onlyDigits(value);
+  return digits ? formatCurrency(parseInt(digits, 10) / 100).replace("R$ ", "") : "";
 }
 function maskPhone(value) {
-  const onlyNumbers = value.replace(/\D/g, "");
-  if (onlyNumbers.length === 0) return "";
-  if (onlyNumbers.length <= 2) return `(${onlyNumbers}`;
-  if (onlyNumbers.length <= 7) return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2)}`;
-  if (onlyNumbers.length <= 10) return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2, 6)}-${onlyNumbers.slice(6)}`;
-  return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2, 7)}-${onlyNumbers.slice(7, 11)}`;
+  const digits = onlyDigits(value);
+  if (digits.length === 0) return "";
+  if (digits.length <= 2) return `(${digits}`;
+  if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  if (digits.length <= 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
 }
-function parsePhone(value) {
-  return value.replace(/\D/g, "");
+function isCompletePhone(value) {
+  return [10, 11].includes(onlyDigits(value).length);
+}
+function isSamePhone(a, b) {
+  const digits = onlyDigits(a);
+  return digits !== "" && digits === onlyDigits(b);
 }
 function formatCPF(value) {
-  const digits = value.replace(/\D/g, "").slice(0, 11);
+  const digits = onlyDigits(value).slice(0, 11);
   return digits.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
 }
+function cpfCheckDigit(digits, weight) {
+  const sum = digits.reduce((total, digit, index) => total + digit * (weight - index), 0);
+  const rest = sum * 10 % 11;
+  return rest === 10 ? 0 : rest;
+}
+function isValidCpf(value) {
+  const digits = onlyDigits(value).split("").map(Number);
+  if (digits.length !== 11 || digits.every((digit) => digit === digits[0])) return false;
+  return cpfCheckDigit(digits.slice(0, 9), 10) === digits[9] && cpfCheckDigit(digits.slice(0, 10), 11) === digits[10];
+}
 function maskCEP(value) {
-  const digits = value.replace(/\D/g, "").slice(0, 8);
+  const digits = onlyDigits(value).slice(0, 8);
   return digits.length > 5 ? `${digits.slice(0, 5)}-${digits.slice(5)}` : digits;
 }
 function maskDate(value) {
-  const digits = value.replace(/\D/g, "").slice(0, 8);
+  const digits = onlyDigits(value).slice(0, 8);
   if (digits.length > 4) return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
   if (digits.length > 2) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
   return digits;
@@ -2900,6 +2914,8 @@ var validation = {
   required: (what) => `Informe ${what}`,
   selectRequired: (what) => `Selecione ${what}`,
   emailInvalid: "E-mail inv\xE1lido",
+  phoneIncomplete: "Telefone incompleto",
+  cpfInvalid: "CPF inv\xE1lido. Confira os n\xFAmeros.",
   passwordMin: "A senha deve ter pelo menos 6 caracteres",
   passwordMismatch: "As senhas n\xE3o coincidem",
   passwordSameAsOld: "A nova senha deve ser diferente da senha atual"
@@ -3873,12 +3889,15 @@ export {
   fetchProfile,
   formatCPF,
   formatCurrency,
+  isCompletePhone,
+  isSamePhone,
+  isValidCpf,
   maskCEP,
   maskCurrencyInput,
   maskDate,
   maskPhone,
+  onlyDigits,
   parseCurrency,
-  parsePhone,
   slideUp,
   text,
   theme,

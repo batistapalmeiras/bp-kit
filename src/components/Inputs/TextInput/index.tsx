@@ -4,7 +4,7 @@ import { FieldPath, FieldValues } from 'react-hook-form';
 // Libs
 import { Eye, EyeOff } from 'lucide-react';
 // Components
-import { formatCPF, maskCEP, maskCurrencyInput, maskDate, maskPhone, parseCurrency } from '../../../utils/mask';
+import { formatCPF, maskCEP, maskCurrencyInput, maskDate, maskPhone, parseCurrency } from '../../../utils/masks';
 import { ControlledBase, InputField } from '../BaseInput';
 // Local
 import { EyeButton, InputWrapper } from './styles';
