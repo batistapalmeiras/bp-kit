@@ -29,10 +29,10 @@ declare const Card: styled_components_dist_types.IStyledComponentBase<"web", sty
 type ButtonVariant = 'primary' | 'secondary' | 'danger';
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 
-type Variant$2 = ButtonVariant;
+type Variant$1 = ButtonVariant;
 type Size$1 = 'sm' | 'md' | 'lg';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: Variant$2;
+    variant?: Variant$1;
     size?: Size$1;
     fullWidth?: boolean;
 }
@@ -54,22 +54,23 @@ declare function Empty({ title, description }: IEmptyProps): react.JSX.Element;
 
 declare const Form: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<react.DetailedHTMLProps<react.FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>, never> & Partial<Pick<react.DetailedHTMLProps<react.FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>, never>>> & string;
 
-type Variant$1 = ButtonVariant;
+type Variant = ButtonVariant;
 type Size = ButtonSize;
 type IconPosition = 'left' | 'center' | 'right';
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     icon: ReactNode;
     iconPosition?: IconPosition;
-    variant?: Variant$1;
+    variant?: Variant;
     size?: Size;
     fullWidth?: boolean;
 }
 
 declare const IconButton: react.ForwardRefExoticComponent<IconButtonProps & react.RefAttributes<HTMLButtonElement>>;
 
-type Variant = 'info' | 'warning';
+type InfoBoxVariant = 'info' | 'warning' | 'success';
+
 interface Props$3 {
-    variant?: Variant;
+    variant?: InfoBoxVariant;
     children: react__default.ReactNode;
     style?: react__default.CSSProperties;
 }

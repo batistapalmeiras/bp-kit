@@ -371,10 +371,16 @@ var IconButton = forwardRef2(function IconButton2({ icon, iconPosition = "left",
 });
 
 // src/components/InfoBox/index.tsx
-import { AlertTriangle, Info } from "lucide-react";
+import { AlertTriangle, Info, Smile } from "lucide-react";
 
 // src/components/InfoBox/styles/InfoBox.ts
 import styled10 from "styled-components";
+var VARIANT_COLORS = {
+  info: { surface: "infoSurface", border: "infoBorder", icon: "info" },
+  warning: { surface: "warningSurface", border: "warningBorder", icon: "warning" },
+  success: { surface: "successSurface", border: "successBorder", icon: "success" }
+};
+var tone = (part) => ({ theme: theme2, $variant }) => theme2.colors[VARIANT_COLORS[$variant][part]];
 var Box = styled10.div`
   display: flex;
   gap: ${({ theme: theme2 }) => theme2.spacing.sm};
@@ -384,21 +390,27 @@ var Box = styled10.div`
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   line-height: ${({ theme: theme2 }) => theme2.typography.bodyMd.lineHeight};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
-  background: ${({ theme: theme2, $variant }) => $variant === "warning" ? theme2.colors.warningSurface : theme2.colors.infoSurface};
-  border: 1px solid ${({ theme: theme2, $variant }) => $variant === "warning" ? theme2.colors.warningBorder : theme2.colors.infoBorder};
+  background: ${tone("surface")};
+  border: 1px solid ${tone("border")};
 
   svg {
     flex-shrink: 0;
     margin-top: 1px;
-    color: ${({ theme: theme2, $variant }) => $variant === "warning" ? theme2.colors.warning : theme2.colors.info};
+    color: ${tone("icon")};
   }
 `;
 
 // src/components/InfoBox/index.tsx
 import { jsx as jsx7, jsxs as jsxs5 } from "react/jsx-runtime";
+var VARIANT_ICONS = {
+  info: Info,
+  warning: AlertTriangle,
+  success: Smile
+};
 function InfoBox({ variant = "info", children, style }) {
+  const Icon = VARIANT_ICONS[variant];
   return /* @__PURE__ */ jsxs5(Box, { $variant: variant, style, children: [
-    variant === "warning" ? /* @__PURE__ */ jsx7(AlertTriangle, { size: 16 }) : /* @__PURE__ */ jsx7(Info, { size: 16 }),
+    /* @__PURE__ */ jsx7(Icon, { size: 16 }),
     /* @__PURE__ */ jsx7("div", { children })
   ] });
 }
@@ -2612,7 +2624,7 @@ function SegmentedControl({
   onChange,
   options,
   label,
-  tone = "ink"
+  tone: tone2 = "ink"
 }) {
   return /* @__PURE__ */ jsxs21(Wrap2, { children: [
     label && /* @__PURE__ */ jsx24(Label2, { children: label }),
@@ -2623,7 +2635,7 @@ function SegmentedControl({
         role: "radio",
         "aria-checked": option.value === value,
         $selected: option.value === value,
-        $tone: tone,
+        $tone: tone2,
         onClick: () => onChange(option.value),
         children: option.label
       },
