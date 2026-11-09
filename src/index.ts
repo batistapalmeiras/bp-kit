@@ -65,7 +65,7 @@ export type { ResetPasswordFormProps } from './pages/ResetPasswordForm';
 // Hooks
 export { useMediaQuery } from './hooks/useMediaQuery';
 export { useModal } from './hooks/useModal';
-export { fetchProfile, useAuth, useAuthCtx } from './hooks/useAuth';
+export { fetchProfile, profilesTableSource, useAuth, useAuthCtx } from './hooks/useAuth';
 
 // Contexts
 export * from './contexts';

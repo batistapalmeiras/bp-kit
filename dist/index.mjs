@@ -3017,8 +3017,8 @@ import { useCallback as useCallback2, useContext, useEffect as useEffect5, useMe
 import { createContext } from "react";
 import { jsx as jsx27 } from "react/jsx-runtime";
 var AuthContext = createContext(null);
-function AuthProvider({ client, children }) {
-  const authValue = useAuth(client);
+function AuthProvider({ client, profileSource, children }) {
+  const authValue = useAuth(client, profileSource);
   return /* @__PURE__ */ jsx27(AuthContext.Provider, { value: authValue, children });
 }
 
@@ -3037,7 +3037,21 @@ async function fetchProfile(client, userId) {
     return null;
   }
 }
-function useAuth(client) {
+async function updateProfileIdentity(client, name, email, currentEmail) {
+  const {
+    data: { user: authUser }
+  } = await client.auth.getUser();
+  if (!authUser) return "Usu\xE1rio n\xE3o autenticado.";
+  const { error: profileError } = await client.from("profiles").update({ name }).eq("id", authUser.id);
+  if (profileError) return "Erro ao atualizar nome.";
+  if (email !== currentEmail) {
+    const { error: emailError } = await client.auth.updateUser({ email });
+    if (emailError) return "Erro ao atualizar e-mail.";
+  }
+  return null;
+}
+var profilesTableSource = { load: fetchProfile, updateIdentity: updateProfileIdentity };
+function useAuth(client, source = profilesTableSource) {
   const [user, setUser] = useState7(null);
   const [userEmail, setUserEmail] = useState7("");
   const [loading, setLoading] = useState7(true);
@@ -3068,7 +3082,7 @@ function useAuth(client) {
       return;
     }
     let cancelled = false;
-    fetchProfile(client, sessionUser.id).then((profile) => {
+    source.load(client, sessionUser.id).then((profile) => {
       if (cancelled) return;
       if (profile) {
         setUser(profile);
@@ -3084,7 +3098,7 @@ function useAuth(client) {
     return () => {
       cancelled = true;
     };
-  }, [client, sessionUser]);
+  }, [client, source, sessionUser]);
   const login = useCallback2(async (email, password) => {
     setError(null);
     const { error: signInError } = await client.auth.signInWithPassword({ email, password });
@@ -3101,18 +3115,15 @@ function useAuth(client) {
     setUser(null);
     setUserEmail("");
   }, [client]);
-  const updateProfile = useCallback2(async (name, email) => {
-    const { data: { user: authUser } } = await client.auth.getUser();
-    if (!authUser) return "Usu\xE1rio n\xE3o autenticado.";
-    const { error: profileError } = await client.from("profiles").update({ name: name.trim() }).eq("id", authUser.id);
-    if (profileError) return "Erro ao atualizar nome.";
-    if (email !== userEmail) {
-      const { error: emailError } = await client.auth.updateUser({ email });
-      if (emailError) return "Erro ao atualizar e-mail.";
-    }
-    setUser((u) => u ? { ...u, name: name.trim() } : u);
-    return null;
-  }, [client, userEmail]);
+  const updateProfile = useCallback2(
+    async (name, email) => {
+      const err = await source.updateIdentity(client, name.trim(), email, userEmail);
+      if (err) return err;
+      setUser((u) => u ? { ...u, name: name.trim() } : u);
+      return null;
+    },
+    [client, source, userEmail]
+  );
   const updatePassword = useCallback2(async (newPassword) => {
     const { error: passwordError } = await client.auth.updateUser({ password: newPassword });
     if (passwordError) {
@@ -3975,6 +3986,7 @@ export {
   onlyDigits,
   parseCurrency,
   parseDateKey,
+  profilesTableSource,
   slideUp,
   text,
   theme,

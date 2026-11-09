@@ -4,7 +4,7 @@ import { createContext, ReactNode } from 'react';
 import type { SupabaseClient } from '@supabase/supabase-js';
 // Components
 import { useAuth } from '../hooks/useAuth';
-import { User } from '../types';
+import { ProfileSource, User } from '../types';
 
 export interface AuthContextValue {
   user: User | null;
@@ -20,8 +20,14 @@ export interface AuthContextValue {
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({ client, children }: { client: SupabaseClient; children: ReactNode }) {
-  const authValue = useAuth(client);
+interface AuthProviderProps {
+  client: SupabaseClient;
+  profileSource?: ProfileSource;
+  children: ReactNode;
+}
+
+export function AuthProvider({ client, profileSource, children }: AuthProviderProps) {
+  const authValue = useAuth(client, profileSource);
   return (
     <AuthContext.Provider value={authValue}>
       {children}

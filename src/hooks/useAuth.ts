@@ -5,7 +5,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 // Components
 import { AuthContext, AuthContextValue } from '../contexts/AuthContext';
 import { text } from '../text';
-import { User } from '../types';
+import { ProfileSource, User } from '../types';
 
 export async function fetchProfile(client: SupabaseClient, userId: string): Promise<User | null> {
   try {
@@ -32,7 +32,30 @@ interface SessionUser {
   email: string;
 }
 
-export function useAuth(client: SupabaseClient): AuthContextValue {
+async function updateProfileIdentity(
+  client: SupabaseClient,
+  name: string,
+  email: string,
+  currentEmail: string,
+): Promise<string | null> {
+  const {
+    data: { user: authUser },
+  } = await client.auth.getUser();
+  if (!authUser) return 'Usuário não autenticado.';
+
+  const { error: profileError } = await client.from('profiles').update({ name }).eq('id', authUser.id);
+  if (profileError) return 'Erro ao atualizar nome.';
+
+  if (email !== currentEmail) {
+    const { error: emailError } = await client.auth.updateUser({ email });
+    if (emailError) return 'Erro ao atualizar e-mail.';
+  }
+  return null;
+}
+
+export const profilesTableSource: ProfileSource = { load: fetchProfile, updateIdentity: updateProfileIdentity };
+
+export function useAuth(client: SupabaseClient, source: ProfileSource = profilesTableSource): AuthContextValue {
   const [user, setUser] = useState<User | null>(null);
   const [userEmail, setUserEmail] = useState('');
   const [loading, setLoading] = useState(true);
@@ -69,7 +92,7 @@ export function useAuth(client: SupabaseClient): AuthContextValue {
     }
 
     let cancelled = false;
-    fetchProfile(client, sessionUser.id).then((profile) => {
+    source.load(client, sessionUser.id).then((profile) => {
       if (cancelled) return;
       if (profile) {
         setUser(profile);
@@ -86,7 +109,7 @@ export function useAuth(client: SupabaseClient): AuthContextValue {
     return () => {
       cancelled = true;
     };
-  }, [client, sessionUser]);
+  }, [client, source, sessionUser]);
 
   const login = useCallback(async (email: string, password: string): Promise<string | null> => {
     setError(null);
@@ -106,24 +129,15 @@ export function useAuth(client: SupabaseClient): AuthContextValue {
     setUserEmail('');
   }, [client]);
 
-  const updateProfile = useCallback(async (name: string, email: string): Promise<string | null> => {
-    const { data: { user: authUser } } = await client.auth.getUser();
-    if (!authUser) return 'Usuário não autenticado.';
-
-    const { error: profileError } = await client
-      .from('profiles')
-      .update({ name: name.trim() })
-      .eq('id', authUser.id);
-    if (profileError) return 'Erro ao atualizar nome.';
-
-    if (email !== userEmail) {
-      const { error: emailError } = await client.auth.updateUser({ email });
-      if (emailError) return 'Erro ao atualizar e-mail.';
-    }
-
-    setUser((u) => u ? { ...u, name: name.trim() } : u);
-    return null;
-  }, [client, userEmail]);
+  const updateProfile = useCallback(
+    async (name: string, email: string): Promise<string | null> => {
+      const err = await source.updateIdentity(client, name.trim(), email, userEmail);
+      if (err) return err;
+      setUser((u) => (u ? { ...u, name: name.trim() } : u));
+      return null;
+    },
+    [client, source, userEmail],
+  );
 
   const updatePassword = useCallback(async (newPassword: string): Promise<string | null> => {
     const { error: passwordError } = await client.auth.updateUser({ password: newPassword });

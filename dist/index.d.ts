@@ -430,6 +430,10 @@ interface User {
     /** Raw value from `profiles.role` — each app defines its own role set and interprets this string. */
     role: string;
 }
+interface ProfileSource {
+    load: (client: SupabaseClient, userId: string) => Promise<User | null>;
+    updateIdentity: (client: SupabaseClient, name: string, email: string, currentEmail: string) => Promise<string | null>;
+}
 
 interface AuthContextValue {
     user: User | null;
@@ -443,13 +447,16 @@ interface AuthContextValue {
     requestPasswordReset: (email: string, redirectTo: string) => Promise<string | null>;
 }
 declare const AuthContext: react.Context<AuthContextValue | null>;
-declare function AuthProvider({ client, children }: {
+interface AuthProviderProps {
     client: SupabaseClient;
+    profileSource?: ProfileSource;
     children: ReactNode;
-}): react.JSX.Element;
+}
+declare function AuthProvider({ client, profileSource, children }: AuthProviderProps): react.JSX.Element;
 
 declare function fetchProfile(client: SupabaseClient, userId: string): Promise<User | null>;
-declare function useAuth(client: SupabaseClient): AuthContextValue;
+declare const profilesTableSource: ProfileSource;
+declare function useAuth(client: SupabaseClient, source?: ProfileSource): AuthContextValue;
 declare function useAuthCtx(): AuthContextValue;
 
 declare const text: {
@@ -694,4 +701,4 @@ declare function maskDate(value: string): string;
 declare function toDateKey(date: Date): string;
 declare function parseDateKey(value?: string): Date | null;
 
-export { type AuthBrand, AuthContext, type AuthContextValue, AuthLayout, type AuthLayoutProps, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, ForgotPasswordForm, type ForgotPasswordFormProps, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LinkButton, type LinkButtonProps, LoginForm, type LoginFormProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, ResetPasswordForm, type ResetPasswordFormProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type TextMask, Textarea, type TextareaProps, type Theme, Toast, type ToastActionConfig, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCPF, formatCurrency, isCompletePhone, isSamePhone, isValidCpf, maskCEP, maskCurrencyInput, maskDate, maskPhone, onlyDigits, parseCurrency, parseDateKey, slideUp, text, theme, toDateKey, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };
+export { type AuthBrand, AuthContext, type AuthContextValue, AuthLayout, type AuthLayoutProps, AuthProvider, BaseInput, type BaseInputProps, BottomSheet, Brand, Button, type ButtonProps, Card, ChangePasswordPage, Checkbox, type CheckboxProps, Chip, ChipBar, ControlledBase, type CurrencyFieldProps, DatePicker, type DatePickerProps, Empty, ForgotPasswordForm, type ForgotPasswordFormProps, Form, GlobalStyles, type IEmptyProps, IconButton, type IconButtonProps, ImageUpload, type ImageUploadItem, type ImageUploadProps, InfoBox, InputField, LinkButton, type LinkButtonProps, LoginForm, type LoginFormProps, Modal, ModalActions, ModalTitle, MonthPicker, type MonthPickerProps, MultiSelect, type MultiSelectOption, type MultiSelectProps, PageHeader, Pagination, ProfilePage, type ProfilePageProps, type ProfileSource, RadioGroup, type RadioGroupOption, type RadioGroupProps, RawSelect, RawTextarea, type RawTextareaProps, ResetPasswordForm, type ResetPasswordFormProps, SearchInput, type SearchInputProps, SegmentedControl, type SegmentedControlOption, type SegmentedControlTone, Select, Skeleton, StatCard, StatLabel, type StatTone, StatValue, StatsGrid, Switch, type SwitchProps, Tab, TabBadge, TabBar, type TextFieldProps, TextInput, type TextMask, Textarea, type TextareaProps, type Theme, Toast, type ToastActionConfig, Typography, type TypographyProps, type TypographyType, type User, fadeDown, fadeIn, fadeUp, fetchProfile, formatCPF, formatCurrency, isCompletePhone, isSamePhone, isValidCpf, maskCEP, maskCurrencyInput, maskDate, maskPhone, onlyDigits, parseCurrency, parseDateKey, profilesTableSource, slideUp, text, theme, toDateKey, useAuth, useAuthCtx, useMediaQuery, useModal, useToast };

@@ -98,6 +98,7 @@ __export(src_exports, {
   onlyDigits: () => onlyDigits,
   parseCurrency: () => parseCurrency,
   parseDateKey: () => parseDateKey,
+  profilesTableSource: () => profilesTableSource,
   slideUp: () => slideUp,
   text: () => text,
   theme: () => theme,
@@ -3129,8 +3130,8 @@ var import_react14 = require("react");
 var import_react13 = require("react");
 var import_jsx_runtime28 = require("react/jsx-runtime");
 var AuthContext = (0, import_react13.createContext)(null);
-function AuthProvider({ client, children }) {
-  const authValue = useAuth(client);
+function AuthProvider({ client, profileSource, children }) {
+  const authValue = useAuth(client, profileSource);
   return /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(AuthContext.Provider, { value: authValue, children });
 }
 
@@ -3149,7 +3150,21 @@ async function fetchProfile(client, userId) {
     return null;
   }
 }
-function useAuth(client) {
+async function updateProfileIdentity(client, name, email, currentEmail) {
+  const {
+    data: { user: authUser }
+  } = await client.auth.getUser();
+  if (!authUser) return "Usu\xE1rio n\xE3o autenticado.";
+  const { error: profileError } = await client.from("profiles").update({ name }).eq("id", authUser.id);
+  if (profileError) return "Erro ao atualizar nome.";
+  if (email !== currentEmail) {
+    const { error: emailError } = await client.auth.updateUser({ email });
+    if (emailError) return "Erro ao atualizar e-mail.";
+  }
+  return null;
+}
+var profilesTableSource = { load: fetchProfile, updateIdentity: updateProfileIdentity };
+function useAuth(client, source = profilesTableSource) {
   const [user, setUser] = (0, import_react14.useState)(null);
   const [userEmail, setUserEmail] = (0, import_react14.useState)("");
   const [loading, setLoading] = (0, import_react14.useState)(true);
@@ -3180,7 +3195,7 @@ function useAuth(client) {
       return;
     }
     let cancelled = false;
-    fetchProfile(client, sessionUser.id).then((profile) => {
+    source.load(client, sessionUser.id).then((profile) => {
       if (cancelled) return;
       if (profile) {
         setUser(profile);
@@ -3196,7 +3211,7 @@ function useAuth(client) {
     return () => {
       cancelled = true;
     };
-  }, [client, sessionUser]);
+  }, [client, source, sessionUser]);
   const login = (0, import_react14.useCallback)(async (email, password) => {
     setError(null);
     const { error: signInError } = await client.auth.signInWithPassword({ email, password });
@@ -3213,18 +3228,15 @@ function useAuth(client) {
     setUser(null);
     setUserEmail("");
   }, [client]);
-  const updateProfile = (0, import_react14.useCallback)(async (name, email) => {
-    const { data: { user: authUser } } = await client.auth.getUser();
-    if (!authUser) return "Usu\xE1rio n\xE3o autenticado.";
-    const { error: profileError } = await client.from("profiles").update({ name: name.trim() }).eq("id", authUser.id);
-    if (profileError) return "Erro ao atualizar nome.";
-    if (email !== userEmail) {
-      const { error: emailError } = await client.auth.updateUser({ email });
-      if (emailError) return "Erro ao atualizar e-mail.";
-    }
-    setUser((u) => u ? { ...u, name: name.trim() } : u);
-    return null;
-  }, [client, userEmail]);
+  const updateProfile = (0, import_react14.useCallback)(
+    async (name, email) => {
+      const err = await source.updateIdentity(client, name.trim(), email, userEmail);
+      if (err) return err;
+      setUser((u) => u ? { ...u, name: name.trim() } : u);
+      return null;
+    },
+    [client, source, userEmail]
+  );
   const updatePassword = (0, import_react14.useCallback)(async (newPassword) => {
     const { error: passwordError } = await client.auth.updateUser({ password: newPassword });
     if (passwordError) {
@@ -4088,6 +4100,7 @@ var theme = {
   onlyDigits,
   parseCurrency,
   parseDateKey,
+  profilesTableSource,
   slideUp,
   text,
   theme,
