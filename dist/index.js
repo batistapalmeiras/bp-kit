@@ -1824,7 +1824,7 @@ var GroupLabel = import_styled_components21.default.span`
   font-weight: ${({ theme: theme2 }) => theme2.typography.caption.fontWeight};
   line-height: ${({ theme: theme2 }) => theme2.typography.caption.lineHeight};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
-  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.xs};
+  margin-bottom: ${({ theme: theme2 }) => theme2.spacing.base};
 `;
 var GroupError = (0, import_styled_components21.default)(ErrorText)`
   display: block;

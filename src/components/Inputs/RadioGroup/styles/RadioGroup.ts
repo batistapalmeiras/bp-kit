@@ -111,7 +111,7 @@ export const GroupLabel = styled.span`
   font-weight: ${({ theme }) => theme.typography.caption.fontWeight};
   line-height: ${({ theme }) => theme.typography.caption.lineHeight};
   color: ${({ theme }) => theme.colors.muted};
-  margin-bottom: ${({ theme }) => theme.spacing.xs};
+  margin-bottom: ${({ theme }) => theme.spacing.base};
 `;
 
 export const GroupError = styled(ErrorText)`
