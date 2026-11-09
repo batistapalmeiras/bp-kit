@@ -1483,12 +1483,6 @@ var EmptyOption = styled18.div`
   color: ${({ theme: theme2 }) => theme2.colors.muted};
   padding: ${({ theme: theme2 }) => theme2.spacing.sm};
 `;
-var LimitHint = styled18.p`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0 0;
-`;
 
 // src/components/Inputs/MultiSelect/index.tsx
 import { jsx as jsx13, jsxs as jsxs12 } from "react/jsx-runtime";
@@ -1611,11 +1605,6 @@ function MultiSelect({
           o.value
         );
       })
-    ] }),
-    atLimit && /* @__PURE__ */ jsxs12(LimitHint, { children: [
-      "Limite de ",
-      max,
-      " selecionados atingido."
     ] })
   ] }) });
 }

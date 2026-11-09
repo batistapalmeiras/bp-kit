@@ -1596,12 +1596,6 @@ var EmptyOption = import_styled_components20.default.div`
   color: ${({ theme: theme2 }) => theme2.colors.muted};
   padding: ${({ theme: theme2 }) => theme2.spacing.sm};
 `;
-var LimitHint = import_styled_components20.default.p`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.muted};
-  margin: ${({ theme: theme2 }) => theme2.spacing.xs} 0 0;
-`;
 
 // src/components/Inputs/MultiSelect/index.tsx
 var import_jsx_runtime14 = require("react/jsx-runtime");
@@ -1724,11 +1718,6 @@ function MultiSelect({
           o.value
         );
       })
-    ] }),
-    atLimit && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(LimitHint, { children: [
-      "Limite de ",
-      max,
-      " selecionados atingido."
     ] })
   ] }) });
 }

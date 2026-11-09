@@ -202,10 +202,3 @@ export const EmptyOption = styled.div`
   color: ${({ theme }) => theme.colors.muted};
   padding: ${({ theme }) => theme.spacing.sm};
 `;
-
-export const LimitHint = styled.p`
-  font-family: ${({ theme }) => theme.typography.fontFamily};
-  font-size: ${({ theme }) => theme.typography.captionSm.fontSize};
-  color: ${({ theme }) => theme.colors.muted};
-  margin: ${({ theme }) => theme.spacing.xs} 0 0;
-`;

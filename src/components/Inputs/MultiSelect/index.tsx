@@ -15,7 +15,6 @@ import {
   DropdownOption,
   EmptyOption,
   Field,
-  LimitHint,
   RemoveChip,
   SearchInput,
   ToggleButton,
@@ -162,7 +161,6 @@ export function MultiSelect({
           </Dropdown>
         )}
 
-        {atLimit && <LimitHint>Limite de {max} selecionados atingido.</LimitHint>}
       </Wrap>
     </BaseInput>
   );
