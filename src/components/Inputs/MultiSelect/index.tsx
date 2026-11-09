@@ -5,6 +5,7 @@ import { ChevronDown } from 'lucide-react';
 // Components
 import { BaseInput } from '../BaseInput';
 import { Checkbox } from '../Checkbox';
+import { filterOptions } from '../Select/options';
 // Local
 import {
   Chip,
@@ -57,8 +58,7 @@ export function MultiSelect({
   const atLimit = !single && !!max && value.length >= max;
   const labelFor = (v: string) => options.find((o) => o.value === v)?.label ?? v;
 
-  const q = searchable ? query.trim().toLowerCase() : '';
-  const visibleOptions = options.filter((o) => !q || o.label.toLowerCase().includes(q));
+  const visibleOptions = searchable ? filterOptions(options, query) : options;
 
   const toggle = (v: string) => {
     if (value.includes(v)) {

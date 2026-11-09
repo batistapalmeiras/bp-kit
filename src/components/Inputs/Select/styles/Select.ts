@@ -1,7 +1,8 @@
 // Libs
 import styled, { css } from 'styled-components';
 // Components
-import { invalidField } from '../../BaseInput/styles';
+import { InputField, invalidField } from '../../BaseInput/styles';
+import { DropdownOption } from '../../MultiSelect/styles';
 // Local
 import { SelectSize } from '../types';
 
@@ -23,6 +24,13 @@ const sizeStyles: Record<SelectSize, ReturnType<typeof css>> = {
   `,
 };
 
+const chevron = css`
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23222222' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right ${({ theme }) => theme.spacing.md} center;
+`;
+
 export const SelectField = styled.select<{ $size?: SelectSize }>`
   background: ${({ theme }) => theme.colors.canvas};
   border: 1px solid ${({ theme }) => theme.colors.hairline};
@@ -32,10 +40,7 @@ export const SelectField = styled.select<{ $size?: SelectSize }>`
   outline: none;
   width: 100%;
   cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23222222' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right ${({ theme }) => theme.spacing.md} center;
+  ${chevron}
 
   ${({ $size }: { $size?: SelectSize }) => sizeStyles[$size ?? 'md']}
 
@@ -45,4 +50,23 @@ export const SelectField = styled.select<{ $size?: SelectSize }>`
   }
 
   ${invalidField}
+`;
+
+export const ComboInput = styled(InputField)`
+  ${chevron}
+  cursor: pointer;
+  padding-right: ${({ theme }) => theme.spacing.xl};
+
+  &:focus {
+    cursor: text;
+    padding-right: calc(${({ theme }) => theme.spacing.xl} - 1px);
+  }
+`;
+
+export const SearchOption = styled(DropdownOption)<{ $highlighted?: boolean }>`
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.bodyMd.fontSize};
+  color: ${({ theme }) => theme.colors.ink};
+
+  ${({ $highlighted, $selected, theme }) => $highlighted && !$selected && `background: ${theme.colors.surfaceSoft};`}
 `;

@@ -189,6 +189,7 @@ interface SelectProps<T extends FieldValues, N extends FieldPath<T>> {
     name: N;
     children: ReactNode;
     wrapperStyle?: React.CSSProperties;
+    searchable?: boolean;
 }
 type SelectSize = 'sm' | 'md';
 interface RawSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
@@ -201,7 +202,7 @@ interface RawSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, '
 }
 
 declare function RawSelect({ label, size, wrapperStyle, error, children, ...rest }: RawSelectProps): react.JSX.Element;
-declare function Select<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, children, }: SelectProps<T, N>): react.JSX.Element;
+declare function Select<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, children, searchable, }: SelectProps<T, N>): react.JSX.Element;
 
 interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
     label?: ReactNode;

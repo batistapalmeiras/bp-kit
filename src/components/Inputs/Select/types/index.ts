@@ -8,6 +8,7 @@ export interface SelectProps<T extends FieldValues, N extends FieldPath<T>> {
   name: N;
   children: ReactNode;
   wrapperStyle?: React.CSSProperties;
+  searchable?: boolean;
 }
 
 export type SelectSize = 'sm' | 'md';
