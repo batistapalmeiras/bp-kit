@@ -520,8 +520,8 @@ var VARIANT_ICONS = {
   warning: import_lucide_react.AlertTriangle,
   success: import_lucide_react.Smile
 };
-function InfoBox({ variant = "info", children, style }) {
-  const Icon = VARIANT_ICONS[variant];
+function InfoBox({ variant = "info", icon, children, style }) {
+  const Icon = icon != null ? icon : VARIANT_ICONS[variant];
   return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Box, { $variant: variant, style, children: [
     /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Icon, { size: 16 }),
     /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { children })

@@ -13,12 +13,13 @@ const VARIANT_ICONS: Record<InfoBoxVariant, LucideIcon> = {
 
 interface Props {
   variant?: InfoBoxVariant;
+  icon?: LucideIcon;
   children: React.ReactNode;
   style?: React.CSSProperties;
 }
 
-export function InfoBox({ variant = 'info', children, style }: Props) {
-  const Icon = VARIANT_ICONS[variant];
+export function InfoBox({ variant = 'info', icon, children, style }: Props) {
+  const Icon = icon ?? VARIANT_ICONS[variant];
   return (
     <Box $variant={variant} style={style}>
       <Icon size={16} />

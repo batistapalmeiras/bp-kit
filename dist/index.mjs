@@ -407,8 +407,8 @@ var VARIANT_ICONS = {
   warning: AlertTriangle,
   success: Smile
 };
-function InfoBox({ variant = "info", children, style }) {
-  const Icon = VARIANT_ICONS[variant];
+function InfoBox({ variant = "info", icon, children, style }) {
+  const Icon = icon != null ? icon : VARIANT_ICONS[variant];
   return /* @__PURE__ */ jsxs5(Box, { $variant: variant, style, children: [
     /* @__PURE__ */ jsx7(Icon, { size: 16 }),
     /* @__PURE__ */ jsx7("div", { children })
