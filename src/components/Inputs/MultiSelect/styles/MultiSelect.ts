@@ -121,6 +121,12 @@ export const ToggleButton = styled.button<{ $open?: boolean; $compact?: boolean 
 `;
 
 export const TogglePlaceholder = styled.span`
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-size: ${({ theme }) => theme.typography.bodyMd.fontSize};
   color: ${({ theme }) => theme.colors.mutedSoft};

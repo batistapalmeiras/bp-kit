@@ -1305,6 +1305,12 @@ function filterOptions(options, query) {
   const needle = searchable(query);
   return needle ? options.filter((option) => searchable(option.label).includes(needle)) : options;
 }
+function pinnedFirst(options, pinned) {
+  return [
+    ...options.filter((option) => pinned.includes(option.value)),
+    ...options.filter((option) => !pinned.includes(option.value))
+  ];
+}
 
 // src/components/Inputs/MultiSelect/styles/MultiSelect.ts
 import styled18 from "styled-components";
@@ -1411,6 +1417,12 @@ var ToggleButton = styled18.button`
   }
 `;
 var TogglePlaceholder = styled18.span`
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
@@ -1499,6 +1511,7 @@ function MultiSelect({
 }) {
   const [query, setQuery] = useState4("");
   const [open, setOpen] = useState4(false);
+  const [pinned, setPinned] = useState4([]);
   const wrapRef = useRef4(null);
   const inputRef = useRef4(null);
   useEffect3(() => {
@@ -1516,6 +1529,11 @@ function MultiSelect({
     return (_b = (_a = options.find((o) => o.value === v)) == null ? void 0 : _a.label) != null ? _b : v;
   };
   const visibleOptions = searchable2 ? filterOptions(options, query) : options;
+  const orderedOptions = pinnedFirst(visibleOptions, pinned);
+  const openDropdown = () => {
+    if (!open) setPinned(value);
+    setOpen(true);
+  };
   const toggle = (v) => {
     if (value.includes(v)) {
       onChange(value.filter((x) => x !== v));
@@ -1561,10 +1579,10 @@ function MultiSelect({
           type: "text",
           placeholder: value.length === 0 ? placeholder : "",
           value: query,
-          onFocus: () => setOpen(true),
+          onFocus: openDropdown,
           onChange: (e) => {
             setQuery(e.target.value);
-            setOpen(true);
+            openDropdown();
           },
           onKeyDown: (e) => {
             if (e.key === "Backspace" && query === "" && value.length > 0) remove(value[value.length - 1]);
@@ -1580,7 +1598,7 @@ function MultiSelect({
           "aria-haspopup": "listbox",
           $open: open,
           $compact: compact,
-          onClick: () => setOpen((o) => !o),
+          onClick: () => open ? setOpen(false) : openDropdown(),
           children: [
             /* @__PURE__ */ jsx13(TogglePlaceholder, { children: value.length === 0 ? placeholder : "" }),
             /* @__PURE__ */ jsx13(ChevronDown, { size: 20 })
@@ -1589,8 +1607,8 @@ function MultiSelect({
       )
     ] }),
     open && !disabled && /* @__PURE__ */ jsxs12(Dropdown, { role: "listbox", "aria-multiselectable": !single, children: [
-      visibleOptions.length === 0 && /* @__PURE__ */ jsx13(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
-      visibleOptions.map((o) => {
+      orderedOptions.length === 0 && /* @__PURE__ */ jsx13(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
+      orderedOptions.map((o) => {
         const checked = value.includes(o.value);
         const rowDisabled = !checked && atLimit;
         return /* @__PURE__ */ jsx13(

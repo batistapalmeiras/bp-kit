@@ -1418,6 +1418,12 @@ function filterOptions(options, query) {
   const needle = searchable(query);
   return needle ? options.filter((option) => searchable(option.label).includes(needle)) : options;
 }
+function pinnedFirst(options, pinned) {
+  return [
+    ...options.filter((option) => pinned.includes(option.value)),
+    ...options.filter((option) => !pinned.includes(option.value))
+  ];
+}
 
 // src/components/Inputs/MultiSelect/styles/MultiSelect.ts
 var import_styled_components20 = __toESM(require("styled-components"));
@@ -1524,6 +1530,12 @@ var ToggleButton = import_styled_components20.default.button`
   }
 `;
 var TogglePlaceholder = import_styled_components20.default.span`
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
@@ -1612,6 +1624,7 @@ function MultiSelect({
 }) {
   const [query, setQuery] = (0, import_react9.useState)("");
   const [open, setOpen] = (0, import_react9.useState)(false);
+  const [pinned, setPinned] = (0, import_react9.useState)([]);
   const wrapRef = (0, import_react9.useRef)(null);
   const inputRef = (0, import_react9.useRef)(null);
   (0, import_react9.useEffect)(() => {
@@ -1629,6 +1642,11 @@ function MultiSelect({
     return (_b = (_a = options.find((o) => o.value === v)) == null ? void 0 : _a.label) != null ? _b : v;
   };
   const visibleOptions = searchable2 ? filterOptions(options, query) : options;
+  const orderedOptions = pinnedFirst(visibleOptions, pinned);
+  const openDropdown = () => {
+    if (!open) setPinned(value);
+    setOpen(true);
+  };
   const toggle = (v) => {
     if (value.includes(v)) {
       onChange(value.filter((x) => x !== v));
@@ -1674,10 +1692,10 @@ function MultiSelect({
           type: "text",
           placeholder: value.length === 0 ? placeholder : "",
           value: query,
-          onFocus: () => setOpen(true),
+          onFocus: openDropdown,
           onChange: (e) => {
             setQuery(e.target.value);
-            setOpen(true);
+            openDropdown();
           },
           onKeyDown: (e) => {
             if (e.key === "Backspace" && query === "" && value.length > 0) remove(value[value.length - 1]);
@@ -1693,7 +1711,7 @@ function MultiSelect({
           "aria-haspopup": "listbox",
           $open: open,
           $compact: compact,
-          onClick: () => setOpen((o) => !o),
+          onClick: () => open ? setOpen(false) : openDropdown(),
           children: [
             /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(TogglePlaceholder, { children: value.length === 0 ? placeholder : "" }),
             /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_lucide_react6.ChevronDown, { size: 20 })
@@ -1702,8 +1720,8 @@ function MultiSelect({
       )
     ] }),
     open && !disabled && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Dropdown, { role: "listbox", "aria-multiselectable": !single, children: [
-      visibleOptions.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
-      visibleOptions.map((o) => {
+      orderedOptions.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
+      orderedOptions.map((o) => {
         const checked = value.includes(o.value);
         const rowDisabled = !checked && atLimit;
         return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(

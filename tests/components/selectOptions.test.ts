@@ -1,6 +1,6 @@
 import { createElement, Fragment } from 'react';
 import { describe, expect, it } from 'vitest';
-import { filterOptions, optionsFromChildren } from '../../src/components/Inputs/Select/options';
+import { filterOptions, optionsFromChildren, pinnedFirst } from '../../src/components/Inputs/Select/options';
 
 const option = (value: string, label: string) => createElement('option', { key: value, value }, label);
 
@@ -31,5 +31,18 @@ describe('filterOptions', () => {
 
   it('keeps every option when the search is empty', () => {
     expect(filterOptions(options, '  ')).toEqual(options);
+  });
+});
+
+describe('pinnedFirst', () => {
+  it('moves the pinned options to the top, keeping the order of the rest', () => {
+    const options = [
+      { value: 'a', label: 'Ana' },
+      { value: 'b', label: 'Bruno' },
+      { value: 'c', label: 'Carla' },
+      { value: 'd', label: 'Davi' },
+    ];
+    expect(pinnedFirst(options, ['d', 'b']).map((option) => option.value)).toEqual(['b', 'd', 'a', 'c']);
+    expect(pinnedFirst(options, [])).toEqual(options);
   });
 });

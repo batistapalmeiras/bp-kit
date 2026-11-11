@@ -26,3 +26,10 @@ export function filterOptions(options: SelectOption[], query: string): SelectOpt
   const needle = searchable(query);
   return needle ? options.filter((option) => searchable(option.label).includes(needle)) : options;
 }
+
+export function pinnedFirst(options: SelectOption[], pinned: string[]): SelectOption[] {
+  return [
+    ...options.filter((option) => pinned.includes(option.value)),
+    ...options.filter((option) => !pinned.includes(option.value)),
+  ];
+}

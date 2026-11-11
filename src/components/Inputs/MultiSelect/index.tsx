@@ -5,7 +5,7 @@ import { ChevronDown } from 'lucide-react';
 // Components
 import { BaseInput } from '../BaseInput';
 import { Checkbox } from '../Checkbox';
-import { filterOptions } from '../Select/options';
+import { filterOptions, pinnedFirst } from '../Select/options';
 // Local
 import {
   Chip,
@@ -41,6 +41,7 @@ export function MultiSelect({
 }: MultiSelectProps) {
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
+  const [pinned, setPinned] = useState<string[]>([]);
   const wrapRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -58,6 +59,12 @@ export function MultiSelect({
   const labelFor = (v: string) => options.find((o) => o.value === v)?.label ?? v;
 
   const visibleOptions = searchable ? filterOptions(options, query) : options;
+  const orderedOptions = pinnedFirst(visibleOptions, pinned);
+
+  const openDropdown = () => {
+    if (!open) setPinned(value);
+    setOpen(true);
+  };
 
   const toggle = (v: string) => {
     if (value.includes(v)) {
@@ -114,10 +121,10 @@ export function MultiSelect({
               type="text"
               placeholder={value.length === 0 ? placeholder : ''}
               value={query}
-              onFocus={() => setOpen(true)}
+              onFocus={openDropdown}
               onChange={(e) => {
                 setQuery(e.target.value);
-                setOpen(true);
+                openDropdown();
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Backspace' && query === '' && value.length > 0) remove(value[value.length - 1]);
@@ -132,7 +139,7 @@ export function MultiSelect({
               aria-haspopup="listbox"
               $open={open}
               $compact={compact}
-              onClick={() => setOpen((o) => !o)}
+              onClick={() => (open ? setOpen(false) : openDropdown())}
             >
               <TogglePlaceholder>{value.length === 0 ? placeholder : ''}</TogglePlaceholder>
               <ChevronDown size={20} />
@@ -142,8 +149,8 @@ export function MultiSelect({
 
         {open && !disabled && (
           <Dropdown role="listbox" aria-multiselectable={!single}>
-            {visibleOptions.length === 0 && <EmptyOption>Nenhuma opção encontrada.</EmptyOption>}
-            {visibleOptions.map((o) => {
+            {orderedOptions.length === 0 && <EmptyOption>Nenhuma opção encontrada.</EmptyOption>}
+            {orderedOptions.map((o) => {
               const checked = value.includes(o.value);
               const rowDisabled = !checked && atLimit;
               return (
