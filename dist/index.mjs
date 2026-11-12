@@ -1,6 +1,34 @@
 // src/components/BottomSheet/index.tsx
 import { createPortal } from "react-dom";
 
+// src/hooks/useScrollLock.ts
+import { useEffect } from "react";
+var locks = 0;
+var previous = { overflow: "", paddingRight: "" };
+function lock() {
+  if (locks === 0) {
+    const root = document.documentElement;
+    const scrollbar = window.innerWidth - root.clientWidth;
+    previous = { overflow: root.style.overflow, paddingRight: document.body.style.paddingRight };
+    root.style.overflow = "hidden";
+    if (scrollbar > 0) document.body.style.paddingRight = `${scrollbar}px`;
+  }
+  locks += 1;
+}
+function unlock() {
+  locks = Math.max(0, locks - 1);
+  if (locks === 0) {
+    document.documentElement.style.overflow = previous.overflow;
+    document.body.style.paddingRight = previous.paddingRight;
+  }
+}
+function useScrollLock() {
+  useEffect(() => {
+    lock();
+    return unlock;
+  }, []);
+}
+
 // src/components/BottomSheet/styles/BottomSheet.ts
 import styled from "styled-components";
 
@@ -68,6 +96,7 @@ var Content = styled.div`
 // src/components/BottomSheet/index.tsx
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 function BottomSheet({ children, onClose }) {
+  useScrollLock();
   return createPortal(
     /* @__PURE__ */ jsxs(Fragment, { children: [
       /* @__PURE__ */ jsx(Overlay, { onClick: onClose }),
@@ -654,7 +683,7 @@ var Checkbox = forwardRef4(function Checkbox2({ label, ...rest }, ref) {
 });
 
 // src/components/Inputs/DatePicker/index.tsx
-import { useEffect, useRef, useState } from "react";
+import { useEffect as useEffect2, useRef, useState } from "react";
 import { useController } from "react-hook-form";
 import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -903,7 +932,7 @@ function DatePicker({
     setLastInitialMonth(initialMonth);
     if (!selectedDate && initialMonth) setViewDate(initialMonth);
   }
-  useEffect(() => {
+  useEffect2(() => {
     const handler = (event) => {
       if (ref.current && !ref.current.contains(event.target)) setOpen(false);
     };
@@ -1223,7 +1252,7 @@ function ImageUpload({
 }
 
 // src/components/Inputs/MonthPicker/index.tsx
-import { useEffect as useEffect2, useRef as useRef3, useState as useState3 } from "react";
+import { useEffect as useEffect3, useRef as useRef3, useState as useState3 } from "react";
 import { useController as useController2 } from "react-hook-form";
 import { Calendar as Calendar2, ChevronLeft as ChevronLeft2, ChevronRight as ChevronRight2 } from "lucide-react";
 import { jsx as jsx12, jsxs as jsxs11 } from "react/jsx-runtime";
@@ -1247,7 +1276,7 @@ function MonthPicker({
     () => field.value ? Number(String(field.value).split("-")[0]) : (/* @__PURE__ */ new Date()).getFullYear()
   );
   const ref = useRef3(null);
-  useEffect2(() => {
+  useEffect3(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     };
@@ -1285,7 +1314,7 @@ function MonthPicker({
 }
 
 // src/components/Inputs/MultiSelect/index.tsx
-import { useEffect as useEffect3, useRef as useRef4, useState as useState4 } from "react";
+import { useEffect as useEffect4, useRef as useRef4, useState as useState4 } from "react";
 import { ChevronDown } from "lucide-react";
 
 // src/components/Inputs/Select/options.ts
@@ -1514,7 +1543,7 @@ function MultiSelect({
   const [pinned, setPinned] = useState4([]);
   const wrapRef = useRef4(null);
   const inputRef = useRef4(null);
-  useEffect3(() => {
+  useEffect4(() => {
     if (!open) return;
     const onClickOutside = (e) => {
       if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
@@ -2250,7 +2279,7 @@ function TextInput(props) {
 }
 
 // src/components/Modal/index.tsx
-import { useEffect as useEffect4, useRef as useRef5 } from "react";
+import { useEffect as useEffect5, useRef as useRef5 } from "react";
 import { X as X2 } from "lucide-react";
 
 // src/components/Modal/styles/Modal.ts
@@ -2357,7 +2386,8 @@ function ModalTitle({ children, onClose }) {
 }
 function Modal({ children, close, variant = "dialog" }) {
   const boxRef = useRef5(null);
-  useEffect4(() => {
+  useScrollLock();
+  useEffect5(() => {
     var _a;
     (_a = boxRef.current) == null ? void 0 : _a.focus();
     const onKeyDown = (e) => {
@@ -2387,12 +2417,12 @@ function getPageItems(currentPage, totalPages) {
   if (currentPage >= totalPages - 2) [totalPages - 2, totalPages - 1, totalPages].forEach((page) => visible.add(page));
   const pages = Array.from(visible).filter((page) => page >= 1 && page <= totalPages).sort((a, b) => a - b);
   const items = [];
-  let previous = 0;
+  let previous2 = 0;
   for (const page of pages) {
-    if (page - previous === 2) items.push(previous + 1);
-    else if (page - previous > 2) items.push("gap");
+    if (page - previous2 === 2) items.push(previous2 + 1);
+    else if (page - previous2 > 2) items.push("gap");
     items.push(page);
-    previous = page;
+    previous2 = page;
   }
   return items;
 }
@@ -3169,11 +3199,11 @@ var feedback = {
 var text = { actions, fields, validation, feedback };
 
 // src/pages/LoginForm/hooks/useLogin.ts
-import { useEffect as useEffect6, useRef as useRef8, useState as useState9 } from "react";
+import { useEffect as useEffect7, useRef as useRef8, useState as useState9 } from "react";
 import { useNavigate as useNavigate2 } from "react-router-dom";
 
 // src/hooks/useAuth.ts
-import { useCallback as useCallback2, useContext, useEffect as useEffect5, useMemo as useMemo2, useRef as useRef7, useState as useState8 } from "react";
+import { useCallback as useCallback2, useContext, useEffect as useEffect6, useMemo as useMemo2, useRef as useRef7, useState as useState8 } from "react";
 
 // src/contexts/AuthContext.tsx
 import { createContext } from "react";
@@ -3220,7 +3250,7 @@ function useAuth(client, source = profilesTableSource) {
   const [error, setError] = useState8(null);
   const [sessionUser, setSessionUser] = useState8(void 0);
   const signingOut = useRef7(false);
-  useEffect5(() => {
+  useEffect6(() => {
     const { data: listener } = client.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT" && !signingOut.current) setError("Sua sess\xE3o expirou. Entre novamente.");
       signingOut.current = false;
@@ -3235,7 +3265,7 @@ function useAuth(client, source = profilesTableSource) {
       listener == null ? void 0 : listener.subscription.unsubscribe();
     };
   }, [client]);
-  useEffect5(() => {
+  useEffect6(() => {
     if (sessionUser === void 0) return;
     if (!sessionUser) {
       setUser(null);
@@ -3345,7 +3375,7 @@ function useLogin(resolveRoute) {
   const { login, user } = useAuthCtx();
   const navigate = useNavigate2();
   const pending = useRef8(null);
-  useEffect6(() => {
+  useEffect7(() => {
     if (!user) return;
     if (pending.current) {
       const { email, remember } = pending.current;
@@ -3820,10 +3850,10 @@ function ResetPasswordForm({ loginPath }) {
 }
 
 // src/hooks/useMediaQuery.ts
-import { useEffect as useEffect7, useState as useState13 } from "react";
+import { useEffect as useEffect8, useState as useState13 } from "react";
 function useMediaQuery(query) {
   const [matches, setMatches] = useState13(() => window.matchMedia(query).matches);
-  useEffect7(() => {
+  useEffect8(() => {
     const mq = window.matchMedia(query);
     const handler = (e) => setMatches(e.matches);
     mq.addEventListener("change", handler);

@@ -114,6 +114,34 @@ module.exports = __toCommonJS(src_exports);
 // src/components/BottomSheet/index.tsx
 var import_react_dom = require("react-dom");
 
+// src/hooks/useScrollLock.ts
+var import_react = require("react");
+var locks = 0;
+var previous = { overflow: "", paddingRight: "" };
+function lock() {
+  if (locks === 0) {
+    const root = document.documentElement;
+    const scrollbar = window.innerWidth - root.clientWidth;
+    previous = { overflow: root.style.overflow, paddingRight: document.body.style.paddingRight };
+    root.style.overflow = "hidden";
+    if (scrollbar > 0) document.body.style.paddingRight = `${scrollbar}px`;
+  }
+  locks += 1;
+}
+function unlock() {
+  locks = Math.max(0, locks - 1);
+  if (locks === 0) {
+    document.documentElement.style.overflow = previous.overflow;
+    document.body.style.paddingRight = previous.paddingRight;
+  }
+}
+function useScrollLock() {
+  (0, import_react.useEffect)(() => {
+    lock();
+    return unlock;
+  }, []);
+}
+
 // src/components/BottomSheet/styles/BottomSheet.ts
 var import_styled_components2 = __toESM(require("styled-components"));
 
@@ -181,6 +209,7 @@ var Content = import_styled_components2.default.div`
 // src/components/BottomSheet/index.tsx
 var import_jsx_runtime = require("react/jsx-runtime");
 function BottomSheet({ children, onClose }) {
+  useScrollLock();
   return (0, import_react_dom.createPortal)(
     /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, { onClick: onClose }),
@@ -257,7 +286,7 @@ var Card = import_styled_components4.default.div`
 `;
 
 // src/components/Button/index.tsx
-var import_react = require("react");
+var import_react2 = require("react");
 
 // src/components/Button/styles/Button.ts
 var import_styled_components6 = __toESM(require("styled-components"));
@@ -344,7 +373,7 @@ var StyledButton = import_styled_components6.default.button`
 
 // src/components/Button/index.tsx
 var import_jsx_runtime3 = require("react/jsx-runtime");
-var Button = (0, import_react.forwardRef)(function Button2({ variant = "primary", size = "md", fullWidth = false, type = "button", children, ...rest }, ref) {
+var Button = (0, import_react2.forwardRef)(function Button2({ variant = "primary", size = "md", fullWidth = false, type = "button", children, ...rest }, ref) {
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(StyledButton, { ref, type, $variant: variant, $size: size, $fullWidth: fullWidth, ...rest, children });
 });
 
@@ -448,7 +477,7 @@ var Form = import_styled_components10.default.form`
 `;
 
 // src/components/IconButton/index.tsx
-var import_react2 = require("react");
+var import_react3 = require("react");
 
 // src/components/IconButton/styles/IconButton.ts
 var import_styled_components11 = __toESM(require("styled-components"));
@@ -473,7 +502,7 @@ var StyledButton2 = import_styled_components11.default.button`
 
 // src/components/IconButton/index.tsx
 var import_jsx_runtime6 = require("react/jsx-runtime");
-var IconButton = (0, import_react2.forwardRef)(function IconButton2({ icon, iconPosition = "left", variant = "primary", size = "md", fullWidth = false, type = "button", children, ...rest }, ref) {
+var IconButton = (0, import_react3.forwardRef)(function IconButton2({ icon, iconPosition = "left", variant = "primary", size = "md", fullWidth = false, type = "button", children, ...rest }, ref) {
   const iconEl = /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(IconWrap, { $size: size, children: icon });
   const iconOnly = iconPosition === "center";
   return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(StyledButton2, { ref, type, $variant: variant, $size: size, $fullWidth: fullWidth, $iconOnly: iconOnly, ...rest, children: iconOnly ? iconEl : /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_jsx_runtime6.Fragment, { children: [
@@ -529,7 +558,7 @@ function InfoBox({ variant = "info", icon, children, style }) {
 }
 
 // src/components/LinkButton/index.tsx
-var import_react3 = require("react");
+var import_react4 = require("react");
 
 // src/components/LinkButton/styles/LinkButton.ts
 var import_styled_components13 = __toESM(require("styled-components"));
@@ -561,7 +590,7 @@ var StyledLinkButton = import_styled_components13.default.button`
 
 // src/components/LinkButton/index.tsx
 var import_jsx_runtime8 = require("react/jsx-runtime");
-var LinkButton = (0, import_react3.forwardRef)(function LinkButton2({ icon, type = "button", children, ...rest }, ref) {
+var LinkButton = (0, import_react4.forwardRef)(function LinkButton2({ icon, type = "button", children, ...rest }, ref) {
   return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(StyledLinkButton, { ref, type, ...rest, children: [
     icon,
     children
@@ -674,7 +703,7 @@ function ControlledBase({
 }
 
 // src/components/Inputs/Checkbox/index.tsx
-var import_react4 = require("react");
+var import_react5 = require("react");
 var import_lucide_react2 = require("lucide-react");
 
 // src/components/Inputs/Checkbox/styles/Checkbox.ts
@@ -758,7 +787,7 @@ var Wrapper3 = import_styled_components15.default.label`
 
 // src/components/Inputs/Checkbox/index.tsx
 var import_jsx_runtime10 = require("react/jsx-runtime");
-var Checkbox = (0, import_react4.forwardRef)(function Checkbox2({ label, ...rest }, ref) {
+var Checkbox = (0, import_react5.forwardRef)(function Checkbox2({ label, ...rest }, ref) {
   return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Wrapper3, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(HiddenInput, { ref, type: "checkbox", ...rest }),
     /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Box2, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_lucide_react2.Check, {}) }),
@@ -767,7 +796,7 @@ var Checkbox = (0, import_react4.forwardRef)(function Checkbox2({ label, ...rest
 });
 
 // src/components/Inputs/DatePicker/index.tsx
-var import_react5 = require("react");
+var import_react6 = require("react");
 var import_react_hook_form2 = require("react-hook-form");
 var import_lucide_react3 = require("lucide-react");
 
@@ -1002,21 +1031,21 @@ function DatePicker({
 }) {
   var _a, _b;
   const { field, fieldState } = (0, import_react_hook_form2.useController)({ control, name });
-  const [open, setOpen] = (0, import_react5.useState)(false);
-  const [view, setView] = (0, import_react5.useState)("days");
+  const [open, setOpen] = (0, import_react6.useState)(false);
+  const [view, setView] = (0, import_react6.useState)("days");
   const selectedDate = parseDateKey(field.value);
-  const [viewDate, setViewDate] = (0, import_react5.useState)(() => {
+  const [viewDate, setViewDate] = (0, import_react6.useState)(() => {
     var _a2;
     return (_a2 = selectedDate != null ? selectedDate : initialMonth) != null ? _a2 : /* @__PURE__ */ new Date();
   });
-  const [pageStart, setPageStart] = (0, import_react5.useState)(() => firstYearOfPage(viewDate.getFullYear()));
-  const [lastInitialMonth, setLastInitialMonth] = (0, import_react5.useState)(initialMonth);
-  const ref = (0, import_react5.useRef)(null);
+  const [pageStart, setPageStart] = (0, import_react6.useState)(() => firstYearOfPage(viewDate.getFullYear()));
+  const [lastInitialMonth, setLastInitialMonth] = (0, import_react6.useState)(initialMonth);
+  const ref = (0, import_react6.useRef)(null);
   if (initialMonth !== lastInitialMonth) {
     setLastInitialMonth(initialMonth);
     if (!selectedDate && initialMonth) setViewDate(initialMonth);
   }
-  (0, import_react5.useEffect)(() => {
+  (0, import_react6.useEffect)(() => {
     const handler = (event) => {
       if (ref.current && !ref.current.contains(event.target)) setOpen(false);
     };
@@ -1154,7 +1183,7 @@ function DatePicker({
 }
 
 // src/components/Inputs/ImageUpload/index.tsx
-var import_react6 = require("react");
+var import_react7 = require("react");
 var import_lucide_react4 = require("lucide-react");
 
 // src/components/Inputs/ImageUpload/styles/ImageUpload.ts
@@ -1259,8 +1288,8 @@ function ImageUpload({
   error,
   wrapperStyle
 }) {
-  const inputRef = (0, import_react6.useRef)(null);
-  const [dragOver, setDragOver] = (0, import_react6.useState)(false);
+  const inputRef = (0, import_react7.useRef)(null);
+  const [dragOver, setDragOver] = (0, import_react7.useState)(false);
   const hasImages = value.length > 0;
   const atLimit = maxFiles !== void 0 && value.length >= maxFiles;
   const openPicker = () => {
@@ -1336,7 +1365,7 @@ function ImageUpload({
 }
 
 // src/components/Inputs/MonthPicker/index.tsx
-var import_react7 = require("react");
+var import_react8 = require("react");
 var import_react_hook_form3 = require("react-hook-form");
 var import_lucide_react5 = require("lucide-react");
 var import_jsx_runtime13 = require("react/jsx-runtime");
@@ -1355,12 +1384,12 @@ function MonthPicker({
 }) {
   var _a, _b;
   const { field, fieldState } = (0, import_react_hook_form3.useController)({ control, name });
-  const [open, setOpen] = (0, import_react7.useState)(false);
-  const [viewYear, setViewYear] = (0, import_react7.useState)(
+  const [open, setOpen] = (0, import_react8.useState)(false);
+  const [viewYear, setViewYear] = (0, import_react8.useState)(
     () => field.value ? Number(String(field.value).split("-")[0]) : (/* @__PURE__ */ new Date()).getFullYear()
   );
-  const ref = (0, import_react7.useRef)(null);
-  (0, import_react7.useEffect)(() => {
+  const ref = (0, import_react8.useRef)(null);
+  (0, import_react8.useEffect)(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     };
@@ -1398,17 +1427,17 @@ function MonthPicker({
 }
 
 // src/components/Inputs/MultiSelect/index.tsx
-var import_react9 = require("react");
+var import_react10 = require("react");
 var import_lucide_react6 = require("lucide-react");
 
 // src/components/Inputs/Select/options.ts
-var import_react8 = require("react");
-var textOf = (node) => import_react8.Children.toArray(node).map((child) => typeof child === "string" || typeof child === "number" ? String(child) : "").join("");
+var import_react9 = require("react");
+var textOf = (node) => import_react9.Children.toArray(node).map((child) => typeof child === "string" || typeof child === "number" ? String(child) : "").join("");
 function optionsFromChildren(children) {
-  return import_react8.Children.toArray(children).flatMap((child) => {
+  return import_react9.Children.toArray(children).flatMap((child) => {
     var _a;
-    if (!(0, import_react8.isValidElement)(child)) return [];
-    if (child.type === import_react8.Fragment) return optionsFromChildren(child.props.children);
+    if (!(0, import_react9.isValidElement)(child)) return [];
+    if (child.type === import_react9.Fragment) return optionsFromChildren(child.props.children);
     if (child.type !== "option") return [];
     return [{ value: String((_a = child.props.value) != null ? _a : ""), label: textOf(child.props.children) }];
   });
@@ -1622,12 +1651,12 @@ function MultiSelect({
   error,
   searchable: searchable2 = true
 }) {
-  const [query, setQuery] = (0, import_react9.useState)("");
-  const [open, setOpen] = (0, import_react9.useState)(false);
-  const [pinned, setPinned] = (0, import_react9.useState)([]);
-  const wrapRef = (0, import_react9.useRef)(null);
-  const inputRef = (0, import_react9.useRef)(null);
-  (0, import_react9.useEffect)(() => {
+  const [query, setQuery] = (0, import_react10.useState)("");
+  const [open, setOpen] = (0, import_react10.useState)(false);
+  const [pinned, setPinned] = (0, import_react10.useState)([]);
+  const wrapRef = (0, import_react10.useRef)(null);
+  const inputRef = (0, import_react10.useRef)(null);
+  (0, import_react10.useEffect)(() => {
     if (!open) return;
     const onClickOutside = (e) => {
       if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
@@ -1882,7 +1911,7 @@ function RadioGroup({ name, options, value, onChange, label, disabled, error }) 
 var import_react_hook_form4 = require("react-hook-form");
 
 // src/components/Inputs/Select/SearchableField.tsx
-var import_react10 = require("react");
+var import_react11 = require("react");
 
 // src/components/Inputs/Select/styles/Select.ts
 var import_styled_components22 = __toESM(require("styled-components"));
@@ -1948,13 +1977,13 @@ var SearchOption = (0, import_styled_components22.default)(DropdownOption)`
 var import_jsx_runtime16 = require("react/jsx-runtime");
 function SearchableField({ options, value, onChange, onBlur, inputRef, invalid, label }) {
   var _a, _b, _c, _d;
-  const listId = (0, import_react10.useId)();
-  const [open, setOpen] = (0, import_react10.useState)(false);
-  const [query, setQuery] = (0, import_react10.useState)("");
-  const [highlight, setHighlight] = (0, import_react10.useState)(0);
+  const listId = (0, import_react11.useId)();
+  const [open, setOpen] = (0, import_react11.useState)(false);
+  const [query, setQuery] = (0, import_react11.useState)("");
+  const [highlight, setHighlight] = (0, import_react11.useState)(0);
   const placeholder = (_b = (_a = options.find((option) => option.value === "")) == null ? void 0 : _a.label) != null ? _b : "Buscar\u2026";
-  const choices = (0, import_react10.useMemo)(() => options.filter((option) => option.value !== ""), [options]);
-  const visible = (0, import_react10.useMemo)(() => filterOptions(choices, query), [choices, query]);
+  const choices = (0, import_react11.useMemo)(() => options.filter((option) => option.value !== ""), [options]);
+  const visible = (0, import_react11.useMemo)(() => filterOptions(choices, query), [choices, query]);
   const selectedLabel = (_d = (_c = choices.find((option) => option.value === value)) == null ? void 0 : _c.label) != null ? _d : "";
   const close = () => {
     setOpen(false);
@@ -2075,7 +2104,7 @@ function Select({
 }
 
 // src/components/Inputs/Switch/index.tsx
-var import_react11 = require("react");
+var import_react12 = require("react");
 
 // src/components/Inputs/Switch/styles/Switch.ts
 var import_styled_components23 = __toESM(require("styled-components"));
@@ -2149,7 +2178,7 @@ var Wrapper5 = import_styled_components23.default.label`
 
 // src/components/Inputs/Switch/index.tsx
 var import_jsx_runtime18 = require("react/jsx-runtime");
-var Switch = (0, import_react11.forwardRef)(function Switch2({ label, ...rest }, ref) {
+var Switch = (0, import_react12.forwardRef)(function Switch2({ label, ...rest }, ref) {
   return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Wrapper5, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(HiddenInput4, { ref, type: "checkbox", ...rest }),
     /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Track, {}),
@@ -2230,7 +2259,7 @@ function Textarea({
 }
 
 // src/components/Inputs/TextInput/index.tsx
-var import_react12 = require("react");
+var import_react13 = require("react");
 var import_lucide_react7 = require("lucide-react");
 
 // src/utils/masks.ts
@@ -2329,7 +2358,7 @@ var MASKS = {
 function TextInput(props) {
   const { label, control, name, wrapperStyle, placeholder, currency, mask, ...rest } = props;
   const isPassword = rest.type === "password";
-  const [showPassword, setShowPassword] = (0, import_react12.useState)(false);
+  const [showPassword, setShowPassword] = (0, import_react13.useState)(false);
   return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(ControlledBase, { label, control, name, wrapperStyle, children: (field, error) => {
     var _a;
     return /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(InputWrapper, { children: [
@@ -2363,7 +2392,7 @@ function TextInput(props) {
 }
 
 // src/components/Modal/index.tsx
-var import_react13 = require("react");
+var import_react14 = require("react");
 var import_lucide_react8 = require("lucide-react");
 
 // src/components/Modal/styles/Modal.ts
@@ -2469,8 +2498,9 @@ function ModalTitle({ children, onClose }) {
   ] });
 }
 function Modal({ children, close, variant = "dialog" }) {
-  const boxRef = (0, import_react13.useRef)(null);
-  (0, import_react13.useEffect)(() => {
+  const boxRef = (0, import_react14.useRef)(null);
+  useScrollLock();
+  (0, import_react14.useEffect)(() => {
     var _a;
     (_a = boxRef.current) == null ? void 0 : _a.focus();
     const onKeyDown = (e) => {
@@ -2500,12 +2530,12 @@ function getPageItems(currentPage, totalPages) {
   if (currentPage >= totalPages - 2) [totalPages - 2, totalPages - 1, totalPages].forEach((page) => visible.add(page));
   const pages = Array.from(visible).filter((page) => page >= 1 && page <= totalPages).sort((a, b) => a - b);
   const items = [];
-  let previous = 0;
+  let previous2 = 0;
   for (const page of pages) {
-    if (page - previous === 2) items.push(previous + 1);
-    else if (page - previous > 2) items.push("gap");
+    if (page - previous2 === 2) items.push(previous2 + 1);
+    else if (page - previous2 > 2) items.push("gap");
     items.push(page);
-    previous = page;
+    previous2 = page;
   }
   return items;
 }
@@ -2908,18 +2938,18 @@ var ToastAction = import_styled_components34.default.button`
 `;
 
 // src/components/Toast/hooks/useToast.tsx
-var import_react14 = require("react");
+var import_react15 = require("react");
 var import_jsx_runtime26 = require("react/jsx-runtime");
 var ACTION_DURATION = 6e3;
 function useToast(duration = 2500) {
-  const [state, setState] = (0, import_react14.useState)(null);
-  const timerRef = (0, import_react14.useRef)(null);
-  const hide = (0, import_react14.useCallback)(() => {
+  const [state, setState] = (0, import_react15.useState)(null);
+  const timerRef = (0, import_react15.useRef)(null);
+  const hide = (0, import_react15.useCallback)(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
     setState((s) => s ? { ...s, leaving: true } : null);
     timerRef.current = setTimeout(() => setState(null), 300);
   }, []);
-  const show = (0, import_react14.useCallback)(
+  const show = (0, import_react15.useCallback)(
     (message, action) => {
       if (timerRef.current) clearTimeout(timerRef.current);
       setState({ message, leaving: false, action });
@@ -3237,7 +3267,7 @@ function AuthLayout({ brand, children }) {
 }
 
 // src/pages/LoginForm/index.tsx
-var import_react18 = require("react");
+var import_react19 = require("react");
 var import_zod2 = require("@hookform/resolvers/zod");
 var import_react_hook_form6 = require("react-hook-form");
 var import_react_router_dom5 = require("react-router-dom");
@@ -3282,16 +3312,16 @@ var feedback = {
 var text = { actions, fields, validation, feedback };
 
 // src/pages/LoginForm/hooks/useLogin.ts
-var import_react17 = require("react");
+var import_react18 = require("react");
 var import_react_router_dom4 = require("react-router-dom");
 
 // src/hooks/useAuth.ts
-var import_react16 = require("react");
+var import_react17 = require("react");
 
 // src/contexts/AuthContext.tsx
-var import_react15 = require("react");
+var import_react16 = require("react");
 var import_jsx_runtime29 = require("react/jsx-runtime");
-var AuthContext = (0, import_react15.createContext)(null);
+var AuthContext = (0, import_react16.createContext)(null);
 function AuthProvider({ client, profileSource, children }) {
   const authValue = useAuth(client, profileSource);
   return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(AuthContext.Provider, { value: authValue, children });
@@ -3327,13 +3357,13 @@ async function updateProfileIdentity(client, name, email, currentEmail) {
 }
 var profilesTableSource = { load: fetchProfile, updateIdentity: updateProfileIdentity };
 function useAuth(client, source = profilesTableSource) {
-  const [user, setUser] = (0, import_react16.useState)(null);
-  const [userEmail, setUserEmail] = (0, import_react16.useState)("");
-  const [loading, setLoading] = (0, import_react16.useState)(true);
-  const [error, setError] = (0, import_react16.useState)(null);
-  const [sessionUser, setSessionUser] = (0, import_react16.useState)(void 0);
-  const signingOut = (0, import_react16.useRef)(false);
-  (0, import_react16.useEffect)(() => {
+  const [user, setUser] = (0, import_react17.useState)(null);
+  const [userEmail, setUserEmail] = (0, import_react17.useState)("");
+  const [loading, setLoading] = (0, import_react17.useState)(true);
+  const [error, setError] = (0, import_react17.useState)(null);
+  const [sessionUser, setSessionUser] = (0, import_react17.useState)(void 0);
+  const signingOut = (0, import_react17.useRef)(false);
+  (0, import_react17.useEffect)(() => {
     const { data: listener } = client.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT" && !signingOut.current) setError("Sua sess\xE3o expirou. Entre novamente.");
       signingOut.current = false;
@@ -3348,7 +3378,7 @@ function useAuth(client, source = profilesTableSource) {
       listener == null ? void 0 : listener.subscription.unsubscribe();
     };
   }, [client]);
-  (0, import_react16.useEffect)(() => {
+  (0, import_react17.useEffect)(() => {
     if (sessionUser === void 0) return;
     if (!sessionUser) {
       setUser(null);
@@ -3374,7 +3404,7 @@ function useAuth(client, source = profilesTableSource) {
       cancelled = true;
     };
   }, [client, source, sessionUser]);
-  const login = (0, import_react16.useCallback)(async (email, password) => {
+  const login = (0, import_react17.useCallback)(async (email, password) => {
     setError(null);
     const { error: signInError } = await client.auth.signInWithPassword({ email, password });
     if (signInError) {
@@ -3384,13 +3414,13 @@ function useAuth(client, source = profilesTableSource) {
     }
     return null;
   }, [client]);
-  const logout = (0, import_react16.useCallback)(async () => {
+  const logout = (0, import_react17.useCallback)(async () => {
     signingOut.current = true;
     await client.auth.signOut();
     setUser(null);
     setUserEmail("");
   }, [client]);
-  const updateProfile = (0, import_react16.useCallback)(
+  const updateProfile = (0, import_react17.useCallback)(
     async (name, email) => {
       const err = await source.updateIdentity(client, name.trim(), email, userEmail);
       if (err) return err;
@@ -3399,7 +3429,7 @@ function useAuth(client, source = profilesTableSource) {
     },
     [client, source, userEmail]
   );
-  const updatePassword = (0, import_react16.useCallback)(async (newPassword) => {
+  const updatePassword = (0, import_react17.useCallback)(async (newPassword) => {
     const { error: passwordError } = await client.auth.updateUser({ password: newPassword });
     if (passwordError) {
       if ("code" in passwordError && passwordError.code === "same_password") {
@@ -3409,18 +3439,18 @@ function useAuth(client, source = profilesTableSource) {
     }
     return null;
   }, [client]);
-  const requestPasswordReset = (0, import_react16.useCallback)(async (email, redirectTo) => {
+  const requestPasswordReset = (0, import_react17.useCallback)(async (email, redirectTo) => {
     const { error: resetError } = await client.auth.resetPasswordForEmail(email, { redirectTo });
     if (resetError) return "Erro ao enviar o link de recupera\xE7\xE3o.";
     return null;
   }, [client]);
-  return (0, import_react16.useMemo)(
+  return (0, import_react17.useMemo)(
     () => ({ user, userEmail, loading, error, login, logout, updateProfile, updatePassword, requestPasswordReset }),
     [user, userEmail, loading, error, login, logout, updateProfile, updatePassword, requestPasswordReset]
   );
 }
 function useAuthCtx() {
-  const ctx = (0, import_react16.useContext)(AuthContext);
+  const ctx = (0, import_react17.useContext)(AuthContext);
   if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
   return ctx;
 }
@@ -3453,12 +3483,12 @@ function firstNameOf(name) {
 
 // src/pages/LoginForm/hooks/useLogin.ts
 function useLogin(resolveRoute) {
-  const [error, setError] = (0, import_react17.useState)("");
-  const [submitting, setSubmitting] = (0, import_react17.useState)(false);
+  const [error, setError] = (0, import_react18.useState)("");
+  const [submitting, setSubmitting] = (0, import_react18.useState)(false);
   const { login, user } = useAuthCtx();
   const navigate = (0, import_react_router_dom4.useNavigate)();
-  const pending = (0, import_react17.useRef)(null);
-  (0, import_react17.useEffect)(() => {
+  const pending = (0, import_react18.useRef)(null);
+  (0, import_react18.useEffect)(() => {
     if (!user) return;
     if (pending.current) {
       const { email, remember } = pending.current;
@@ -3494,9 +3524,9 @@ function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }) {
   var _a;
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
   const navigate = (0, import_react_router_dom5.useNavigate)();
-  const [remembered, setRemembered] = (0, import_react18.useState)(loadRememberedLogin);
-  const [step, setStep] = (0, import_react18.useState)(remembered ? "confirm" : "email");
-  const [remember, setRemember] = (0, import_react18.useState)(true);
+  const [remembered, setRemembered] = (0, import_react19.useState)(loadRememberedLogin);
+  const [step, setStep] = (0, import_react19.useState)(remembered ? "confirm" : "email");
+  const [remember, setRemember] = (0, import_react19.useState)(true);
   const { control, handleSubmit, trigger, getValues, setValue } = (0, import_react_hook_form6.useForm)({
     resolver: (0, import_zod2.zodResolver)(loginSchema),
     defaultValues: { email: (_a = remembered == null ? void 0 : remembered.email) != null ? _a : "", password: "" }
@@ -3781,11 +3811,11 @@ var import_react_router_dom7 = require("react-router-dom");
 var import_lucide_react13 = require("lucide-react");
 
 // src/pages/ForgotPasswordForm/hooks/useForgotPassword.ts
-var import_react19 = require("react");
+var import_react20 = require("react");
 function useForgotPassword(resetPasswordPath) {
-  const [submitting, setSubmitting] = (0, import_react19.useState)(false);
-  const [sent, setSent] = (0, import_react19.useState)(false);
-  const [error, setError] = (0, import_react19.useState)("");
+  const [submitting, setSubmitting] = (0, import_react20.useState)(false);
+  const [sent, setSent] = (0, import_react20.useState)(false);
+  const [error, setError] = (0, import_react20.useState)("");
   const { requestPasswordReset } = useAuthCtx();
   const handleSubmit = async (data) => {
     setSubmitting(true);
@@ -3849,7 +3879,7 @@ function ForgotPasswordForm({ loginPath, resetPasswordPath }) {
 }
 
 // src/pages/ResetPasswordForm/index.tsx
-var import_react20 = require("react");
+var import_react21 = require("react");
 var import_zod9 = require("@hookform/resolvers/zod");
 var import_react_hook_form10 = require("react-hook-form");
 var import_react_router_dom8 = require("react-router-dom");
@@ -3858,7 +3888,7 @@ var import_jsx_runtime34 = require("react/jsx-runtime");
 function ResetPasswordForm({ loginPath }) {
   const { user, loading, updatePassword, logout } = useAuthCtx();
   const navigate = (0, import_react_router_dom8.useNavigate)();
-  const [done, setDone] = (0, import_react20.useState)(false);
+  const [done, setDone] = (0, import_react21.useState)(false);
   const {
     control,
     handleSubmit,
@@ -3933,10 +3963,10 @@ function ResetPasswordForm({ loginPath }) {
 }
 
 // src/hooks/useMediaQuery.ts
-var import_react21 = require("react");
+var import_react22 = require("react");
 function useMediaQuery(query) {
-  const [matches, setMatches] = (0, import_react21.useState)(() => window.matchMedia(query).matches);
-  (0, import_react21.useEffect)(() => {
+  const [matches, setMatches] = (0, import_react22.useState)(() => window.matchMedia(query).matches);
+  (0, import_react22.useEffect)(() => {
     const mq = window.matchMedia(query);
     const handler = (e) => setMatches(e.matches);
     mq.addEventListener("change", handler);
@@ -3946,13 +3976,13 @@ function useMediaQuery(query) {
 }
 
 // src/hooks/useModal.ts
-var import_react22 = require("react");
+var import_react23 = require("react");
 var import_react_dom3 = require("react-dom");
 function useModal(variant = "dialog") {
-  const [content, setContent] = (0, import_react22.useState)(null);
+  const [content, setContent] = (0, import_react23.useState)(null);
   const open = (c) => setContent(c);
   const close = () => setContent(null);
-  const modal = content !== null ? (0, import_react_dom3.createPortal)((0, import_react22.createElement)(Modal, { close, variant, children: content }), document.body) : null;
+  const modal = content !== null ? (0, import_react_dom3.createPortal)((0, import_react23.createElement)(Modal, { close, variant, children: content }), document.body) : null;
   return { open, close, modal };
 }
 

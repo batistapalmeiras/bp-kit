@@ -2,6 +2,7 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 // Local
+import { useScrollLock } from '../../hooks/useScrollLock';
 import { Content, Handle, Overlay, Sheet } from './styles';
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export function BottomSheet({ children, onClose }: Props) {
+  useScrollLock();
   return createPortal(
     <>
       <Overlay onClick={onClose} />

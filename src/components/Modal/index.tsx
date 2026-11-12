@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 // Libs
 import { X } from 'lucide-react';
 // Local
+import { useScrollLock } from '../../hooks/useScrollLock';
 import { Box, CloseButton, ModalVariant, Overlay, TitleRow, TitleText } from './styles';
 export { ModalActions } from './styles';
 export type { ModalVariant } from './styles';
@@ -35,6 +36,7 @@ interface Props {
 
 export function Modal({ children, close, variant = 'dialog' }: Props) {
   const boxRef = useRef<HTMLDivElement>(null);
+  useScrollLock();
 
   useEffect(() => {
     boxRef.current?.focus();
