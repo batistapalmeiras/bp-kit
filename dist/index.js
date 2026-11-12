@@ -2411,6 +2411,13 @@ var Overlay2 = import_styled_components26.default.div`
     justify-content: ${({ $variant }) => $variant === "dialog" ? "center" : "flex-end"};
   }
 `;
+var TitleRow = import_styled_components26.default.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  margin-bottom: 24px;
+`;
 var Box3 = import_styled_components26.default.div`
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.lg};
@@ -2446,13 +2453,30 @@ var Box3 = import_styled_components26.default.div`
           animation: ${slideInRight} 0.25s cubic-bezier(0.32, 0.72, 0, 1);
         }
       ` || void 0}
-`;
-var TitleRow = import_styled_components26.default.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: ${({ theme: theme2 }) => theme2.spacing.md};
-  margin-bottom: 24px;
+
+  /* Opt-in via fullScreenOnMobile (see useModal) — on phones the modal fills
+     the whole screen instead of hugging the bottom, and its title row stays
+     pinned while the content scrolls. */
+  ${({ $fullScreenOnMobile }) => $fullScreenOnMobile && import_styled_components26.css`
+        @media (max-width: 744px) {
+          max-width: 100%;
+          margin-top: 0;
+          height: 100%;
+          border-radius: 0;
+          padding: 0 20px 24px;
+          overflow-y: auto;
+
+          & > ${TitleRow} {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            margin: 0 -20px 16px;
+            padding: 24px 20px 12px;
+            background: ${({ theme: theme2 }) => theme2.colors.canvas};
+            border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+          }
+        }
+      ` || void 0}
 `;
 var TitleText = import_styled_components26.default.h3`
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
@@ -2497,7 +2521,7 @@ function ModalTitle({ children, onClose }) {
     onClose && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(CloseButton, { type: "button", onClick: onClose, "aria-label": "Fechar", children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_lucide_react8.X, { size: 18 }) })
   ] });
 }
-function Modal({ children, close, variant = "dialog" }) {
+function Modal({ children, close, variant = "dialog", fullScreenOnMobile = false }) {
   const boxRef = (0, import_react14.useRef)(null);
   useScrollLock();
   (0, import_react14.useEffect)(() => {
@@ -2514,6 +2538,7 @@ function Modal({ children, close, variant = "dialog" }) {
     {
       ref: boxRef,
       $variant: variant,
+      $fullScreenOnMobile: fullScreenOnMobile,
       role: "dialog",
       "aria-modal": "true",
       tabIndex: -1,
@@ -3978,11 +4003,11 @@ function useMediaQuery(query) {
 // src/hooks/useModal.ts
 var import_react23 = require("react");
 var import_react_dom3 = require("react-dom");
-function useModal(variant = "dialog") {
+function useModal(variant = "dialog", { fullScreenOnMobile = false } = {}) {
   const [content, setContent] = (0, import_react23.useState)(null);
   const open = (c) => setContent(c);
   const close = () => setContent(null);
-  const modal = content !== null ? (0, import_react_dom3.createPortal)((0, import_react23.createElement)(Modal, { close, variant, children: content }), document.body) : null;
+  const modal = content !== null ? (0, import_react_dom3.createPortal)((0, import_react23.createElement)(Modal, { close, variant, fullScreenOnMobile, children: content }), document.body) : null;
   return { open, close, modal };
 }
 

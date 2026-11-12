@@ -32,9 +32,10 @@ interface Props {
   children: React.ReactNode;
   close: () => void;
   variant?: ModalVariant;
+  fullScreenOnMobile?: boolean;
 }
 
-export function Modal({ children, close, variant = 'dialog' }: Props) {
+export function Modal({ children, close, variant = 'dialog', fullScreenOnMobile = false }: Props) {
   const boxRef = useRef<HTMLDivElement>(null);
   useScrollLock();
 
@@ -52,6 +53,7 @@ export function Modal({ children, close, variant = 'dialog' }: Props) {
       <Box
         ref={boxRef}
         $variant={variant}
+        $fullScreenOnMobile={fullScreenOnMobile}
         role="dialog"
         aria-modal="true"
         tabIndex={-1}

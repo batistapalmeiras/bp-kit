@@ -20,7 +20,15 @@ export const Overlay = styled.div<{ $variant: ModalVariant }>`
   }
 `;
 
-export const Box = styled.div<{ $variant: ModalVariant }>`
+export const TitleRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing.md};
+  margin-bottom: 24px;
+`;
+
+export const Box = styled.div<{ $variant: ModalVariant; $fullScreenOnMobile: boolean }>`
   background: ${({ theme }) => theme.colors.canvas};
   border-radius: ${({ theme }) => theme.rounded.lg};
   padding: 28px 32px;
@@ -58,14 +66,33 @@ export const Box = styled.div<{ $variant: ModalVariant }>`
         }
       `) ||
     undefined}
-`;
 
-export const TitleRow = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: ${({ theme }) => theme.spacing.md};
-  margin-bottom: 24px;
+  /* Opt-in via fullScreenOnMobile (see useModal) — on phones the modal fills
+     the whole screen instead of hugging the bottom, and its title row stays
+     pinned while the content scrolls. */
+  ${({ $fullScreenOnMobile }) =>
+    ($fullScreenOnMobile &&
+      css`
+        @media (max-width: 744px) {
+          max-width: 100%;
+          margin-top: 0;
+          height: 100%;
+          border-radius: 0;
+          padding: 0 20px 24px;
+          overflow-y: auto;
+
+          & > ${TitleRow} {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            margin: 0 -20px 16px;
+            padding: 24px 20px 12px;
+            background: ${({ theme }) => theme.colors.canvas};
+            border-bottom: 1px solid ${({ theme }) => theme.colors.hairline};
+          }
+        }
+      `) ||
+    undefined}
 `;
 
 export const TitleText = styled.h3`

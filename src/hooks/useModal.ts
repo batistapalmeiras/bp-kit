@@ -5,14 +5,18 @@ import { createPortal } from 'react-dom';
 import { Modal, ModalVariant } from '../components/Modal';
 
 
-export function useModal(variant: ModalVariant = 'dialog') {
+interface UseModalOptions {
+  fullScreenOnMobile?: boolean;
+}
+
+export function useModal(variant: ModalVariant = 'dialog', { fullScreenOnMobile = false }: UseModalOptions = {}) {
   const [content, setContent] = useState<ReactNode | null>(null);
 
   const open = (c: ReactNode) => setContent(c);
   const close = () => setContent(null);
 
   const modal = content !== null
-    ? createPortal(createElement(Modal, { close, variant, children: content }), document.body)
+    ? createPortal(createElement(Modal, { close, variant, fullScreenOnMobile, children: content }), document.body)
     : null;
 
   return { open, close, modal };

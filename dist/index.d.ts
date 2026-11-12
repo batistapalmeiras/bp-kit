@@ -261,8 +261,9 @@ interface Props$1 {
     children: react__default.ReactNode;
     close: () => void;
     variant?: ModalVariant;
+    fullScreenOnMobile?: boolean;
 }
-declare function Modal({ children, close, variant }: Props$1): react__default.JSX.Element;
+declare function Modal({ children, close, variant, fullScreenOnMobile }: Props$1): react__default.JSX.Element;
 
 interface PaginationProps {
     currentPage: number;
@@ -422,7 +423,10 @@ declare function ResetPasswordForm({ loginPath }: ResetPasswordFormProps): react
 
 declare function useMediaQuery(query: string): boolean;
 
-declare function useModal(variant?: ModalVariant): {
+interface UseModalOptions {
+    fullScreenOnMobile?: boolean;
+}
+declare function useModal(variant?: ModalVariant, { fullScreenOnMobile }?: UseModalOptions): {
     open: (c: ReactNode) => void;
     close: () => void;
     modal: react.ReactPortal | null;
