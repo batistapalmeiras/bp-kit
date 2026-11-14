@@ -2376,6 +2376,15 @@ import { ArrowLeft } from "lucide-react";
 import styled26 from "styled-components";
 var Wrapper8 = styled26.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
+
+  ${({ $compact, theme: theme2 }) => $compact && `
+    @media (max-width: 744px) {
+      display: flex;
+      align-items: center;
+      gap: ${theme2.spacing.sm};
+      margin-bottom: 0;
+    }
+  `}
 `;
 var Back = styled26.button`
   display: inline-flex;
@@ -2390,12 +2399,23 @@ var Back = styled26.button`
   cursor: pointer;
   margin-left: -${({ theme: theme2 }) => theme2.spacing.xs};
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.sm};
+  flex-shrink: 0;
+
+  ${({ $compact }) => $compact && `
+    @media (max-width: 744px) {
+      margin-bottom: 0;
+    }
+  `}
   transition: background 0.15s;
 
-  &:hover { background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong}; }
+  &:hover {
+    background: ${({ theme: theme2 }) => theme2.colors.surfaceStrong};
+  }
 `;
 var Row = styled26.div`
   display: flex;
+  flex: 1;
+  min-width: 0;
   align-items: ${({ $actionAlign }) => $actionAlign === "end" ? "flex-end" : "center"};
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.base};
@@ -2412,23 +2432,38 @@ var Title = styled26.h2`
   font-weight: 700;
   color: ${({ theme: theme2 }) => theme2.colors.ink};
   line-height: 1.2;
+
+  ${({ $compact, theme: theme2 }) => $compact && `
+    @media (max-width: 744px) {
+      font-size: ${theme2.typography.titleMd.fontSize};
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  `}
 `;
 var Subtitle = styled26.p`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
+
+  ${({ $compact }) => $compact && `
+    @media (max-width: 744px) {
+      display: none;
+    }
+  `}
 `;
 
 // src/components/PageHeader/index.tsx
 import { jsx as jsx22, jsxs as jsxs19 } from "react/jsx-runtime";
-function PageHeader({ title, subtitle, back, action, actionAlign = "center" }) {
+function PageHeader({ title, subtitle, back, action, actionAlign = "center", compact = false }) {
   const navigate = useNavigate();
-  return /* @__PURE__ */ jsxs19(Wrapper8, { children: [
-    back && /* @__PURE__ */ jsx22(Back, { onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ jsx22(ArrowLeft, { size: 20 }) }),
+  return /* @__PURE__ */ jsxs19(Wrapper8, { $compact: compact, children: [
+    back && /* @__PURE__ */ jsx22(Back, { $compact: compact, onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ jsx22(ArrowLeft, { size: 20 }) }),
     /* @__PURE__ */ jsxs19(Row, { $actionAlign: actionAlign, children: [
       /* @__PURE__ */ jsxs19(Titles, { children: [
-        /* @__PURE__ */ jsx22(Title, { children: title }),
-        subtitle && /* @__PURE__ */ jsx22(Subtitle, { children: subtitle })
+        /* @__PURE__ */ jsx22(Title, { $compact: compact, children: title }),
+        subtitle && /* @__PURE__ */ jsx22(Subtitle, { $compact: compact, children: subtitle })
       ] }),
       action && /* @__PURE__ */ jsx22("div", { children: action })
     ] })

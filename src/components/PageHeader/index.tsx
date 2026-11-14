@@ -12,22 +12,23 @@ interface Props {
   back?: boolean;
   action?: React.ReactNode;
   actionAlign?: 'center' | 'end';
+  compact?: boolean;
 }
 
-export function PageHeader({ title, subtitle, back, action, actionAlign = 'center' }: Props) {
+export function PageHeader({ title, subtitle, back, action, actionAlign = 'center', compact = false }: Props) {
   const navigate = useNavigate();
 
   return (
-    <Wrapper>
+    <Wrapper $compact={compact}>
       {back && (
-        <Back onClick={() => navigate(-1)} aria-label="Voltar">
+        <Back $compact={compact} onClick={() => navigate(-1)} aria-label="Voltar">
           <ArrowLeft size={20} />
         </Back>
       )}
       <Row $actionAlign={actionAlign}>
         <Titles>
-          <Title>{title}</Title>
-          {subtitle && <Subtitle>{subtitle}</Subtitle>}
+          <Title $compact={compact}>{title}</Title>
+          {subtitle && <Subtitle $compact={compact}>{subtitle}</Subtitle>}
         </Titles>
         {action && <div>{action}</div>}
       </Row>

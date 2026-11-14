@@ -277,8 +277,9 @@ interface Props {
     back?: boolean;
     action?: react__default.ReactNode;
     actionAlign?: 'center' | 'end';
+    compact?: boolean;
 }
-declare function PageHeader({ title, subtitle, back, action, actionAlign }: Props): react__default.JSX.Element;
+declare function PageHeader({ title, subtitle, back, action, actionAlign, compact }: Props): react__default.JSX.Element;
 
 type SearchInputSize = 'sm' | 'md';
 interface SearchInputProps {
