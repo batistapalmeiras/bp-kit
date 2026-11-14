@@ -2,14 +2,34 @@
 import { useEffect, useRef, useState } from 'react';
 import { FieldPath, FieldValues, useController } from 'react-hook-form';
 // Libs
-import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, ChevronLeft, ChevronRight, X } from 'lucide-react';
 // Components
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
+import { useScrollLock } from '../../../hooks/useScrollLock';
+import {
+  formatTypedDate,
+  MONTH_NAMES,
+  MONTH_SHORT_NAMES,
+  parseDateKey,
+  parseTypedDate,
+  toDateKey,
+} from '../../../utils/dates';
+import { maskDate } from '../../../utils/masks';
 import { BaseInput } from '../BaseInput';
-import { MONTH_NAMES, MONTH_SHORT_NAMES, parseDateKey, toDateKey } from '../../../utils/dates';
 import { ChoiceCell, ChoiceGrid } from '../_shared/ChoiceGrid';
-import { HeaderLabel, NavButton, Panel, PanelHeader, Placeholder, Trigger, Wrapper } from '../_shared/PickerElements';
+import { HeaderLabel, NavButton, PanelHeader, Wrapper } from '../_shared/PickerElements';
 // Local
-import { DayCell, DayGrid, HeaderButton, WeekdayLabel, WeekdayRow } from './styles/DatePicker';
+import {
+  CalendarButton,
+  DateField,
+  DayCell,
+  DayGrid,
+  DatePanel as Panel,
+  FullScreenBar,
+  HeaderButton,
+  WeekdayLabel,
+  WeekdayRow,
+} from './styles/DatePicker';
 import { DatePickerProps } from './types';
 
 type View = 'days' | 'months' | 'years';
@@ -17,10 +37,9 @@ type View = 'days' | 'months' | 'years';
 const WEEKDAY_LABELS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
 const YEARS_PER_PAGE = 12;
 
-function formatDateValue(value?: string): string | null {
-  const date = parseDateKey(value);
-  if (!date) return null;
-  return `${date.getDate()} de ${MONTH_NAMES[date.getMonth()]} de ${date.getFullYear()}`;
+function ScrollLock() {
+  useScrollLock();
+  return null;
 }
 
 function buildMonthGrid(year: number, month: number): (Date | null)[] {
@@ -39,7 +58,7 @@ export function DatePicker<T extends FieldValues, N extends FieldPath<T>>({
   control,
   name,
   wrapperStyle,
-  placeholder = 'Selecione a data',
+  placeholder = 'dd/mm/aaaa',
   isDateDisabled,
   initialMonth,
 }: DatePickerProps<T, N>) {
@@ -51,10 +70,20 @@ export function DatePicker<T extends FieldValues, N extends FieldPath<T>>({
   const [pageStart, setPageStart] = useState(() => firstYearOfPage(viewDate.getFullYear()));
   const [lastInitialMonth, setLastInitialMonth] = useState(initialMonth);
   const ref = useRef<HTMLDivElement>(null);
+  const fullScreen = useMediaQuery('(max-width: 744px)');
+  const valueKey: string = field.value || '';
+  const [text, setText] = useState(() => formatTypedDate(valueKey));
+  const [lastValue, setLastValue] = useState(valueKey);
 
   if (initialMonth !== lastInitialMonth) {
     setLastInitialMonth(initialMonth);
     if (!selectedDate && initialMonth) setViewDate(initialMonth);
+  }
+
+  if (valueKey !== lastValue) {
+    setLastValue(valueKey);
+    const typed = parseTypedDate(text);
+    if ((typed ? toDateKey(typed) : '') !== valueKey) setText(formatTypedDate(valueKey));
   }
 
   useEffect(() => {
@@ -94,7 +123,22 @@ export function DatePicker<T extends FieldValues, N extends FieldPath<T>>({
 
   const selectDay = (date: Date) => {
     field.onChange(toDateKey(date));
+    setText(formatTypedDate(toDateKey(date)));
     setOpen(false);
+  };
+
+  const type = (raw: string) => {
+    const masked = maskDate(raw);
+    setText(masked);
+    const typed = parseTypedDate(masked);
+    const accepted = typed && !isDateDisabled?.(typed) ? typed : null;
+    field.onChange(accepted ? toDateKey(accepted) : '');
+    if (accepted) setViewDate(accepted);
+  };
+
+  const restoreText = () => {
+    setText(formatTypedDate(valueKey));
+    field.onBlur();
   };
 
   const years = Array.from({ length: YEARS_PER_PAGE }, (_, index) => pageStart + index);
@@ -102,13 +146,31 @@ export function DatePicker<T extends FieldValues, N extends FieldPath<T>>({
   return (
     <BaseInput label={label} wrapperStyle={wrapperStyle} error={fieldState.error?.message}>
       <Wrapper ref={ref}>
-        <Trigger type="button" $open={open} aria-invalid={!!fieldState.error} onClick={toggle}>
-          {formatDateValue(field.value) ?? <Placeholder>{placeholder}</Placeholder>}
+        <DateField
+          ref={field.ref}
+          type="text"
+          inputMode="numeric"
+          autoComplete="off"
+          placeholder={placeholder}
+          aria-invalid={!!fieldState.error}
+          value={text}
+          onChange={(event) => type(event.target.value)}
+          onBlur={restoreText}
+        />
+        <CalendarButton type="button" aria-label="Abrir calendário" aria-expanded={open} onClick={toggle}>
           <Calendar size={18} />
-        </Trigger>
+        </CalendarButton>
+
+        {open && fullScreen && <ScrollLock />}
 
         {open && view === 'days' && (
           <Panel>
+            <FullScreenBar>
+              <HeaderLabel>{label}</HeaderLabel>
+              <NavButton type="button" onClick={() => setOpen(false)} aria-label="Fechar calendário">
+                <X size={20} />
+              </NavButton>
+            </FullScreenBar>
             <PanelHeader>
               <NavButton type="button" onClick={() => changeMonth(-1)} aria-label="Mês anterior">
                 <ChevronLeft size={18} />
@@ -150,6 +212,12 @@ export function DatePicker<T extends FieldValues, N extends FieldPath<T>>({
 
         {open && view === 'months' && (
           <Panel>
+            <FullScreenBar>
+              <HeaderLabel>{label}</HeaderLabel>
+              <NavButton type="button" onClick={() => setOpen(false)} aria-label="Fechar calendário">
+                <X size={20} />
+              </NavButton>
+            </FullScreenBar>
             <PanelHeader>
               <NavButton
                 type="button"
@@ -186,6 +254,12 @@ export function DatePicker<T extends FieldValues, N extends FieldPath<T>>({
 
         {open && view === 'years' && (
           <Panel>
+            <FullScreenBar>
+              <HeaderLabel>{label}</HeaderLabel>
+              <NavButton type="button" onClick={() => setOpen(false)} aria-label="Fechar calendário">
+                <X size={20} />
+              </NavButton>
+            </FullScreenBar>
             <PanelHeader>
               <NavButton
                 type="button"

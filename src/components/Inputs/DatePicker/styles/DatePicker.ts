@@ -1,5 +1,8 @@
 // Libs
 import styled from 'styled-components';
+// Components
+import { InputField } from '../../BaseInput';
+import { Panel } from '../../_shared/PickerElements';
 
 export const WeekdayRow = styled.div`
   display: grid;
@@ -31,6 +34,12 @@ export const DayCell = styled.button<{ $selected?: boolean; $today?: boolean }>`
   height: 36px;
   border: none;
   border-radius: ${({ theme }) => theme.rounded.full};
+
+  @media (max-width: 744px) {
+    width: 100%;
+    height: 48px;
+  }
+
   background: ${({ theme, $selected }) => ($selected ? theme.colors.primary : 'transparent')};
   color: ${({ theme, $selected }) => ($selected ? theme.colors.onPrimary : theme.colors.ink)};
   font-family: ${({ theme }) => theme.typography.fontFamily};
@@ -63,5 +72,59 @@ export const HeaderButton = styled.button`
 
   &:hover {
     background: ${({ theme }) => theme.colors.surfaceStrong};
+  }
+`;
+
+export const DateField = styled(InputField)`
+  && {
+    padding-right: 52px;
+  }
+`;
+
+export const CalendarButton = styled.button`
+  position: absolute;
+  top: 50%;
+  right: ${({ theme }) => theme.spacing.xs};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  transform: translateY(-50%);
+  border: none;
+  border-radius: ${({ theme }) => theme.rounded.full};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.muted};
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.surfaceStrong};
+    color: ${({ theme }) => theme.colors.ink};
+  }
+`;
+
+export const DatePanel = styled(Panel)`
+  @media (max-width: 744px) {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    overflow-y: auto;
+    padding: ${({ theme }) => theme.spacing.base} 20px;
+  }
+`;
+
+export const FullScreenBar = styled.div`
+  display: none;
+
+  @media (max-width: 744px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: ${({ theme }) => theme.spacing.base};
+    padding-bottom: ${({ theme }) => theme.spacing.sm};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.hairline};
   }
 `;
