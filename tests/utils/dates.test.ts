@@ -1,7 +1,7 @@
 // Libs
 import { describe, expect, it } from 'vitest';
 // Local
-import { formatTypedDate, parseTypedDate } from '../../src/utils/dates';
+import { formatLongDate, formatTypedDate, parseTypedDate } from '../../src/utils/dates';
 
 describe('parseTypedDate', () => {
   it('reads a complete, real date', () => {
@@ -22,5 +22,11 @@ describe('formatTypedDate', () => {
     expect(formatTypedDate('1978-01-06')).toBe('06/01/1978');
     expect(formatTypedDate('')).toBe('');
     expect(formatTypedDate(undefined)).toBe('');
+  });
+});
+
+describe('formatLongDate', () => {
+  it('writes the day, the month name and the year', () => {
+    expect(formatLongDate(new Date(1971, 1, 2))).toBe('02 de Fevereiro de 1971');
   });
 });

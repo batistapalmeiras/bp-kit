@@ -48,3 +48,8 @@ export function parseTypedDate(text: string): Date | null {
   const real = date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
   return real ? date : null;
 }
+
+export function formatLongDate(date: Date): string {
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${day} de ${capitalize(MONTH_NAMES[date.getMonth()])} de ${date.getFullYear()}`;
+}
