@@ -2863,21 +2863,6 @@ var BrandMark = styled33.div`
     height: 160px;
   }
 `;
-var BrandQuote = styled33.blockquote`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  color: rgba(255, 255, 255, 0.6);
-  font-style: italic;
-  text-align: center;
-  position: relative;
-  z-index: 1;
-  max-width: 260px;
-  line-height: 1.5;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
 var FormPanel = styled33.div`
   flex: 1;
   display: flex;
@@ -3036,10 +3021,7 @@ var ChangeButton = styled33.button`
 import { jsx as jsx27, jsxs as jsxs23 } from "react/jsx-runtime";
 function AuthLayout({ brand, children }) {
   return /* @__PURE__ */ jsxs23(Page, { children: [
-    /* @__PURE__ */ jsxs23(Brand2, { children: [
-      /* @__PURE__ */ jsx27(BrandMark, { children: /* @__PURE__ */ jsx27("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      brand.quote && /* @__PURE__ */ jsx27(BrandQuote, { children: brand.quote })
-    ] }),
+    /* @__PURE__ */ jsx27(Brand2, { children: /* @__PURE__ */ jsx27(BrandMark, { children: /* @__PURE__ */ jsx27("img", { src: brand.icon, alt: brand.iconAlt }) }) }),
     /* @__PURE__ */ jsx27(FormPanel, { children: /* @__PURE__ */ jsx27(FormBox, { children: children != null ? children : /* @__PURE__ */ jsx27(Outlet, {}) }) })
   ] });
 }

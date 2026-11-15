@@ -66,22 +66,6 @@ export const BrandMark = styled.div`
   }
 `;
 
-export const BrandQuote = styled.blockquote`
-  font-family: ${({ theme }) => theme.typography.fontFamily};
-  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
-  color: rgba(255, 255, 255, 0.6);
-  font-style: italic;
-  text-align: center;
-  position: relative;
-  z-index: 1;
-  max-width: 260px;
-  line-height: 1.5;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
 export const FormPanel = styled.div`
   flex: 1;
   display: flex;

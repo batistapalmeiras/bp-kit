@@ -381,7 +381,6 @@ declare function Typography({ type, as, children, ...rest }: TypographyProps): r
 interface AuthBrand {
     icon: string;
     iconAlt: string;
-    quote?: string;
 }
 interface AuthLayoutProps {
     brand: AuthBrand;
