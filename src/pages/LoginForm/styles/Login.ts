@@ -135,16 +135,6 @@ export const FormBox = styled.div`
 
 export const FormHeader = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.lg};
-
-  &::before {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 3px;
-    margin-bottom: ${({ theme }) => theme.spacing.md};
-    border-radius: ${({ theme }) => theme.rounded.full};
-    background: ${({ theme }) => theme.colors.primary};
-  }
 `;
 
 export const FormTitle = styled.h2`

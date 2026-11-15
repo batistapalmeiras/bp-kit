@@ -3039,16 +3039,6 @@ var FormBox = import_styled_components35.default.div`
 `;
 var FormHeader = import_styled_components35.default.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
-
-  &::before {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 3px;
-    margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
-    border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-    background: ${({ theme: theme2 }) => theme2.colors.primary};
-  }
 `;
 var FormTitle = import_styled_components35.default.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
