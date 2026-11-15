@@ -46,8 +46,8 @@ export const Brand = styled.div`
 `;
 
 export const BrandMark = styled.div`
-  width: 220px;
-  height: 220px;
+  width: 300px;
+  height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,8 +61,8 @@ export const BrandMark = styled.div`
   }
 
   @media (max-width: 768px) {
-    width: 160px;
-    height: 160px;
+    width: 230px;
+    height: 230px;
   }
 `;
 

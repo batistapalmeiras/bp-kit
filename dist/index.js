@@ -2957,8 +2957,8 @@ var Brand2 = import_styled_components35.default.div`
   }
 `;
 var BrandMark = import_styled_components35.default.div`
-  width: 220px;
-  height: 220px;
+  width: 300px;
+  height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2972,8 +2972,8 @@ var BrandMark = import_styled_components35.default.div`
   }
 
   @media (max-width: 768px) {
-    width: 160px;
-    height: 160px;
+    width: 230px;
+    height: 230px;
   }
 `;
 var FormPanel = import_styled_components35.default.div`
