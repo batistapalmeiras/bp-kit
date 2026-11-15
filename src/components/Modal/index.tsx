@@ -40,7 +40,7 @@ export function Modal({ children, close, variant = 'dialog', fullScreenOnMobile 
   useScrollLock();
 
   useEffect(() => {
-    boxRef.current?.focus();
+    if (!boxRef.current?.contains(document.activeElement)) boxRef.current?.focus();
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') close();
     };

@@ -2268,8 +2268,8 @@ function Modal({ children, close, variant = "dialog", fullScreenOnMobile = false
   const boxRef = useRef4(null);
   useScrollLock();
   useEffect4(() => {
-    var _a;
-    (_a = boxRef.current) == null ? void 0 : _a.focus();
+    var _a, _b;
+    if (!((_a = boxRef.current) == null ? void 0 : _a.contains(document.activeElement))) (_b = boxRef.current) == null ? void 0 : _b.focus();
     const onKeyDown = (e) => {
       if (e.key === "Escape") close();
     };

@@ -2381,8 +2381,8 @@ function Modal({ children, close, variant = "dialog", fullScreenOnMobile = false
   const boxRef = (0, import_react14.useRef)(null);
   useScrollLock();
   (0, import_react14.useEffect)(() => {
-    var _a;
-    (_a = boxRef.current) == null ? void 0 : _a.focus();
+    var _a, _b;
+    if (!((_a = boxRef.current) == null ? void 0 : _a.contains(document.activeElement))) (_b = boxRef.current) == null ? void 0 : _b.focus();
     const onKeyDown = (e) => {
       if (e.key === "Escape") close();
     };
