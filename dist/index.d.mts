@@ -290,9 +290,10 @@ interface SearchInputProps {
      * pairing a search field with a compact button or select. Defaults to
      * 'md' (40px), the original size. */
     size?: SearchInputSize;
+    autoFocus?: boolean;
 }
 
-declare function SearchInput({ value, onChange, placeholder, size }: SearchInputProps): react.JSX.Element;
+declare function SearchInput({ value, onChange, placeholder, size, autoFocus }: SearchInputProps): react.JSX.Element;
 
 interface SegmentedControlOption<T extends string | number | boolean> {
     value: T;

@@ -2633,10 +2633,19 @@ var Field2 = import_styled_components29.default.input`
 
 // src/components/SearchInput/index.tsx
 var import_jsx_runtime24 = require("react/jsx-runtime");
-function SearchInput2({ value, onChange, placeholder, size = "md" }) {
+function SearchInput2({ value, onChange, placeholder, size = "md", autoFocus }) {
   return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(Wrapper9, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_lucide_react10.Search, { size: 16 }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Field2, { $size: size, placeholder, value, onChange: (e) => onChange(e.target.value) })
+    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+      Field2,
+      {
+        $size: size,
+        placeholder,
+        value,
+        autoFocus,
+        onChange: (e) => onChange(e.target.value)
+      }
+    )
   ] });
 }
 

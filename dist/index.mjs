@@ -2520,10 +2520,19 @@ var Field2 = styled27.input`
 
 // src/components/SearchInput/index.tsx
 import { jsx as jsx23, jsxs as jsxs20 } from "react/jsx-runtime";
-function SearchInput2({ value, onChange, placeholder, size = "md" }) {
+function SearchInput2({ value, onChange, placeholder, size = "md", autoFocus }) {
   return /* @__PURE__ */ jsxs20(Wrapper9, { children: [
     /* @__PURE__ */ jsx23(Search, { size: 16 }),
-    /* @__PURE__ */ jsx23(Field2, { $size: size, placeholder, value, onChange: (e) => onChange(e.target.value) })
+    /* @__PURE__ */ jsx23(
+      Field2,
+      {
+        $size: size,
+        placeholder,
+        value,
+        autoFocus,
+        onChange: (e) => onChange(e.target.value)
+      }
+    )
   ] });
 }
 

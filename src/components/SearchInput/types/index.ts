@@ -8,4 +8,5 @@ export interface SearchInputProps {
    * pairing a search field with a compact button or select. Defaults to
    * 'md' (40px), the original size. */
   size?: SearchInputSize;
+  autoFocus?: boolean;
 }
