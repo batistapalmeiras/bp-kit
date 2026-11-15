@@ -2844,29 +2844,23 @@ var Brand2 = styled33.div`
   }
 `;
 var BrandMark = styled33.div`
-  width: 80px;
-  height: 80px;
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
-  background: ${({ theme: theme2 }) => theme2.colors.onPrimary};
-  backdrop-filter: blur(4px);
+  width: 140px;
+  height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.25);
   position: relative;
   z-index: 1;
 
   img {
-    width: 52px;
-    height: 52px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
   }
 
   @media (max-width: 768px) {
-    width: 60px;
-    height: 60px;
-
-    img { width: 38px; height: 38px; }
+    width: 96px;
+    height: 96px;
   }
 `;
 var BrandText = styled33.div`
