@@ -2813,7 +2813,7 @@ var Page = styled33.div`
   }
 `;
 var Brand2 = styled33.div`
-  flex: 0 0 420px;
+  flex: 1 1 50%;
   background: ${({ theme: theme2 }) => theme2.colors.primary};
   display: flex;
   flex-direction: column;
@@ -2831,10 +2831,6 @@ var Brand2 = styled33.div`
     background: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.12) 0%, transparent 60%),
                 radial-gradient(ellipse at 80% 80%, rgba(0,0,0,0.08) 0%, transparent 50%);
     pointer-events: none;
-  }
-
-  @media (max-width: 1024px) {
-    flex: 0 0 340px;
   }
 
   @media (max-width: 768px) {
@@ -2863,8 +2859,46 @@ var BrandMark = styled33.div`
     height: 230px;
   }
 `;
+var Motto = styled33.div`
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  column-gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  color: #fff;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+var MottoWord = styled33.span`
+  justify-self: ${({ $end }) => $end ? "end" : "start"};
+  font-size: clamp(2.5rem, 4.5vw, 4rem);
+  font-weight: 800;
+  font-style: ${({ $italic }) => $italic ? "italic" : "normal"};
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+`;
+var MottoWide = styled33(MottoWord)`
+  grid-column: 1 / -1;
+  justify-self: center;
+`;
+var MottoNote = styled33.span`
+  justify-self: ${({ $end }) => $end ? "end" : "start"};
+  text-align: ${({ $end }) => $end ? "right" : "left"};
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: pre-line;
+  opacity: 0.85;
+`;
 var FormPanel = styled33.div`
-  flex: 1;
+  flex: 1 1 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2892,6 +2926,16 @@ var FormBox = styled33.div`
 `;
 var FormHeader = styled33.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
+
+  &::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 3px;
+    margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
+    border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+    background: ${({ theme: theme2 }) => theme2.colors.primary};
+  }
 `;
 var FormTitle = styled33.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
@@ -3021,7 +3065,16 @@ var ChangeButton = styled33.button`
 import { jsx as jsx27, jsxs as jsxs23 } from "react/jsx-runtime";
 function AuthLayout({ brand, children }) {
   return /* @__PURE__ */ jsxs23(Page, { children: [
-    /* @__PURE__ */ jsx27(Brand2, { children: /* @__PURE__ */ jsx27(BrandMark, { children: /* @__PURE__ */ jsx27("img", { src: brand.icon, alt: brand.iconAlt }) }) }),
+    /* @__PURE__ */ jsxs23(Brand2, { children: [
+      /* @__PURE__ */ jsx27(BrandMark, { children: /* @__PURE__ */ jsx27("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      brand.motto && /* @__PURE__ */ jsxs23(Motto, { children: [
+        /* @__PURE__ */ jsx27(MottoNote, { $end: true, children: brand.motto.lead }),
+        /* @__PURE__ */ jsx27(MottoWord, { children: brand.motto.words[0] }),
+        /* @__PURE__ */ jsx27(MottoWide, { $italic: true, children: brand.motto.words[1] }),
+        /* @__PURE__ */ jsx27(MottoWord, { $end: true, children: brand.motto.words[2] }),
+        /* @__PURE__ */ jsx27(MottoNote, { children: brand.motto.closing })
+      ] })
+    ] }),
     /* @__PURE__ */ jsx27(FormPanel, { children: /* @__PURE__ */ jsx27(FormBox, { children: children != null ? children : /* @__PURE__ */ jsx27(Outlet, {}) }) })
   ] });
 }

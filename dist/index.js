@@ -2926,7 +2926,7 @@ var Page = import_styled_components35.default.div`
   }
 `;
 var Brand2 = import_styled_components35.default.div`
-  flex: 0 0 420px;
+  flex: 1 1 50%;
   background: ${({ theme: theme2 }) => theme2.colors.primary};
   display: flex;
   flex-direction: column;
@@ -2944,10 +2944,6 @@ var Brand2 = import_styled_components35.default.div`
     background: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.12) 0%, transparent 60%),
                 radial-gradient(ellipse at 80% 80%, rgba(0,0,0,0.08) 0%, transparent 50%);
     pointer-events: none;
-  }
-
-  @media (max-width: 1024px) {
-    flex: 0 0 340px;
   }
 
   @media (max-width: 768px) {
@@ -2976,8 +2972,46 @@ var BrandMark = import_styled_components35.default.div`
     height: 230px;
   }
 `;
+var Motto = import_styled_components35.default.div`
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  column-gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  color: #fff;
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+var MottoWord = import_styled_components35.default.span`
+  justify-self: ${({ $end }) => $end ? "end" : "start"};
+  font-size: clamp(2.5rem, 4.5vw, 4rem);
+  font-weight: 800;
+  font-style: ${({ $italic }) => $italic ? "italic" : "normal"};
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+`;
+var MottoWide = (0, import_styled_components35.default)(MottoWord)`
+  grid-column: 1 / -1;
+  justify-self: center;
+`;
+var MottoNote = import_styled_components35.default.span`
+  justify-self: ${({ $end }) => $end ? "end" : "start"};
+  text-align: ${({ $end }) => $end ? "right" : "left"};
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: pre-line;
+  opacity: 0.85;
+`;
 var FormPanel = import_styled_components35.default.div`
-  flex: 1;
+  flex: 1 1 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3005,6 +3039,16 @@ var FormBox = import_styled_components35.default.div`
 `;
 var FormHeader = import_styled_components35.default.div`
   margin-bottom: ${({ theme: theme2 }) => theme2.spacing.lg};
+
+  &::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 3px;
+    margin-bottom: ${({ theme: theme2 }) => theme2.spacing.md};
+    border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
+    background: ${({ theme: theme2 }) => theme2.colors.primary};
+  }
 `;
 var FormTitle = import_styled_components35.default.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
@@ -3134,7 +3178,16 @@ var ChangeButton = import_styled_components35.default.button`
 var import_jsx_runtime28 = require("react/jsx-runtime");
 function AuthLayout({ brand, children }) {
   return /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(Page, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(Brand2, { children: /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(Brand2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(BrandMark, { children: /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("img", { src: brand.icon, alt: brand.iconAlt }) }),
+      brand.motto && /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(Motto, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(MottoNote, { $end: true, children: brand.motto.lead }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(MottoWord, { children: brand.motto.words[0] }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(MottoWide, { $italic: true, children: brand.motto.words[1] }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(MottoWord, { $end: true, children: brand.motto.words[2] }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(MottoNote, { children: brand.motto.closing })
+      ] })
+    ] }),
     /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(FormPanel, { children: /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(FormBox, { children: children != null ? children : /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(import_react_router_dom3.Outlet, {}) }) })
   ] });
 }

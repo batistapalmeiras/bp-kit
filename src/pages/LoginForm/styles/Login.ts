@@ -14,7 +14,7 @@ export const Page = styled.div`
 `;
 
 export const Brand = styled.div`
-  flex: 0 0 420px;
+  flex: 1 1 50%;
   background: ${({ theme }) => theme.colors.primary};
   display: flex;
   flex-direction: column;
@@ -32,10 +32,6 @@ export const Brand = styled.div`
     background: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.12) 0%, transparent 60%),
                 radial-gradient(ellipse at 80% 80%, rgba(0,0,0,0.08) 0%, transparent 50%);
     pointer-events: none;
-  }
-
-  @media (max-width: 1024px) {
-    flex: 0 0 340px;
   }
 
   @media (max-width: 768px) {
@@ -66,8 +62,50 @@ export const BrandMark = styled.div`
   }
 `;
 
+export const Motto = styled.div`
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  column-gap: ${({ theme }) => theme.spacing.md};
+  color: #fff;
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const MottoWord = styled.span<{ $italic?: boolean; $end?: boolean }>`
+  justify-self: ${({ $end }) => ($end ? 'end' : 'start')};
+  font-size: clamp(2.5rem, 4.5vw, 4rem);
+  font-weight: 800;
+  font-style: ${({ $italic }) => ($italic ? 'italic' : 'normal')};
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+`;
+
+export const MottoWide = styled(MottoWord)`
+  grid-column: 1 / -1;
+  justify-self: center;
+`;
+
+export const MottoNote = styled.span<{ $end?: boolean }>`
+  justify-self: ${({ $end }) => ($end ? 'end' : 'start')};
+  text-align: ${({ $end }) => ($end ? 'right' : 'left')};
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: pre-line;
+  opacity: 0.85;
+`;
+
 export const FormPanel = styled.div`
-  flex: 1;
+  flex: 1 1 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -97,6 +135,16 @@ export const FormBox = styled.div`
 
 export const FormHeader = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.lg};
+
+  &::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 3px;
+    margin-bottom: ${({ theme }) => theme.spacing.md};
+    border-radius: ${({ theme }) => theme.rounded.full};
+    background: ${({ theme }) => theme.colors.primary};
+  }
 `;
 
 export const FormTitle = styled.h2`

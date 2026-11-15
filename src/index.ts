@@ -51,7 +51,7 @@ export type { TypographyProps, TypographyType } from './components/Typography/ty
 
 // Pages
 export { AuthLayout } from './pages/AuthLayout';
-export type { AuthBrand, AuthLayoutProps } from './pages/AuthLayout';
+export type { AuthBrand, AuthLayoutProps, AuthMotto } from './pages/AuthLayout';
 export { LoginForm } from './pages/LoginForm';
 export type { LoginFormProps } from './pages/LoginForm';
 export { ProfilePage } from './pages/ProfilePage';
