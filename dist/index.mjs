@@ -2844,8 +2844,8 @@ var Brand2 = styled33.div`
   }
 `;
 var BrandMark = styled33.div`
-  width: 140px;
-  height: 140px;
+  width: 220px;
+  height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2859,33 +2859,9 @@ var BrandMark = styled33.div`
   }
 
   @media (max-width: 768px) {
-    width: 96px;
-    height: 96px;
+    width: 160px;
+    height: 160px;
   }
-`;
-var BrandText = styled33.div`
-  text-align: center;
-  color: #fff;
-  position: relative;
-  z-index: 1;
-`;
-var BrandName2 = styled33.h1`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: 1.625rem;
-  font-weight: 700;
-  letter-spacing: -0.3px;
-  line-height: 1.2;
-  margin-bottom: 6px;
-
-  @media (max-width: 768px) {
-    font-size: 1.25rem;
-  }
-`;
-var BrandSub = styled33.p`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  opacity: 0.75;
-  line-height: 1.4;
 `;
 var BrandQuote = styled33.blockquote`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
@@ -3062,10 +3038,6 @@ function AuthLayout({ brand, children }) {
   return /* @__PURE__ */ jsxs23(Page, { children: [
     /* @__PURE__ */ jsxs23(Brand2, { children: [
       /* @__PURE__ */ jsx27(BrandMark, { children: /* @__PURE__ */ jsx27("img", { src: brand.icon, alt: brand.iconAlt }) }),
-      /* @__PURE__ */ jsxs23(BrandText, { children: [
-        /* @__PURE__ */ jsx27(BrandName2, { children: brand.name }),
-        /* @__PURE__ */ jsx27(BrandSub, { children: brand.sub })
-      ] }),
       brand.quote && /* @__PURE__ */ jsx27(BrandQuote, { children: brand.quote })
     ] }),
     /* @__PURE__ */ jsx27(FormPanel, { children: /* @__PURE__ */ jsx27(FormBox, { children: children != null ? children : /* @__PURE__ */ jsx27(Outlet, {}) }) })

@@ -5,10 +5,7 @@ import { Outlet } from 'react-router-dom';
 import {
   Brand,
   BrandMark,
-  BrandName,
   BrandQuote,
-  BrandSub,
-  BrandText,
   FormBox,
   FormPanel,
   Page,
@@ -17,8 +14,6 @@ import {
 export interface AuthBrand {
   icon: string;
   iconAlt: string;
-  name: string;
-  sub: string;
   quote?: string;
 }
 
@@ -34,10 +29,6 @@ export function AuthLayout({ brand, children }: AuthLayoutProps) {
         <BrandMark>
           <img src={brand.icon} alt={brand.iconAlt} />
         </BrandMark>
-        <BrandText>
-          <BrandName>{brand.name}</BrandName>
-          <BrandSub>{brand.sub}</BrandSub>
-        </BrandText>
         {brand.quote && <BrandQuote>{brand.quote}</BrandQuote>}
       </Brand>
 

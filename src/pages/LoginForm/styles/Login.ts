@@ -46,8 +46,8 @@ export const Brand = styled.div`
 `;
 
 export const BrandMark = styled.div`
-  width: 140px;
-  height: 140px;
+  width: 220px;
+  height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,36 +61,9 @@ export const BrandMark = styled.div`
   }
 
   @media (max-width: 768px) {
-    width: 96px;
-    height: 96px;
+    width: 160px;
+    height: 160px;
   }
-`;
-
-export const BrandText = styled.div`
-  text-align: center;
-  color: #fff;
-  position: relative;
-  z-index: 1;
-`;
-
-export const BrandName = styled.h1`
-  font-family: ${({ theme }) => theme.typography.fontFamily};
-  font-size: 1.625rem;
-  font-weight: 700;
-  letter-spacing: -0.3px;
-  line-height: 1.2;
-  margin-bottom: 6px;
-
-  @media (max-width: 768px) {
-    font-size: 1.25rem;
-  }
-`;
-
-export const BrandSub = styled.p`
-  font-family: ${({ theme }) => theme.typography.fontFamily};
-  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
-  opacity: 0.75;
-  line-height: 1.4;
 `;
 
 export const BrandQuote = styled.blockquote`
