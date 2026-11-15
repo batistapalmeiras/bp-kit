@@ -296,9 +296,9 @@ var Chip = styled5.button`
 // src/components/Typography/styles/Typography.ts
 import styled6, { css as css3 } from "styled-components";
 var styleMap = {
-  h1: css3`font-family: ${({ theme: theme2 }) => theme2.typography.fontFamilyDisplay}; font-size: ${({ theme: theme2 }) => theme2.typography.displayXl.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayXl.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayXl.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
-  h2: css3`font-family: ${({ theme: theme2 }) => theme2.typography.fontFamilyDisplay}; font-size: ${({ theme: theme2 }) => theme2.typography.displayMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
-  h3: css3`font-family: ${({ theme: theme2 }) => theme2.typography.fontFamilyDisplay}; font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displaySm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  h1: css3`font-size: ${({ theme: theme2 }) => theme2.typography.displayXl.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayXl.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayXl.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  h2: css3`font-size: ${({ theme: theme2 }) => theme2.typography.displayMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displayMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displayMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
+  h3: css3`font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.displaySm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
   h4: css3`font-size: ${({ theme: theme2 }) => theme2.typography.titleMd.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.titleMd.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.titleMd.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
   h5: css3`font-size: ${({ theme: theme2 }) => theme2.typography.titleSm.fontSize}; font-weight: ${({ theme: theme2 }) => theme2.typography.titleSm.fontWeight}; line-height: ${({ theme: theme2 }) => theme2.typography.titleSm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
   h6: css3`font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize}; font-weight: 600; line-height: ${({ theme: theme2 }) => theme2.typography.bodySm.lineHeight}; color: ${({ theme: theme2 }) => theme2.colors.ink};`,
@@ -2814,7 +2814,7 @@ var Page = styled33.div`
 `;
 var Brand2 = styled33.div`
   flex: 0 0 420px;
-  background: ${({ theme: theme2 }) => theme2.colors.forest};
+  background: ${({ theme: theme2 }) => theme2.colors.primary};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2876,7 +2876,7 @@ var BrandText = styled33.div`
   z-index: 1;
 `;
 var BrandName2 = styled33.h1`
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamilyDisplay};
+  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: 1.625rem;
   font-weight: 700;
   letter-spacing: -0.3px;
@@ -3822,7 +3822,7 @@ var GlobalStyles = createGlobalStyle`
     font-weight: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontWeight};
     line-height: ${({ theme: theme2 }) => theme2.typography.bodyMd.lineHeight};
     color: ${({ theme: theme2 }) => theme2.colors.ink};
-    background-color: ${({ theme: theme2 }) => theme2.colors.cream};
+    background-color: ${({ theme: theme2 }) => theme2.colors.canvas};
   }
 
   a {
@@ -3855,16 +3855,13 @@ var GlobalStyles_default = GlobalStyles;
 // src/styles/theme.ts
 var theme = {
   colors: {
-    primary: "#52877F",
-    primaryActive: "#3E6861",
-    primaryDisabled: "#B9CFCA",
-    primarySoft: "#E6EFED",
-    forest: "#1F473F",
-    cream: "#FFF8E1",
-    accent: "#F74528",
+    primary: "#78b9a4",
+    primaryActive: "#5a9d88",
+    primaryDisabled: "#c2dbd4",
+    primarySoft: "#E8F2EE",
     primaryErrorText: "#c13515",
     primaryErrorTextHover: "#b32505",
-    luxe: "#1F473F",
+    luxe: "#2d6a58",
     plus: "#4a9e82",
     ink: "#1C2421",
     body: "#3D4643",
@@ -3896,7 +3893,6 @@ var theme = {
   },
   typography: {
     fontFamily: "Inter, -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif",
-    fontFamilyDisplay: "'Barlow Condensed', Inter, -apple-system, system-ui, sans-serif",
     displayXl: {
       fontSize: "28px",
       fontWeight: 700,

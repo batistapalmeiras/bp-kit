@@ -20,7 +20,7 @@ const GlobalStyles = createGlobalStyle`
     font-weight: ${({ theme }) => theme.typography.bodyMd.fontWeight};
     line-height: ${({ theme }) => theme.typography.bodyMd.lineHeight};
     color: ${({ theme }) => theme.colors.ink};
-    background-color: ${({ theme }) => theme.colors.cream};
+    background-color: ${({ theme }) => theme.colors.canvas};
   }
 
   a {

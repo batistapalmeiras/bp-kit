@@ -15,7 +15,7 @@ export const Page = styled.div`
 
 export const Brand = styled.div`
   flex: 0 0 420px;
-  background: ${({ theme }) => theme.colors.forest};
+  background: ${({ theme }) => theme.colors.primary};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -80,7 +80,7 @@ export const BrandText = styled.div`
 `;
 
 export const BrandName = styled.h1`
-  font-family: ${({ theme }) => theme.typography.fontFamilyDisplay};
+  font-family: ${({ theme }) => theme.typography.fontFamily};
   font-size: 1.625rem;
   font-weight: 700;
   letter-spacing: -0.3px;

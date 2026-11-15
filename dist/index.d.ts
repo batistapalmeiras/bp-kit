@@ -501,16 +501,13 @@ declare const text: {
 
 declare const theme: {
     readonly colors: {
-        readonly primary: "#52877F";
-        readonly primaryActive: "#3E6861";
-        readonly primaryDisabled: "#B9CFCA";
-        readonly primarySoft: "#E6EFED";
-        readonly forest: "#1F473F";
-        readonly cream: "#FFF8E1";
-        readonly accent: "#F74528";
+        readonly primary: "#78b9a4";
+        readonly primaryActive: "#5a9d88";
+        readonly primaryDisabled: "#c2dbd4";
+        readonly primarySoft: "#E8F2EE";
         readonly primaryErrorText: "#c13515";
         readonly primaryErrorTextHover: "#b32505";
-        readonly luxe: "#1F473F";
+        readonly luxe: "#2d6a58";
         readonly plus: "#4a9e82";
         readonly ink: "#1C2421";
         readonly body: "#3D4643";
@@ -541,7 +538,6 @@ declare const theme: {
     };
     readonly typography: {
         readonly fontFamily: "Inter, -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif";
-        readonly fontFamilyDisplay: "'Barlow Condensed', Inter, -apple-system, system-ui, sans-serif";
         readonly displayXl: {
             readonly fontSize: "28px";
             readonly fontWeight: 700;
