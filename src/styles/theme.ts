@@ -1,12 +1,15 @@
 export const theme = {
   colors: {
-    primary: '#78b9a4',
-    primaryActive: '#5a9d88',
-    primaryDisabled: '#c2dbd4',
-    primarySoft: '#E8F2EE',
+    primary: '#52877F',
+    primaryActive: '#3E6861',
+    primaryDisabled: '#B9CFCA',
+    primarySoft: '#E6EFED',
+    forest: '#1F473F',
+    cream: '#FFF8E1',
+    accent: '#F74528',
     primaryErrorText: '#c13515',
     primaryErrorTextHover: '#b32505',
-    luxe: '#2d6a58',
+    luxe: '#1F473F',
     plus: '#4a9e82',
     ink: '#1C2421',
     body: '#3D4643',
@@ -41,6 +44,8 @@ export const theme = {
   typography: {
     fontFamily:
       "Inter, -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif",
+    fontFamilyDisplay:
+      "'Barlow Condensed', Inter, -apple-system, system-ui, sans-serif",
 
     displayXl: {
       fontSize: '28px',
