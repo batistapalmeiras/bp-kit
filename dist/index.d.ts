@@ -118,9 +118,10 @@ interface DatePickerProps<T extends FieldValues, N extends FieldPath<T>> {
     wrapperStyle?: React.CSSProperties;
     placeholder?: string;
     isDateDisabled?: (date: Date) => boolean;
+    calendar?: boolean;
 }
 
-declare function DatePicker<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, placeholder, isDateDisabled, }: DatePickerProps<T, N>): react.JSX.Element;
+declare function DatePicker<T extends FieldValues, N extends FieldPath<T>>({ label, control, name, wrapperStyle, placeholder, isDateDisabled, calendar, }: DatePickerProps<T, N>): react.JSX.Element;
 
 interface ImageUploadItem {
     id: string;

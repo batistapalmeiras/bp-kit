@@ -9,28 +9,31 @@ export const Wrapper = styled.div`
   margin-top: ${({ theme }) => theme.spacing.lg};
 `;
 
-export const PageButton = styled.button<{ $active?: boolean }>`
+export const PageButton = styled.button<{ $active?: boolean; $hidden?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 36px;
   height: 36px;
+  padding: 0;
+  border: none;
   border-radius: ${({ theme }) => theme.rounded.full};
-  border: 1px solid ${({ theme, $active }) => ($active ? theme.colors.ink : theme.colors.hairline)};
-  background: ${({ theme, $active }) => ($active ? theme.colors.ink : theme.colors.canvas)};
+  background: ${({ theme, $active }) => ($active ? theme.colors.ink : 'transparent')};
   color: ${({ theme, $active }) => ($active ? theme.colors.onDark : theme.colors.ink)};
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
-  font-weight: ${({ $active }) => ($active ? 600 : 400)};
+  font-weight: ${({ $active }) => ($active ? 600 : 500)};
+  visibility: ${({ $hidden }) => ($hidden ? 'hidden' : 'visible')};
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s;
 
-  &:hover:not(:disabled) {
-    background: ${({ theme, $active }) => ($active ? theme.colors.ink : theme.colors.surfaceSoft)};
+  &:hover {
+    background: ${({ theme, $active }) => ($active ? theme.colors.ink : theme.colors.surfaceStrong)};
   }
-
-  &:disabled { opacity: 0.35; cursor: not-allowed; }
 `;
 
 export const PageGap = styled.span`
-  width: 24px;
+  width: 36px;
   text-align: center;
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};

@@ -38,10 +38,11 @@ export const Box = styled.div<{ $variant: ModalVariant; $fullScreenOnMobile: boo
   animation: ${fadeUp} 0.25s ease;
 
   @media (max-width: 480px) {
+    align-self: flex-end;
     max-width: 100%;
-    margin-top: 35%;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 16px - env(safe-area-inset-top));
+    border-radius: ${({ theme }) => theme.rounded.lg} ${({ theme }) => theme.rounded.lg} 0 0;
     padding: 24px 20px;
     overflow-y: auto;
   }
