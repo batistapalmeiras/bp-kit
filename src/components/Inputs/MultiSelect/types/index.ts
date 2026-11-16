@@ -9,6 +9,7 @@ export interface MultiSelectProps {
   value: string[];
   onChange: (value: string[]) => void;
   placeholder?: string;
+  emptyText?: string;
   disabled?: boolean;
   max?: number;
   error?: string;

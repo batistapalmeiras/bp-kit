@@ -8,32 +8,33 @@ import { Checkbox } from '../Checkbox';
 import { filterOptions, pinnedFirst } from '../Select/options';
 // Local
 import {
-  Chip,
-  ChipLabel,
-  Chips,
   Dropdown,
   DropdownOption,
   EmptyOption,
   Field,
-  RemoveChip,
+  SearchBox,
   SearchInput,
   ToggleButton,
-  TogglePlaceholder,
+  ToggleText,
   Wrap,
 } from './styles';
 import { MultiSelectProps } from './types';
 
-// One bordered field holds the chips and the search text together (MUI
-// multi-select style) instead of loose chips floating above a separate
-// search box. The dropdown lists every option with a checkbox showing what's
-// already picked, so toggling one on/off doesn't require it to disappear
-// from view first.
+const SUMMARY_NAMES = 2;
+
+function summaryOf(labels: string[]): string {
+  const shown = labels.slice(0, SUMMARY_NAMES).join(', ');
+  const hidden = labels.length - SUMMARY_NAMES;
+  return hidden > 0 ? `${shown} e mais ${hidden}` : shown;
+}
+
 export function MultiSelect({
   label,
   options,
   value,
   onChange,
   placeholder = 'Buscar…',
+  emptyText = 'Selecione',
   disabled,
   max,
   error,
@@ -43,7 +44,6 @@ export function MultiSelect({
   const [open, setOpen] = useState(false);
   const [pinned, setPinned] = useState<string[]>([]);
   const wrapRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export function MultiSelect({
   useEffect(() => {
     if (!open) return;
     const onClickOutside = (e: MouseEvent) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false);
+      if (e.target instanceof Node && !wrapRef.current?.contains(e.target)) setOpen(false);
     };
     document.addEventListener('mousedown', onClickOutside);
     return () => document.removeEventListener('mousedown', onClickOutside);
@@ -67,7 +67,8 @@ export function MultiSelect({
   const orderedOptions = pinnedFirst(visibleOptions, pinned);
 
   const openDropdown = () => {
-    if (!open) setPinned(value);
+    setPinned(value);
+    setQuery('');
     setOpen(true);
   };
 
@@ -83,77 +84,45 @@ export function MultiSelect({
     }
     if (atLimit) return;
     onChange([...value, v]);
-    setQuery('');
   };
 
-  const remove = (v: string) => onChange(value.filter((x) => x !== v));
+  const toggleOpen = () => (open ? setOpen(false) : openDropdown());
 
-  const focusField = () => {
-    if (!disabled && searchable) inputRef.current?.focus();
-  };
-
-  const compact = value.length > 0;
+  const summary = summaryOf(value.map(labelFor));
 
   return (
     <BaseInput label={label} error={error}>
       <Wrap ref={wrapRef}>
-        <Field $focused={open} $disabled={disabled} $invalid={!!error} onClick={focusField}>
-          {value.length > 0 && (
-            <Chips>
-              {value.map((v) => (
-                <Chip key={v} title={labelFor(v)}>
-                  <ChipLabel>{labelFor(v)}</ChipLabel>
-                  {!disabled && (
-                    <RemoveChip
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        remove(v);
-                      }}
-                      aria-label={`Remover ${labelFor(v)}`}
-                    >
-                      ×
-                    </RemoveChip>
-                  )}
-                </Chip>
-              ))}
-            </Chips>
-          )}
-          {!disabled && searchable && (
-            <SearchInput
-              ref={inputRef}
-              $compact={compact}
-              type="text"
-              placeholder={value.length === 0 ? placeholder : ''}
-              value={query}
-              onFocus={openDropdown}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                openDropdown();
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Backspace' && query === '' && value.length > 0) remove(value[value.length - 1]);
-              }}
-            />
-          )}
-          {!disabled && !searchable && (
-            <ToggleButton
-              type="button"
-              aria-label={label}
-              aria-expanded={open}
-              aria-haspopup="listbox"
-              $open={open}
-              $compact={compact}
-              onClick={() => (open ? setOpen(false) : openDropdown())}
-            >
-              <TogglePlaceholder>{value.length === 0 ? placeholder : ''}</TogglePlaceholder>
-              <ChevronDown size={20} />
-            </ToggleButton>
-          )}
+        <Field $focused={open} $disabled={disabled} $invalid={!!error}>
+          <ToggleButton
+            type="button"
+            aria-label={label}
+            aria-expanded={open}
+            aria-haspopup="listbox"
+            title={summary || undefined}
+            disabled={disabled}
+            $open={open}
+            onClick={toggleOpen}
+          >
+            <ToggleText $empty={value.length === 0}>{summary || emptyText}</ToggleText>
+            <ChevronDown size={20} />
+          </ToggleButton>
         </Field>
 
         {open && !disabled && (
           <Dropdown ref={dropdownRef} role="listbox" aria-multiselectable={!single}>
+            {searchable && (
+              <SearchBox>
+                <SearchInput
+                  type="search"
+                  placeholder={placeholder}
+                  aria-label={placeholder}
+                  value={query}
+                  autoFocus
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+              </SearchBox>
+            )}
             {orderedOptions.length === 0 && <EmptyOption>Nenhuma opção encontrada.</EmptyOption>}
             {orderedOptions.map((o) => {
               const checked = value.includes(o.value);

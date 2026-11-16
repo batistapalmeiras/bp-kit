@@ -161,13 +161,14 @@ interface MultiSelectProps {
     value: string[];
     onChange: (value: string[]) => void;
     placeholder?: string;
+    emptyText?: string;
     disabled?: boolean;
     max?: number;
     error?: string;
     searchable?: boolean;
 }
 
-declare function MultiSelect({ label, options, value, onChange, placeholder, disabled, max, error, searchable, }: MultiSelectProps): react.JSX.Element;
+declare function MultiSelect({ label, options, value, onChange, placeholder, emptyText, disabled, max, error, searchable, }: MultiSelectProps): react.JSX.Element;
 
 interface RadioGroupOption {
     value: string;

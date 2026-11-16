@@ -5,9 +5,6 @@ export const Wrap = styled.div`
   position: relative;
 `;
 
-// The whole bordered box (chips + search text share it) — reads as one
-// input, MUI-multi-select style, instead of loose chips floating above a
-// separate search field.
 export const Field = styled.div<{ $focused?: boolean; $disabled?: boolean; $invalid?: boolean }>`
   display: flex;
   flex-wrap: nowrap;
@@ -18,7 +15,7 @@ export const Field = styled.div<{ $focused?: boolean; $disabled?: boolean; $inva
   background: ${({ theme }) => theme.colors.canvas};
   border: 1px solid ${({ theme }) => theme.colors.hairline};
   border-radius: ${({ theme }) => theme.rounded.sm};
-  cursor: text;
+  cursor: pointer;
   transition: border-color 0.15s, box-shadow 0.15s;
 
   &:hover {
@@ -48,60 +45,9 @@ export const Field = styled.div<{ $focused?: boolean; $disabled?: boolean; $inva
     `}
 `;
 
-export const Chip = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-  height: 32px;
-  padding: 0 ${({ theme }) => theme.spacing.xs} 0 ${({ theme }) => theme.spacing.md};
-  background: ${({ theme }) => theme.colors.primarySoft};
-  border: none;
-  border-radius: ${({ theme }) => theme.rounded.full};
-  font-family: ${({ theme }) => theme.typography.fontFamily};
-  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.luxe};
-  flex-shrink: 0;
-  max-width: 100%;
-`;
-
-export const Chips = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.xs};
-  flex: 0 1 auto;
+export const ToggleButton = styled.button<{ $open?: boolean }>`
+  flex: 1;
   min-width: 0;
-  overflow: hidden;
-`;
-
-export const ChipLabel = styled.span`
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-export const RemoveChip = styled.button`
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  width: 20px;
-  height: 20px;
-  border-radius: ${({ theme }) => theme.rounded.full};
-  background: none;
-  border: none;
-  color: ${({ theme }) => theme.colors.luxe};
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.primaryDisabled};
-  }
-`;
-
-export const ToggleButton = styled.button<{ $open?: boolean; $compact?: boolean }>`
-  flex: ${({ $compact }) => ($compact ? '1 1 24px' : '1 1 80px')};
-  min-width: ${({ $compact }) => ($compact ? '24px' : '80px')};
   min-height: 40px;
   display: flex;
   align-items: center;
@@ -113,6 +59,10 @@ export const ToggleButton = styled.button<{ $open?: boolean; $compact?: boolean 
   color: ${({ theme }) => theme.colors.body};
   cursor: pointer;
 
+  &:disabled {
+    cursor: not-allowed;
+  }
+
   svg {
     flex-shrink: 0;
     transition: transform 0.15s;
@@ -120,7 +70,7 @@ export const ToggleButton = styled.button<{ $open?: boolean; $compact?: boolean 
   }
 `;
 
-export const TogglePlaceholder = styled.span`
+export const ToggleText = styled.span<{ $empty: boolean }>`
   flex: 1 1 auto;
   min-width: 0;
   overflow: hidden;
@@ -129,27 +79,38 @@ export const TogglePlaceholder = styled.span`
   text-align: left;
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-size: ${({ theme }) => theme.typography.bodyMd.fontSize};
-  color: ${({ theme }) => theme.colors.mutedSoft};
+  color: ${({ theme, $empty }) => ($empty ? theme.colors.mutedSoft : theme.colors.ink)};
 `;
 
-// Borderless — sits inline inside Field, which owns the actual input chrome.
-export const SearchInput = styled.input<{ $compact?: boolean }>`
-  flex: ${({ $compact }) => ($compact ? '1 1 24px' : '1 1 80px')};
-  min-width: ${({ $compact }) => ($compact ? '24px' : '80px')};
-  height: 32px;
-  border: none;
+export const SearchBox = styled.div`
+  position: sticky;
+  top: calc(-1 * ${({ theme }) => theme.spacing.xs});
+  z-index: 1;
+  margin: calc(-1 * ${({ theme }) => theme.spacing.xs}) calc(-1 * ${({ theme }) => theme.spacing.xs})
+    ${({ theme }) => theme.spacing.xs};
+  padding: ${({ theme }) => theme.spacing.sm};
+  background: ${({ theme }) => theme.colors.canvas};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.hairline};
+`;
+
+export const SearchInput = styled.input`
+  width: 100%;
+  height: 40px;
+  padding: 0 ${({ theme }) => theme.spacing.md};
+  border: 1px solid ${({ theme }) => theme.colors.hairline};
+  border-radius: ${({ theme }) => theme.rounded.sm};
   outline: none;
-  background: transparent;
+  background: ${({ theme }) => theme.colors.canvas};
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-size: ${({ theme }) => theme.typography.bodyMd.fontSize};
   color: ${({ theme }) => theme.colors.ink};
 
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.mutedSoft};
+  &:focus {
+    border-color: ${({ theme }) => theme.colors.ink};
   }
 
-  &:disabled {
-    cursor: not-allowed;
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.mutedSoft};
   }
 `;
 

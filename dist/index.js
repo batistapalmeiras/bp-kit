@@ -1724,7 +1724,7 @@ var Field = import_styled_components20.default.div`
   background: ${({ theme: theme2 }) => theme2.colors.canvas};
   border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
-  cursor: text;
+  cursor: pointer;
   transition: border-color 0.15s, box-shadow 0.15s;
 
   &:hover {
@@ -1746,56 +1746,9 @@ var Field = import_styled_components20.default.div`
       cursor: not-allowed;
     `}
 `;
-var Chip2 = import_styled_components20.default.span`
-  display: inline-flex;
-  align-items: center;
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-  height: 32px;
-  padding: 0 ${({ theme: theme2 }) => theme2.spacing.xs} 0 ${({ theme: theme2 }) => theme2.spacing.md};
-  background: ${({ theme: theme2 }) => theme2.colors.primarySoft};
-  border: none;
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
-  font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
-  font-weight: 600;
-  color: ${({ theme: theme2 }) => theme2.colors.luxe};
-  flex-shrink: 0;
-  max-width: 100%;
-`;
-var Chips = import_styled_components20.default.div`
-  display: flex;
-  gap: ${({ theme: theme2 }) => theme2.spacing.xs};
-  flex: 0 1 auto;
-  min-width: 0;
-  overflow: hidden;
-`;
-var ChipLabel = import_styled_components20.default.span`
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-var RemoveChip = import_styled_components20.default.button`
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  width: 20px;
-  height: 20px;
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  background: none;
-  border: none;
-  color: ${({ theme: theme2 }) => theme2.colors.luxe};
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-
-  &:hover {
-    background: ${({ theme: theme2 }) => theme2.colors.primaryDisabled};
-  }
-`;
 var ToggleButton = import_styled_components20.default.button`
-  flex: ${({ $compact }) => $compact ? "1 1 24px" : "1 1 80px"};
-  min-width: ${({ $compact }) => $compact ? "24px" : "80px"};
+  flex: 1;
+  min-width: 0;
   min-height: 40px;
   display: flex;
   align-items: center;
@@ -1807,13 +1760,17 @@ var ToggleButton = import_styled_components20.default.button`
   color: ${({ theme: theme2 }) => theme2.colors.body};
   cursor: pointer;
 
+  &:disabled {
+    cursor: not-allowed;
+  }
+
   svg {
     flex-shrink: 0;
     transition: transform 0.15s;
     transform: rotate(${({ $open }) => $open ? "180deg" : "0deg"});
   }
 `;
-var TogglePlaceholder = import_styled_components20.default.span`
+var ToggleText = import_styled_components20.default.span`
   flex: 1 1 auto;
   min-width: 0;
   overflow: hidden;
@@ -1822,25 +1779,36 @@ var TogglePlaceholder = import_styled_components20.default.span`
   text-align: left;
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
-  color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
+  color: ${({ theme: theme2, $empty }) => $empty ? theme2.colors.mutedSoft : theme2.colors.ink};
+`;
+var SearchBox = import_styled_components20.default.div`
+  position: sticky;
+  top: calc(-1 * ${({ theme: theme2 }) => theme2.spacing.xs});
+  z-index: 1;
+  margin: calc(-1 * ${({ theme: theme2 }) => theme2.spacing.xs}) calc(-1 * ${({ theme: theme2 }) => theme2.spacing.xs})
+    ${({ theme: theme2 }) => theme2.spacing.xs};
+  padding: ${({ theme: theme2 }) => theme2.spacing.sm};
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+  border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
 `;
 var SearchInput = import_styled_components20.default.input`
-  flex: ${({ $compact }) => $compact ? "1 1 24px" : "1 1 80px"};
-  min-width: ${({ $compact }) => $compact ? "24px" : "80px"};
-  height: 32px;
-  border: none;
+  width: 100%;
+  height: 40px;
+  padding: 0 ${({ theme: theme2 }) => theme2.spacing.md};
+  border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
   outline: none;
-  background: transparent;
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodyMd.fontSize};
   color: ${({ theme: theme2 }) => theme2.colors.ink};
 
-  &::placeholder {
-    color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
+  &:focus {
+    border-color: ${({ theme: theme2 }) => theme2.colors.ink};
   }
 
-  &:disabled {
-    cursor: not-allowed;
+  &::placeholder {
+    color: ${({ theme: theme2 }) => theme2.colors.mutedSoft};
   }
 `;
 var Dropdown = import_styled_components20.default.div`
@@ -1896,12 +1864,19 @@ var EmptyOption = import_styled_components20.default.div`
 
 // src/components/Inputs/MultiSelect/index.tsx
 var import_jsx_runtime15 = require("react/jsx-runtime");
+var SUMMARY_NAMES = 2;
+function summaryOf(labels) {
+  const shown = labels.slice(0, SUMMARY_NAMES).join(", ");
+  const hidden = labels.length - SUMMARY_NAMES;
+  return hidden > 0 ? `${shown} e mais ${hidden}` : shown;
+}
 function MultiSelect({
   label,
   options,
   value,
   onChange,
   placeholder = "Buscar\u2026",
+  emptyText = "Selecione",
   disabled,
   max,
   error,
@@ -1911,7 +1886,6 @@ function MultiSelect({
   const [open, setOpen] = (0, import_react12.useState)(false);
   const [pinned, setPinned] = (0, import_react12.useState)([]);
   const wrapRef = (0, import_react12.useRef)(null);
-  const inputRef = (0, import_react12.useRef)(null);
   const dropdownRef = (0, import_react12.useRef)(null);
   (0, import_react12.useEffect)(() => {
     var _a, _b;
@@ -1920,7 +1894,8 @@ function MultiSelect({
   (0, import_react12.useEffect)(() => {
     if (!open) return;
     const onClickOutside = (e) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
+      var _a;
+      if (e.target instanceof Node && !((_a = wrapRef.current) == null ? void 0 : _a.contains(e.target))) setOpen(false);
     };
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
@@ -1934,7 +1909,8 @@ function MultiSelect({
   const visibleOptions = searchable2 ? filterOptions(options, query) : options;
   const orderedOptions = pinnedFirst(visibleOptions, pinned);
   const openDropdown = () => {
-    if (!open) setPinned(value);
+    setPinned(value);
+    setQuery("");
     setOpen(true);
   };
   const toggle = (v) => {
@@ -1949,67 +1925,39 @@ function MultiSelect({
     }
     if (atLimit) return;
     onChange([...value, v]);
-    setQuery("");
   };
-  const remove = (v) => onChange(value.filter((x) => x !== v));
-  const focusField = () => {
-    var _a;
-    if (!disabled && searchable2) (_a = inputRef.current) == null ? void 0 : _a.focus();
-  };
-  const compact = value.length > 0;
+  const toggleOpen = () => open ? setOpen(false) : openDropdown();
+  const summary = summaryOf(value.map(labelFor));
   return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(BaseInput, { label, error, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Wrap, { ref: wrapRef, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Field, { $focused: open, $disabled: disabled, $invalid: !!error, onClick: focusField, children: [
-      value.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Chips, { children: value.map((v) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Chip2, { title: labelFor(v), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(ChipLabel, { children: labelFor(v) }),
-        !disabled && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
-          RemoveChip,
-          {
-            type: "button",
-            onClick: (e) => {
-              e.stopPropagation();
-              remove(v);
-            },
-            "aria-label": `Remover ${labelFor(v)}`,
-            children: "\xD7"
-          }
-        )
-      ] }, v)) }),
-      !disabled && searchable2 && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Field, { $focused: open, $disabled: disabled, $invalid: !!error, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
+      ToggleButton,
+      {
+        type: "button",
+        "aria-label": label,
+        "aria-expanded": open,
+        "aria-haspopup": "listbox",
+        title: summary || void 0,
+        disabled,
+        $open: open,
+        onClick: toggleOpen,
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(ToggleText, { $empty: value.length === 0, children: summary || emptyText }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_lucide_react7.ChevronDown, { size: 20 })
+        ]
+      }
+    ) }),
+    open && !disabled && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Dropdown, { ref: dropdownRef, role: "listbox", "aria-multiselectable": !single, children: [
+      searchable2 && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(SearchBox, { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
         SearchInput,
         {
-          ref: inputRef,
-          $compact: compact,
-          type: "text",
-          placeholder: value.length === 0 ? placeholder : "",
+          type: "search",
+          placeholder,
+          "aria-label": placeholder,
           value: query,
-          onFocus: openDropdown,
-          onChange: (e) => {
-            setQuery(e.target.value);
-            openDropdown();
-          },
-          onKeyDown: (e) => {
-            if (e.key === "Backspace" && query === "" && value.length > 0) remove(value[value.length - 1]);
-          }
+          autoFocus: true,
+          onChange: (e) => setQuery(e.target.value)
         }
-      ),
-      !disabled && !searchable2 && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
-        ToggleButton,
-        {
-          type: "button",
-          "aria-label": label,
-          "aria-expanded": open,
-          "aria-haspopup": "listbox",
-          $open: open,
-          $compact: compact,
-          onClick: () => open ? setOpen(false) : openDropdown(),
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(TogglePlaceholder, { children: value.length === 0 ? placeholder : "" }),
-            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_lucide_react7.ChevronDown, { size: 20 })
-          ]
-        }
-      )
-    ] }),
-    open && !disabled && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Dropdown, { ref: dropdownRef, role: "listbox", "aria-multiselectable": !single, children: [
+      ) }),
       orderedOptions.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
       orderedOptions.map((o) => {
         const checked = value.includes(o.value);
