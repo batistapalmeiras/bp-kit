@@ -983,12 +983,16 @@ var FullScreenBar = styled16.div`
   display: none;
 
   @media (max-width: 744px) {
+    position: sticky;
+    top: calc(-1 * ${({ theme: theme2 }) => theme2.spacing.base});
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: ${({ theme: theme2 }) => theme2.spacing.base};
-    padding-bottom: ${({ theme: theme2 }) => theme2.spacing.sm};
-    border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+    margin: calc(-1 * ${({ theme: theme2 }) => theme2.spacing.base}) -20px ${({ theme: theme2 }) => theme2.spacing.base};
+    padding: ${({ theme: theme2 }) => theme2.spacing.base} 20px ${({ theme: theme2 }) => theme2.spacing.sm};
+    border-bottom: 1px solid ${({ theme: theme2, $scrolled }) => $scrolled ? theme2.colors.hairline : "transparent"};
+    background: ${({ theme: theme2 }) => theme2.colors.canvas};
   }
 `;
 var HeaderButton = styled16.button`
@@ -1087,6 +1091,7 @@ function firstAvailableDate(isDateDisabled) {
 }
 function CalendarPanel({ label, selected, isDateDisabled, onSelect, onClose }) {
   const [view, setView] = useState2("days");
+  const [scrolled, setScrolled] = useState2(false);
   const [viewDate, setViewDate] = useState2(() => selected != null ? selected : firstAvailableDate(isDateDisabled));
   const [pageStart, setPageStart] = useState2(() => firstYearOfPage(viewDate.getFullYear()));
   const fullScreen = useMediaQuery("(max-width: 744px)");
@@ -1099,11 +1104,11 @@ function CalendarPanel({ label, selected, isDateDisabled, onSelect, onClose }) {
     setPageStart(firstYearOfPage(viewYear));
     setView("years");
   };
-  const bar = /* @__PURE__ */ jsxs9(FullScreenBar, { children: [
+  const bar = /* @__PURE__ */ jsxs9(FullScreenBar, { $scrolled: scrolled, children: [
     /* @__PURE__ */ jsx10(HeaderLabel, { children: label }),
     /* @__PURE__ */ jsx10(NavButton, { type: "button", onClick: onClose, "aria-label": "Fechar calend\xE1rio", children: /* @__PURE__ */ jsx10(X, { size: 20 }) })
   ] });
-  return /* @__PURE__ */ jsxs9(DatePanel, { children: [
+  return /* @__PURE__ */ jsxs9(DatePanel, { onScroll: (event) => setScrolled(event.currentTarget.scrollTop > 0), children: [
     fullScreen && /* @__PURE__ */ jsx10(ScrollLock, {}),
     bar,
     view === "days" && /* @__PURE__ */ jsxs9(Fragment4, { children: [
@@ -2467,7 +2472,7 @@ function TextInput(props) {
 }
 
 // src/components/Modal/index.tsx
-import { useEffect as useEffect6, useRef as useRef5 } from "react";
+import { useEffect as useEffect6, useRef as useRef5, useState as useState9 } from "react";
 import { X as X3 } from "lucide-react";
 
 // src/components/Modal/styles/Modal.ts
@@ -2533,7 +2538,7 @@ var Box3 = styled24.div`
   /* Opt-in via fullScreenOnMobile (see useModal) — on phones the modal fills
      the whole screen instead of hugging the bottom, and its title row stays
      pinned while the content scrolls. */
-  ${({ $fullScreenOnMobile }) => $fullScreenOnMobile && css7`
+  ${({ $fullScreenOnMobile, $scrolled }) => $fullScreenOnMobile && css7`
         @media (max-width: 744px) {
           max-width: 100%;
           margin-top: 0;
@@ -2549,7 +2554,7 @@ var Box3 = styled24.div`
             margin: 0 -20px 16px;
             padding: 24px 20px 12px;
             background: ${({ theme: theme2 }) => theme2.colors.canvas};
-            border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+            border-bottom: 1px solid ${({ theme: theme2 }) => $scrolled ? theme2.colors.hairline : "transparent"};
           }
         }
       ` || void 0}
@@ -2599,6 +2604,7 @@ function ModalTitle({ children, onClose }) {
 }
 function Modal({ children, close, variant = "dialog", fullScreenOnMobile = false }) {
   const boxRef = useRef5(null);
+  const [scrolled, setScrolled] = useState9(false);
   useScrollLock();
   useEffect6(() => {
     var _a, _b;
@@ -2615,10 +2621,12 @@ function Modal({ children, close, variant = "dialog", fullScreenOnMobile = false
       ref: boxRef,
       $variant: variant,
       $fullScreenOnMobile: fullScreenOnMobile,
+      $scrolled: scrolled,
       role: "dialog",
       "aria-modal": "true",
       tabIndex: -1,
       onClick: (e) => e.stopPropagation(),
+      onScroll: (e) => setScrolled(e.currentTarget.scrollTop > 0),
       children
     }
   ) });
@@ -3113,11 +3121,11 @@ var ToastAction = styled32.button`
 `;
 
 // src/components/Toast/hooks/useToast.tsx
-import { useCallback, useRef as useRef6, useState as useState9 } from "react";
+import { useCallback, useRef as useRef6, useState as useState10 } from "react";
 import { jsx as jsx26 } from "react/jsx-runtime";
 var ACTION_DURATION = 6e3;
 function useToast(duration = 2500) {
-  const [state, setState] = useState9(null);
+  const [state, setState] = useState10(null);
   const timerRef = useRef6(null);
   const hide = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -3433,7 +3441,7 @@ function AuthLayout({ brand, children }) {
 }
 
 // src/pages/LoginForm/index.tsx
-import { useState as useState12 } from "react";
+import { useState as useState13 } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate as useNavigate3 } from "react-router-dom";
@@ -3478,11 +3486,11 @@ var feedback = {
 var text = { actions, fields, validation, feedback };
 
 // src/pages/LoginForm/hooks/useLogin.ts
-import { useEffect as useEffect8, useRef as useRef8, useState as useState11 } from "react";
+import { useEffect as useEffect8, useRef as useRef8, useState as useState12 } from "react";
 import { useNavigate as useNavigate2 } from "react-router-dom";
 
 // src/hooks/useAuth.ts
-import { useCallback as useCallback2, useContext, useEffect as useEffect7, useMemo as useMemo2, useRef as useRef7, useState as useState10 } from "react";
+import { useCallback as useCallback2, useContext, useEffect as useEffect7, useMemo as useMemo2, useRef as useRef7, useState as useState11 } from "react";
 
 // src/contexts/AuthContext.tsx
 import { createContext } from "react";
@@ -3523,11 +3531,11 @@ async function updateProfileIdentity(client, name, email, currentEmail) {
 }
 var profilesTableSource = { load: fetchProfile, updateIdentity: updateProfileIdentity };
 function useAuth(client, source = profilesTableSource) {
-  const [user, setUser] = useState10(null);
-  const [userEmail, setUserEmail] = useState10("");
-  const [loading, setLoading] = useState10(true);
-  const [error, setError] = useState10(null);
-  const [sessionUser, setSessionUser] = useState10(void 0);
+  const [user, setUser] = useState11(null);
+  const [userEmail, setUserEmail] = useState11("");
+  const [loading, setLoading] = useState11(true);
+  const [error, setError] = useState11(null);
+  const [sessionUser, setSessionUser] = useState11(void 0);
   const signingOut = useRef7(false);
   useEffect7(() => {
     const { data: listener } = client.auth.onAuthStateChange((event, session) => {
@@ -3649,8 +3657,8 @@ function firstNameOf(name) {
 
 // src/pages/LoginForm/hooks/useLogin.ts
 function useLogin(resolveRoute) {
-  const [error, setError] = useState11("");
-  const [submitting, setSubmitting] = useState11(false);
+  const [error, setError] = useState12("");
+  const [submitting, setSubmitting] = useState12(false);
   const { login, user } = useAuthCtx();
   const navigate = useNavigate2();
   const pending = useRef8(null);
@@ -3690,9 +3698,9 @@ function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }) {
   var _a;
   const { error, submitting, handleLogin } = useLogin(resolveRoute);
   const navigate = useNavigate3();
-  const [remembered, setRemembered] = useState12(loadRememberedLogin);
-  const [step, setStep] = useState12(remembered ? "confirm" : "email");
-  const [remember, setRemember] = useState12(true);
+  const [remembered, setRemembered] = useState13(loadRememberedLogin);
+  const [step, setStep] = useState13(remembered ? "confirm" : "email");
+  const [remember, setRemember] = useState13(true);
   const { control, handleSubmit, trigger, getValues, setValue } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: (_a = remembered == null ? void 0 : remembered.email) != null ? _a : "", password: "" }
@@ -3977,11 +3985,11 @@ import { useNavigate as useNavigate5 } from "react-router-dom";
 import { ArrowLeft as ArrowLeft2, Send } from "lucide-react";
 
 // src/pages/ForgotPasswordForm/hooks/useForgotPassword.ts
-import { useState as useState13 } from "react";
+import { useState as useState14 } from "react";
 function useForgotPassword(resetPasswordPath) {
-  const [submitting, setSubmitting] = useState13(false);
-  const [sent, setSent] = useState13(false);
-  const [error, setError] = useState13("");
+  const [submitting, setSubmitting] = useState14(false);
+  const [sent, setSent] = useState14(false);
+  const [error, setError] = useState14("");
   const { requestPasswordReset } = useAuthCtx();
   const handleSubmit = async (data) => {
     setSubmitting(true);
@@ -4045,7 +4053,7 @@ function ForgotPasswordForm({ loginPath, resetPasswordPath }) {
 }
 
 // src/pages/ResetPasswordForm/index.tsx
-import { useState as useState14 } from "react";
+import { useState as useState15 } from "react";
 import { zodResolver as zodResolver5 } from "@hookform/resolvers/zod";
 import { useForm as useForm5 } from "react-hook-form";
 import { useNavigate as useNavigate6 } from "react-router-dom";
@@ -4054,7 +4062,7 @@ import { Fragment as Fragment10, jsx as jsx34, jsxs as jsxs29 } from "react/jsx-
 function ResetPasswordForm({ loginPath }) {
   const { user, loading, updatePassword, logout } = useAuthCtx();
   const navigate = useNavigate6();
-  const [done, setDone] = useState14(false);
+  const [done, setDone] = useState15(false);
   const {
     control,
     handleSubmit,
@@ -4129,10 +4137,10 @@ function ResetPasswordForm({ loginPath }) {
 }
 
 // src/hooks/useModal.ts
-import { createElement, useState as useState15 } from "react";
+import { createElement, useState as useState16 } from "react";
 import { createPortal as createPortal3 } from "react-dom";
 function useModal(variant = "dialog", { fullScreenOnMobile = false } = {}) {
-  const [content, setContent] = useState15(null);
+  const [content, setContent] = useState16(null);
   const open = (c) => setContent(c);
   const close = () => setContent(null);
   const modal = content !== null ? createPortal3(createElement(Modal, { close, variant, fullScreenOnMobile, children: content }), document.body) : null;

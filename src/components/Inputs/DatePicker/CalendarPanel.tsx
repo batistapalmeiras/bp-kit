@@ -63,6 +63,7 @@ function firstAvailableDate(isDateDisabled?: (date: Date) => boolean): Date {
 
 export function CalendarPanel({ label, selected, isDateDisabled, onSelect, onClose }: Props) {
   const [view, setView] = useState<View>('days');
+  const [scrolled, setScrolled] = useState(false);
   const [viewDate, setViewDate] = useState(() => selected ?? firstAvailableDate(isDateDisabled));
   const [pageStart, setPageStart] = useState(() => firstYearOfPage(viewDate.getFullYear()));
   const fullScreen = useMediaQuery('(max-width: 744px)');
@@ -79,7 +80,7 @@ export function CalendarPanel({ label, selected, isDateDisabled, onSelect, onClo
   };
 
   const bar = (
-    <FullScreenBar>
+    <FullScreenBar $scrolled={scrolled}>
       <HeaderLabel>{label}</HeaderLabel>
       <NavButton type="button" onClick={onClose} aria-label="Fechar calendário">
         <X size={20} />
@@ -88,7 +89,7 @@ export function CalendarPanel({ label, selected, isDateDisabled, onSelect, onClo
   );
 
   return (
-    <DatePanel>
+    <DatePanel onScroll={(event) => setScrolled(event.currentTarget.scrollTop > 0)}>
       {fullScreen && <ScrollLock />}
       {bar}
 

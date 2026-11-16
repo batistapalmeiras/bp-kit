@@ -1096,12 +1096,16 @@ var FullScreenBar = import_styled_components18.default.div`
   display: none;
 
   @media (max-width: 744px) {
+    position: sticky;
+    top: calc(-1 * ${({ theme: theme2 }) => theme2.spacing.base});
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: ${({ theme: theme2 }) => theme2.spacing.base};
-    padding-bottom: ${({ theme: theme2 }) => theme2.spacing.sm};
-    border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+    margin: calc(-1 * ${({ theme: theme2 }) => theme2.spacing.base}) -20px ${({ theme: theme2 }) => theme2.spacing.base};
+    padding: ${({ theme: theme2 }) => theme2.spacing.base} 20px ${({ theme: theme2 }) => theme2.spacing.sm};
+    border-bottom: 1px solid ${({ theme: theme2, $scrolled }) => $scrolled ? theme2.colors.hairline : "transparent"};
+    background: ${({ theme: theme2 }) => theme2.colors.canvas};
   }
 `;
 var HeaderButton = import_styled_components18.default.button`
@@ -1200,6 +1204,7 @@ function firstAvailableDate(isDateDisabled) {
 }
 function CalendarPanel({ label, selected, isDateDisabled, onSelect, onClose }) {
   const [view, setView] = (0, import_react7.useState)("days");
+  const [scrolled, setScrolled] = (0, import_react7.useState)(false);
   const [viewDate, setViewDate] = (0, import_react7.useState)(() => selected != null ? selected : firstAvailableDate(isDateDisabled));
   const [pageStart, setPageStart] = (0, import_react7.useState)(() => firstYearOfPage(viewDate.getFullYear()));
   const fullScreen = useMediaQuery("(max-width: 744px)");
@@ -1212,11 +1217,11 @@ function CalendarPanel({ label, selected, isDateDisabled, onSelect, onClose }) {
     setPageStart(firstYearOfPage(viewYear));
     setView("years");
   };
-  const bar = /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(FullScreenBar, { children: [
+  const bar = /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(FullScreenBar, { $scrolled: scrolled, children: [
     /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(HeaderLabel, { children: label }),
     /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(NavButton, { type: "button", onClick: onClose, "aria-label": "Fechar calend\xE1rio", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_lucide_react3.X, { size: 20 }) })
   ] });
-  return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(DatePanel, { children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(DatePanel, { onScroll: (event) => setScrolled(event.currentTarget.scrollTop > 0), children: [
     fullScreen && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ScrollLock, {}),
     bar,
     view === "days" && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
@@ -2646,7 +2651,7 @@ var Box3 = import_styled_components26.default.div`
   /* Opt-in via fullScreenOnMobile (see useModal) — on phones the modal fills
      the whole screen instead of hugging the bottom, and its title row stays
      pinned while the content scrolls. */
-  ${({ $fullScreenOnMobile }) => $fullScreenOnMobile && import_styled_components26.css`
+  ${({ $fullScreenOnMobile, $scrolled }) => $fullScreenOnMobile && import_styled_components26.css`
         @media (max-width: 744px) {
           max-width: 100%;
           margin-top: 0;
@@ -2662,7 +2667,7 @@ var Box3 = import_styled_components26.default.div`
             margin: 0 -20px 16px;
             padding: 24px 20px 12px;
             background: ${({ theme: theme2 }) => theme2.colors.canvas};
-            border-bottom: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+            border-bottom: 1px solid ${({ theme: theme2 }) => $scrolled ? theme2.colors.hairline : "transparent"};
           }
         }
       ` || void 0}
@@ -2712,6 +2717,7 @@ function ModalTitle({ children, onClose }) {
 }
 function Modal({ children, close, variant = "dialog", fullScreenOnMobile = false }) {
   const boxRef = (0, import_react16.useRef)(null);
+  const [scrolled, setScrolled] = (0, import_react16.useState)(false);
   useScrollLock();
   (0, import_react16.useEffect)(() => {
     var _a, _b;
@@ -2728,10 +2734,12 @@ function Modal({ children, close, variant = "dialog", fullScreenOnMobile = false
       ref: boxRef,
       $variant: variant,
       $fullScreenOnMobile: fullScreenOnMobile,
+      $scrolled: scrolled,
       role: "dialog",
       "aria-modal": "true",
       tabIndex: -1,
       onClick: (e) => e.stopPropagation(),
+      onScroll: (e) => setScrolled(e.currentTarget.scrollTop > 0),
       children
     }
   ) });

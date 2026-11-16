@@ -61,16 +61,20 @@ export const DatePanel = styled(Panel)`
   }
 `;
 
-export const FullScreenBar = styled.div`
+export const FullScreenBar = styled.div<{ $scrolled: boolean }>`
   display: none;
 
   @media (max-width: 744px) {
+    position: sticky;
+    top: calc(-1 * ${({ theme }) => theme.spacing.base});
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: ${({ theme }) => theme.spacing.base};
-    padding-bottom: ${({ theme }) => theme.spacing.sm};
-    border-bottom: 1px solid ${({ theme }) => theme.colors.hairline};
+    margin: calc(-1 * ${({ theme }) => theme.spacing.base}) -20px ${({ theme }) => theme.spacing.base};
+    padding: ${({ theme }) => theme.spacing.base} 20px ${({ theme }) => theme.spacing.sm};
+    border-bottom: 1px solid ${({ theme, $scrolled }) => ($scrolled ? theme.colors.hairline : 'transparent')};
+    background: ${({ theme }) => theme.colors.canvas};
   }
 `;
 

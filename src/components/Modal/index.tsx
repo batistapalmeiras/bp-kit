@@ -1,5 +1,5 @@
 // React
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 // Libs
 import { X } from 'lucide-react';
 // Local
@@ -37,6 +37,7 @@ interface Props {
 
 export function Modal({ children, close, variant = 'dialog', fullScreenOnMobile = false }: Props) {
   const boxRef = useRef<HTMLDivElement>(null);
+  const [scrolled, setScrolled] = useState(false);
   useScrollLock();
 
   useEffect(() => {
@@ -54,10 +55,12 @@ export function Modal({ children, close, variant = 'dialog', fullScreenOnMobile 
         ref={boxRef}
         $variant={variant}
         $fullScreenOnMobile={fullScreenOnMobile}
+        $scrolled={scrolled}
         role="dialog"
         aria-modal="true"
         tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
+        onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 0)}
       >
         {children}
       </Box>
