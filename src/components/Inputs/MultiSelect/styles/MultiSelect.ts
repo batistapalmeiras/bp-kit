@@ -167,6 +167,7 @@ export const Dropdown = styled.div`
   overflow-x: hidden;
   z-index: 20;
   padding: ${({ theme }) => theme.spacing.xs};
+  scroll-margin-bottom: 128px;
 `;
 
 // A div, not a button — it wraps a Checkbox (itself a <label>), and

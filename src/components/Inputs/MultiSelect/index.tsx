@@ -44,6 +44,11 @@ export function MultiSelect({
   const [pinned, setPinned] = useState<string[]>([]);
   const wrapRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (open) dropdownRef.current?.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' });
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -148,7 +153,7 @@ export function MultiSelect({
         </Field>
 
         {open && !disabled && (
-          <Dropdown role="listbox" aria-multiselectable={!single}>
+          <Dropdown ref={dropdownRef} role="listbox" aria-multiselectable={!single}>
             {orderedOptions.length === 0 && <EmptyOption>Nenhuma opção encontrada.</EmptyOption>}
             {orderedOptions.map((o) => {
               const checked = value.includes(o.value);

@@ -1857,6 +1857,7 @@ var Dropdown = import_styled_components20.default.div`
   overflow-x: hidden;
   z-index: 20;
   padding: ${({ theme: theme2 }) => theme2.spacing.xs};
+  scroll-margin-bottom: 128px;
 `;
 var DropdownOption = import_styled_components20.default.div`
   display: flex;
@@ -1911,6 +1912,11 @@ function MultiSelect({
   const [pinned, setPinned] = (0, import_react12.useState)([]);
   const wrapRef = (0, import_react12.useRef)(null);
   const inputRef = (0, import_react12.useRef)(null);
+  const dropdownRef = (0, import_react12.useRef)(null);
+  (0, import_react12.useEffect)(() => {
+    var _a, _b;
+    if (open) (_b = (_a = dropdownRef.current) == null ? void 0 : _a.scrollIntoView) == null ? void 0 : _b.call(_a, { block: "nearest", behavior: "smooth" });
+  }, [open]);
   (0, import_react12.useEffect)(() => {
     if (!open) return;
     const onClickOutside = (e) => {
@@ -2003,7 +2009,7 @@ function MultiSelect({
         }
       )
     ] }),
-    open && !disabled && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Dropdown, { role: "listbox", "aria-multiselectable": !single, children: [
+    open && !disabled && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Dropdown, { ref: dropdownRef, role: "listbox", "aria-multiselectable": !single, children: [
       orderedOptions.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(EmptyOption, { children: "Nenhuma op\xE7\xE3o encontrada." }),
       orderedOptions.map((o) => {
         const checked = value.includes(o.value);
@@ -3028,39 +3034,38 @@ var Wrap2 = import_styled_components30.default.div`
   gap: ${({ theme: theme2 }) => theme2.spacing.xs};
 `;
 var Label2 = import_styled_components30.default.p`
+  margin: 0;
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.caption.fontSize};
-  font-weight: 600;
+  font-weight: ${({ theme: theme2 }) => theme2.typography.caption.fontWeight};
+  line-height: ${({ theme: theme2 }) => theme2.typography.caption.lineHeight};
   color: ${({ theme: theme2 }) => theme2.colors.muted};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 `;
 var Toggle = import_styled_components30.default.div`
   display: grid;
   grid-auto-columns: 1fr;
   grid-auto-flow: column;
+  padding: ${({ theme: theme2 }) => theme2.spacing.xs};
   border: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
-  overflow: hidden;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
 `;
 var Btn = import_styled_components30.default.button`
   display: flex;
   align-items: center;
   justify-content: center;
   height: 44px;
+  padding: 0 ${({ theme: theme2 }) => theme2.spacing.sm};
+  border: none;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+  box-shadow: ${({ theme: theme2, $selected, $tone }) => $selected ? `inset 0 0 0 2px ${theme2.colors[$tone]}` : "none"};
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.buttonSm.fontSize};
-  font-weight: 500;
+  font-weight: ${({ $selected }) => $selected ? 600 : 500};
+  color: ${({ theme: theme2 }) => theme2.colors.ink};
   cursor: pointer;
-  border: none;
-  transition: background 0.15s, color 0.15s;
-  background: ${({ theme: theme2, $selected, $tone }) => $selected ? theme2.colors[$tone] : theme2.colors.canvas};
-  color: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.onDark : theme2.colors.muted};
-
-  & + & { border-left: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline}; }
-  &:hover {
-    background: ${({ theme: theme2, $selected, $tone }) => $selected ? $tone === "primary" ? theme2.colors.primaryActive : theme2.colors.ink : theme2.colors.surfaceSoft};
-  }
+  transition: box-shadow 0.15s;
 `;
 
 // src/components/Inputs/SegmentedControl/index.tsx

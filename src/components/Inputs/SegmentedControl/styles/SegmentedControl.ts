@@ -10,21 +10,22 @@ export const Wrap = styled.div`
 `;
 
 export const Label = styled.p`
+  margin: 0;
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-size: ${({ theme }) => theme.typography.caption.fontSize};
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.typography.caption.fontWeight};
+  line-height: ${({ theme }) => theme.typography.caption.lineHeight};
   color: ${({ theme }) => theme.colors.muted};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 `;
 
 export const Toggle = styled.div`
   display: grid;
   grid-auto-columns: 1fr;
   grid-auto-flow: column;
+  padding: ${({ theme }) => theme.spacing.xs};
   border: 1px solid ${({ theme }) => theme.colors.hairline};
-  border-radius: ${({ theme }) => theme.rounded.sm};
-  overflow: hidden;
+  border-radius: ${({ theme }) => theme.rounded.md};
+  background: ${({ theme }) => theme.colors.canvas};
 `;
 
 export const Btn = styled.button<{ $selected: boolean; $tone: SegmentedControlTone }>`
@@ -32,20 +33,15 @@ export const Btn = styled.button<{ $selected: boolean; $tone: SegmentedControlTo
   align-items: center;
   justify-content: center;
   height: 44px;
+  padding: 0 ${({ theme }) => theme.spacing.sm};
+  border: none;
+  border-radius: ${({ theme }) => theme.rounded.sm};
+  background: ${({ theme }) => theme.colors.canvas};
+  box-shadow: ${({ theme, $selected, $tone }) => ($selected ? `inset 0 0 0 2px ${theme.colors[$tone]}` : 'none')};
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-size: ${({ theme }) => theme.typography.buttonSm.fontSize};
-  font-weight: 500;
+  font-weight: ${({ $selected }) => ($selected ? 600 : 500)};
+  color: ${({ theme }) => theme.colors.ink};
   cursor: pointer;
-  border: none;
-  transition: background 0.15s, color 0.15s;
-  background: ${({ theme, $selected, $tone }) => ($selected ? theme.colors[$tone] : theme.colors.canvas)};
-  color: ${({ theme, $selected }) => ($selected ? theme.colors.onDark : theme.colors.muted)};
-
-  & + & { border-left: 1px solid ${({ theme }) => theme.colors.hairline}; }
-  &:hover {
-    background: ${({ theme, $selected, $tone }) =>
-      $selected
-        ? $tone === 'primary' ? theme.colors.primaryActive : theme.colors.ink
-        : theme.colors.surfaceSoft};
-  }
+  transition: box-shadow 0.15s;
 `;
