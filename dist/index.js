@@ -1914,8 +1914,10 @@ function MultiSelect({
     setOpen(true);
   };
   const toggle = (v) => {
+    const searching = query.trim() !== "";
     if (value.includes(v)) {
       onChange(value.filter((x) => x !== v));
+      if (searching) setOpen(false);
       return;
     }
     if (single) {
@@ -1925,6 +1927,7 @@ function MultiSelect({
     }
     if (atLimit) return;
     onChange([...value, v]);
+    if (searching) setOpen(false);
   };
   const toggleOpen = () => open ? setOpen(false) : openDropdown();
   const summary = summaryOf(value.map(labelFor));

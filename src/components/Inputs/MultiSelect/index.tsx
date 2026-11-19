@@ -73,8 +73,10 @@ export function MultiSelect({
   };
 
   const toggle = (v: string) => {
+    const searching = query.trim() !== '';
     if (value.includes(v)) {
       onChange(value.filter((x) => x !== v));
+      if (searching) setOpen(false);
       return;
     }
     if (single) {
@@ -84,6 +86,7 @@ export function MultiSelect({
     }
     if (atLimit) return;
     onChange([...value, v]);
+    if (searching) setOpen(false);
   };
 
   const toggleOpen = () => (open ? setOpen(false) : openDropdown());
