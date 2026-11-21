@@ -7,32 +7,32 @@ import { FieldValues, FieldPath, Control, ControllerRenderProps } from 'react-ho
 import { SupabaseClient } from '@supabase/supabase-js';
 import * as styled_components_dist_models_Keyframes from 'styled-components/dist/models/Keyframes';
 
-interface Props$6 {
+interface Props$7 {
     children: react__default.ReactNode;
     onClose: () => void;
 }
-declare function BottomSheet({ children, onClose }: Props$6): react__default.ReactPortal;
+declare function BottomSheet({ children, onClose }: Props$7): react__default.ReactPortal;
 
 interface SheetOption<T extends string> {
     value: T;
     label: string;
 }
-interface Props$5<T extends string> {
+interface Props$6<T extends string> {
     title: string;
     options: SheetOption<T>[];
     value: T;
     onChange: (value: T) => void;
     onClose: () => void;
 }
-declare function OptionsSheet<T extends string>({ title, options, value, onChange, onClose }: Props$5<T>): react.JSX.Element;
+declare function OptionsSheet<T extends string>({ title, options, value, onChange, onClose }: Props$6<T>): react.JSX.Element;
 
-interface Props$4 {
+interface Props$5 {
     icon: string;
     alt: string;
     name: string;
     to?: string;
 }
-declare function Brand({ icon, alt, name, to }: Props$4): react.JSX.Element;
+declare function Brand({ icon, alt, name, to }: Props$5): react.JSX.Element;
 
 declare const Card: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, "$hoverable"> & {
     $hoverable?: boolean | undefined;
@@ -83,14 +83,14 @@ declare const IconButton: react.ForwardRefExoticComponent<IconButtonProps & reac
 
 type InfoBoxVariant = 'info' | 'warning' | 'success';
 
-interface Props$3 {
+interface Props$4 {
     variant?: InfoBoxVariant;
     icon?: LucideIcon;
     title?: react__default.ReactNode;
     children?: react__default.ReactNode;
     style?: react__default.CSSProperties;
 }
-declare function InfoBox({ variant, icon, title, children, style }: Props$3): react__default.JSX.Element;
+declare function InfoBox({ variant, icon, title, children, style }: Props$4): react__default.JSX.Element;
 
 interface LinkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     /** Optional leading icon — pass a lucide-react icon element, e.g. <X size={16} />. */
@@ -261,8 +261,8 @@ interface TextFieldProps<T extends FieldValues, N extends FieldPath<T>> extends 
     mask?: TextMask;
 }
 
-type Props$2<T extends FieldValues, N extends FieldPath<T>> = TextFieldProps<T, N> | CurrencyFieldProps<T, N>;
-declare function TextInput<T extends FieldValues, N extends FieldPath<T>>(props: Props$2<T, N>): react.JSX.Element;
+type Props$3<T extends FieldValues, N extends FieldPath<T>> = TextFieldProps<T, N> | CurrencyFieldProps<T, N>;
+declare function TextInput<T extends FieldValues, N extends FieldPath<T>>(props: Props$3<T, N>): react.JSX.Element;
 
 type ModalVariant = 'dialog' | 'drawer' | 'drawer-wide';
 declare const ModalActions: styled_components_dist_types.IStyledComponentBase<"web", styled_components.FastOmit<react.DetailedHTMLProps<react.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, never> & Partial<Pick<react.DetailedHTMLProps<react.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, never>>> & string;
@@ -272,13 +272,13 @@ interface ModalTitleProps {
     onClose?: () => void;
 }
 declare function ModalTitle({ children, onClose }: ModalTitleProps): react__default.JSX.Element;
-interface Props$1 {
+interface Props$2 {
     children: react__default.ReactNode;
     close: () => void;
     variant?: ModalVariant;
     fullScreenOnMobile?: boolean;
 }
-declare function Modal({ children, close, variant, fullScreenOnMobile }: Props$1): react__default.JSX.Element;
+declare function Modal({ children, close, variant, fullScreenOnMobile }: Props$2): react__default.JSX.Element;
 
 interface PaginationProps {
     currentPage: number;
@@ -287,7 +287,7 @@ interface PaginationProps {
 }
 declare function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps): react.JSX.Element | null;
 
-interface Props {
+interface Props$1 {
     title: string;
     subtitle?: string;
     back?: boolean;
@@ -295,7 +295,7 @@ interface Props {
     actionAlign?: 'center' | 'end';
     compact?: boolean;
 }
-declare function PageHeader({ title, subtitle, back, action, actionAlign, compact }: Props): react__default.JSX.Element;
+declare function PageHeader({ title, subtitle, back, action, actionAlign, compact }: Props$1): react__default.JSX.Element;
 
 type SearchInputSize = 'sm' | 'md';
 interface SearchInputProps {
@@ -428,7 +428,10 @@ interface ProfilePageProps {
 }
 declare function ProfilePage({ roleLabel, changePasswordPath, onLogout, back }: ProfilePageProps): react.JSX.Element;
 
-declare function ChangePasswordPage(): react.JSX.Element;
+interface Props {
+    back?: boolean;
+}
+declare function ChangePasswordPage({ back }: Props): react.JSX.Element;
 
 interface ForgotPasswordFormProps {
     loginPath: string;

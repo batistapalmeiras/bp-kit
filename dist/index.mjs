@@ -4048,7 +4048,7 @@ var passwordSchema = z3.object({
 
 // src/pages/ChangePasswordPage/index.tsx
 import { Fragment as Fragment9, jsx as jsx33, jsxs as jsxs28 } from "react/jsx-runtime";
-function ChangePasswordPage() {
+function ChangePasswordPage({ back = true }) {
   const { updatePassword } = useAuthCtx();
   const { show: showToast, toast } = useToast();
   const {
@@ -4071,7 +4071,7 @@ function ChangePasswordPage() {
     reset();
   };
   return /* @__PURE__ */ jsxs28(Wrap3, { children: [
-    /* @__PURE__ */ jsx33(PageHeader, { title: "Alterar senha", back: true }),
+    /* @__PURE__ */ jsx33(PageHeader, { title: "Alterar senha", back }),
     /* @__PURE__ */ jsxs28(Section, { children: [
       /* @__PURE__ */ jsx33(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
       /* @__PURE__ */ jsx33(

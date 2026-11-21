@@ -4162,7 +4162,7 @@ var passwordSchema = import_zod5.z.object({
 
 // src/pages/ChangePasswordPage/index.tsx
 var import_jsx_runtime34 = require("react/jsx-runtime");
-function ChangePasswordPage() {
+function ChangePasswordPage({ back = true }) {
   const { updatePassword } = useAuthCtx();
   const { show: showToast, toast } = useToast();
   const {
@@ -4185,7 +4185,7 @@ function ChangePasswordPage() {
     reset();
   };
   return /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(Wrap3, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(PageHeader, { title: "Alterar senha", back: true }),
+    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(PageHeader, { title: "Alterar senha", back }),
     /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(Section, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(TextInput, { label: "Nova senha", control, name: "password", type: "password", placeholder: "M\xEDnimo 6 caracteres" }),
       /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(

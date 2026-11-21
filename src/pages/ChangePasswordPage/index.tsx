@@ -13,7 +13,11 @@ import { useAuthCtx } from '../../hooks/useAuth';
 import { Actions, Section, Wrap } from '../ProfilePage/styles';
 import { PasswordFormValues, passwordSchema } from './validators';
 
-export function ChangePasswordPage() {
+interface Props {
+  back?: boolean;
+}
+
+export function ChangePasswordPage({ back = true }: Props) {
   const { updatePassword } = useAuthCtx();
   const { show: showToast, toast } = useToast();
 
@@ -40,7 +44,7 @@ export function ChangePasswordPage() {
 
   return (
     <Wrap>
-      <PageHeader title="Alterar senha" back />
+      <PageHeader title="Alterar senha" back={back} />
 
       <Section>
         <TextInput label="Nova senha" control={control} name="password" type="password" placeholder="Mínimo 6 caracteres" />
