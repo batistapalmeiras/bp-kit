@@ -20,6 +20,7 @@ import {
   FormHeader,
   FormSubtitle,
   FormTitle,
+  RememberField,
   SubmitButton,
 } from './styles';
 import { LoginFormValues, loginSchema } from './validators';
@@ -82,7 +83,9 @@ export function LoginForm({ resolveRoute, forgotPasswordPath, footerSlot }: Logi
             autoFocus
             placeholder={text.fields.emailPlaceholder}
           />
-          <Checkbox label="Lembrar de mim" checked={remember} onChange={(event) => setRemember(event.target.checked)} />
+          <RememberField>
+            <Checkbox label="Lembrar de mim" checked={remember} onChange={(event) => setRemember(event.target.checked)} />
+          </RememberField>
           <SubmitButton variant="primary" size="lg" fullWidth type="submit">
             Continuar
           </SubmitButton>

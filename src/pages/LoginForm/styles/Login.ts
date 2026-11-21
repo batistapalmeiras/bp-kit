@@ -143,13 +143,19 @@ export const FormTitle = styled.h2`
   font-weight: 700;
   color: ${({ theme }) => theme.colors.ink};
   letter-spacing: -0.3px;
-  margin-bottom: 6px;
+  line-height: 1.2;
+  margin: 0 0 ${({ theme }) => theme.spacing.xxs};
 `;
 
 export const FormSubtitle = styled.p`
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
   color: ${({ theme }) => theme.colors.muted};
+  margin: 0;
+`;
+
+export const RememberField = styled.div`
+  margin: ${({ theme }) => theme.spacing.xs} 0;
 `;
 
 export const Form = styled.form`

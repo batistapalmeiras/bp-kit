@@ -1,4 +1,6 @@
 export { BottomSheet } from './components/BottomSheet';
+export { OptionsSheet } from './components/OptionsSheet';
+export type { SheetOption } from './components/OptionsSheet';
 export { Brand } from './components/Brand';
 export { Card } from './components/Card';
 export { Button } from './components/Button';
