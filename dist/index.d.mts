@@ -73,10 +73,11 @@ type InfoBoxVariant = 'info' | 'warning' | 'success';
 interface Props$3 {
     variant?: InfoBoxVariant;
     icon?: LucideIcon;
-    children: react__default.ReactNode;
+    title?: react__default.ReactNode;
+    children?: react__default.ReactNode;
     style?: react__default.CSSProperties;
 }
-declare function InfoBox({ variant, icon, children, style }: Props$3): react__default.JSX.Element;
+declare function InfoBox({ variant, icon, title, children, style }: Props$3): react__default.JSX.Element;
 
 interface LinkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     /** Optional leading icon — pass a lucide-react icon element, e.g. <X size={16} />. */

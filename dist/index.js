@@ -525,21 +525,37 @@ var VARIANT_COLORS = {
 var tone = (part) => ({ theme: theme2, $variant }) => theme2.colors[VARIANT_COLORS[$variant][part]];
 var Box = import_styled_components12.default.div`
   display: flex;
-  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
-  padding: ${({ theme: theme2 }) => theme2.spacing.md};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  align-items: flex-start;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  padding: ${({ theme: theme2 }) => theme2.spacing.base};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   line-height: ${({ theme: theme2 }) => theme2.typography.bodyMd.lineHeight};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  color: ${({ theme: theme2 }) => theme2.colors.body};
   background: ${tone("surface")};
   border: 1px solid ${tone("border")};
-
-  svg {
-    flex-shrink: 0;
-    margin-top: 1px;
-    color: ${tone("icon")};
-  }
+`;
+var IconBadge = import_styled_components12.default.span`
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  background: ${tone("border")};
+  color: ${tone("icon")};
+`;
+var Body = import_styled_components12.default.div`
+  flex: 1;
+  min-width: 0;
+  align-self: center;
+`;
+var Title = import_styled_components12.default.span`
+  display: block;
+  font-weight: 600;
+  color: ${tone("icon")};
 `;
 
 // src/components/InfoBox/index.tsx
@@ -549,11 +565,14 @@ var VARIANT_ICONS = {
   warning: import_lucide_react.AlertTriangle,
   success: import_lucide_react.Smile
 };
-function InfoBox({ variant = "info", icon, children, style }) {
+function InfoBox({ variant = "info", icon, title, children, style }) {
   const Icon = icon != null ? icon : VARIANT_ICONS[variant];
-  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Box, { $variant: variant, style, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Icon, { size: 16 }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { children })
+  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Box, { $variant: variant, style, role: "note", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(IconBadge, { $variant: variant, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Icon, { size: 18, "aria-hidden": "true" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Body, { children: [
+      title && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Title, { $variant: variant, children: title }),
+      children
+    ] })
   ] });
 }
 
@@ -2867,7 +2886,7 @@ var Titles = import_styled_components28.default.div`
   gap: 4px;
   min-width: 0;
 `;
-var Title = import_styled_components28.default.h2`
+var Title2 = import_styled_components28.default.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -2903,7 +2922,7 @@ function PageHeader({ title, subtitle, back, action, actionAlign = "center", com
     back && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Back, { $compact: compact, onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_lucide_react11.ArrowLeft, { size: 20 }) }),
     /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(Row, { $actionAlign: actionAlign, children: [
       /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(Titles, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Title, { $compact: compact, children: title }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Title2, { $compact: compact, children: title }),
         subtitle && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Subtitle, { $compact: compact, children: subtitle })
       ] }),
       action && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { children: action })

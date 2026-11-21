@@ -18,19 +18,38 @@ const tone =
 
 export const Box = styled.div<{ $variant: InfoBoxVariant }>`
   display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
-  padding: ${({ theme }) => theme.spacing.md};
-  border-radius: ${({ theme }) => theme.rounded.sm};
+  align-items: flex-start;
+  gap: ${({ theme }) => theme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.base};
+  border-radius: ${({ theme }) => theme.rounded.md};
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
   line-height: ${({ theme }) => theme.typography.bodyMd.lineHeight};
-  color: ${({ theme }) => theme.colors.ink};
+  color: ${({ theme }) => theme.colors.body};
   background: ${tone('surface')};
   border: 1px solid ${tone('border')};
+`;
 
-  svg {
-    flex-shrink: 0;
-    margin-top: 1px;
-    color: ${tone('icon')};
-  }
+export const IconBadge = styled.span<{ $variant: InfoBoxVariant }>`
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: ${({ theme }) => theme.rounded.sm};
+  background: ${tone('border')};
+  color: ${tone('icon')};
+`;
+
+export const Body = styled.div`
+  flex: 1;
+  min-width: 0;
+  align-self: center;
+`;
+
+export const Title = styled.span<{ $variant: InfoBoxVariant }>`
+  display: block;
+  font-weight: 600;
+  color: ${tone('icon')};
 `;

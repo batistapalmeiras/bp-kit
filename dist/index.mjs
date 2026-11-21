@@ -412,21 +412,37 @@ var VARIANT_COLORS = {
 var tone = (part) => ({ theme: theme2, $variant }) => theme2.colors[VARIANT_COLORS[$variant][part]];
 var Box = styled10.div`
   display: flex;
-  gap: ${({ theme: theme2 }) => theme2.spacing.sm};
-  padding: ${({ theme: theme2 }) => theme2.spacing.md};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  align-items: flex-start;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  padding: ${({ theme: theme2 }) => theme2.spacing.base};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.md};
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   line-height: ${({ theme: theme2 }) => theme2.typography.bodyMd.lineHeight};
-  color: ${({ theme: theme2 }) => theme2.colors.ink};
+  color: ${({ theme: theme2 }) => theme2.colors.body};
   background: ${tone("surface")};
   border: 1px solid ${tone("border")};
-
-  svg {
-    flex-shrink: 0;
-    margin-top: 1px;
-    color: ${tone("icon")};
-  }
+`;
+var IconBadge = styled10.span`
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
+  background: ${tone("border")};
+  color: ${tone("icon")};
+`;
+var Body = styled10.div`
+  flex: 1;
+  min-width: 0;
+  align-self: center;
+`;
+var Title = styled10.span`
+  display: block;
+  font-weight: 600;
+  color: ${tone("icon")};
 `;
 
 // src/components/InfoBox/index.tsx
@@ -436,11 +452,14 @@ var VARIANT_ICONS = {
   warning: AlertTriangle,
   success: Smile
 };
-function InfoBox({ variant = "info", icon, children, style }) {
+function InfoBox({ variant = "info", icon, title, children, style }) {
   const Icon = icon != null ? icon : VARIANT_ICONS[variant];
-  return /* @__PURE__ */ jsxs5(Box, { $variant: variant, style, children: [
-    /* @__PURE__ */ jsx7(Icon, { size: 16 }),
-    /* @__PURE__ */ jsx7("div", { children })
+  return /* @__PURE__ */ jsxs5(Box, { $variant: variant, style, role: "note", children: [
+    /* @__PURE__ */ jsx7(IconBadge, { $variant: variant, children: /* @__PURE__ */ jsx7(Icon, { size: 18, "aria-hidden": "true" }) }),
+    /* @__PURE__ */ jsxs5(Body, { children: [
+      title && /* @__PURE__ */ jsx7(Title, { $variant: variant, children: title }),
+      children
+    ] })
   ] });
 }
 
@@ -2754,7 +2773,7 @@ var Titles = styled26.div`
   gap: 4px;
   min-width: 0;
 `;
-var Title = styled26.h2`
+var Title2 = styled26.h2`
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: 700;
@@ -2790,7 +2809,7 @@ function PageHeader({ title, subtitle, back, action, actionAlign = "center", com
     back && /* @__PURE__ */ jsx23(Back, { $compact: compact, onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ jsx23(ArrowLeft, { size: 20 }) }),
     /* @__PURE__ */ jsxs20(Row, { $actionAlign: actionAlign, children: [
       /* @__PURE__ */ jsxs20(Titles, { children: [
-        /* @__PURE__ */ jsx23(Title, { $compact: compact, children: title }),
+        /* @__PURE__ */ jsx23(Title2, { $compact: compact, children: title }),
         subtitle && /* @__PURE__ */ jsx23(Subtitle, { $compact: compact, children: subtitle })
       ] }),
       action && /* @__PURE__ */ jsx23("div", { children: action })

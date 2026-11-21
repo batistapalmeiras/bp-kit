@@ -3,7 +3,7 @@ import React from 'react';
 // Libs
 import { AlertTriangle, Info, LucideIcon, Smile } from 'lucide-react';
 // Local
-import { Box, InfoBoxVariant } from './styles';
+import { Body, Box, IconBadge, InfoBoxVariant, Title } from './styles';
 
 const VARIANT_ICONS: Record<InfoBoxVariant, LucideIcon> = {
   info: Info,
@@ -14,16 +14,22 @@ const VARIANT_ICONS: Record<InfoBoxVariant, LucideIcon> = {
 interface Props {
   variant?: InfoBoxVariant;
   icon?: LucideIcon;
-  children: React.ReactNode;
+  title?: React.ReactNode;
+  children?: React.ReactNode;
   style?: React.CSSProperties;
 }
 
-export function InfoBox({ variant = 'info', icon, children, style }: Props) {
+export function InfoBox({ variant = 'info', icon, title, children, style }: Props) {
   const Icon = icon ?? VARIANT_ICONS[variant];
   return (
-    <Box $variant={variant} style={style}>
-      <Icon size={16} />
-      <div>{children}</div>
+    <Box $variant={variant} style={style} role="note">
+      <IconBadge $variant={variant}>
+        <Icon size={18} aria-hidden="true" />
+      </IconBadge>
+      <Body>
+        {title && <Title $variant={variant}>{title}</Title>}
+        {children}
+      </Body>
     </Box>
   );
 }
