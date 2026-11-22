@@ -124,7 +124,7 @@ export const DayCell = styled.button<{ $selected?: boolean; $today?: boolean }>`
   height: 36px;
   border: none;
   border-radius: ${({ theme }) => theme.rounded.full};
-  background: ${({ theme, $selected }) => ($selected ? theme.colors.primary : 'transparent')};
+  background: ${({ theme, $selected }) => ($selected ? theme.gradients.primary : 'transparent')};
   color: ${({ theme, $selected }) => ($selected ? theme.colors.onPrimary : theme.colors.ink)};
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};

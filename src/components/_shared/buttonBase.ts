@@ -35,7 +35,7 @@ export const sizeStyles: Record<ButtonSize, ReturnType<typeof css>> = {
 
 export const variantStyles: Record<ButtonVariant, ReturnType<typeof css>> = {
   primary: css`
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.gradients.primary};
     color: ${({ theme }) => theme.colors.onPrimary};
     border: none;
 

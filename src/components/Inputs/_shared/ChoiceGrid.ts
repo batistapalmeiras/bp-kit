@@ -11,7 +11,7 @@ export const ChoiceCell = styled.button<{ $selected?: boolean }>`
   padding: ${({ theme }) => theme.spacing.sm} 0;
   border: none;
   border-radius: ${({ theme }) => theme.rounded.sm};
-  background: ${({ theme, $selected }) => ($selected ? theme.colors.primary : 'transparent')};
+  background: ${({ theme, $selected }) => ($selected ? theme.gradients.primary : 'transparent')};
   color: ${({ theme, $selected }) => ($selected ? theme.colors.onPrimary : theme.colors.ink)};
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};

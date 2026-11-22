@@ -175,6 +175,10 @@ export const theme = {
     section: '64px',
   },
 
+  gradients: {
+    primary: 'linear-gradient(135deg, #78b9a4, color-mix(in srgb, #78b9a4 92%, black))',
+  },
+
   shadows: {
     sm:  'rgba(0, 0, 0, 0.08) 0px 1px 2px 0px',
     md:  'rgba(0, 0, 0, 0.12) 0px 6px 16px 0px',

@@ -15,7 +15,7 @@ export const Page = styled.div`
 
 export const Brand = styled.div`
   flex: 1 1 50%;
-  background: ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.gradients.primary};
   display: flex;
   flex-direction: column;
   align-items: center;

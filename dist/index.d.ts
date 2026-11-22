@@ -690,6 +690,9 @@ declare const theme: {
         readonly xxl: "48px";
         readonly section: "64px";
     };
+    readonly gradients: {
+        readonly primary: "linear-gradient(135deg, #78b9a4, color-mix(in srgb, #78b9a4 92%, black))";
+    };
     readonly shadows: {
         readonly sm: "rgba(0, 0, 0, 0.08) 0px 1px 2px 0px";
         readonly md: "rgba(0, 0, 0, 0.12) 0px 6px 16px 0px";

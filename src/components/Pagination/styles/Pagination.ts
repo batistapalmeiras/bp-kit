@@ -18,8 +18,8 @@ export const PageButton = styled.button<{ $active?: boolean; $hidden?: boolean }
   padding: 0;
   border: none;
   border-radius: ${({ theme }) => theme.rounded.full};
-  background: ${({ theme, $active }) => ($active ? theme.colors.ink : 'transparent')};
-  color: ${({ theme, $active }) => ($active ? theme.colors.onDark : theme.colors.ink)};
+  background: ${({ theme, $active }) => ($active ? theme.gradients.primary : 'transparent')};
+  color: ${({ theme, $active }) => ($active ? theme.colors.onPrimary : theme.colors.ink)};
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
   font-weight: ${({ $active }) => ($active ? 600 : 500)};
@@ -28,7 +28,7 @@ export const PageButton = styled.button<{ $active?: boolean; $hidden?: boolean }
   transition: background 0.15s;
 
   &:hover {
-    background: ${({ theme, $active }) => ($active ? theme.colors.ink : theme.colors.surfaceStrong)};
+    background: ${({ theme, $active }) => ($active ? theme.gradients.primary : theme.colors.surfaceStrong)};
   }
 `;
 

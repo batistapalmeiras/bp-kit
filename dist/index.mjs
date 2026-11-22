@@ -356,7 +356,7 @@ var sizeStyles = {
 };
 var variantStyles = {
   primary: css2`
-    background: ${({ theme: theme2 }) => theme2.colors.primary};
+    background: ${({ theme: theme2 }) => theme2.gradients.primary};
     color: ${({ theme: theme2 }) => theme2.colors.onPrimary};
     border: none;
 
@@ -427,7 +427,7 @@ var Chip = styled6.button`
   padding: 0 ${({ theme: theme2 }) => theme2.spacing.sm};
   border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
   border: 1px solid ${({ theme: theme2, $active }) => $active ? theme2.colors.primary : theme2.colors.hairline};
-  background: ${({ theme: theme2, $active }) => $active ? theme2.colors.primary : "transparent"};
+  background: ${({ theme: theme2, $active }) => $active ? theme2.gradients.primary : "transparent"};
   color: ${({ theme: theme2, $active }) => $active ? theme2.colors.onPrimary : theme2.colors.muted};
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.captionSm.fontSize};
@@ -981,7 +981,7 @@ var ChoiceCell = styled15.button`
   padding: ${({ theme: theme2 }) => theme2.spacing.sm} 0;
   border: none;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.sm};
-  background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primary : "transparent"};
+  background: ${({ theme: theme2, $selected }) => $selected ? theme2.gradients.primary : "transparent"};
   color: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.onPrimary : theme2.colors.ink};
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
@@ -1191,7 +1191,7 @@ var DayCell = styled17.button`
   height: 36px;
   border: none;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primary : "transparent"};
+  background: ${({ theme: theme2, $selected }) => $selected ? theme2.gradients.primary : "transparent"};
   color: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.onPrimary : theme2.colors.ink};
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
@@ -2781,8 +2781,8 @@ var PageButton = styled26.button`
   padding: 0;
   border: none;
   border-radius: ${({ theme: theme2 }) => theme2.rounded.full};
-  background: ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : "transparent"};
-  color: ${({ theme: theme2, $active }) => $active ? theme2.colors.onDark : theme2.colors.ink};
+  background: ${({ theme: theme2, $active }) => $active ? theme2.gradients.primary : "transparent"};
+  color: ${({ theme: theme2, $active }) => $active ? theme2.colors.onPrimary : theme2.colors.ink};
   font-family: ${({ theme: theme2 }) => theme2.typography.fontFamily};
   font-size: ${({ theme: theme2 }) => theme2.typography.bodySm.fontSize};
   font-weight: ${({ $active }) => $active ? 600 : 500};
@@ -2791,7 +2791,7 @@ var PageButton = styled26.button`
   transition: background 0.15s;
 
   &:hover {
-    background: ${({ theme: theme2, $active }) => $active ? theme2.colors.ink : theme2.colors.surfaceStrong};
+    background: ${({ theme: theme2, $active }) => $active ? theme2.gradients.primary : theme2.colors.surfaceStrong};
   }
 `;
 var PageGap = styled26.span`
@@ -3295,7 +3295,7 @@ var Page = styled34.div`
 `;
 var Brand2 = styled34.div`
   flex: 1 1 50%;
-  background: ${({ theme: theme2 }) => theme2.colors.primary};
+  background: ${({ theme: theme2 }) => theme2.gradients.primary};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4486,6 +4486,9 @@ var theme = {
     xl: "32px",
     xxl: "48px",
     section: "64px"
+  },
+  gradients: {
+    primary: "linear-gradient(135deg, #78b9a4, color-mix(in srgb, #78b9a4 92%, black))"
   },
   shadows: {
     sm: "rgba(0, 0, 0, 0.08) 0px 1px 2px 0px",
