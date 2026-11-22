@@ -692,6 +692,8 @@ declare const theme: {
     };
     readonly gradients: {
         readonly primary: "linear-gradient(135deg, #78b9a4, color-mix(in srgb, #78b9a4 92%, black))";
+        readonly primaryActive: "linear-gradient(135deg, #5a9d88, color-mix(in srgb, #5a9d88 92%, black))";
+        readonly primaryDisabled: "linear-gradient(135deg, #c2dbd4, color-mix(in srgb, #c2dbd4 92%, black))";
     };
     readonly shadows: {
         readonly sm: "rgba(0, 0, 0, 0.08) 0px 1px 2px 0px";

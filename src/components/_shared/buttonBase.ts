@@ -39,8 +39,8 @@ export const variantStyles: Record<ButtonVariant, ReturnType<typeof css>> = {
     color: ${({ theme }) => theme.colors.onPrimary};
     border: none;
 
-    &:hover:not(:disabled) { background: ${({ theme }) => theme.colors.primaryActive}; }
-    &:disabled { background: ${({ theme }) => theme.colors.primaryDisabled}; cursor: not-allowed; }
+    &:hover:not(:disabled) { background: ${({ theme }) => theme.gradients.primaryActive}; }
+    &:disabled { background: ${({ theme }) => theme.gradients.primaryDisabled}; cursor: not-allowed; }
   `,
   secondary: css`
     background: ${({ theme }) => theme.colors.canvas};

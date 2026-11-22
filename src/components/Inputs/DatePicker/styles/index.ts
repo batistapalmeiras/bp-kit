@@ -139,7 +139,7 @@ export const DayCell = styled.button<{ $selected?: boolean; $today?: boolean }>`
   }
 
   &:hover:not(:disabled) {
-    background: ${({ theme, $selected }) => ($selected ? theme.colors.primaryActive : theme.colors.surfaceStrong)};
+    background: ${({ theme, $selected }) => ($selected ? theme.gradients.primaryActive : theme.colors.surfaceStrong)};
   }
 
   &:disabled {

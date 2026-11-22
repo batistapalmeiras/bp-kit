@@ -177,6 +177,8 @@ export const theme = {
 
   gradients: {
     primary: 'linear-gradient(135deg, #78b9a4, color-mix(in srgb, #78b9a4 92%, black))',
+    primaryActive: 'linear-gradient(135deg, #5a9d88, color-mix(in srgb, #5a9d88 92%, black))',
+    primaryDisabled: 'linear-gradient(135deg, #c2dbd4, color-mix(in srgb, #c2dbd4 92%, black))',
   },
 
   shadows: {

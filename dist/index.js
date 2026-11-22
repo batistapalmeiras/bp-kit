@@ -474,8 +474,8 @@ var variantStyles = {
     color: ${({ theme: theme2 }) => theme2.colors.onPrimary};
     border: none;
 
-    &:hover:not(:disabled) { background: ${({ theme: theme2 }) => theme2.colors.primaryActive}; }
-    &:disabled { background: ${({ theme: theme2 }) => theme2.colors.primaryDisabled}; cursor: not-allowed; }
+    &:hover:not(:disabled) { background: ${({ theme: theme2 }) => theme2.gradients.primaryActive}; }
+    &:disabled { background: ${({ theme: theme2 }) => theme2.gradients.primaryDisabled}; cursor: not-allowed; }
   `,
   secondary: import_styled_components6.css`
     background: ${({ theme: theme2 }) => theme2.colors.canvas};
@@ -1104,7 +1104,7 @@ var ChoiceCell = import_styled_components17.default.button`
   transition: background 0.15s;
 
   &:hover:not(:disabled) {
-    background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primaryActive : theme2.colors.surfaceStrong};
+    background: ${({ theme: theme2, $selected }) => $selected ? theme2.gradients.primaryActive : theme2.colors.surfaceStrong};
   }
 
   &:disabled {
@@ -1320,7 +1320,7 @@ var DayCell = import_styled_components19.default.button`
   }
 
   &:hover:not(:disabled) {
-    background: ${({ theme: theme2, $selected }) => $selected ? theme2.colors.primaryActive : theme2.colors.surfaceStrong};
+    background: ${({ theme: theme2, $selected }) => $selected ? theme2.gradients.primaryActive : theme2.colors.surfaceStrong};
   }
 
   &:disabled {
@@ -4602,7 +4602,9 @@ var theme = {
     section: "64px"
   },
   gradients: {
-    primary: "linear-gradient(135deg, #78b9a4, color-mix(in srgb, #78b9a4 92%, black))"
+    primary: "linear-gradient(135deg, #78b9a4, color-mix(in srgb, #78b9a4 92%, black))",
+    primaryActive: "linear-gradient(135deg, #5a9d88, color-mix(in srgb, #5a9d88 92%, black))",
+    primaryDisabled: "linear-gradient(135deg, #c2dbd4, color-mix(in srgb, #c2dbd4 92%, black))"
   },
   shadows: {
     sm: "rgba(0, 0, 0, 0.08) 0px 1px 2px 0px",
