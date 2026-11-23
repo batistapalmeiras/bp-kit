@@ -34,7 +34,7 @@ export { RawTextarea, Textarea } from './components/Inputs/Textarea';
 export type { RawTextareaProps, TextareaProps } from './components/Inputs/Textarea/types';
 export { TextInput } from './components/Inputs/TextInput';
 export type { CurrencyFieldProps, TextFieldProps, TextMask } from './components/Inputs/TextInput/types';
-export { Modal, ModalActions, ModalTitle } from './components/Modal';
+export { Modal, ModalActions, ModalFooter, ModalTitle } from './components/Modal';
 export { Pagination } from './components/Pagination';
 export { PageHeader } from './components/PageHeader';
 export { SearchInput } from './components/SearchInput';

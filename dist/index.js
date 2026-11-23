@@ -56,6 +56,7 @@ __export(src_exports, {
   LoginForm: () => LoginForm,
   Modal: () => Modal,
   ModalActions: () => ModalActions,
+  ModalFooter: () => ModalFooter,
   ModalTitle: () => ModalTitle,
   MonthPicker: () => MonthPicker,
   MultiSelect: () => MultiSelect,
@@ -2797,6 +2798,19 @@ var ModalBody = import_styled_components26.default.div`
     padding-top: var(--modal-top);
   }
 `;
+var ModalFooterSlot = import_styled_components26.default.div`
+  flex: none;
+
+  &:empty {
+    display: none;
+  }
+`;
+var ModalFooterRow = import_styled_components26.default.div`
+  padding: ${({ theme: theme2 }) => theme2.spacing.md} var(--modal-x)
+    calc(${({ theme: theme2 }) => theme2.spacing.md} + env(safe-area-inset-bottom));
+  border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+`;
 var TitleText = import_styled_components26.default.h3`
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight};
@@ -2839,19 +2853,25 @@ var ModalActions = import_styled_components26.default.div`
 
 // src/components/Modal/index.tsx
 var import_jsx_runtime22 = require("react/jsx-runtime");
-var ModalHeaderSlot = (0, import_react17.createContext)(null);
+var ModalSlotsContext = (0, import_react17.createContext)({ header: null, footer: null });
 function ModalTitle({ children, onClose }) {
-  const header = (0, import_react17.useContext)(ModalHeaderSlot);
+  const { header } = (0, import_react17.useContext)(ModalSlotsContext);
   const row = /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(TitleRow, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(TitleText, { children }),
     onClose && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(CloseButton2, { type: "button", onClick: onClose, "aria-label": "Fechar", children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_lucide_react10.X, { size: 18 }) })
   ] });
   return header ? (0, import_react_dom2.createPortal)(row, header) : row;
 }
+function ModalFooter({ children }) {
+  const { footer } = (0, import_react17.useContext)(ModalSlotsContext);
+  const row = /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(ModalFooterRow, { children });
+  return footer ? (0, import_react_dom2.createPortal)(row, footer) : row;
+}
 function Modal({ children, close, variant = "dialog", fullScreenOnMobile = false }) {
   const boxRef = (0, import_react17.useRef)(null);
   const [scrolled, setScrolled] = (0, import_react17.useState)(false);
   const [header, setHeader] = (0, import_react17.useState)(null);
+  const [footer, setFooter] = (0, import_react17.useState)(null);
   useScrollLock();
   (0, import_react17.useEffect)(() => {
     var _a, _b;
@@ -2874,7 +2894,8 @@ function Modal({ children, close, variant = "dialog", fullScreenOnMobile = false
       onClick: (e) => e.stopPropagation(),
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(ModalHeader, { ref: setHeader, $scrolled: scrolled }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(ModalBody, { onScroll: (e) => setScrolled(e.currentTarget.scrollTop > 0), children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(ModalHeaderSlot.Provider, { value: header, children }) })
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(ModalBody, { onScroll: (e) => setScrolled(e.currentTarget.scrollTop > 0), children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(ModalSlotsContext.Provider, { value: { header, footer }, children }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(ModalFooterSlot, { ref: setFooter })
       ]
     }
   ) });
@@ -4668,6 +4689,7 @@ var theme = {
   LoginForm,
   Modal,
   ModalActions,
+  ModalFooter,
   ModalTitle,
   MonthPicker,
   MultiSelect,

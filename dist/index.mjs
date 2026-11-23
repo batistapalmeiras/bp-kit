@@ -2684,6 +2684,19 @@ var ModalBody = styled24.div`
     padding-top: var(--modal-top);
   }
 `;
+var ModalFooterSlot = styled24.div`
+  flex: none;
+
+  &:empty {
+    display: none;
+  }
+`;
+var ModalFooterRow = styled24.div`
+  padding: ${({ theme: theme2 }) => theme2.spacing.md} var(--modal-x)
+    calc(${({ theme: theme2 }) => theme2.spacing.md} + env(safe-area-inset-bottom));
+  border-top: 1px solid ${({ theme: theme2 }) => theme2.colors.hairline};
+  background: ${({ theme: theme2 }) => theme2.colors.canvas};
+`;
 var TitleText = styled24.h3`
   font-size: ${({ theme: theme2 }) => theme2.typography.displaySm.fontSize};
   font-weight: ${({ theme: theme2 }) => theme2.typography.displaySm.fontWeight};
@@ -2726,19 +2739,25 @@ var ModalActions = styled24.div`
 
 // src/components/Modal/index.tsx
 import { jsx as jsx21, jsxs as jsxs18 } from "react/jsx-runtime";
-var ModalHeaderSlot = createContext(null);
+var ModalSlotsContext = createContext({ header: null, footer: null });
 function ModalTitle({ children, onClose }) {
-  const header = useContext(ModalHeaderSlot);
+  const { header } = useContext(ModalSlotsContext);
   const row = /* @__PURE__ */ jsxs18(TitleRow, { children: [
     /* @__PURE__ */ jsx21(TitleText, { children }),
     onClose && /* @__PURE__ */ jsx21(CloseButton2, { type: "button", onClick: onClose, "aria-label": "Fechar", children: /* @__PURE__ */ jsx21(X4, { size: 18 }) })
   ] });
   return header ? createPortal2(row, header) : row;
 }
+function ModalFooter({ children }) {
+  const { footer } = useContext(ModalSlotsContext);
+  const row = /* @__PURE__ */ jsx21(ModalFooterRow, { children });
+  return footer ? createPortal2(row, footer) : row;
+}
 function Modal({ children, close, variant = "dialog", fullScreenOnMobile = false }) {
   const boxRef = useRef5(null);
   const [scrolled, setScrolled] = useState9(false);
   const [header, setHeader] = useState9(null);
+  const [footer, setFooter] = useState9(null);
   useScrollLock();
   useEffect7(() => {
     var _a, _b;
@@ -2761,7 +2780,8 @@ function Modal({ children, close, variant = "dialog", fullScreenOnMobile = false
       onClick: (e) => e.stopPropagation(),
       children: [
         /* @__PURE__ */ jsx21(ModalHeader, { ref: setHeader, $scrolled: scrolled }),
-        /* @__PURE__ */ jsx21(ModalBody, { onScroll: (e) => setScrolled(e.currentTarget.scrollTop > 0), children: /* @__PURE__ */ jsx21(ModalHeaderSlot.Provider, { value: header, children }) })
+        /* @__PURE__ */ jsx21(ModalBody, { onScroll: (e) => setScrolled(e.currentTarget.scrollTop > 0), children: /* @__PURE__ */ jsx21(ModalSlotsContext.Provider, { value: { header, footer }, children }) }),
+        /* @__PURE__ */ jsx21(ModalFooterSlot, { ref: setFooter })
       ]
     }
   ) });
@@ -4554,6 +4574,7 @@ export {
   LoginForm,
   Modal,
   ModalActions,
+  ModalFooter,
   ModalTitle,
   MonthPicker,
   MultiSelect,

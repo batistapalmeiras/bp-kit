@@ -119,6 +119,23 @@ export const ModalBody = styled.div`
   }
 `;
 
+/* Same idea for the actions that do not submit a form (ModalFooter): they sit
+   in a fixed region under the scrolling content, not on top of it. */
+export const ModalFooterSlot = styled.div`
+  flex: none;
+
+  &:empty {
+    display: none;
+  }
+`;
+
+export const ModalFooterRow = styled.div`
+  padding: ${({ theme }) => theme.spacing.md} var(--modal-x)
+    calc(${({ theme }) => theme.spacing.md} + env(safe-area-inset-bottom));
+  border-top: 1px solid ${({ theme }) => theme.colors.hairline};
+  background: ${({ theme }) => theme.colors.canvas};
+`;
+
 export const TitleText = styled.h3`
   font-size: ${({ theme }) => theme.typography.displaySm.fontSize};
   font-weight: ${({ theme }) => theme.typography.displaySm.fontWeight};
