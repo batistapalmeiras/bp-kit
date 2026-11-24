@@ -54,6 +54,13 @@ export const Row = styled.div<{ $actionAlign: 'center' | 'end' }>`
   gap: ${({ theme }) => theme.spacing.base};
 `;
 
+export const Heading = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.md};
+  min-width: 0;
+`;
+
 export const Titles = styled.div`
   display: flex;
   flex-direction: column;

@@ -7,6 +7,7 @@ import { fadeUp, slideUp } from '../../../styles/animations';
 export const Page = styled.div`
   min-height: 100vh;
   display: flex;
+  padding: ${({ theme }) => theme.spacing.base};
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -16,6 +17,7 @@ export const Page = styled.div`
 export const Brand = styled.div`
   flex: 1 1 50%;
   background: ${({ theme }) => theme.gradients.primary};
+  border-radius: ${({ theme }) => theme.rounded.xl};
   display: flex;
   flex-direction: column;
   align-items: center;

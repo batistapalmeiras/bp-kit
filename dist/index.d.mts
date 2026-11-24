@@ -299,12 +299,13 @@ declare function Pagination({ currentPage, totalPages, onPageChange }: Paginatio
 interface Props$1 {
     title: string;
     subtitle?: string;
+    icon?: react__default.ReactNode;
     back?: boolean;
     action?: react__default.ReactNode;
     actionAlign?: 'center' | 'end';
     compact?: boolean;
 }
-declare function PageHeader({ title, subtitle, back, action, actionAlign, compact }: Props$1): react__default.JSX.Element;
+declare function PageHeader({ title, subtitle, icon, back, action, actionAlign, compact }: Props$1): react__default.JSX.Element;
 
 type SearchInputSize = 'sm' | 'md';
 interface SearchInputProps {

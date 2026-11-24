@@ -4,18 +4,19 @@ import { useNavigate } from 'react-router-dom';
 // Libs
 import { ArrowLeft } from 'lucide-react';
 // Local
-import { Back, Row, Subtitle, Title, Titles, Wrapper } from './styles';
+import { Back, Heading, Row, Subtitle, Title, Titles, Wrapper } from './styles';
 
 interface Props {
   title: string;
   subtitle?: string;
+  icon?: React.ReactNode;
   back?: boolean;
   action?: React.ReactNode;
   actionAlign?: 'center' | 'end';
   compact?: boolean;
 }
 
-export function PageHeader({ title, subtitle, back, action, actionAlign = 'center', compact = false }: Props) {
+export function PageHeader({ title, subtitle, icon, back, action, actionAlign = 'center', compact = false }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -26,10 +27,13 @@ export function PageHeader({ title, subtitle, back, action, actionAlign = 'cente
         </Back>
       )}
       <Row $actionAlign={actionAlign}>
-        <Titles>
-          <Title $compact={compact}>{title}</Title>
-          {subtitle && <Subtitle $compact={compact}>{subtitle}</Subtitle>}
-        </Titles>
+        <Heading>
+          {icon}
+          <Titles>
+            <Title $compact={compact}>{title}</Title>
+            {subtitle && <Subtitle $compact={compact}>{subtitle}</Subtitle>}
+          </Titles>
+        </Heading>
         {action && <div>{action}</div>}
       </Row>
     </Wrapper>

@@ -3060,6 +3060,12 @@ var Row = import_styled_components28.default.div`
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.base};
 `;
+var Heading = import_styled_components28.default.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  min-width: 0;
+`;
 var Titles = import_styled_components28.default.div`
   display: flex;
   flex-direction: column;
@@ -3096,14 +3102,17 @@ var Subtitle = import_styled_components28.default.p`
 
 // src/components/PageHeader/index.tsx
 var import_jsx_runtime24 = require("react/jsx-runtime");
-function PageHeader({ title, subtitle, back, action, actionAlign = "center", compact = false }) {
+function PageHeader({ title, subtitle, icon, back, action, actionAlign = "center", compact = false }) {
   const navigate = (0, import_react_router_dom2.useNavigate)();
   return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(Wrapper8, { $compact: compact, children: [
     back && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Back, { $compact: compact, onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_lucide_react12.ArrowLeft, { size: 20 }) }),
     /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(Row, { $actionAlign: actionAlign, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(Titles, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Title3, { $compact: compact, children: title }),
-        subtitle && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Subtitle, { $compact: compact, children: subtitle })
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(Heading, { children: [
+        icon,
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(Titles, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Title3, { $compact: compact, children: title }),
+          subtitle && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Subtitle, { $compact: compact, children: subtitle })
+        ] })
       ] }),
       action && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { children: action })
     ] })
@@ -3446,6 +3455,7 @@ var import_styled_components35 = __toESM(require("styled-components"));
 var Page = import_styled_components35.default.div`
   min-height: 100vh;
   display: flex;
+  padding: ${({ theme: theme2 }) => theme2.spacing.base};
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -3454,6 +3464,7 @@ var Page = import_styled_components35.default.div`
 var Brand2 = import_styled_components35.default.div`
   flex: 1 1 50%;
   background: ${({ theme: theme2 }) => theme2.gradients.primary};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
   display: flex;
   flex-direction: column;
   align-items: center;

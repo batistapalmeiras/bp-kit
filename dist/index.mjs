@@ -2946,6 +2946,12 @@ var Row = styled26.div`
   justify-content: space-between;
   gap: ${({ theme: theme2 }) => theme2.spacing.base};
 `;
+var Heading = styled26.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme: theme2 }) => theme2.spacing.md};
+  min-width: 0;
+`;
 var Titles = styled26.div`
   display: flex;
   flex-direction: column;
@@ -2982,14 +2988,17 @@ var Subtitle = styled26.p`
 
 // src/components/PageHeader/index.tsx
 import { jsx as jsx23, jsxs as jsxs20 } from "react/jsx-runtime";
-function PageHeader({ title, subtitle, back, action, actionAlign = "center", compact = false }) {
+function PageHeader({ title, subtitle, icon, back, action, actionAlign = "center", compact = false }) {
   const navigate = useNavigate();
   return /* @__PURE__ */ jsxs20(Wrapper8, { $compact: compact, children: [
     back && /* @__PURE__ */ jsx23(Back, { $compact: compact, onClick: () => navigate(-1), "aria-label": "Voltar", children: /* @__PURE__ */ jsx23(ArrowLeft, { size: 20 }) }),
     /* @__PURE__ */ jsxs20(Row, { $actionAlign: actionAlign, children: [
-      /* @__PURE__ */ jsxs20(Titles, { children: [
-        /* @__PURE__ */ jsx23(Title3, { $compact: compact, children: title }),
-        subtitle && /* @__PURE__ */ jsx23(Subtitle, { $compact: compact, children: subtitle })
+      /* @__PURE__ */ jsxs20(Heading, { children: [
+        icon,
+        /* @__PURE__ */ jsxs20(Titles, { children: [
+          /* @__PURE__ */ jsx23(Title3, { $compact: compact, children: title }),
+          subtitle && /* @__PURE__ */ jsx23(Subtitle, { $compact: compact, children: subtitle })
+        ] })
       ] }),
       action && /* @__PURE__ */ jsx23("div", { children: action })
     ] })
@@ -3332,6 +3341,7 @@ import styled33 from "styled-components";
 var Page = styled33.div`
   min-height: 100vh;
   display: flex;
+  padding: ${({ theme: theme2 }) => theme2.spacing.base};
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -3340,6 +3350,7 @@ var Page = styled33.div`
 var Brand2 = styled33.div`
   flex: 1 1 50%;
   background: ${({ theme: theme2 }) => theme2.gradients.primary};
+  border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
   display: flex;
   flex-direction: column;
   align-items: center;
