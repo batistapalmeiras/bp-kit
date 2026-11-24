@@ -11,6 +11,7 @@ export const Page = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
+    padding: 0;
   }
 `;
 
@@ -38,6 +39,7 @@ export const Brand = styled.div`
 
   @media (max-width: 768px) {
     flex: 1;
+    border-radius: 0;
     padding: ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.base};
     gap: ${({ theme }) => theme.spacing.md};
   }

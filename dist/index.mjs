@@ -3345,6 +3345,7 @@ var Page = styled33.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
+    padding: 0;
   }
 `;
 var Brand2 = styled33.div`
@@ -3371,6 +3372,7 @@ var Brand2 = styled33.div`
 
   @media (max-width: 768px) {
     flex: 1;
+    border-radius: 0;
     padding: ${({ theme: theme2 }) => theme2.spacing.xl} ${({ theme: theme2 }) => theme2.spacing.base};
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
   }
