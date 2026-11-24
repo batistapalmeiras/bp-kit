@@ -3455,17 +3455,14 @@ var import_styled_components35 = __toESM(require("styled-components"));
 var Page = import_styled_components35.default.div`
   min-height: 100vh;
   display: flex;
-  padding: ${({ theme: theme2 }) => theme2.spacing.base};
 
   @media (max-width: 768px) {
     flex-direction: column;
-    padding: 0;
   }
 `;
 var Brand2 = import_styled_components35.default.div`
   flex: 1 1 50%;
   background: ${({ theme: theme2 }) => theme2.gradients.primary};
-  border-radius: ${({ theme: theme2 }) => theme2.rounded.xl};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3486,7 +3483,6 @@ var Brand2 = import_styled_components35.default.div`
 
   @media (max-width: 768px) {
     flex: 1;
-    border-radius: 0;
     padding: ${({ theme: theme2 }) => theme2.spacing.xl} ${({ theme: theme2 }) => theme2.spacing.base};
     gap: ${({ theme: theme2 }) => theme2.spacing.md};
   }
